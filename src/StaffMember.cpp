@@ -1,4 +1,4 @@
-#include "StaffMember.h"
+#include "../include/StaffMember.h"
 
 void StaffMember::setMediator(GrowthMediator* mediator) {
 	this->mediator = mediator;

@@ -1,4 +1,4 @@
-#include "StockIterator.h"
+#include "../include/StockIterator.h"
 
 StockIterator::StockIterator(PlantNode* root) {
 	// TODO - implement StockIterator::StockIterator

@@ -1,4 +1,4 @@
-#include "Normal.h"
+#include "../include/Normal.h"
 
 double Normal::getDiscount() {
 	// TODO - implement Normal::getDiscount

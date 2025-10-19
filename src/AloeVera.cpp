@@ -1,4 +1,4 @@
-#include "AloeVera.h"
+#include "../include/AloeVera.h"
 
 AloeVera::AloeVera() {
 	// TODO - implement AloeVera::AloeVera

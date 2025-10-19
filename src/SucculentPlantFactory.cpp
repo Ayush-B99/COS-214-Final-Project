@@ -1,4 +1,4 @@
-#include "SucculentPlantFactory.h"
+#include "../include/SucculentPlantFactory.h"
 
 SucculentPlantFactory::SucculentPlantFactory() {
 	// TODO - implement SucculentPlantFactory::SucculentPlantFactory

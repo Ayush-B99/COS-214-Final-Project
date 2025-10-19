@@ -1,4 +1,4 @@
-#include "Cancelled.h"
+#include "../include/Cancelled.h"
 
 void Cancelled::submitted(Order* order) {
 	// TODO - implement Cancelled::submitted

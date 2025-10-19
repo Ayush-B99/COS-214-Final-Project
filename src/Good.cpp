@@ -1,4 +1,4 @@
-#include "Good.h"
+#include "../include/Good.h"
 
 void Good::update(Plant* plant) {
 	// TODO - implement Good::update

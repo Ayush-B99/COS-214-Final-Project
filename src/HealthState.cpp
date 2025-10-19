@@ -1,4 +1,4 @@
-#include "HealthState.h"
+#include "../include/HealthState.h"
 
 HealthState::~HealthState() {
 	// TODO - implement HealthState::~HealthState

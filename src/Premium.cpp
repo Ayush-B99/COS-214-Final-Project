@@ -1,4 +1,4 @@
-#include "Premium.h"
+#include "../include/Premium.h"
 
 double Premium::getDiscount() {
 	// TODO - implement Premium::getDiscount

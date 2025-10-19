@@ -1,4 +1,4 @@
-#include "Company.h"
+#include "../include/Company.h"
 
 void Company::getDiscount() {
 	// TODO - implement Company::getDiscount

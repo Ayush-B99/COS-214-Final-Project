@@ -1,4 +1,4 @@
-#include "Fertilizer.h"
+#include "../include/Fertilizer.h"
 
 void Fertilizer::FertilizerCommand(Plant* plant) {
 	// TODO - implement Fertilizer::FertilizerCommand

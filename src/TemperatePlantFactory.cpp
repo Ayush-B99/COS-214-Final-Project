@@ -1,4 +1,4 @@
-#include "TemperatePlantFactory.h"
+#include "../include/TemperatePlantFactory.h"
 
 TemperatePlantFactory::TemperatePlantFactory() {
 	// TODO - implement TemperatePlantFactory::TemperatePlantFactory

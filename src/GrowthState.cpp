@@ -1,4 +1,4 @@
-#include "GrowthState.h"
+#include "../include/GrowthState.h"
 
 GrowthState::~GrowthState() {
 	// TODO - implement GrowthState::~GrowthState

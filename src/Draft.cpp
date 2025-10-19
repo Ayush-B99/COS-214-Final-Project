@@ -1,4 +1,4 @@
-#include "Draft.h"
+#include "../include/Draft.h"
 
 void Draft::submitted(Order* order) {
 	// TODO - implement Draft::submitted
