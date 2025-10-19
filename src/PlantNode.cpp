@@ -1,4 +1,4 @@
-#include "PlantNode.h"
+#include "../include/PlantNode.h"
 
 PlantNode::PlantNode(string name) {
 	// TODO - implement PlantNode::PlantNode

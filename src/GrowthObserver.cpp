@@ -1,4 +1,4 @@
-#include "GrowthObserver.h"
+#include "../include/GrowthObserver.h"
 
 GrowthObserver::GrowthObserver() {
 	// TODO - implement GrowthObserver::GrowthObserver

@@ -1,4 +1,4 @@
-#include "MediumPlant.h"
+#include "../include/MediumPlant.h"
 
 MediumPlant::MediumPlant(string species) {
 	// TODO - implement MediumPlant::MediumPlant

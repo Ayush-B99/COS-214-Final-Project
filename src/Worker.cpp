@@ -1,4 +1,4 @@
-#include "Worker.h"
+#include "../include/Worker.h"
 
 void Worker::getComm() {
 	// TODO - implement Worker::getComm

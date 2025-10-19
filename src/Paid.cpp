@@ -1,4 +1,4 @@
-#include "Paid.h"
+#include "../include/Paid.h"
 
 void Paid::submitted(Order* order) {
 	// TODO - implement Paid::submitted

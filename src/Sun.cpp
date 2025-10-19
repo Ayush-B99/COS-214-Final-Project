@@ -1,4 +1,4 @@
-#include "Sun.h"
+#include "../include/Sun.h"
 
 void Sun::SunCommand(Plant* plant) {
 	// TODO - implement Sun::SunCommand

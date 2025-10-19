@@ -1,4 +1,4 @@
-#include "FertilizerDecorator.h"
+#include "../include/FertilizerDecorator.h"
 
 FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) {
 	// TODO - implement FertilizerDecorator::FertilizerDecorator

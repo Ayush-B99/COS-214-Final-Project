@@ -1,4 +1,4 @@
-#include "Pitcher.h"
+#include "../include/Pitcher.h"
 
 Pitcher::Pitcher() {
 	// TODO - implement Pitcher::Pitcher

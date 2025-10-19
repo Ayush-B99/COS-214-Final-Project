@@ -1,4 +1,4 @@
-#include "Nerve.h"
+#include "../include/Nerve.h"
 
 Nerve::Nerve() {
 	// TODO - implement Nerve::Nerve

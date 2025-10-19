@@ -1,4 +1,4 @@
-#include "CommMediator.h"
+#include "../include/CommMediator.h"
 
 CommMediator::~CommMediator() {
 	// TODO - implement CommMediator::~CommMediator

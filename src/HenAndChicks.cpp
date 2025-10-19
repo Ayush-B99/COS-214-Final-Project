@@ -1,4 +1,4 @@
-#include "HenAndChicks.h"
+#include "../include/HenAndChicks.h"
 
 HenAndChicks::HenAndChicks() {
 	// TODO - implement HenAndChicks::HenAndChicks

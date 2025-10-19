@@ -1,4 +1,4 @@
-#include "PotDecorator.h"
+#include "../include/PotDecorator.h"
 
 PotDecorator::PotDecorator(Plant* plant, string type) {
 	// TODO - implement PotDecorator::PotDecorator

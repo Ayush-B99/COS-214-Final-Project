@@ -1,4 +1,4 @@
-#include "CarnivorousPlantFactory.h"
+#include "../include/CarnivorousPlantFactory.h"
 
 CarnivorousPlantFactory::CarnivorousPlantFactory() {
 	// TODO - implement CarnivorousPlantFactory::CarnivorousPlantFactory

@@ -1,6 +1,16 @@
 #ifndef COMPLETED_H
 #define COMPLETED_H
 
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <map>
+#include <sstream>
+#include <stack>
+
+using namespace std;
+
 class Completed : OrderState {
 
 

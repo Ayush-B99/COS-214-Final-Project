@@ -1,4 +1,4 @@
-#include "Dead.h"
+#include "../include/Dead.h"
 
 void Dead::update(Plant* plant) {
 	// TODO - implement Dead::update

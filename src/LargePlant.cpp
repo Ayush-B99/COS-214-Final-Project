@@ -1,4 +1,4 @@
-#include "LargePlant.h"
+#include "../include/LargePlant.h"
 
 LargePlant::LargePlant(string species) {
 	// TODO - implement LargePlant::LargePlant

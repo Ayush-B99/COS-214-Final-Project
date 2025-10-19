@@ -1,4 +1,4 @@
-#include "Customer.h"
+#include "../include/Customer.h"
 
 Customer::~Customer() {
 	// TODO - implement Customer::~Customer

@@ -1,4 +1,4 @@
-#include "PlantDecorator.h"
+#include "../include/PlantDecorator.h"
 
 PlantDecorator::PlantDecorator(Plant* plant) {
 	// TODO - implement PlantDecorator::PlantDecorator

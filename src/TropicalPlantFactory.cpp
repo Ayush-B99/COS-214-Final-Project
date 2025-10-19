@@ -1,4 +1,4 @@
-#include "TropicalPlantFactory.h"
+#include "../include/TropicalPlantFactory.h"
 
 TropicalPlantFactory::TropicalPlantFactory() {
 	// TODO - implement TropicalPlantFactory::TropicalPlantFactory

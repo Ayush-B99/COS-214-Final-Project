@@ -1,4 +1,4 @@
-#include "Inventory.h"
+#include "../include/Inventory.h"
 
 Inventory::Inventory() {
 	// TODO - implement Inventory::Inventory

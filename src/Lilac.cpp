@@ -1,4 +1,4 @@
-#include "Lilac.h"
+#include "../include/Lilac.h"
 
 Lilac::Lilac() {
 	// TODO - implement Lilac::Lilac

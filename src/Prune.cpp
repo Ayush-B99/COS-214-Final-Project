@@ -1,4 +1,4 @@
-#include "Prune.h"
+#include "../include/Prune.h"
 
 void Prune::PruneCommand(Plant* plant) {
 	// TODO - implement Prune::PruneCommand

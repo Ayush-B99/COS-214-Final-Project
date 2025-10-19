@@ -1,4 +1,4 @@
-#include "BirdOfParadise.h"
+#include "../include/BirdOfParadise.h"
 
 BirdOfParadise::BirdOfParadise() {
 	// TODO - implement BirdOfParadise::BirdOfParadise

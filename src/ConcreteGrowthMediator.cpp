@@ -1,4 +1,4 @@
-#include "ConcreteGrowthMediator.h"
+#include "../include/ConcreteGrowthMediator.h"
 
 void ConcreteGrowthMediator::notify(StaffMember* sender, string event) {
 	// TODO - implement ConcreteGrowthMediator::notify

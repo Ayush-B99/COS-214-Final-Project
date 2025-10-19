@@ -1,4 +1,4 @@
-#include "Completed.h"
+#include "../include/Completed.h"
 
 void Completed::submitted(Order* order) {
 	// TODO - implement Completed::submitted

@@ -1,4 +1,4 @@
-#include "Nepenthes.h"
+#include "../include/Nepenthes.h"
 
 Nepenthes::Nepenthes() {
 	// TODO - implement Nepenthes::Nepenthes

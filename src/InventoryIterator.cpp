@@ -1,4 +1,4 @@
-#include "InventoryIterator.h"
+#include "../include/InventoryIterator.h"
 
 InventoryIterator::InventoryIterator(PlantNode* root) {
 	// TODO - implement InventoryIterator::InventoryIterator

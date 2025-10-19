@@ -1,4 +1,4 @@
-#include "GrowthMediator.h"
+#include "../include/GrowthMediator.h"
 
 GrowthMediator::~GrowthMediator() {
 	// TODO - implement GrowthMediator::~GrowthMediator

@@ -1,4 +1,4 @@
-#include "SmallPlant.h"
+#include "../include/SmallPlant.h"
 
 SmallPlant::SmallPlant(string species) {
 	// TODO - implement SmallPlant::SmallPlant
