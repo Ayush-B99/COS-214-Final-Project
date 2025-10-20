@@ -9,9 +9,11 @@
 #include <sstream>
 #include <stack>
 
+#include "Customer.h"
+
 using namespace std;
 
-class Premium : Customer {
+class Premium : public Customer {
 
 
 public:

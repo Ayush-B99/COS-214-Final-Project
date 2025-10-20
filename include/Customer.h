@@ -17,6 +17,8 @@ class Customer {
 public:
 	virtual double getDiscount() = 0;
 
+	//TODO: implement functions for commMediator design pattern
+
 	~Customer();
 };
 

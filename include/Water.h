@@ -9,9 +9,11 @@
 #include <sstream>
 #include <stack>
 
+#include "Command.h"
+
 using namespace std;
 
-class Water : Command {
+class Water :public Command {
 
 public:
 	Plant* receiver;

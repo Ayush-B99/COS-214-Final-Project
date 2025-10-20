@@ -9,9 +9,12 @@
 #include <sstream>
 #include <stack>
 
+#include "CommMediator.h"
+#include "StaffMember.h"
+
 using namespace std;
 
-class ConcreteCommMediator : CommMediator {
+class ConcreteCommMediator : public CommMediator {
 
 public:
 	vector<StaffMember*> staffMembers;

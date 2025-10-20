@@ -9,13 +9,15 @@
 #include <sstream>
 #include <stack>
 
+#include "Plant.h"
+
 using namespace std;
 
 class GrowthObserver {
 
 
 public:
-	virtual GrowthObserver();
+	GrowthObserver();//uml change no virtual constructor
 
 	virtual void onGrowthChange(Plant* plant) = 0;
 };

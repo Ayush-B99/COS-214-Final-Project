@@ -9,6 +9,11 @@
 #include <sstream>
 #include <stack>
 
+#include "GrowthMediator.h"
+#include "CommMediator.h"
+#include "Plant.h"
+#include "Command.h"
+
 using namespace std;
 
 class StaffMember {
@@ -32,7 +37,7 @@ public:
 
 	virtual void getComm() = 0;
 
-	virtual Void setComm() = 0;
+	virtual void setComm() = 0;
 
 	virtual void getGrowth() = 0;
 

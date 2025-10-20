@@ -9,9 +9,11 @@
 #include <sstream>
 #include <stack>
 
+#include "GrowthObserver.h"
+
 using namespace std;
 
-class ConcreteGrowthObserver : GrowthObserver {
+class ConcreteGrowthObserver : public GrowthObserver {
 
 
 public:
