@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Rubber : LargePlant {
+#include "LargePlant.h"
+
+class Rubber : public LargePlant {
 
 
 public:

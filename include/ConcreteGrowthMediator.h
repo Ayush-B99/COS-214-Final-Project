@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#include "StaffMember.h"
+
 class ConcreteGrowthMediator {
 
 private:

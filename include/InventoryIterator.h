@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class InventoryIterator : Iterator {
+#include "Iterator.h"
+#include "PlantNode.h"
+
+class InventoryIterator : public Iterator {
 
 private:
 	PlantNode* root;
@@ -39,6 +42,7 @@ public:
 
 	PlantNode* nextCoarse();
 
+	// error here -> too few arguments for class template "std::__1::map"
 	void setPosition(map<PlantNode*> pos);
 };
 

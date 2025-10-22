@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class PlantDecorator : Plant {
+#include "Plant.h"
+
+class PlantDecorator : public Plant {
 
 public:
 	Plant* decoratedPlant;

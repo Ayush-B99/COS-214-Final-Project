@@ -11,10 +11,13 @@
 
 using namespace std;
 
-class Manager : StaffMember {
+#include "StaffMember.h"
+
+class Manager : public StaffMember {
 
 
 public:
+// getters returning void?
 	void getComm();
 
 	void setComm();

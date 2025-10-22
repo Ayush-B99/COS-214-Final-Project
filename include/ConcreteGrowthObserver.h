@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class ConcreteGrowthObserver : GrowthObserver {
+#include "GrowthMediator.h"
+#include "Plant.h"
+
+class ConcreteGrowthObserver : public GrowthObserver {
 
 
 public:

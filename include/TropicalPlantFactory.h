@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class TropicalPlantFactory : GreenHouse {
+#include "GreenHouse.h"
+
+class TropicalPlantFactory : public GreenHouse {
 
 
 public:

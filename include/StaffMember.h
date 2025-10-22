@@ -11,6 +11,10 @@
 
 using namespace std;
 
+#include "GrowthMediator.h"
+#include "CommMediator.h"
+#include "Command.h"
+
 class StaffMember {
 
 private:
@@ -32,7 +36,7 @@ public:
 
 	virtual void getComm() = 0;
 
-	virtual Void setComm() = 0;
+	virtual void setComm() = 0;
 
 	virtual void getGrowth() = 0;
 

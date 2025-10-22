@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class StockIterator : Iterator {
+class StockIterator : public Iterator {
 
 private:
 	PlantNode* root;

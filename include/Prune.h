@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Prune : Command {
+#include "Command.h"
+#include "Plant.h"
+
+class Prune : public Command {
 
 public:
 	Plant* receiver;

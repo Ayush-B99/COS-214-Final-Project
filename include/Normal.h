@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Normal : Customer {
+#include "Customer.h"
+
+class Normal : public Customer {
 
 
 public:

@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class ConcreteCommMediator : CommMediator {
+#include "CommMediator.h"
+
+class ConcreteCommMediator : public CommMediator {
 
 public:
 	vector<StaffMember*> staffMembers;

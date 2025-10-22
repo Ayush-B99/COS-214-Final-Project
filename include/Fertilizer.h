@@ -11,7 +11,11 @@
 
 using namespace std;
 
-class Fertilizer : PlantDecorator, Command {
+#include "PlantDecorator.h"
+#include "Command.h"
+#include "Plant.h"
+
+class Fertilizer : public PlantDecorator, public Command {
 
 public:
 	Plant* receiver;

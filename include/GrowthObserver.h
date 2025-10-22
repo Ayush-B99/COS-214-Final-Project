@@ -11,11 +11,13 @@
 
 using namespace std;
 
+#include "Plant.h"
+
 class GrowthObserver {
 
 
 public:
-	virtual GrowthObserver();
+	GrowthObserver();
 
 	virtual void onGrowthChange(Plant* plant) = 0;
 };

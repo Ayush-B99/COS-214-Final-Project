@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Sun : Command {
+#include "Command.h"
+#include "Plant.h"
+
+class Sun : public Command {
 
 public:
 	Plant* receiver;

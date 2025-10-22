@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Condelabra : LargePlant {
+#include "LargePlant.h"
+#include "Plant.h"
+
+class Condelabra : public LargePlant {
 
 
 public:

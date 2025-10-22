@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class TemperateCareHandler : PlantCareHandler {
+#include "PlantCareHandler.h"
+
+class TemperateCareHandler : public PlantCareHandler {
 
 
 public:

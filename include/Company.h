@@ -11,12 +11,14 @@
 
 using namespace std;
 
-class Company : Customer {
+#include "Customer.h"
+
+class Company : public Customer {
 
 public:
-	vector<Customers*> customers;
+	vector<Customer*> customers;
 
-	void getDiscount();
+	double getDiscount();
 
 	void addCustomer(Customer* c);
 

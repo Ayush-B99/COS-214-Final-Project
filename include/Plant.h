@@ -11,6 +11,11 @@
 
 using namespace std;
 
+#include "PlantCareHandler.h"
+#include "GrowthState.h"
+#include "HealthState.h"
+#include "GrowthObserver.h"
+
 class Plant {
 
 protected:

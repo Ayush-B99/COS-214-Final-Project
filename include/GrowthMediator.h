@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class GrowthMediator : ConcreteGrowthMediator {
+#include "ConcreteGrowthMediator.h"
+
+class GrowthMediator : public ConcreteGrowthMediator {
 
 
 public:
