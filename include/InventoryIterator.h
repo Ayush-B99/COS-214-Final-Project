@@ -42,8 +42,7 @@ public:
 
 	PlantNode* nextCoarse();
 
-	// error here -> too few arguments for class template "std::__1::map"
-	void setPosition(map<PlantNode*> pos);
+	void setPosition(map<PlantNode*, int> pos);
 };
 
 #endif

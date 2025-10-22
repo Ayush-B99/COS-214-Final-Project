@@ -34,7 +34,7 @@ public:
 	string generateStockReport();
 
 	// possible fix -> InventoryIterator* return type
-	StockIterator* createIterator();
+	Iterator* createIterator();
 
 	void addPlant(Plant* plant);
 
