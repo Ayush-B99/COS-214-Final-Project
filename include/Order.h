@@ -47,7 +47,7 @@ public:
 	double calculateTotal();
 
 	// possible fix -> InventoryIterator* return type
-	OrderIterator* createIterator();
+	Iterator* createIterator();
 
 	double getTotal();
 

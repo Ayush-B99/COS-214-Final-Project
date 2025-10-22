@@ -30,7 +30,7 @@ string Stock::generateStockReport() {
 	throw "Not yet implemented";
 }
 
-StockIterator* Stock::createIterator() {
+Iterator* Stock::createIterator() {
 	// TODO - implement Stock::createIterator
 	throw "Not yet implemented";
 }

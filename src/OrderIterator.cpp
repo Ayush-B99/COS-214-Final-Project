@@ -10,12 +10,12 @@ OrderIterator::~OrderIterator() {
 	throw "Not yet implemented";
 }
 
-void OrderIterator::next() {
+Plant* OrderIterator::next() {
 	// TODO - implement OrderIterator::next
 	throw "Not yet implemented";
 }
 
-Order* OrderIterator::current() {
+Plant* OrderIterator::current() {
 	// TODO - implement OrderIterator::current
 	throw "Not yet implemented";
 }

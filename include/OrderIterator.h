@@ -27,10 +27,10 @@ public:
 	~OrderIterator();
 
 	// possible fix -> Plant* return type
-	void next();
+	Plant* next();
 
 	// possible fix -> Plant* return type
-	Order* current();
+	Plant* current();
 
 	bool hasNext();
 
