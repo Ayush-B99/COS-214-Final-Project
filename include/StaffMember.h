@@ -16,6 +16,10 @@
 
 using namespace std;
 
+#include "GrowthMediator.h"
+#include "CommMediator.h"
+#include "Command.h"
+
 class StaffMember {
 
 private:

@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#include "Order.h"
+
 class OrderState {
 
 

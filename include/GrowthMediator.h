@@ -13,13 +13,15 @@
 
 using namespace std;
 
-class GrowthMediator{
+#include "ConcreteGrowthMediator.h"
 
+class GrowthMediator : public ConcreteGrowthMediator
+{
 
 public:
 	virtual ~GrowthMediator();
 
-	virtual void notify(StaffMember* sender, string event) = 0;
+	virtual void notify(StaffMember *sender, string event) = 0;
 };
 
 #endif

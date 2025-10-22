@@ -13,13 +13,15 @@
 
 using namespace std;
 
-class GrowthObserver {
+#include "Plant.h"
 
+class GrowthObserver
+{
 
 public:
-	GrowthObserver();//uml change no virtual constructor
+	GrowthObserver(); // uml change no virtual constructor
 
-	virtual void onGrowthChange(Plant* plant) = 0;
+	virtual void onGrowthChange(Plant *plant) = 0;
 };
 
 #endif

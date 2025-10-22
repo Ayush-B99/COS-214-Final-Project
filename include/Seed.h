@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Seed : GrowthState {
+#include "GrowthState.h"
+#include "Plant.h"
+
+class Seed : public GrowthState {
 
 
 public:

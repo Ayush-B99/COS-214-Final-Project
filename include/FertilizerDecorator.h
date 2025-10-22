@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class FertilizerDecorator : PlantDecorator {
+#include "PlantDecorator.h"
+#include "Plant.h"
+
+class FertilizerDecorator : public PlantDecorator {
 
 private:
 	string fertilizer;

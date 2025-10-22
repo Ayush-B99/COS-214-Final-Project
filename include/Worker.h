@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Worker : StaffMember {
+#include "StaffMember.h"
+
+class Worker : public StaffMember {
 
 
 public:

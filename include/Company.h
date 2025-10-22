@@ -13,16 +13,19 @@
 
 using namespace std;
 
-class Company :public Customer {
+#include "Customer.h"
+
+class Company : public Customer
+{
 
 public:
-	vector<Customer*> customers;
+	vector<Customer *> customers;
 
 	virtual double getDiscount();
 
-	void addCustomer(Customer* c);
+	void addCustomer(Customer *c);
 
-	void removeCustomer(Customer* c);
+	void removeCustomer(Customer *c);
 };
 
 #endif

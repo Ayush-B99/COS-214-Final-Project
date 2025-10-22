@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Sold : GrowthState {
+#include "GrowthState.h"
+
+class Sold : public GrowthState {
 };
 
 #endif

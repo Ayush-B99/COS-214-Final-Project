@@ -13,13 +13,16 @@
 
 using namespace std;
 
-class ConcreteGrowthMediator :public GrowthMediator{
+#include "StaffMember.h"
+
+class ConcreteGrowthMediator
+{
 
 private:
-	vector<StaffMember*> staffMembers;
+	vector<StaffMember *> staffMembers;
 
 public:
-	void notify(StaffMember* sender, string event);
+	void notify(StaffMember *sender, string event);
 };
 
 #endif

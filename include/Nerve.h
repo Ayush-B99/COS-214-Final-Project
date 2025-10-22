@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Nerve : SmallPlant {
+#include "SmallPlant.h"
+
+class Nerve : public SmallPlant {
 
 
 public:

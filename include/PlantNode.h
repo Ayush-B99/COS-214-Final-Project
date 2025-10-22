@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#include "Plant.h"
+
 class PlantNode {
 
 private:
@@ -26,7 +28,7 @@ public:
 
 	~PlantNode();
 
-	stirng getKey();
+	const stirng getKey();
 
 	vector<Plant*> getPlants();
 

@@ -13,12 +13,16 @@
 
 using namespace std;
 
-class Water :public Command {
+#include "Command.h"
+#include "Plant.h"
+
+class Water : public Command
+{
 
 public:
-	Plant* receiver;
+	Plant *receiver;
 
-	void WaterCommand(Plant* plant);
+	void WaterCommand(Plant *plant);
 
 	void execute();
 

@@ -13,8 +13,10 @@
 
 using namespace std;
 
-class Premium : public Customer {
+#include "Customer.h"
 
+class Premium : public Customer
+{
 
 public:
 	double getDiscount();

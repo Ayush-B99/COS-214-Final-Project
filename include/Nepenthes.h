@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Nepenthes : LargePlant {
+#include "LargePlant.h"
+
+class Nepenthes : public LargePlant {
 
 
 public:

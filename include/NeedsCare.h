@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class NeedsCare : HealthState {
+#include "HealthState.h"
+#include "Plant.h"
+
+class NeedsCare : public HealthState {
 
 
 public:

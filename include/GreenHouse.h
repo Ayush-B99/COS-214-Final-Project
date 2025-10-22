@@ -10,6 +10,7 @@
 #include <stack>
 
 using namespace std;
+#include "Plant.h"
 
 class GreenHouse {
 

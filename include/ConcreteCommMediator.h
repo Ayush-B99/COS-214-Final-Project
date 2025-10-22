@@ -14,12 +14,15 @@
 
 using namespace std;
 
-class ConcreteCommMediator : public CommMediator {
+#include "CommMediator.h"
+
+class ConcreteCommMediator : public CommMediator
+{
 
 public:
-	vector<StaffMember*> staffMembers;
+	vector<StaffMember *> staffMembers;
 
-	void notify(StaffMember* sender, string event, Plant* plant);
+	void notify(StaffMember *sender, string event, Plant *plant);
 };
 
 #endif

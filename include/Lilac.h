@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Lilac : MediumPlant {
+#include "MediumPlant.h"	
+
+class Lilac : public MediumPlant {
 
 
 public:

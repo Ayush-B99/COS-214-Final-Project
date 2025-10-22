@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Pitcher : MediumPlant {
+#include "MediumPlant.h"
+
+class Pitcher : public MediumPlant {
 
 
 public:

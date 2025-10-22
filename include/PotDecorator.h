@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class PotDecorator : PlantDecorator {
+#include "PlantDecorator.h"
+
+class PotDecorator : public PlantDecorator {
 
 private:
 	string potType;

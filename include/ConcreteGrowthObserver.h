@@ -13,11 +13,14 @@
 
 using namespace std;
 
-class ConcreteGrowthObserver : public GrowthObserver {
+#include "GrowthMediator.h"
+#include "Plant.h"
 
+class ConcreteGrowthObserver : public GrowthObserver
+{
 
 public:
-	void onGrowthChange(Plant* plant);
+	void onGrowthChange(Plant *plant);
 };
 
 #endif

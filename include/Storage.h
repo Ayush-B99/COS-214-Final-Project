@@ -11,6 +11,8 @@
 
 using namespace std;
 
+#include "InventoryIterator.h"
+
 class Storage {
 
 

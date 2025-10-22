@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class BirdOfParadise : MediumPlant {
+#include "MediumPlant.h"
+#include "Plant.h"
+
+class BirdOfParadise : public MediumPlant {
 
 
 public:
