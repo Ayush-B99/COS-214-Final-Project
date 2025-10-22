@@ -1,6 +1,6 @@
 #include "../include/FertilizerDecorator.h"
 
-FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) {
+FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecorator(plant) {
 	// TODO - implement FertilizerDecorator::FertilizerDecorator
 	throw "Not yet implemented";
 }

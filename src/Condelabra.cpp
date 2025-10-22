@@ -1,11 +1,11 @@
 #include "../include/Condelabra.h"
 
-Condelabra::Condelabra() {
+Condelabra::Condelabra() : LargePlant("Condelabra") {
 	// TODO - implement Condelabra::Condelabra
 	throw "Not yet implemented";
 }
 
-Condelabra::Condelabra(Condelabra& other) {
+Condelabra::Condelabra(Condelabra& other) : LargePlant(other) {
 	// TODO - implement Condelabra::Condelabra
 	throw "Not yet implemented";
 }

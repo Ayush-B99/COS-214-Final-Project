@@ -12,7 +12,6 @@
 using namespace std;
 
 #include "MediumPlant.h"
-#include "Plant.h"
 
 class BirdOfParadise : public MediumPlant {
 

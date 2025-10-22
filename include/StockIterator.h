@@ -11,6 +11,10 @@
 
 using namespace std;
 
+#include "Iterator.h"
+#include "Plant.h"
+#include "PlantNode.h"	
+
 class StockIterator : public Iterator {
 
 private:

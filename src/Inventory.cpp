@@ -45,22 +45,22 @@ int Inventory::getPlantCount() {
 	throw "Not yet implemented";
 }
 
-const Greenhouse* Inventory::getTemperateFactory() {
+const GreenHouse* Inventory::getTemperateFactory() {
 	// TODO - implement Inventory::getTemperateFactory
 	throw "Not yet implemented";
 }
 
-const Greenhouse* Inventory::getCarnivorousFactory() {
+const GreenHouse* Inventory::getCarnivorousFactory() {
 	// TODO - implement Inventory::getCarnivorousFactory
 	throw "Not yet implemented";
 }
 
-const Greenhouse* Inventory::getSucculentFactory() {
+const GreenHouse* Inventory::getSucculentFactory() {
 	// TODO - implement Inventory::getSucculentFactory
 	throw "Not yet implemented";
 }
 
-const Greenhouse* Inventory::getTropicalFactory() {
+const GreenHouse* Inventory::getTropicalFactory() {
 	// TODO - implement Inventory::getTropicalFactory
 	throw "Not yet implemented";
 }

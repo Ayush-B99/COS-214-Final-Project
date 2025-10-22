@@ -15,7 +15,7 @@ PlantNode::~PlantNode() {
 	throw "Not yet implemented";
 }
 
-stirng PlantNode::getKey() {
+const string PlantNode::getKey() {
 	// TODO - implement PlantNode::getKey
 	throw "Not yet implemented";
 }

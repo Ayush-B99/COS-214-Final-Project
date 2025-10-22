@@ -1,11 +1,11 @@
 #include "../include/WhiteOak.h"
 
-WhiteOak::WhiteOak() {
+WhiteOak::WhiteOak() : LargePlant("White Oak") {
 	// TODO - implement WhiteOak::WhiteOak
 	throw "Not yet implemented";
 }
 
-WhiteOak::WhiteOak(WhiteOak& other) {
+WhiteOak::WhiteOak(WhiteOak& other) : LargePlant(other) {
 	// TODO - implement WhiteOak::WhiteOak
 	throw "Not yet implemented";
 }

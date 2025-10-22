@@ -1,6 +1,6 @@
 #include "../include/Company.h"
 
-void Company::getDiscount() {
+double Company::getDiscount() {
 	// TODO - implement Company::getDiscount
 	throw "Not yet implemented";
 }

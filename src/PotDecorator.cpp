@@ -1,6 +1,7 @@
 #include "../include/PotDecorator.h"
 
-PotDecorator::PotDecorator(Plant* plant, string type) {
+// do i add more default parameters
+PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant) {
 	// TODO - implement PotDecorator::PotDecorator
 	throw "Not yet implemented";
 }

@@ -1,13 +1,13 @@
 #include "../include/BirdOfParadise.h"
 
-BirdOfParadise::BirdOfParadise() {
+BirdOfParadise::BirdOfParadise() : MediumPlant("Bird Of Paradise") {
 	// TODO - implement BirdOfParadise::BirdOfParadise
-	throw "Not yet implemented";
+
 }
 
-BirdOfParadise::BirdOfParadise(BirdOfParadise& other) {
+BirdOfParadise::BirdOfParadise(BirdOfParadise& other) : MediumPlant(other) {
 	// TODO - implement BirdOfParadise::BirdOfParadise
-	throw "Not yet implemented";
+	
 }
 
 BirdOfParadise::~BirdOfParadise() {

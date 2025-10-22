@@ -1,11 +1,11 @@
 #include "../include/Pitcher.h"
 
-Pitcher::Pitcher() {
+Pitcher::Pitcher() : MediumPlant("Pitcher") {
 	// TODO - implement Pitcher::Pitcher
 	throw "Not yet implemented";
 }
 
-Pitcher::Pitcher(Pitcher& other) {
+Pitcher::Pitcher(Pitcher& other) : MediumPlant(other) {
 	// TODO - implement Pitcher::Pitcher
 	throw "Not yet implemented";
 }

@@ -1,11 +1,11 @@
 #include "../include/Sundew.h"
 
-Sundew::Sundew() {
+Sundew::Sundew() : SmallPlant("Sundew") {
 	// TODO - implement Sundew::Sundew
 	throw "Not yet implemented";
 }
 
-Sundew::Sundew(Sundew& other) {
+Sundew::Sundew(Sundew& other) : SmallPlant(other) {
 	// TODO - implement Sundew::Sundew
 	throw "Not yet implemented";
 }

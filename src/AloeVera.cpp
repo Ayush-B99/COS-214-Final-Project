@@ -1,13 +1,13 @@
 #include "../include/AloeVera.h"
 
-AloeVera::AloeVera() {
+AloeVera::AloeVera() : MediumPlant("Aloe Vera") {
 	// TODO - implement AloeVera::AloeVera
-	throw "Not yet implemented";
+
 }
 
-AloeVera::AloeVera(AloeVera& other) {
+AloeVera::AloeVera(AloeVera& other) : MediumPlant(other) {
 	// TODO - implement AloeVera::AloeVera
-	throw "Not yet implemented";
+
 }
 
 AloeVera::~AloeVera() {
