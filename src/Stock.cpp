@@ -25,7 +25,7 @@ double Stock::getTotalStockValue() {
 	throw "Not yet implemented";
 }
 
-String Stock::generateStockReport() {
+string Stock::generateStockReport() {
 	// TODO - implement Stock::generateStockReport
 	throw "Not yet implemented";
 }

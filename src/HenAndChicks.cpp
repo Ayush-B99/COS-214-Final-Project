@@ -1,11 +1,11 @@
 #include "../include/HenAndChicks.h"
 
-HenAndChicks::HenAndChicks() {
+HenAndChicks::HenAndChicks() : SmallPlant("Hen & Chicks") {
 	// TODO - implement HenAndChicks::HenAndChicks
 	throw "Not yet implemented";
 }
 
-HenAndChicks::HenAndChicks(HenAndChicks& other) {
+HenAndChicks::HenAndChicks(HenAndChicks& other) : SmallPlant(other) {
 	// TODO - implement HenAndChicks::HenAndChicks
 	throw "Not yet implemented";
 }

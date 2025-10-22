@@ -1,11 +1,11 @@
 #include "../include/Daisy.h"
 
-Daisy::Daisy() {
+Daisy::Daisy() : SmallPlant("Daisy") {
 	// TODO - implement Daisy::Daisy
 	throw "Not yet implemented";
 }
 
-Daisy::Daisy(Daisy& other) {
+Daisy::Daisy(Daisy& other) : SmallPlant(other) {
 	// TODO - implement Daisy::Daisy
 	throw "Not yet implemented";
 }

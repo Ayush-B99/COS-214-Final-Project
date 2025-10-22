@@ -1,11 +1,11 @@
 #include "../include/Rubber.h"
 
-Rubber::Rubber() {
+Rubber::Rubber() : LargePlant("Rubber") {
 	// TODO - implement Rubber::Rubber
 	throw "Not yet implemented";
 }
 
-Rubber::Rubber(Rubber& other) {
+Rubber::Rubber(Rubber& other) : LargePlant(other) {
 	// TODO - implement Rubber::Rubber
 	throw "Not yet implemented";
 }

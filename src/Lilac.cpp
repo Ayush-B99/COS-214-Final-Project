@@ -1,11 +1,11 @@
 #include "../include/Lilac.h"
 
-Lilac::Lilac() {
+Lilac::Lilac() : MediumPlant("Lilac") {
 	// TODO - implement Lilac::Lilac
 	throw "Not yet implemented";
 }
 
-Lilac::Lilac(Lilac& other) {
+Lilac::Lilac(Lilac& other) : MediumPlant(other) {
 	// TODO - implement Lilac::Lilac
 	throw "Not yet implemented";
 }

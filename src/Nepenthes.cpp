@@ -1,11 +1,11 @@
 #include "../include/Nepenthes.h"
 
-Nepenthes::Nepenthes() {
+Nepenthes::Nepenthes() : LargePlant("Nepenthas") {
 	// TODO - implement Nepenthes::Nepenthes
 	throw "Not yet implemented";
 }
 
-Nepenthes::Nepenthes(Nepenthes& other) {
+Nepenthes::Nepenthes(Nepenthes& other) : LargePlant(other) {
 	// TODO - implement Nepenthes::Nepenthes
 	throw "Not yet implemented";
 }
