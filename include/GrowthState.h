@@ -11,13 +11,15 @@
 
 using namespace std;
 
-class GrowthState {
+class Plant;
 
+class GrowthState
+{
 
 public:
 	virtual ~GrowthState();
 
-	virtual void grow(Plant* plant) = 0;
+	virtual void grow(Plant *plant) = 0;
 };
 
 #endif
