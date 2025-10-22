@@ -1,5 +1,5 @@
-#ifndef CARETAKER<T>_H
-#define CARETAKER<T>_H
+#ifndef CARETAKER < T> _H
+#define CARETAKER <T> _H
 
 #include <iostream>
 #include <string>
@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Caretaker<T> {
+template <typename T>
+class Caretaker
+{
 
 public:
 	vector<Memento<T>> mementos;
