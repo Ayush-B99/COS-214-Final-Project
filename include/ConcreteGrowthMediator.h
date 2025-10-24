@@ -15,7 +15,7 @@ using namespace std;
 
 #include "StaffMember.h"
 
-class ConcreteGrowthMediator
+class ConcreteGrowthMediator : public GrowthMediator
 {
 
 private:
