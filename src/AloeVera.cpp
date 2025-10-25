@@ -1,21 +1,20 @@
 #include "../include/AloeVera.h"
 
 AloeVera::AloeVera() : MediumPlant("Aloe Vera") {
-	// TODO - implement AloeVera::AloeVera
+	// leave empty
 
 }
 
 AloeVera::AloeVera(AloeVera& other) : MediumPlant(other) {
-	// TODO - implement AloeVera::AloeVera
+	// leave empty
 
 }
 
 AloeVera::~AloeVera() {
-	// TODO - implement AloeVera::~AloeVera
-	throw "Not yet implemented";
+	// leave empty for now
 }
 
 Plant* AloeVera::clone() {
 	// TODO - implement AloeVera::clone
-	throw "Not yet implemented";
+	return new AloeVera(*this);
 }
