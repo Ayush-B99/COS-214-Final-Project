@@ -1,0 +1,6 @@
+*.vpp.bak*
+*.vpp.lck
+*.o
+*.gcno
+.vscode
+build
