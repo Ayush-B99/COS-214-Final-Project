@@ -1,5 +1,5 @@
-#ifndef GROWTHSTATE_H
-#define GROWTHSTATE_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include <iostream>
 #include <string>
@@ -11,13 +11,7 @@
 
 using namespace std;
 
-class GrowthState {
-
-
-public:
-	virtual ~GrowthState();
-
-	virtual void grow(Plant* plant) = 0;
+class Client {
 };
 
 #endif

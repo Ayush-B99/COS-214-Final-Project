@@ -9,14 +9,11 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthMediator.h"
-//#include "CommMediator.h"
-//#include "Plant.h"
-#include "Command.h"
-
 using namespace std;
 
-class CommMediator;
+#include "GrowthMediator.h"
+#include "CommMediator.h"
+#include "Command.h"
 
 class StaffMember {
 

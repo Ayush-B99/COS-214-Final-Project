@@ -9,20 +9,16 @@
 #include <sstream>
 #include <stack>
 
-#include "CommMediator.h"
-#include "StaffMember.h"
-
 using namespace std;
 
 #include "CommMediator.h"
 
-class ConcreteCommMediator : public CommMediator
-{
+class ConcreteCommMediator : public CommMediator {
 
 public:
-	vector<StaffMember *> staffMembers;
+	vector<StaffMember*> staffMembers;
 
-	void notify(StaffMember *sender, string event, Plant *plant);
+	void notify(StaffMember* sender, string event, Plant* plant);
 };
 
 #endif

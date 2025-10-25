@@ -15,7 +15,7 @@ Plant* StockIterator::next() {
 	throw "Not yet implemented";
 }
 
-Plant* StockIterator::currentPlant() {
+Plant* StockIterator::current() {
 	// TODO - implement StockIterator::current
 	throw "Not yet implemented";
 }

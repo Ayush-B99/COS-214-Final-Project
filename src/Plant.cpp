@@ -1,18 +1,17 @@
 #include "../include/Plant.h"
 
-Plant::Plant() {
-	// TODO - implement Plant::Plant
-	throw "Not yet implemented";
+Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0){
+	
 }
 
-Plant::Plant(string species) {
+Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0) {
 	// TODO - implement Plant::Plant
-	throw "Not yet implemented";
+	
 }
 
 Plant::~Plant() {
-	// TODO - implement Plant::~Plant
-	throw "Not yet implemented";
+	// only deallocate state and strat patterns for now
+	
 }
 
 double Plant::getPrice() {
@@ -33,7 +32,7 @@ void Plant::setCareStrategy(PlantCareHandler* strategy) {
 
 void Plant::performWatering() {
 	// TODO - implement Plant::performWatering
-	throw "Not yet implemented";
+	
 }
 
 void Plant::setGrowthState(GrowthState* state) {
@@ -42,7 +41,7 @@ void Plant::setGrowthState(GrowthState* state) {
 
 void Plant::grow() {
 	// TODO - implement Plant::grow
-	throw "Not yet implemented";
+	
 }
 
 void Plant::setHealthState(HealthState* state) {
@@ -51,20 +50,32 @@ void Plant::setHealthState(HealthState* state) {
 
 void Plant::updateHealth() {
 	// TODO - implement Plant::updateHealth
-	throw "Not yet implemented";
+	
 }
 
 void Plant::attach(GrowthObserver* observer) {
 	// TODO - implement Plant::attach
-	throw "Not yet implemented";
+	
 }
 
 void Plant::detach(GrowthObserver* observer) {
 	// TODO - implement Plant::detach
-	throw "Not yet implemented";
+	
 }
 
 void Plant::notify() {
 	// TODO - implement Plant::notify
-	throw "Not yet implemented";
+	
+}
+
+string Plant::getSpecies() { 
+	return species; 
+}
+
+void Plant::setPrice(double newPrice) { 
+	price = newPrice; 
+}
+
+void Plant::setDescription(string newDesc) { 
+	description = newDesc; 
 }

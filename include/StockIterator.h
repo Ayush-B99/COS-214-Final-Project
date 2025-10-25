@@ -29,7 +29,7 @@ public:
 
 	Plant* next();
 
-	Plant* currentPlant();
+	Plant* current();
 
 	bool hasNext();
 

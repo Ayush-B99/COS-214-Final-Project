@@ -7,20 +7,20 @@ CarnivorousPlantFactory::CarnivorousPlantFactory() {
 
 CarnivorousPlantFactory::~CarnivorousPlantFactory() {
 	// TODO - implement CarnivorousPlantFactory::~CarnivorousPlantFactory
-	throw "Not yet implemented";
+
 }
 
-vector<Plant*> CarnivorousPlantFactory::createSmallPlant() {
+Plant* CarnivorousPlantFactory::createSmallPlant() {
 	// TODO - implement CarnivorousPlantFactory::createSmallPlant
-	throw "Not yet implemented";
+	return new Sundew();
 }
 
-vector<Plant*> CarnivorousPlantFactory::createMediumPlant() {
+Plant* CarnivorousPlantFactory::createMediumPlant() {
 	// TODO - implement CarnivorousPlantFactory::createMediumPlant
-	throw "Not yet implemented";
+	return new Pitcher();
 }
 
-vector<Plant*> CarnivorousPlantFactory::createLargePlant() {
+Plant* CarnivorousPlantFactory::createLargePlant() {
 	// TODO - implement CarnivorousPlantFactory::createLargePlant
-	throw "Not yet implemented";
+	return new Nepenthes();
 }
