@@ -67,3 +67,15 @@ void Plant::notify() {
 	// TODO - implement Plant::notify
 	
 }
+
+string Plant::getSpecies() { 
+	return species; 
+}
+
+void Plant::setPrice(double newPrice) { 
+	price = newPrice; 
+}
+
+void Plant::setDescription(string newDesc) { 
+	description = newDesc; 
+}

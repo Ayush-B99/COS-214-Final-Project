@@ -62,6 +62,11 @@ public:
 	void detach(GrowthObserver* observer);
 
 	void notify();
+
+	// for decorator, since it can alter the prices and desc.
+	virtual string getSpecies();
+	virtual void setPrice(double newPrice);
+	virtual void setDescription(string newDesc);
 };
 
 #endif
