@@ -10,6 +10,7 @@
 #include <stack>
 
 //#include "StaffMember.h"
+#include "Plant.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ class GrowthMediator
 public:
 	virtual ~GrowthMediator();
 
-	virtual void notify(StaffMember *sender, string event) = 0;
+	virtual void notify(Plant* plant) = 0;
 };
 
 #endif

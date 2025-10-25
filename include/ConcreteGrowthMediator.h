@@ -24,7 +24,7 @@ private:
 	vector<StaffMember *> staffMembers;
 
 public:
-	void notify(StaffMember *sender, string event);
+	void notify(Plant* plant);
 };
 
 #endif

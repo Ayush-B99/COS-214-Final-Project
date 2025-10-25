@@ -64,6 +64,8 @@ public:
 	void detach(GrowthObserver* observer);
 
 	void notify();
+
+	HealthState* getHealthState();
 };
 
 #endif

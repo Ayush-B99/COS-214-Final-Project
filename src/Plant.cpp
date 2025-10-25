@@ -68,3 +68,8 @@ void Plant::notify() {
 	// TODO - implement Plant::notify
 	throw "Not yet implemented";
 }
+
+HealthState* Plant::getHealthState()
+{
+	return healthState;
+}
