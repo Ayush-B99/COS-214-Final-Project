@@ -45,18 +45,10 @@ PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant) {
 
 double PotDecorator::getPrice() {
 	// TODO - implement PotDecorator::getPrice
-<<<<<<< HEAD
-	throw "Not yet implemented";
-=======
 	return PlantDecorator::getPrice() + potCost;
->>>>>>> origin/ayush
 }
 
 string PotDecorator::getDescription() {
 	// TODO - implement PotDecorator::getDescription
-<<<<<<< HEAD
-	throw "Not yet implemented";
-=======
 	return PlantDecorator::getDescription() + " in a " + potType + " pot";
->>>>>>> origin/ayush
 }
