@@ -68,3 +68,23 @@ void Plant::notify() {
 	// TODO - implement Plant::notify
 	throw "Not yet implemented";
 }
+
+GrowthState* Plant::getGrowthState(){
+	return this->growthState;
+}
+
+HealthState* Plant::getHealthState(){
+	return this->healthState;
+}
+
+string Plant::getClimate(){
+	return this->climate;
+}
+
+string Plant::getDescription(){
+	return this->description;
+}
+
+double Plant::getPrice(){
+	return this->price;
+}

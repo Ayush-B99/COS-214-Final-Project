@@ -64,6 +64,16 @@ public:
 	void detach(GrowthObserver* observer);
 
 	void notify();
+
+	GrowthState* getGrowthState();
+
+	HealthState* getHealthState();
+
+	string getClimate();
+
+	string getDescription();
+
+	double getPrice();
 };
 
 #endif
