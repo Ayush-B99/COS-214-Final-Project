@@ -9,15 +9,14 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthMediator.h"
-
 using namespace std;
 
 //#include "StaffMember.h"
+#include "Plant.h"
 
 class StaffMember;
 
-class ConcreteGrowthMediator : public GrowthMediator
+class ConcreteGrowthMediator
 {
 
 private:

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-#include "GrowthMediator.h"
+#include "ConcreteGrowthMediator.h"
 #include "Plant.h"
 #include "HealthState.h"
 #include "NeedsCare.h"
@@ -40,7 +40,7 @@ private:
     /**
      * @brief Mediator responsible for coordinating growth-related communication.
      */
-    GrowthMediator* mediator;
+    ConcreteGrowthMediator* mediator;
 
 public:
     /**
@@ -48,7 +48,7 @@ public:
      * @param plant Pointer to the Plant being observed.
      * @param med Pointer to the GrowthMediator that will handle communication.
      */
-    ConcreteGrowthObserver(Plant* plant, GrowthMediator* med);
+    ConcreteGrowthObserver(Plant* plant, ConcreteGrowthMediator* med);
 
     /**
      * @brief Destructor for ConcreteGrowthObserver.

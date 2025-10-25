@@ -1,6 +1,6 @@
 #include "../include/ConcreteGrowthObserver.h"
 
-ConcreteGrowthObserver::ConcreteGrowthObserver(Plant* plant, GrowthMediator* med)
+ConcreteGrowthObserver::ConcreteGrowthObserver(Plant* plant, ConcreteGrowthMediator* med)
 {
 	this->subject = plant; //create a shallow copy of the plant
 	this->mediator = med; //shallow copy of growth mediator
