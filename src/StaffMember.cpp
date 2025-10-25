@@ -1,6 +1,6 @@
 #include "../include/StaffMember.h"
 
-void StaffMember::setMediator(GrowthMediator* mediator) {
+void StaffMember::setMediator(ConcreteGrowthMediator* mediator) {
 	this->mediator = mediator;
 }
 
@@ -21,4 +21,9 @@ void StaffMember::executeCommand() {
 void StaffMember::undoLastCommand() {
 	// TODO - implement StaffMember::undoLastCommand
 	throw "Not yet implemented";
+}
+
+bool StaffMember::isBusy()
+{
+	return !commandQueue.empty();
 }
