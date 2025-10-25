@@ -1,26 +1,23 @@
 #include "../include/TemperatePlantFactory.h"
 
 TemperatePlantFactory::TemperatePlantFactory() {
-	// TODO - implement TemperatePlantFactory::TemperatePlantFactory
-	throw "Not yet implemented";
+	// empty constructor
+	
 }
 
 TemperatePlantFactory::~TemperatePlantFactory() {
-	// TODO - implement TemperatePlantFactory::~TemperatePlantFactory
-	throw "Not yet implemented";
+	// no mem management needed for now
 }
 
-vector<Plant*> TemperatePlantFactory::createSmallPlant() {
+Plant* TemperatePlantFactory::createSmallPlant() {
 	// TODO - implement TemperatePlantFactory::createSmallPlant
-	throw "Not yet implemented";
+	return new Daisy();
 }
 
-vector<Plant*> TemperatePlantFactory::createMediumPlant() {
-	// TODO - implement TemperatePlantFactory::createMediumPlant
-	throw "Not yet implemented";
+Plant* TemperatePlantFactory::createMediumPlant() {
+	return new Lilac();
 }
 
-vector<Plant*> TemperatePlantFactory::createLargePlant() {
-	// TODO - implement TemperatePlantFactory::createLargePlant
-	throw "Not yet implemented";
+Plant* TemperatePlantFactory::createLargePlant() {
+	return new WhiteOak();
 }

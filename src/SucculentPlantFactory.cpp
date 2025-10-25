@@ -10,17 +10,17 @@ SucculentPlantFactory::~SucculentPlantFactory() {
 	throw "Not yet implemented";
 }
 
-vector<Plant*> SucculentPlantFactory::createSmallPlant() {
+Plant* SucculentPlantFactory::createSmallPlant() {
 	// TODO - implement SucculentPlantFactory::createSmallPlant
-	throw "Not yet implemented";
+	return new HenAndChicks();
 }
 
-vector<Plant*> SucculentPlantFactory::createMediumPlant() {
+Plant* SucculentPlantFactory::createMediumPlant() {
 	// TODO - implement SucculentPlantFactory::createMediumPlant
-	throw "Not yet implemented";
+	return new AloeVera();
 }
 
-vector<Plant*> SucculentPlantFactory::createLargePlant() {
+Plant* SucculentPlantFactory::createLargePlant() {
 	// TODO - implement SucculentPlantFactory::createLargePlant
-	throw "Not yet implemented";
+	return new Condelabra();
 }

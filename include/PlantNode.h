@@ -28,7 +28,7 @@ public:
 
 	~PlantNode();
 
-	const stirng getKey();
+	const string getKey();
 
 	vector<Plant*> getPlants();
 

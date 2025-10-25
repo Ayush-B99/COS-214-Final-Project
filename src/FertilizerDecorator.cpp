@@ -1,5 +1,6 @@
 #include "../include/FertilizerDecorator.h"
 
+// do i add more default parameters?
 FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecorator(plant) {
 	// TODO - implement FertilizerDecorator::FertilizerDecorator
 	throw "Not yet implemented";
