@@ -1,17 +1,16 @@
 #include "../include/Plant.h"
 
-Plant::Plant() {
-	// TODO - implement Plant::Plant
+Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0){
 	
 }
 
-Plant::Plant(string species) {
+Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0) {
 	// TODO - implement Plant::Plant
 	
 }
 
 Plant::~Plant() {
-	// TODO - implement Plant::~Plant
+	// only deallocate state and strat patterns for now
 	
 }
 
