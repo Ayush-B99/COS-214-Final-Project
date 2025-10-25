@@ -52,3 +52,7 @@ string PotDecorator::getDescription() {
 	// TODO - implement PotDecorator::getDescription
 	return PlantDecorator::getDescription() + " in a " + potType + " pot";
 }
+
+Plant* PotDecorator::clone() {
+    return new PotDecorator(*this);
+}

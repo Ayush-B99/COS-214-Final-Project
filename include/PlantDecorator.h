@@ -25,6 +25,8 @@ public:
 	double getPrice();
 
 	string getDescription();
+
+	virtual Plant* clone() = 0;
 };
 
 #endif

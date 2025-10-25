@@ -26,6 +26,8 @@ public:
 	double getPrice();
 
 	string getDescription();
+
+	Plant* clone();
 };
 
 #endif
