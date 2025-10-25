@@ -9,11 +9,11 @@
 #include <sstream>
 #include <stack>
 
-#include "StaffMember.h"
+//#include "StaffMember.h"
 
 using namespace std;
 
-#include "ConcreteGrowthMediator.h"
+class StaffMember;
 
 class GrowthMediator
 {

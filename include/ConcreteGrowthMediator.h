@@ -13,7 +13,9 @@
 
 using namespace std;
 
-#include "StaffMember.h"
+//#include "StaffMember.h"
+
+class StaffMember;
 
 class ConcreteGrowthMediator : public GrowthMediator
 {

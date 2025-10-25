@@ -10,15 +10,13 @@
 #include <stack>
 
 #include "GrowthMediator.h"
-#include "CommMediator.h"
-#include "Plant.h"
+//#include "CommMediator.h"
+//#include "Plant.h"
 #include "Command.h"
 
 using namespace std;
 
-#include "GrowthMediator.h"
-#include "CommMediator.h"
-#include "Command.h"
+class CommMediator;
 
 class StaffMember {
 
