@@ -11,10 +11,15 @@
 
 using namespace std;
 
-#include "PlantCareHandler.h"
-#include "GrowthState.h"
-#include "HealthState.h"
-#include "GrowthObserver.h"
+//#include "PlantCareHandler.h"
+//#include "GrowthState.h"
+//#include "HealthState.h"
+//#include "GrowthObserver.h"
+
+class PlantCareHandler;
+class GrowthState;
+class HealthState;
+class GrowthObserver;
 
 class Plant {
 

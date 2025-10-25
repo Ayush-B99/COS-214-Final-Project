@@ -14,7 +14,6 @@
 #include "../include/Plant.h"
 #include "../include/PotDecorator.h"
 #include "../include/FertilizerDecorator.h"
-
 #include "../include/PlantDecorator.h"
 
 void testAbstractFactory() {
