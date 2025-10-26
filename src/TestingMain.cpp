@@ -193,7 +193,7 @@ void testPatternsTogether() {
                                new PotDecorator(
                                  temperateFactory.createLargePlant(), "Decorative"), "Slow-Release"));
 
-    for (int i = 0; i < decoratedPlants.size(); i++) {
+    for (size_t i = 0; i < decoratedPlants.size(); i++) {
         cout << "Plant " << (i + 1) << ": " << decoratedPlants[i]->getDescription() << " - Price: $" << decoratedPlants[i]->getPrice() << endl;
     }
     cout << endl;
@@ -202,7 +202,7 @@ void testPatternsTogether() {
     delete premiumTemperatePackage;
     delete premiumTropicalPackage;
     delete premiumCarnivorousPackage;
-    for (int i = 0; i < decoratedPlants.size(); i++) {
+    for (size_t i = 0; i < decoratedPlants.size(); i++) {
         delete decoratedPlants[i];
     }
 }
@@ -210,17 +210,28 @@ void testPatternsTogether() {
 
 int main()
 {
-    cout << "PLANT STORE PATTERN TESTING" << endl;
-    cout << "============================" << endl;
-    cout << endl;
+    try {
+        cout << "PLANT STORE PATTERN TESTING" << endl;
+        cout << "============================" << endl;
+        cout << endl;
 
-    // Test patterns separately
-    testAbstractFactory();
-    testDecoratorPattern();
-    
-    // Test patterns together
-    testPatternsTogether();
+        // Test patterns separately
+        testAbstractFactory();
+        testDecoratorPattern();
+        
+        // Test patterns together
+        testPatternsTogether();
 
-    cout << "All tests completed successfully!" << endl;
-    return 0;
+        cout << "All tests completed successfully!" << endl;
+        return 0;
+    } catch (const char* msg) {
+        cerr << "Exception caught: " << msg << endl;
+        return 1;
+    } catch (const exception& e) {
+        cerr << "Exception caught: " << e.what() << endl;
+        return 1;
+    } catch (...) {
+        cerr << "Unknown exception caught!" << endl;
+        return 1;
+    }
 }

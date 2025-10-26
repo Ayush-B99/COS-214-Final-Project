@@ -2,7 +2,6 @@
 
 CarnivorousPlantFactory::CarnivorousPlantFactory() {
 	// TODO - implement CarnivorousPlantFactory::CarnivorousPlantFactory
-	throw "Not yet implemented";
 }
 
 CarnivorousPlantFactory::~CarnivorousPlantFactory() {

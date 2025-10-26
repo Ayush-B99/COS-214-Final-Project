@@ -16,6 +16,7 @@ using namespace std;
 //#include "HealthState.h"
 //#include "GrowthObserver.h"
 
+// this is NOT CORRECT I JUST DID THIS FOR TESTING SINCE IT HASNT BEEN IMPLEMENTED YET BE AWARE
 class PlantCareHandler;
 class GrowthState;
 class HealthState;

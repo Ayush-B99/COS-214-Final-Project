@@ -13,7 +13,8 @@ DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 
 # Only include the files you've implemented (Abstract Factory + Decorator patterns)
-SOURCES = $(SRCDIR)/Plant.cpp \
+SOURCES = $(SRCDIR)/GreenHouse.cpp \
+		  $(SRCDIR)/Plant.cpp \
           $(SRCDIR)/SmallPlant.cpp \
           $(SRCDIR)/MediumPlant.cpp \
           $(SRCDIR)/LargePlant.cpp \

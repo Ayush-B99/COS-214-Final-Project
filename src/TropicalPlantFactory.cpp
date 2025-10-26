@@ -2,12 +2,12 @@
 
 TropicalPlantFactory::TropicalPlantFactory() {
 	// TODO - implement TropicalPlantFactory::TropicalPlantFactory
-	throw "Not yet implemented";
+
 }
 
 TropicalPlantFactory::~TropicalPlantFactory() {
 	// TODO - implement TropicalPlantFactory::~TropicalPlantFactory
-	throw "Not yet implemented";
+
 }
 
 Plant* TropicalPlantFactory::createSmallPlant() {

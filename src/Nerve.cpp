@@ -2,17 +2,17 @@
 
 Nerve::Nerve() : SmallPlant("Nerve") {
 	// TODO - implement Nerve::Nerve
-	throw "Not yet implemented";
+
 }
 
 Nerve::Nerve(Nerve& other) : SmallPlant(other) {
 	// TODO - implement Nerve::Nerve
-	throw "Not yet implemented";
+
 }
 
 Nerve::~Nerve() {
 	// TODO - implement Nerve::~Nerve
-	throw "Not yet implemented";
+
 }
 
 Plant* Nerve::clone() {
