@@ -6,16 +6,8 @@
 #include <sstream>
 #include <stack>
 
-// file includes here
-#include "../include/TemperatePlantFactory.h"
-#include "../include/TropicalPlantFactory.h"
-#include "../include/CarnivorousPlantFactory.h"
-#include "../include/SucculentPlantFactory.h"
-#include "../include/Plant.h"
-#include "../include/PotDecorator.h"
-#include "../include/FertilizerDecorator.h"
-#include "../include/PlantDecorator.h"
-#include "../include/Plant.h"
+using namespace std;
+
 #include "../include/Plant.h"
 #include "../include/GrowthState.h"
 #include "../include/HealthState.h"
@@ -27,6 +19,14 @@
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
 #include "../include/GrowthObserver.h"
+#include "../include/TemperatePlantFactory.h"
+#include "../include/TropicalPlantFactory.h"
+#include "../include/CarnivorousPlantFactory.h"
+#include "../include/SucculentPlantFactory.h"
+#include "../include/Plant.h"
+#include "../include/PotDecorator.h"
+#include "../include/FertilizerDecorator.h"
+#include "../include/PlantDecorator.h"
 
 void testAbstractFactory() {
     cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
@@ -465,6 +465,8 @@ void testDeadState() {
     plant.completeCareSession();
     cout << endl;
 }
+
+
 
 
 int main()

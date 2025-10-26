@@ -25,3 +25,4 @@ string Sprout::getStatusMessage(Plant* plant) {
 string Sprout::getName() {
 	return "sprout";
 }
+

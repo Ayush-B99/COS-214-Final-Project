@@ -1,8 +1,6 @@
 #include "../include/GrowthState.h"
 
 GrowthState::~GrowthState() {
-	// TODO - implement GrowthState::~GrowthState
-	
 }
 
 bool GrowthState::isMature() {
@@ -12,3 +10,7 @@ bool GrowthState::isMature() {
 bool GrowthState::isSold() {
 	return false;
 }
+
+
+
+
