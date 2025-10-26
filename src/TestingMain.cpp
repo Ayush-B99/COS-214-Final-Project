@@ -8,17 +8,25 @@
 
 #include "../include/CarnivorousPlantFactory.h"
 
-int main()
+int testObserverMediator()
 {
+
+    std::cout << "Testing Observer and Mediator Patterns" << std::endl;
+    CarnivorousPlantFactory *factory = new CarnivorousPlantFactory();
+    ;
+
+    // Plant *venusFlytrap = factory.createMediumPlant();
+
+    // venusFlytrap->printFullStatus();
+
+    // std::cout << "----------------------------------" << std::endl;
 
     return 0;
 }
 
-int testObserverMediator()
+int main()
 {
-    CarnivorousPlantFactory factory;
+    testObserverMediator();
 
-    Plant *venusFlytrap = factory.createMediumPlant();
-
-        return 0;
+    return 0;
 }
