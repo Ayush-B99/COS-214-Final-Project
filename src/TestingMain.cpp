@@ -474,12 +474,17 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        // Test patterns separately
         testAbstractFactory();
         testDecoratorPattern();
-        
-        // Test patterns together
         testPatternsTogether();
+
+        testBasicPlantCreation();
+        testGrowthProgression();
+        testHealthDegradation();
+        testHealthRecovery();
+        testIndividualCareActions();
+        testSoldState();
+        testDeadState();
 
         cout << "All tests completed successfully!" << endl;
         return 0;
