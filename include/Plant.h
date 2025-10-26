@@ -59,12 +59,16 @@ public:
     virtual void setPrice(double newPrice);
 
     virtual void setDescription(string newDesc);
-	
+
 	virtual double getPrice();
 
     virtual string getDescription();
 
     virtual string getClimate();
+
+	GrowthState* getGrowthState();
+
+	HealthState* getHealthState();
 
     virtual Plant* clone() = 0;
 

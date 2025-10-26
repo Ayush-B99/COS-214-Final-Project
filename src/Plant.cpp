@@ -1,9 +1,19 @@
 #include "../include/Plant.h"
+#include "../include/Seed.h"
+#include "../include/Good.h"
+#include "../include/GrowthState.h"
+#include "../include/HealthState.h"
 
-Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0) {
+Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
+	growthState = new Seed();
+	healthState = new Good();
+	intializeCareNeeds();
 }
 
-Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0) {
+Plant::Plant(string species) :species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
+	growthState = new Seed();
+	healthState = new Good();
+	intializeCareNeeds();
 }
 
 Plant::~Plant() {
@@ -25,11 +35,6 @@ string Plant::getClimate() {
 
 void Plant::setCareStrategy(PlantCareHandler* strategy) {
 	this->careStrategy = strategy;
-}
-
-void Plant::performWatering() {
-	// TODO - implement Plant::performWatering
-	
 }
 
 void Plant::setGrowthState(GrowthState* state) {
