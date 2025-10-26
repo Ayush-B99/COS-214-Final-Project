@@ -1,16 +1,19 @@
 #include "../include/Water.h"
 
-void Water::WaterCommand(Plant* plant) {
+Water::Water(Plant *plant)
+{
 	// TODO - implement Water::WaterCommand
 	throw "Not yet implemented";
 }
 
-void Water::execute() {
+void Water::execute()
+{
 	// TODO - implement Water::execute
 	throw "Not yet implemented";
 }
 
-void Water::undo() {
+void Water::undo()
+{
 	// TODO - implement Water::undo
 	throw "Not yet implemented";
 }

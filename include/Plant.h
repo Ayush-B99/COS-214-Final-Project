@@ -13,8 +13,10 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 #include "GrowthState.h"
-#include "HealthState.h"
-#include "ConcreteGrowthObserver.h"
+// #include "HealthState.h"
+
+class ConcreteGrowthObserver;
+class HealthState;
 
 class Plant
 {

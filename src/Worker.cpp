@@ -15,9 +15,9 @@ void Worker::setComm()
 void Worker::getGrowth(Plant *plant)
 {
 
-	commandQueue.push_back(new Water(plant));
-	commandQueue.push_back(new Sun(plant));
-	commandQueue.push_back(new Fertilizer(plant));
+	setCommand(new Water(plant));
+	setCommand(new Sun(plant));
+	setCommand(new Fertilizer(plant));
 
 	this->executeCommand();
 }

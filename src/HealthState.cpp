@@ -1,6 +1,12 @@
 #include "../include/HealthState.h"
 
-HealthState::~HealthState() {
+HealthState::~HealthState()
+{
 	// TODO - implement HealthState::~HealthState
+	throw "Not yet implemented";
+}
+
+bool HealthState::isDead()
+{
 	throw "Not yet implemented";
 }

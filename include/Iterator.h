@@ -11,17 +11,19 @@
 
 using namespace std;
 
-class Iterator {
+class Plant;
 
+class Iterator
+{
 
 public:
 	virtual ~Iterator();
 
-	virtual Plant* next() = 0;
+	virtual Plant *next() = 0;
 
 	virtual bool hasNext() = 0;
 
-	virtual Plant* current() = 0;
+	virtual Plant *currentPlant() = 0;
 
 	virtual void reset() = 0;
 };

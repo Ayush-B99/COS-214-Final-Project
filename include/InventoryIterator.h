@@ -14,21 +14,22 @@ using namespace std;
 #include "Iterator.h"
 #include "PlantNode.h"
 
-class InventoryIterator : public Iterator {
+class InventoryIterator : public Iterator
+{
 
 private:
-	PlantNode* root;
-	map<PlantNode*, size_t> current;
-	stack<PlantNode*> nodeStack;
+	PlantNode *root;
+	map<PlantNode *, size_t> current;
+	stack<PlantNode *> nodeStack;
 
 public:
-	InventoryIterator(PlantNode* root);
+	InventoryIterator(PlantNode *root);
 
 	~InventoryIterator();
 
-	Plant* next();
+	Plant *next();
 
-	Plant* current();
+	Plant *currentPlant();
 
 	bool hasNext();
 
@@ -36,13 +37,13 @@ public:
 
 	map<string, int> getPosition();
 
-	void pushLeft(PlantNode* node);
+	void pushLeft(PlantNode *node);
 
-	Plant* nextFine();
+	Plant *nextFine();
 
-	PlantNode* nextCoarse();
+	PlantNode *nextCoarse();
 
-	void setPosition(map<PlantNode*, int> pos);
+	void setPosition(map<PlantNode *, int> pos);
 };
 
 #endif

@@ -11,10 +11,11 @@
 
 using namespace std;
 
-#include "ConcreteGrowthMediator.h"
 #include "Plant.h"
 #include "HealthState.h"
 #include "NeedsCare.h"
+
+class ConcreteGrowthMediator;
 
 /**
  * @class ConcreteGrowthObserver

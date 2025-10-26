@@ -1,56 +1,67 @@
 #include "../include/InventoryIterator.h"
 
-InventoryIterator::InventoryIterator(PlantNode* root) {
+InventoryIterator::InventoryIterator(PlantNode *root)
+{
 	// TODO - implement InventoryIterator::InventoryIterator
 	throw "Not yet implemented";
 }
 
-InventoryIterator::~InventoryIterator() {
+InventoryIterator::~InventoryIterator()
+{
 	// TODO - implement InventoryIterator::~InventoryIterator
 	throw "Not yet implemented";
 }
 
-Plant* InventoryIterator::next() {
+Plant *InventoryIterator::next()
+{
 	// TODO - implement InventoryIterator::next
 	throw "Not yet implemented";
 }
 
-Plant* InventoryIterator::current() {
+Plant *InventoryIterator::currentPlant()
+{
 	// TODO - implement InventoryIterator::current
 	throw "Not yet implemented";
 }
 
-bool InventoryIterator::hasNext() {
+bool InventoryIterator::hasNext()
+{
 	// TODO - implement InventoryIterator::hasNext
 	throw "Not yet implemented";
 }
 
-void InventoryIterator::reset() {
+void InventoryIterator::reset()
+{
 	// TODO - implement InventoryIterator::reset
 	throw "Not yet implemented";
 }
 
-map<string, int> InventoryIterator::getPosition() {
+map<string, int> InventoryIterator::getPosition()
+{
 	// TODO - implement InventoryIterator::getPosition
 	throw "Not yet implemented";
 }
 
-void InventoryIterator::pushLeft(PlantNode* node) {
+void InventoryIterator::pushLeft(PlantNode *node)
+{
 	// TODO - implement InventoryIterator::pushLeft
 	throw "Not yet implemented";
 }
 
-Plant* InventoryIterator::nextFine() {
+Plant *InventoryIterator::nextFine()
+{
 	// TODO - implement InventoryIterator::nextFine
 	throw "Not yet implemented";
 }
 
-PlantNode* InventoryIterator::nextCoarse() {
+PlantNode *InventoryIterator::nextCoarse()
+{
 	// TODO - implement InventoryIterator::nextCoarse
 	throw "Not yet implemented";
 }
 
-void InventoryIterator::setPosition(map<PlantNode*, int> pos) {
+void InventoryIterator::setPosition(map<PlantNode *, int> pos)
+{
 	// TODO - implement InventoryIterator::setPosition
 	throw "Not yet implemented";
 }

@@ -11,21 +11,22 @@
 
 using namespace std;
 
-#include "Order.h"
+// #include "Order.h"
+class Order; // Forward declaration
 
-class OrderState {
-
+class OrderState
+{
 
 public:
 	virtual ~OrderState();
 
-	virtual void submitted(Order* order) = 0;
+	virtual void submitted(Order *order) = 0;
 
-	virtual void paid(Order* order) = 0;
+	virtual void paid(Order *order) = 0;
 
-	virtual void cancelled(Order* order) = 0;
+	virtual void cancelled(Order *order) = 0;
 
-	virtual void completed(Order* order) = 0;
+	virtual void completed(Order *order) = 0;
 
 	virtual string const getName() = 0;
 

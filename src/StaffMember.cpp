@@ -12,8 +12,7 @@ void StaffMember::setCommMediator(CommMediator *commMediator)
 
 void StaffMember::setCommand(Command *cmd)
 {
-	// TODO - implement StaffMember::setCommand
-	throw "Not yet implemented";
+	commandQueue.push_back(cmd);
 }
 
 void StaffMember::executeCommand()

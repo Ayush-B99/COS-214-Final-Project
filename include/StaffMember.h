@@ -32,10 +32,8 @@ private:
 	CommMediator *commMediator;
 	vector<Plant *> currentState; // what is this????
 	vector<Command *> commandHistory;
-	bool busy = false;
-
-protected:
 	vector<Command *> commandQueue;
+	bool busy = false;
 
 public:
 	void setMediator(ConcreteGrowthMediator *mediator);

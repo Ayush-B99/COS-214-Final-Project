@@ -13,23 +13,24 @@ using namespace std;
 
 #include "Iterator.h"
 #include "Plant.h"
-#include "PlantNode.h"	
+#include "PlantNode.h"
 
-class StockIterator : public Iterator {
+class StockIterator : public Iterator
+{
 
 private:
-	PlantNode* root;
-	map<PlantNode*, size_t> current;
-	stack<PlantNode*> nodeStack;
+	PlantNode *root;
+	map<PlantNode *, size_t> current;
+	stack<PlantNode *> nodeStack;
 
 public:
-	StockIterator(PlantNode* root);
+	StockIterator(PlantNode *root);
 
 	~StockIterator();
 
-	Plant* next();
+	Plant *next();
 
-	Plant* current();
+	Plant *currentPlant();
 
 	bool hasNext();
 
@@ -37,13 +38,13 @@ public:
 
 	map<string, int> getPosition();
 
-	void pushLeft(PlantNode* node);
+	void pushLeft(PlantNode *node);
 
-	Plant* nextFine();
+	Plant *nextFine();
 
-	PlantNode* nextCoarse();
+	PlantNode *nextCoarse();
 
-	void setPosition(map<PlantNode*, size_t> pos);
+	void setPosition(map<PlantNode *, size_t> pos);
 };
 
 #endif
