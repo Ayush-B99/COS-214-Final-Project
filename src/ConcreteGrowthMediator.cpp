@@ -2,21 +2,21 @@
 
 ConcreteGrowthMediator::ConcreteGrowthMediator()
 {
-	this->staffMembers = {};//creates an empty vector
+	this->staffMembers = {}; // creates an empty vector
 }
 
 ConcreteGrowthMediator::~ConcreteGrowthMediator()
 {
-	//no need to deallocate a vector and staff members must be deallocated seperately
+	// no need to deallocate a vector and staff members must be deallocated seperately
 }
 
-bool ConcreteGrowthMediator::addStaffMember(StaffMember* bob)
+bool ConcreteGrowthMediator::addStaffMember(StaffMember *bob)
 {
-	for (StaffMember* duplicate: staffMembers)
+	for (StaffMember *duplicate : staffMembers)
 	{
-		if (duplicate == bob)//comparison of memory addresses as a duplicate staff member will have the same address
+		if (duplicate == bob) // comparison of memory addresses as a duplicate staff member will have the same address
 		{
-			return false;//prevents adding duplicate staff members
+			return false; // prevents adding duplicate staff members
 		}
 	}
 
@@ -24,27 +24,28 @@ bool ConcreteGrowthMediator::addStaffMember(StaffMember* bob)
 	return true;
 }
 
-bool ConcreteGrowthMediator::removeStaffMember(StaffMember* bob)
+bool ConcreteGrowthMediator::removeStaffMember(StaffMember *bob)
 {
 	for (auto it = staffMembers.begin(); it != staffMembers.end(); ++it)
-    {
-        if (*it == bob)
-        {
-            staffMembers.erase(it);
-            return true;
-        }
-    }
+	{
+		if (*it == bob)
+		{
+			staffMembers.erase(it);
+			return true;
+		}
+	}
 
 	return false;
 }
 
-void ConcreteGrowthMediator::notify(Plant*) {
-	
-	for (StaffMember* bob: staffMembers)
+void ConcreteGrowthMediator::notify(Plant *plant)
+{
+
+	for (StaffMember *bob : staffMembers)
 	{
 		if (!bob->isBusy())
 		{
-			bob->getGrowth();//staff member bob gets the plant
+			bob->getGrowth(plant); // staff member bob gets the plant
 		}
 	}
 }

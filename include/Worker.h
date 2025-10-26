@@ -13,15 +13,15 @@ using namespace std;
 
 #include "StaffMember.h"
 
-class Worker : public StaffMember {
-
+class Worker : public StaffMember
+{
 
 public:
 	void getComm();
 
 	void setComm();
 
-	void getGrowth();
+	void getGrowth(Plant *plant);
 
 	void setGrowth();
 };

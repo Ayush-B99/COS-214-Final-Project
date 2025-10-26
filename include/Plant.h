@@ -14,7 +14,7 @@ using namespace std;
 #include "PlantCareHandler.h"
 #include "GrowthState.h"
 #include "HealthState.h"
-#include "GrowthObserver.h"
+#include "ConcreteGrowthObserver.h"
 
 class Plant
 {
@@ -42,7 +42,7 @@ private:
 	int sproutCyclesNeeded;
 	int matureCyclesNeeded;
 
-	GrowthObserver *observer;
+	ConcreteGrowthObserver *observer;
 
 public:
 	Plant();
@@ -69,11 +69,13 @@ public:
 
 	void updateHealth();
 
-	void attach(GrowthObserver *observer);
+	void attach(ConcreteGrowthObserver *observer);
 
-	void detach(GrowthObserver *observer);
+	void detach(ConcreteGrowthObserver *observer);
 
 	void notify();
+
+	HealthState *getHealthState();
 
 	// for decorator, since it can alter the prices and desc.
 	virtual string getSpecies();

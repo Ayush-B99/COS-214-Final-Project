@@ -14,12 +14,14 @@ using namespace std;
 #include "Command.h"
 #include "Plant.h"
 
-class Sun : public Command {
+class Sun : public Command
+{
+
+private:
+	Plant *receiver;
 
 public:
-	Plant* receiver;
-
-	void SunCommand(Plant* plant);
+	Sun(Plant *plant);
 
 	void execute();
 

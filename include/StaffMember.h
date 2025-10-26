@@ -15,6 +15,9 @@ using namespace std;
 // #include "CommMediator.h"
 // #include "Plant.h"
 #include "Command.h"
+#include "Water.h"
+#include "Sun.h"
+#include "Fertilizer.h"
 
 using namespace std;
 
@@ -27,8 +30,11 @@ class StaffMember
 private:
 	ConcreteGrowthMediator *mediator;
 	CommMediator *commMediator;
-	vector<Plant *> currentState;
+	vector<Plant *> currentState; // what is this????
 	vector<Command *> commandHistory;
+	bool busy = false;
+
+protected:
 	vector<Command *> commandQueue;
 
 public:
@@ -46,7 +52,7 @@ public:
 
 	virtual void setComm() = 0;
 
-	virtual void getGrowth() = 0;
+	virtual void getGrowth(Plant *plant) = 0;
 
 	virtual void setGrowth() = 0;
 
