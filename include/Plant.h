@@ -89,11 +89,6 @@ public:
 
 	void notify();
 
-	// for decorator, since it can alter the prices and desc.
-	virtual string getSpecies();
-	virtual void setPrice(double newPrice);
-	virtual void setDescription(string newDesc);
-
 	//for growth states
 	void intializeCareNeeds();
 

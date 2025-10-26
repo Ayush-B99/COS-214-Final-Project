@@ -12,7 +12,6 @@ BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 
-# Only include the files you've implemented (Abstract Factory + Decorator patterns)
 SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/GreenHouse.cpp \
 		  $(SRCDIR)/Plant.cpp \
@@ -37,7 +36,19 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
           $(SRCDIR)/TemperatePlantFactory.cpp \
           $(SRCDIR)/TropicalPlantFactory.cpp \
           $(SRCDIR)/CarnivorousPlantFactory.cpp \
+		  $(SRCDIR)/Plant.cpp \
+		  $(SRCDIR)/HealthState.cpp \
+		  $(SRCDIR)/Good.cpp \
+		  $(SRCDIR)/NeedsCare.cpp \
+		  $(SRCDIR)/Dead.cpp \
+		  $(SRCDIR)/GrowthState.cpp \
+		  $(SRCDIR)/Seed.cpp \
+		  $(SRCDIR)/Sprout.cpp \
+		  $(SRCDIR)/Mature.cpp \
+		  $(SRCDIR)/Sold.cpp \
+		  $(SRCDIR)/GrowthObserver.cpp \
           $(SRCDIR)/TestingMain.cpp
+
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
