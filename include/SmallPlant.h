@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class SmallPlant : Plant {
+#include "Plant.h"
+
+class SmallPlant : public Plant {
 
 public:
 	string size;

@@ -1,21 +1,20 @@
 #include "../include/BirdOfParadise.h"
 
-BirdOfParadise::BirdOfParadise() {
-	// TODO - implement BirdOfParadise::BirdOfParadise
-	throw "Not yet implemented";
+BirdOfParadise::BirdOfParadise() : MediumPlant("Bird Of Paradise") {
+	setPrice(85.0);
+    setDescription("An exotic plant with bird-like flowers");
 }
 
-BirdOfParadise::BirdOfParadise(BirdOfParadise& other) {
-	// TODO - implement BirdOfParadise::BirdOfParadise
-	throw "Not yet implemented";
+BirdOfParadise::BirdOfParadise(BirdOfParadise& other) : MediumPlant(other) {
+	setPrice(other.getPrice());
 }
 
 BirdOfParadise::~BirdOfParadise() {
-	// TODO - implement BirdOfParadise::~BirdOfParadise
-	throw "Not yet implemented";
+	// leae emtpy for now
+	
 }
 
 Plant* BirdOfParadise::clone() {
 	// TODO - implement BirdOfParadise::clone
-	throw "Not yet implemented";
+	return new BirdOfParadise(*this);
 }

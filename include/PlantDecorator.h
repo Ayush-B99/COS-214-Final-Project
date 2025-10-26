@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class PlantDecorator : Plant {
+#include "Plant.h"
+
+class PlantDecorator : public Plant {
 
 public:
 	Plant* decoratedPlant;
@@ -23,6 +25,10 @@ public:
 	double getPrice();
 
 	string getDescription();
+
+	virtual Plant* clone() = 0;
+
+	virtual string getSpecies();
 };
 
 #endif

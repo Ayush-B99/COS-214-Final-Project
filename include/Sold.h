@@ -11,7 +11,17 @@
 
 using namespace std;
 
-class Sold : GrowthState {
+#include "GrowthState.h"
+
+class Sold : public GrowthState {
+    public:
+        void grow(Plant* plant) override;
+
+        vector<string> getRequiredCare() override;
+
+        string getStatusMessage(Plant* plant) override;
+
+        bool isSold();
 };
 
 #endif

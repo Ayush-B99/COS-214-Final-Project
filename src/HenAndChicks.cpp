@@ -1,21 +1,22 @@
 #include "../include/HenAndChicks.h"
 
-HenAndChicks::HenAndChicks() {
+HenAndChicks::HenAndChicks() : SmallPlant("Hen & Chicks") {
 	// TODO - implement HenAndChicks::HenAndChicks
-	throw "Not yet implemented";
+	setPrice(35.0);
+    setDescription("A succulent with mother and baby rosettes");
 }
 
-HenAndChicks::HenAndChicks(HenAndChicks& other) {
+HenAndChicks::HenAndChicks(HenAndChicks& other) : SmallPlant(other) {
 	// TODO - implement HenAndChicks::HenAndChicks
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 HenAndChicks::~HenAndChicks() {
 	// TODO - implement HenAndChicks::~HenAndChicks
-	throw "Not yet implemented";
+	
 }
 
 Plant* HenAndChicks::clone() {
 	// TODO - implement HenAndChicks::clone
-	throw "Not yet implemented";
+	return new HenAndChicks(*this);
 }

@@ -9,11 +9,12 @@
 #include <sstream>
 #include <stack>
 
-#include "Command.h"
-
 using namespace std;
 
-class Sun :public Command {
+#include "Command.h"
+#include "Plant.h"
+
+class Sun : public Command {
 
 public:
 	Plant* receiver;

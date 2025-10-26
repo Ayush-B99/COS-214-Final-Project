@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class InventoryIterator : Iterator {
+#include "Iterator.h"
+#include "PlantNode.h"
+
+class InventoryIterator : public Iterator {
 
 private:
 	PlantNode* root;
@@ -39,7 +42,7 @@ public:
 
 	PlantNode* nextCoarse();
 
-	void setPosition(map<PlantNode*> pos);
+	void setPosition(map<PlantNode*, int> pos);
 };
 
 #endif

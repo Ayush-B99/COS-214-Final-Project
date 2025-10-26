@@ -11,11 +11,21 @@
 
 using namespace std;
 
-class Mature : GrowthState {
+#include "GrowthState.h"
+#include "Plant.h"
+
+class Mature : public GrowthState {
 
 
 public:
 	void grow(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	string getStatusMessage(Plant* plant);
+
+	bool isMature();
+	
 };
 
 #endif

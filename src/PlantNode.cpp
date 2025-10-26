@@ -1,23 +1,45 @@
 #include "../include/PlantNode.h"
 
 PlantNode::PlantNode(string name) {
-	// TODO - implement PlantNode::PlantNode
-	throw "Not yet implemented";
+	this->key = name;
+	this->left = nullptr;
+	this->right = nullptr;
+	this->plants;
 }
 
 PlantNode::PlantNode(PlantNode* other) {
-	// TODO - implement PlantNode::PlantNode
-	throw "Not yet implemented";
+	this->key = other->key;
+	left = nullptr;
+	right = nullptr;
+
+	//deep copy all plants in node
+	for (Plant* p : other->plants){
+		if (p){
+			plants.push_back(p->clone());
+		}
+	}
+
+	//recursively copy left and right subtrees
+	if (other->left){
+		left = new PlantNode(other->left);
+	}
+	if (other->right){
+		right = new PlantNode(other->right);
+	}
 }
 
 PlantNode::~PlantNode() {
-	// TODO - implement PlantNode::~PlantNode
-	throw "Not yet implemented";
+	for (Plant* p : plants){
+		delete p;
+	}
+
+	//delete left and right subtrees recursively
+	delete left;
+	delete right;
 }
 
-stirng PlantNode::getKey() {
-	// TODO - implement PlantNode::getKey
-	throw "Not yet implemented";
+const string PlantNode::getKey() {
+	return this->key;
 }
 
 vector<Plant*> PlantNode::getPlants() {
@@ -41,26 +63,50 @@ void PlantNode::setRight(PlantNode* right) {
 }
 
 void PlantNode::addPlant(Plant* plant) {
-	// TODO - implement PlantNode::addPlant
-	throw "Not yet implemented";
+	plants.push_back(plant);
 }
 
 void PlantNode::addPlants(vector<Plant*> newPlants) {
-	// TODO - implement PlantNode::addPlants
-	throw "Not yet implemented";
+	for (Plant* p : newPlants){
+		plants.push_back(p);
+	}
 }
 
 bool PlantNode::removePlant(Plant* plant) {
-	// TODO - implement PlantNode::removePlant
-	throw "Not yet implemented";
+	int i = 0;
+	for (Plant* p : plants){
+		if (p == plant){
+			plants.erase(plants.begin() + i);
+			return true;
+		}
+		i++;
+	}
+	//did not find anything or plants is empty
+	return false;
 }
 
-bool PlantNode::removeNode(string name) {
-	// TODO - implement PlantNode::removeNode
-	throw "Not yet implemented";
+vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
+	vector<Plant*> matches;
+	for (Plant* p : plants){
+		///todo: when states are fleshed out, use them to compare
+		if (p->getGrowthState() == state){
+			matches.push_back(p);
+		}
+	}
+	return matches;
+}
+
+vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
+	vector<Plant*> matches;
+	for (Plant* p : plants){
+		///todo: when states are fleshed out, use them to compare
+		if (p->getHealthState() == state){
+			matches.push_back(p);
+		}
+	}
+	return matches;
 }
 
 bool PlantNode::isLeaf() {
-	// TODO - implement PlantNode::isLeaf
-	throw "Not yet implemented";
+	return (this->left == nullptr && this->right == nullptr);
 }

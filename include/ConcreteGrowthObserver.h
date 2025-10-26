@@ -9,9 +9,10 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthObserver.h"
-
 using namespace std;
+
+#include "GrowthMediator.h"
+#include "Plant.h"
 
 class ConcreteGrowthObserver : public GrowthObserver {
 

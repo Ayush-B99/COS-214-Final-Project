@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class WhiteOak : LargePlant {
+#include "LargePlant.h"
+
+class WhiteOak : public LargePlant {
 
 
 public:

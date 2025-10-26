@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Stock : Storage {
+#include "Storage.h"
+#include "StockIterator.h"
+
+class Stock : public Storage {
 
 private:
 	PlantNode* stockCatalog;
@@ -28,9 +31,10 @@ public:
 
 	double getTotalStockValue();
 
-	String generateStockReport();
+	string generateStockReport();
 
-	StockIterator* createIterator();
+	// possible fix -> InventoryIterator* return type
+	Iterator* createIterator();
 
 	void addPlant(Plant* plant);
 

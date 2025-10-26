@@ -9,9 +9,9 @@
 #include <sstream>
 #include <stack>
 
-#include "Customer.h"
-
 using namespace std;
+
+#include "Customer.h"
 
 class Premium : public Customer {
 

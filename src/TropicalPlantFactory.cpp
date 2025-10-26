@@ -2,25 +2,25 @@
 
 TropicalPlantFactory::TropicalPlantFactory() {
 	// TODO - implement TropicalPlantFactory::TropicalPlantFactory
-	throw "Not yet implemented";
+
 }
 
 TropicalPlantFactory::~TropicalPlantFactory() {
 	// TODO - implement TropicalPlantFactory::~TropicalPlantFactory
-	throw "Not yet implemented";
+
 }
 
-vector<Plant*> TropicalPlantFactory::createSmallPlant() {
+Plant* TropicalPlantFactory::createSmallPlant() {
 	// TODO - implement TropicalPlantFactory::createSmallPlant
-	throw "Not yet implemented";
+	return new Nerve();
 }
 
-vector<Plant*> TropicalPlantFactory::createMediumPlant() {
+Plant* TropicalPlantFactory::createMediumPlant() {
 	// TODO - implement TropicalPlantFactory::createMediumPlant
-	throw "Not yet implemented";
+	return new BirdOfParadise();
 }
 
-vector<Plant*> TropicalPlantFactory::createLargePlant() {
+Plant* TropicalPlantFactory::createLargePlant() {
 	// TODO - implement TropicalPlantFactory::createLargePlant
-	throw "Not yet implemented";
+	return new Rubber();
 }

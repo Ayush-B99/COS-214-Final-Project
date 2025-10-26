@@ -50,7 +50,7 @@ PlantNode* InventoryIterator::nextCoarse() {
 	throw "Not yet implemented";
 }
 
-void InventoryIterator::setPosition(map<PlantNode*> pos) {
+void InventoryIterator::setPosition(map<PlantNode*, int> pos) {
 	// TODO - implement InventoryIterator::setPosition
 	throw "Not yet implemented";
 }

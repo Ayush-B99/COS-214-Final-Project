@@ -9,11 +9,11 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthMediator.h"
-
 using namespace std;
 
-class ConcreteGrowthMediator :public GrowthMediator{
+#include "StaffMember.h"
+
+class ConcreteGrowthMediator {
 
 private:
 	vector<StaffMember*> staffMembers;

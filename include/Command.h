@@ -9,8 +9,6 @@
 #include <sstream>
 #include <stack>
 
-#include "Plant.h"
-
 using namespace std;
 
 class Command {

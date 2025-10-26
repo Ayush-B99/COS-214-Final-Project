@@ -11,7 +11,11 @@
 
 using namespace std;
 
-class OrderIterator : Iterator {
+#include "Iterator.h"
+#include "PlantNode.h"
+#include "Plant.h"
+
+class OrderIterator : public Iterator {
 
 private:
 	PlantNode* order;
@@ -22,9 +26,11 @@ public:
 
 	~OrderIterator();
 
-	void next();
+	// possible fix -> Plant* return type
+	Plant* next();
 
-	Order* current();
+	// possible fix -> Plant* return type
+	Plant* current();
 
 	bool hasNext();
 

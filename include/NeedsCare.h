@@ -11,11 +11,20 @@
 
 using namespace std;
 
-class NeedsCare : HealthState {
+#include "HealthState.h"
+#include "Plant.h"
+
+class NeedsCare : public HealthState {
 
 
 public:
-	void update(Plant* plant);
+	void degrade(Plant* plant);
+
+	void improve(Plant* plant);
+
+	string getStatusMessage(Plant* plant);
+
+	bool isDead();
 };
 
 #endif

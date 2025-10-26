@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Daisy : SmallPlant {
+#include "SmallPlant.h"
+#include "Plant.h"
+
+class Daisy : public SmallPlant {
 
 
 public:

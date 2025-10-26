@@ -11,7 +11,13 @@
 
 using namespace std;
 
-class Order : Storage {
+#include "Storage.h"
+#include "OrderState.h"
+#include "PlantNode.h"
+#include "Plant.h"
+#include "OrderIterator.h"
+
+class Order : public Storage {
 
 private:
 	OrderState* state;
@@ -40,7 +46,8 @@ public:
 
 	double calculateTotal();
 
-	OrderIterator* createIterator();
+	// possible fix -> InventoryIterator* return type
+	Iterator* createIterator();
 
 	double getTotal();
 

@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class SucculentCareHandler : PlantCareHandler {
+#include "PlantCareHandler.h"
+
+class SucculentCareHandler : public PlantCareHandler {
 
 
 public:

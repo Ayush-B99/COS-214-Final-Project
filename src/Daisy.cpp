@@ -1,21 +1,21 @@
 #include "../include/Daisy.h"
 
-Daisy::Daisy() {
+Daisy::Daisy() : SmallPlant("Daisy") {
 	// TODO - implement Daisy::Daisy
-	throw "Not yet implemented";
+	setPrice(25.0);
+    setDescription("A cheerful Daisy with white petals");
 }
 
-Daisy::Daisy(Daisy& other) {
+Daisy::Daisy(Daisy& other) : SmallPlant(other) {
 	// TODO - implement Daisy::Daisy
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 Daisy::~Daisy() {
 	// TODO - implement Daisy::~Daisy
-	throw "Not yet implemented";
 }
 
 Plant* Daisy::clone() {
 	// TODO - implement Daisy::clone
-	throw "Not yet implemented";
+	return new Daisy(*this);
 }

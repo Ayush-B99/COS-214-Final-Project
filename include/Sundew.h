@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class Sundew : SmallPlant {
+#include "SmallPlant.h"
+
+class Sundew : public SmallPlant {
 
 
 public:

@@ -25,12 +25,12 @@ double Stock::getTotalStockValue() {
 	throw "Not yet implemented";
 }
 
-String Stock::generateStockReport() {
+string Stock::generateStockReport() {
 	// TODO - implement Stock::generateStockReport
 	throw "Not yet implemented";
 }
 
-StockIterator* Stock::createIterator() {
+Iterator* Stock::createIterator() {
 	// TODO - implement Stock::createIterator
 	throw "Not yet implemented";
 }

@@ -50,7 +50,7 @@ double Order::calculateTotal() {
 	throw "Not yet implemented";
 }
 
-OrderIterator* Order::createIterator() {
+Iterator* Order::createIterator() {
 	// TODO - implement Order::createIterator
 	throw "Not yet implemented";
 }

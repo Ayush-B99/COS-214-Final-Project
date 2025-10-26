@@ -1,16 +1,52 @@
 #include "../include/FertilizerDecorator.h"
 
-FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) {
+// do i add more default parameters?
+FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecorator(plant), fertilizer(type) {
 	// TODO - implement FertilizerDecorator::FertilizerDecorator
-	throw "Not yet implemented";
+	int fertilizerType = 0;
+    if (type == "Organic") 
+	{
+		fertilizerType = 1;
+	}
+
+    else if (type == "Liquid") 
+	{
+		fertilizerType = 2;
+	}
+
+    else if (type == "Slow-Release") 
+	{
+		fertilizerType = 3;
+	}
+    
+    switch(fertilizerType) 
+	{
+        case 1: 
+            fertilizerCost = 50.0;
+            break;
+        case 2:
+            fertilizerCost = 100.0;
+            break;
+        case 3: 
+            fertilizerCost = 200.0;
+            break;
+        default: 
+            fertilizerCost = 50.0;
+            fertilizer = "Organic";
+            break;
+    }
 }
 
 double FertilizerDecorator::getPrice() {
 	// TODO - implement FertilizerDecorator::getPrice
-	throw "Not yet implemented";
+	return PlantDecorator::getPrice() + fertilizerCost;
 }
 
 string FertilizerDecorator::getDescription() {
 	// TODO - implement FertilizerDecorator::getDescription
-	throw "Not yet implemented";
+	return PlantDecorator::getDescription() + " with " + fertilizer + " fertilizer";
+}
+
+Plant* FertilizerDecorator::clone() {
+    return new FertilizerDecorator(decoratedPlant->clone(), fertilizer);
 }

@@ -11,7 +11,14 @@
 
 using namespace std;
 
-class SucculentPlantFactory : GreenHouse {
+#include "GreenHouse.h"
+
+// specific plant types inc. here
+#include "Condelabra.h"
+#include "HenAndChicks.h"
+#include "AloeVera.h"
+
+class SucculentPlantFactory : public GreenHouse {
 
 
 public:
@@ -19,11 +26,11 @@ public:
 
 	~SucculentPlantFactory();
 
-	vector<Plant*> createSmallPlant();
+	Plant* createSmallPlant();
 
-	vector<Plant*> createMediumPlant();
+	Plant* createMediumPlant();
 
-	vector<Plant*> createLargePlant();
+	Plant* createLargePlant();
 };
 
 #endif

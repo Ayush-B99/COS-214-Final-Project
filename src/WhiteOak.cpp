@@ -1,21 +1,22 @@
 #include "../include/WhiteOak.h"
 
-WhiteOak::WhiteOak() {
+WhiteOak::WhiteOak() : LargePlant("White Oak") {
 	// TODO - implement WhiteOak::WhiteOak
-	throw "Not yet implemented";
+	setPrice(180.0);
+    setDescription("A majestic tree with strong, spreading branches");
 }
 
-WhiteOak::WhiteOak(WhiteOak& other) {
+WhiteOak::WhiteOak(WhiteOak& other) : LargePlant(other) {
 	// TODO - implement WhiteOak::WhiteOak
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 WhiteOak::~WhiteOak() {
 	// TODO - implement WhiteOak::~WhiteOak
-	throw "Not yet implemented";
+
 }
 
 Plant* WhiteOak::clone() {
 	// TODO - implement WhiteOak::clone
-	throw "Not yet implemented";
+	return new WhiteOak(*this);
 }

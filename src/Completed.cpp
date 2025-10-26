@@ -20,7 +20,7 @@ void Completed::completed(Order* order) {
 	throw "Not yet implemented";
 }
 
-string Completed::getName() {
+const string Completed::getName() {
 	// TODO - implement Completed::getName
 	throw "Not yet implemented";
 }

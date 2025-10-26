@@ -20,7 +20,7 @@ void Draft::completed(Order* order) {
 	throw "Not yet implemented";
 }
 
-string Draft::getName() {
+const string Draft::getName() {
 	// TODO - implement Draft::getName
 	throw "Not yet implemented";
 }

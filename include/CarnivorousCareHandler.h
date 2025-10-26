@@ -11,7 +11,9 @@
 
 using namespace std;
 
-class CarnivorousCareHandler : PlantCareHandler {
+#include "PlantCareHandler.h"
+
+class CarnivorousCareHandler : public PlantCareHandler {
 
 
 public:

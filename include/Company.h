@@ -9,16 +9,16 @@
 #include <sstream>
 #include <stack>
 
-#include "Customer.h"
-
 using namespace std;
 
-class Company :public Customer {
+#include "Customer.h"
+
+class Company : public Customer {
 
 public:
 	vector<Customer*> customers;
 
-	virtual double getDiscount();
+	double getDiscount();
 
 	void addCustomer(Customer* c);
 

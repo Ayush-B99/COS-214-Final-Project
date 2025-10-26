@@ -1,0 +1,501 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <map>
+#include <sstream>
+#include <stack>
+
+// file includes here
+#include "../include/TemperatePlantFactory.h"
+#include "../include/TropicalPlantFactory.h"
+#include "../include/CarnivorousPlantFactory.h"
+#include "../include/SucculentPlantFactory.h"
+#include "../include/Plant.h"
+#include "../include/PotDecorator.h"
+#include "../include/FertilizerDecorator.h"
+#include "../include/PlantDecorator.h"
+#include "../include/Plant.h"
+#include "../include/Plant.h"
+#include "../include/GrowthState.h"
+#include "../include/HealthState.h"
+#include "../include/Seed.h"
+#include "../include/Sprout.h"
+#include "../include/Mature.h"
+#include "../include/Sold.h"
+#include "../include/Good.h"
+#include "../include/NeedsCare.h"
+#include "../include/Dead.h"
+#include "../include/GrowthObserver.h"
+
+void testAbstractFactory() {
+    cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
+    cout << endl;
+
+    TemperatePlantFactory temperateFactory;
+    TropicalPlantFactory tropicalFactory;
+    CarnivorousPlantFactory carnivorousFactory;
+    SucculentPlantFactory succulentFactory;
+
+    // Testing Factories
+    cout << "--- Temperate Plants ---" << endl;
+    Plant* temperateSmall = temperateFactory.createSmallPlant();
+    Plant* temperateMedium = temperateFactory.createMediumPlant();
+    Plant* temperateLarge = temperateFactory.createLargePlant();
+
+    cout << "Small: " << temperateSmall->getDescription() << endl;
+    cout << "Medium: " << temperateMedium->getDescription() << endl;
+    cout << "Large: " << temperateLarge->getDescription() << endl;
+    cout << endl;
+
+    cout << "--- Tropical Plants ---" << endl;
+    Plant* tropicalSmall = tropicalFactory.createSmallPlant();
+    Plant* tropicalMedium = tropicalFactory.createMediumPlant();
+    Plant* tropicalLarge = tropicalFactory.createLargePlant();
+
+    if (tropicalSmall) 
+        cout << "Small: " << tropicalSmall->getDescription() << endl;
+
+    if (tropicalMedium) 
+        cout << "Medium: " << tropicalMedium->getDescription() << endl;
+
+    if (tropicalLarge) 
+        cout << "Large: " << tropicalLarge->getDescription() << endl;
+
+    cout << endl;
+
+    // Test Carnivorous Factory
+    cout << "--- Carnivorous Plants ---" << endl;
+    Plant* carnivorousSmall = carnivorousFactory.createSmallPlant();
+    Plant* carnivorousMedium = carnivorousFactory.createMediumPlant();
+    Plant* carnivorousLarge = carnivorousFactory.createLargePlant();
+
+    if (carnivorousSmall) 
+        cout << "Small: " << carnivorousSmall->getDescription() << endl;
+    
+    if (carnivorousMedium) 
+        cout << "Medium: " << carnivorousMedium->getDescription() << endl;
+
+    if (carnivorousLarge) 
+        cout << "Large: " << carnivorousLarge->getDescription() << endl;
+
+    cout << endl;
+
+    cout << "--- Succulent Plants ---" << endl;
+    Plant* succulentSmall = succulentFactory.createSmallPlant();
+    Plant* succulentMedium = succulentFactory.createMediumPlant();
+    Plant* succulentLarge = succulentFactory.createLargePlant();
+
+    cout << "Small: " << succulentSmall->getDescription() << endl;
+    cout << "Medium: " << succulentMedium->getDescription() << endl;
+    cout << "Large: " << succulentLarge->getDescription() << endl;
+    cout << endl;
+
+    // Test cloning
+    cout << "--- Testing Cloning ---" << endl;
+    Plant* clonedDaisy = temperateSmall->clone();
+    cout << "Original: " << temperateSmall->getDescription() << endl;
+    cout << "Clone: " << clonedDaisy->getDescription() << endl;
+
+    Plant* clonedLilac = temperateMedium->clone();
+    cout << "Original: " << temperateMedium->getDescription() << endl;
+    cout << "Clone: " << clonedLilac->getDescription() << endl;
+
+    Plant* clonedWhiteOak = temperateLarge->clone();
+    cout << "Original: " << temperateLarge->getDescription() << endl;
+    cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
+
+    cout << endl;
+
+    delete temperateSmall;
+    delete temperateMedium;
+    delete temperateLarge;
+    delete tropicalSmall;
+    delete tropicalMedium;
+    delete tropicalLarge;
+    delete carnivorousSmall;
+    delete carnivorousMedium;
+    delete carnivorousLarge;
+    delete clonedDaisy;
+}
+
+void testDecoratorPattern() {
+    cout << "=== TESTING DECORATOR PATTERN ===" << endl;
+    cout << endl;
+
+    // create a small mediium & large plant
+    Plant* daisy = new Daisy();
+    Plant* aloe = new AloeVera();
+    Plant* nepenthes = new Nepenthes();
+
+    cout << "--- Basic Plantswith no decoration ---" << endl;
+    cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
+    cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
+    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
+    cout << endl;
+
+    // Test one decorators
+    cout << "--- Individual Decorators ---" << endl;
+    
+    //  pot decorator alone test
+    Plant* daisyInClayPot = new PotDecorator(new Daisy(), "Clay");
+    cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
+    
+    // fertilizer decorator alone test
+    Plant* aloeWithFertilizer = new FertilizerDecorator(new AloeVera(), "Organic");
+    cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
+    cout << endl;
+
+    // Test multiple decorations now
+    cout << "--- Multiple Decorations ---" << endl;
+    
+    // Pot + Fertilizer
+    Plant* PremiumNepenthes = new FertilizerDecorator(new PotDecorator(new Nepenthes(), "Decorative"), "Slow-Release");
+    cout << "Premium Oak: " << PremiumNepenthes->getDescription() << " - Price: R" << PremiumNepenthes->getPrice() << endl;
+    
+    // Diff pot types
+    Plant* daisyCeramic = new PotDecorator(new Daisy(), "Ceramic");
+    Plant* daisyPlastic = new PotDecorator(new Daisy(), "Plastic");
+    cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
+    cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
+    cout << endl;
+
+    // diff fertilizer types
+    cout << "--- Different Fertilizer Types ---" << endl;
+    Plant* aloeOrganic = new FertilizerDecorator(new AloeVera(), "Organic");
+    Plant* aloeLiquid = new FertilizerDecorator(new AloeVera(), "Liquid");
+    Plant* aloeSlowRelease = new FertilizerDecorator(new AloeVera(), "Slow-Release");
+    
+    cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
+    cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
+    cout << "Aloe Slow-Release: " << aloeSlowRelease->getDescription() << " - Price: R" << aloeSlowRelease->getPrice() << endl;
+    cout << endl;
+
+    cout << "--- Testing Construction Methods ---" << endl;
+
+// Method 1: Direct construction (current way - broken)
+Plant* broken = new FertilizerDecorator(new PotDecorator(new WhiteOak(), "Clay"), "Organic");
+cout << "Nested (broken): " << broken->getDescription() << endl;
+
+// Method 2: Step-by-step construction
+Plant* step1 = new WhiteOak();
+Plant* step2 = new PotDecorator(step1, "Clay");  
+Plant* step3 = new FertilizerDecorator(step2, "Organic");
+cout << "Step-by-step: " << step3->getDescription() << endl;
+
+    delete daisy;
+    delete aloe;
+    delete nepenthes;
+    delete daisyInClayPot;
+    delete aloeWithFertilizer;
+    delete PremiumNepenthes;
+    delete daisyCeramic;
+    delete daisyPlastic;
+    delete aloeOrganic;
+    delete aloeLiquid;
+    delete aloeSlowRelease;
+}
+
+void testPatternsTogether() {
+    cout << "=== TESTING PATTERNS TOGETHER ===" << endl;
+    cout << endl;
+
+    // Create factories
+    TemperatePlantFactory temperateFactory;
+    TropicalPlantFactory tropicalFactory;
+    CarnivorousPlantFactory carnivorousFactory;
+    SucculentPlantFactory succulentFactory;
+
+    cout << "--- Creating Premium Plant Packages ---" << endl;
+    
+    // Create plants from factories and decorate them, has both decorators being ussed
+    Plant* premiumTemperatePackage = new FertilizerDecorator(new PotDecorator(temperateFactory.createMediumPlant(), "Ceramic"), "Slow-Release");
+    Plant* premiumTropicalPackage = new FertilizerDecorator(new PotDecorator(tropicalFactory.createSmallPlant(), "Decorative"), "Liquid");
+    Plant* premiumCarnivorousPackage = new FertilizerDecorator(new PotDecorator(carnivorousFactory.createLargePlant(), "Clay"), "Organic");
+    Plant* premiumSucculentPackage = new FertilizerDecorator(new PotDecorator(succulentFactory.createLargePlant(), "Decorative"), "Slow-Release");
+
+    if (premiumTemperatePackage)
+    {
+        cout << "Premium Temperate Package: " << premiumTemperatePackage->getDescription() << " - Price: R" << premiumTemperatePackage->getPrice() << endl;
+    }
+
+    if (premiumTropicalPackage) 
+    {
+        cout << "Premium Tropical Package: " << premiumTropicalPackage->getDescription() << " - Price: R" << premiumTropicalPackage->getPrice() << endl;
+    }
+    
+    if (premiumCarnivorousPackage) 
+    {
+        cout << "Premium Carnivorous Package: " << premiumCarnivorousPackage->getDescription() << " - Price: R" << premiumCarnivorousPackage->getPrice() << endl;
+    }
+
+    if (premiumSucculentPackage) 
+    {
+        cout << "Premium Succulent Package: " << premiumSucculentPackage->getDescription() << " - Price: R" << premiumSucculentPackage->getPrice() << endl;
+    }
+
+    cout << endl;
+
+    cout << "--- Creating Multiple Decorated Plants from Factory ---" << endl;
+    
+    // Create multiple plants from factory and decorate differently
+    vector<Plant*> decoratedPlants;
+    
+    // Different decoration combos, kfc would be great rn 
+    decoratedPlants.push_back(new PotDecorator(temperateFactory.createSmallPlant(), "Plastic"));
+    decoratedPlants.push_back(new FertilizerDecorator(temperateFactory.createSmallPlant(), "Organic"));
+    decoratedPlants.push_back(new FertilizerDecorator(new PotDecorator(temperateFactory.createLargePlant(), "Decorative"), "Slow-Release"));
+
+    // do this type for loop with vectors diff ways usually will complian/crash @compile time
+    for (size_t i = 0; i < decoratedPlants.size(); i++) 
+    {
+        cout << "Plant " << (i + 1) << ": " << decoratedPlants[i]->getDescription() << " - Price: R" << decoratedPlants[i]->getPrice() << endl;
+    }
+    cout << endl;
+
+    delete premiumTemperatePackage;
+    delete premiumTropicalPackage;
+    delete premiumCarnivorousPackage;
+
+    for (size_t i = 0; i < decoratedPlants.size(); i++) 
+    {
+        delete decoratedPlants[i];
+    }
+}
+
+//made a concrete plant class without abstract factory for testing in isolation
+class TestPlant : public Plant {
+
+    public: 
+    TestPlant(string species) : Plant(species) {
+        setGrowthRequirements(2,3,4); //seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
+        setSize("small");
+        setPrice(69.99);
+        setDescription("like a little succulant idk");
+    
+    }
+
+    Plant* clone() override {
+        return new TestPlant(*this);
+    }
+};
+
+// Mock observer for testing notifications
+class TestObserver : public GrowthObserver {
+public:
+    void onGrowthChange(Plant* plant) override {
+        cout << "OBSERVER: " << plant->getSpecies() << " growth state changed!" << endl;
+    }
+};
+
+void testBasicPlantCreation() {
+    cout << "=== TEST 1: Basic Plant Creation ===" << endl;
+    TestPlant plant("HenAndChicks");
+    
+    cout << "Species: " << plant.getSpecies() << endl;
+    cout << "Description: " << plant.getDescription() << endl;
+    cout << "Price: $" << plant.getPrice() << endl;
+    cout << "Size: " << plant.getsize() << endl;
+    cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
+    cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
+    
+    plant.printFullStatus();
+    cout << endl;
+}
+
+void testGrowthProgression() {
+    cout << "=== TEST 2: Growth Progression ===" << endl;
+    TestPlant plant("Sunflower");
+    // TestObserver observer;
+    // plant.attach(&observer);
+
+    cout << "Initial state:" << endl;
+    plant.printGrowthStatus();
+
+    for (int i = 0; i < 10; i++) {
+        cout << "--- Care cycle " << (i+1) << " ---\n";
+    
+
+        plant.receiveWatering();
+        plant.receiveSunlight();
+
+        if (i >= 2) {
+            plant.receiveFertilizing();
+        }
+        if (i >= 5) {
+            plant.receivePruning();
+
+        }
+
+        plant.completeCareSession();
+        plant.printGrowthStatus();
+
+        if (plant.shouldRemoveFromInventory()) {
+            cout << "big sad :( plant be dead, remove from inventory!" << endl;
+            break;
+        }
+
+    }
+    // plant.detach(&observer);
+    cout << endl;
+
+}
+
+void testHealthDegradation() {
+    cout << "=== TEST 3: Health Degradation ===" << endl;
+    TestPlant plant("Cactus");
+
+    cout << "Initial health:" << endl;
+    plant.printHealthStatus();
+
+    for (int i = 0; i < 3; i++) {
+        cout << "--- Care Cycle " << (i + 1) << " (INCOMPLETE CARE) ---" << endl;
+    
+
+     // Only do partial care (miss some requirements)
+        if (i % 2 == 0) {
+            plant.receiveWatering();
+        }
+        // Don't provide sunlight (incomplete care)
+        
+        plant.completeCareSession();
+        plant.printHealthStatus();
+
+         if (plant.isDead()) {
+            cout << "Plant has died!" << endl;
+            break;
+        }
+    }
+    cout << endl;
+}
+
+void testHealthRecovery() {
+    cout << "=== TEST 4: Health Recovery ===" << endl;
+    TestPlant plant("Fern");
+
+    cout << "Degrading health..." << endl;
+    for (int i = 0; i < 2; i++) {
+        plant.receiveWatering(); // Only water, no sunlight
+        plant.completeCareSession();
+    }
+    plant.printHealthStatus();
+
+    // Now provide complete care to recover
+    cout << "Recovering health..." << endl;
+    for (int i = 0; i < 2; i++) {
+        plant.receiveWatering();
+        plant.receiveSunlight();
+        plant.completeCareSession();
+        plant.printHealthStatus();
+    }
+    cout << endl;
+
+}
+
+void testIndividualCareActions() {
+    cout << "=== TEST 5: Individual Care Actions ===" << endl;
+    TestPlant plant("Orchid");
+    
+    cout << "Initial needs:" << endl;
+    plant.printCurrentNeeds();
+    
+    // Test individual care actions
+    plant.receiveWatering();
+    plant.printCurrentNeeds();
+    
+    plant.receiveSunlight();
+    plant.printCurrentNeeds();
+    
+    // Complete the session
+    plant.completeCareSession();
+    plant.printFullStatus();
+    cout << endl;
+}
+
+void testSoldState() {
+    cout << "=== TEST 6: Sold State ===" << endl;
+    TestPlant plant("Tulip");
+    
+    // Fast-forward to mature state
+    for (int i = 0; i < 9; i++) {
+        plant.receiveWatering();
+        plant.receiveSunlight();
+        plant.receiveFertilizing();
+        plant.receivePruning();
+        plant.completeCareSession();
+        
+        if (plant.shouldRemoveFromInventory()) {
+            break;
+        }
+    }
+
+    plant.printFullStatus();
+    cout << "Should remove from inventory: " << (plant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
+    cout << "Is ready for stock: " << (plant.isReadyForStock() ? "Yes" : "No") << endl;
+    cout << endl;
+
+}
+
+void testDeadState() {
+    cout << "=== TEST 7: Dead State ===" << endl;
+    TestPlant plant("Basil");
+    
+    // Kill the plant
+    for (int i = 0; i < 4; i++) {
+        // Incomplete care
+        if (i % 2 == 0) {
+            plant.receiveWatering();
+        }
+        plant.completeCareSession();
+        
+        if (plant.isDead()) {
+            cout << "Plant died at cycle " << (i + 1) << endl;
+            break;
+        }
+    }
+
+    plant.printFullStatus();
+    cout << "Is dead: " << (plant.isDead() ? "Yes" : "No") << endl;
+    cout << "Should remove from inventory: " << (plant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
+    
+    // Try to improve a dead plant
+    cout << "Trying to improve dead plant..." << endl;
+    plant.receiveWatering();
+    plant.receiveSunlight();
+    plant.completeCareSession();
+    cout << endl;
+}
+
+
+int main()
+{
+    try {
+        cout << "PLANT STORE PATTERN TESTING" << endl;
+        cout << "============================" << endl;
+        cout << endl;
+
+        testAbstractFactory();
+        testDecoratorPattern();
+        testPatternsTogether();
+
+        testBasicPlantCreation();
+        testGrowthProgression();
+        testHealthDegradation();
+        testHealthRecovery();
+        testIndividualCareActions();
+        testSoldState();
+        testDeadState();
+
+        cout << "All tests completed successfully!" << endl;
+        return 0;
+    } catch (const char* msg) {
+        cerr << "Exception caught: " << msg << endl;
+        return 1;
+    } catch (const exception& e) {
+        cerr << "Exception caught: " << e.what() << endl;
+        return 1;
+    } catch (...) {
+        cerr << "Unknown exception caught!" << endl;
+        return 1;
+    }
+}

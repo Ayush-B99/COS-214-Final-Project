@@ -11,7 +11,11 @@
 
 using namespace std;
 
-class StockIterator : Iterator {
+#include "Iterator.h"
+#include "Plant.h"
+#include "PlantNode.h"	
+
+class StockIterator : public Iterator {
 
 private:
 	PlantNode* root;

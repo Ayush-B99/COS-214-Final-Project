@@ -1,21 +1,22 @@
 #include "../include/Sundew.h"
 
-Sundew::Sundew() {
+Sundew::Sundew() : SmallPlant("Sundew") {
 	// TODO - implement Sundew::Sundew
-	throw "Not yet implemented";
+	setPrice(55.0);
+    setDescription("A carnivorous plant with sticky tentacles");
 }
 
-Sundew::Sundew(Sundew& other) {
+Sundew::Sundew(Sundew& other) : SmallPlant(other) {
 	// TODO - implement Sundew::Sundew
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 Sundew::~Sundew() {
 	// TODO - implement Sundew::~Sundew
-	throw "Not yet implemented";
+	
 }
 
 Plant* Sundew::clone() {
 	// TODO - implement Sundew::clone
-	throw "Not yet implemented";
+	return new Sundew(*this);
 }

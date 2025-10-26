@@ -11,7 +11,13 @@
 
 using namespace std;
 
-class Inventory : Storage {
+#include "Storage.h"
+#include "Plant.h"
+#include "PlantNode.h"
+#include "GreenHouse.h"
+#include "InventoryIterator.h"
+
+class Inventory : public Storage {
 
 private:
 	PlantNode* plantCatalog;
@@ -36,13 +42,13 @@ public:
 
 	int getPlantCount();
 
-	const Greenhouse* getTemperateFactory();
+	const GreenHouse* getTemperateFactory();
 
-	const Greenhouse* getCarnivorousFactory();
+	const GreenHouse* getCarnivorousFactory();
 
-	const Greenhouse* getSucculentFactory();
+	const GreenHouse* getSucculentFactory();
 
-	const Greenhouse* getTropicalFactory();
+	const GreenHouse* getTropicalFactory();
 
 	void addPlant(Plant* plant);
 

@@ -11,7 +11,10 @@
 
 using namespace std;
 
-class Draft : OrderState {
+#include "OrderState.h"
+#include "Order.h"
+
+class Draft : public OrderState {
 
 
 public:
@@ -23,7 +26,7 @@ public:
 
 	void completed(Order* order);
 
-	string getName();
+	const string getName();
 
 	bool canEdit();
 

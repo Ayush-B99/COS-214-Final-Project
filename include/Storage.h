@@ -11,11 +11,13 @@
 
 using namespace std;
 
+#include "InventoryIterator.h"
+
 class Storage {
 
 
 public:
-	virtual InventoryIterator* createIterator() = 0;
+	virtual Iterator* createIterator() = 0;
 };
 
 #endif

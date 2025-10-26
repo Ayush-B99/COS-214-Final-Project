@@ -9,10 +9,9 @@
 #include <sstream>
 #include <stack>
 
-#include "CommMediator.h"
-#include "StaffMember.h"
-
 using namespace std;
+
+#include "CommMediator.h"
 
 class ConcreteCommMediator : public CommMediator {
 
