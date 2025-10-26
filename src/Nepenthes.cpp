@@ -2,12 +2,13 @@
 
 Nepenthes::Nepenthes() : LargePlant("Nepenthas") {
 	// TODO - implement Nepenthes::Nepenthes
-	
+	setPrice(150.0);
+    setDescription("A tropical pitcher plant with large traps");
 }
 
 Nepenthes::Nepenthes(Nepenthes& other) : LargePlant(other) {
 	// TODO - implement Nepenthes::Nepenthes
-	
+	setPrice(other.getPrice());
 }
 
 Nepenthes::~Nepenthes() {

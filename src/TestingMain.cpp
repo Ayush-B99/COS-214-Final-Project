@@ -119,7 +119,7 @@ void testDecoratorPattern() {
     cout << "--- Basic Plantswith no decoration ---" << endl;
     cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
     cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
-    cout << "White Oak: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
+    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
     cout << endl;
 
     // Test one decorators

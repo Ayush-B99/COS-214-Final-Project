@@ -2,12 +2,13 @@
 
 Nerve::Nerve() : SmallPlant("Nerve") {
 	// TODO - implement Nerve::Nerve
-
+	setPrice(45.0);
+    setDescription("A tropical plant with intricate vein patterns");
 }
 
 Nerve::Nerve(Nerve& other) : SmallPlant(other) {
 	// TODO - implement Nerve::Nerve
-
+	setPrice(other.getPrice());
 }
 
 Nerve::~Nerve() {

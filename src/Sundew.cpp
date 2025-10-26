@@ -2,11 +2,13 @@
 
 Sundew::Sundew() : SmallPlant("Sundew") {
 	// TODO - implement Sundew::Sundew
+	setPrice(55.0);
+    setDescription("A carnivorous plant with sticky tentacles");
 }
 
 Sundew::Sundew(Sundew& other) : SmallPlant(other) {
 	// TODO - implement Sundew::Sundew
-	
+	setPrice(other.getPrice());
 }
 
 Sundew::~Sundew() {
