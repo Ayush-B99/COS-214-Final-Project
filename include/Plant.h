@@ -45,9 +45,9 @@ public:
 
 	virtual double getPrice();
 
-	string getDescription();
+	virtual string getDescription();
 
-	string getClimate();
+	virtual string getClimate();
 
 	virtual Plant* clone() = 0;
 
