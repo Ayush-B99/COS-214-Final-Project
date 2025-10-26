@@ -18,7 +18,13 @@ class Dead : public HealthState {
 
 
 public:
-	void update(Plant* plant);
+	void degrade(Plant* plant);
+
+	void improve(Plant* plant);
+
+	string getStatusMessage(Plant* plant);
+
+	bool isDead();
 };
 
 #endif

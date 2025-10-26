@@ -19,6 +19,12 @@ class Seed : public GrowthState {
 
 public:
 	void grow(Plant* plant);
+
+	string getStatusMessage(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	bool isMature();
 };
 
 #endif
