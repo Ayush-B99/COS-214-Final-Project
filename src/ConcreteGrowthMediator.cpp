@@ -41,11 +41,17 @@ bool ConcreteGrowthMediator::removeStaffMember(StaffMember *bob)
 void ConcreteGrowthMediator::notify(Plant *plant)
 {
 
+	cout << "Mediator notifying available staff members about plant needing care." << endl;
+
 	for (StaffMember *bob : staffMembers)
 	{
 		if (!bob->isBusy())
 		{
+			cout << "Staff member has been notified" << endl;
+
 			bob->getGrowth(plant); // staff member bob gets the plant
+
+			return;
 		}
 	}
 }

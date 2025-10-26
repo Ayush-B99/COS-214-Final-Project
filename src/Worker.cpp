@@ -1,5 +1,10 @@
 #include "../include/Worker.h"
 
+Worker::Worker() : StaffMember()
+{
+	// TODO - implement Worker::Worker
+}
+
 void Worker::getComm()
 {
 	// TODO - implement Worker::getComm
@@ -14,7 +19,7 @@ void Worker::setComm()
 
 void Worker::getGrowth(Plant *plant)
 {
-
+	cout << "Worker is creating commands" << endl;
 	setCommand(new Water(plant));
 	setCommand(new Sun(plant));
 	setCommand(new Fertilizer(plant));

@@ -1,23 +1,27 @@
 #include "../include/TemperatePlantFactory.h"
 
-TemperatePlantFactory::TemperatePlantFactory() {
+TemperatePlantFactory::TemperatePlantFactory()
+{
 	// empty constructor
-	
 }
 
-TemperatePlantFactory::~TemperatePlantFactory() {
+TemperatePlantFactory::~TemperatePlantFactory()
+{
 	// no mem management needed for now
 }
 
-Plant* TemperatePlantFactory::createSmallPlant() {
-	// TODO - implement TemperatePlantFactory::createSmallPlant
+Plant *TemperatePlantFactory::createSmallPlant()
+{
+
 	return new Daisy();
 }
 
-Plant* TemperatePlantFactory::createMediumPlant() {
+Plant *TemperatePlantFactory::createMediumPlant()
+{
 	return new Lilac();
 }
 
-Plant* TemperatePlantFactory::createLargePlant() {
+Plant *TemperatePlantFactory::createLargePlant()
+{
 	return new WhiteOak();
 }

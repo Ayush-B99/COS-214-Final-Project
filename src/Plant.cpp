@@ -80,6 +80,8 @@ void Plant::setHealthState(HealthState *state)
 		delete this->healthState;
 	}
 	this->healthState = state;
+
+	observer->onGrowthChange(); // notify observer of health state change
 }
 
 // void Plant::updateHealth() { //Took this out because i need to come back to it, i dont have an update function yet and completeCareSession needs the improve and degrade functions to move from needsCare to good, I may be stupid but its probabaly something dumb asf :)
@@ -94,12 +96,10 @@ void Plant::attach(ConcreteGrowthObserver *observer)
 	this->observer = observer;
 }
 
-void Plant::detach(ConcreteGrowthObserver *observer)
+void Plant::detach()
 {
-	if (this->observer == observer)
-	{
-		this->observer = nullptr; // needs revisiting for memory management concerns
-	}
+	delete observer;
+	this->observer = nullptr; // needs revisiting for memory management concerns
 }
 
 void Plant::notify()
@@ -322,4 +322,9 @@ void Plant::setSize(string s)
 HealthState *Plant::getHealthState()
 {
 	return healthState;
+}
+
+GrowthState *Plant::getGrowthState()
+{
+	return growthState;
 }

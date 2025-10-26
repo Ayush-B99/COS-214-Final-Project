@@ -14,15 +14,16 @@ using namespace std;
 #include "HealthState.h"
 #include "Plant.h"
 
-class Good : public HealthState {
-
+class Good : public HealthState
+{
 
 public:
-	void degrade(Plant* plant);
+	~Good();
+	void degrade(Plant *plant);
 
-	void improve(Plant* plant);
+	void improve(Plant *plant);
 
-	string getStatusMessage(Plant* plant);
+	string getStatusMessage(Plant *plant);
 
 	bool isDead();
 };

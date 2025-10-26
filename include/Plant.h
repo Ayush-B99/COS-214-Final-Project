@@ -73,11 +73,9 @@ public:
 
 	void attach(ConcreteGrowthObserver *observer);
 
-	void detach(ConcreteGrowthObserver *observer);
+	void detach();
 
 	void notify();
-
-	HealthState *getHealthState();
 
 	// for decorator, since it can alter the prices and desc.
 	virtual string getSpecies();

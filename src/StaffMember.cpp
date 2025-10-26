@@ -1,8 +1,18 @@
 #include "../include/StaffMember.h"
 
+// StaffMember::StaffMember()
+// {
+// }
+
+// StaffMember::~StaffMember()
+// {
+// }
+
 void StaffMember::setMediator(ConcreteGrowthMediator *mediator)
 {
 	this->mediator = mediator;
+
+	mediator->addStaffMember(this);
 }
 
 void StaffMember::setCommMediator(CommMediator *commMediator)
@@ -12,11 +22,13 @@ void StaffMember::setCommMediator(CommMediator *commMediator)
 
 void StaffMember::setCommand(Command *cmd)
 {
+	cout << "command being set" << endl;
 	commandQueue.push_back(cmd);
 }
 
 void StaffMember::executeCommand()
 {
+	cout << "commands being executed" << endl;
 	busy = true;
 	for (Command *cmd : commandQueue)
 	{

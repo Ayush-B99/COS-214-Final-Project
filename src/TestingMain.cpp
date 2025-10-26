@@ -15,6 +15,9 @@
 #include "../include/PotDecorator.h"
 #include "../include/FertilizerDecorator.h"
 #include "../include/PlantDecorator.h"
+#include "../include/ConcreteGrowthObserver.h"
+#include "../include/ConcreteGrowthMediator.h"
+#include "../include/Worker.h"
 
 void testAbstractFactory()
 {
@@ -96,16 +99,16 @@ void testAbstractFactory()
 
     cout << endl;
 
-    delete temperateSmall;
-    delete temperateMedium;
-    delete temperateLarge;
-    delete tropicalSmall;
-    delete tropicalMedium;
-    delete tropicalLarge;
-    delete carnivorousSmall;
-    delete carnivorousMedium;
-    delete carnivorousLarge;
-    delete clonedDaisy;
+    // delete temperateSmall;
+    // delete temperateMedium;
+    //  delete temperateLarge;
+    // delete tropicalSmall;
+    // delete tropicalMedium;
+    //  delete tropicalLarge;
+    //  delete carnivorousSmall;
+    //  delete carnivorousMedium;
+    //  delete carnivorousLarge;
+    //  delete clonedDaisy;
 }
 
 void testDecoratorPattern()
@@ -259,10 +262,26 @@ int testObserverMediator()
 
     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
     CarnivorousPlantFactory factory;
-
     Plant *venusFlytrap = factory.createMediumPlant();
 
-    venusFlytrap->printFullStatus();
+    venusFlytrap->detach();
+
+    ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
+    ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
+
+    venusFlytrap->attach(obs);
+
+    StaffMember *alice = new Worker();
+    StaffMember *bob = new Worker();
+
+    mediator->addStaffMember(alice);
+    mediator->addStaffMember(bob);
+
+    venusFlytrap->printHealthStatus();
+
+    venusFlytrap->setHealthState(new NeedsCare());
+
+    venusFlytrap->printHealthStatus();
 
     std::cout << "----------------------------------" << std::endl;
 
@@ -278,11 +297,11 @@ try
     cout << endl;
 
     // Test patterns separately
-    testAbstractFactory();
-    testDecoratorPattern();
+    // testAbstractFactory();
+    // testDecoratorPattern();
 
     // Test patterns together
-    testPatternsTogether();
+    // testPatternsTogether();
 
     testObserverMediator();
 

@@ -17,6 +17,9 @@ class Worker : public StaffMember
 {
 
 public:
+	Worker();
+	~Worker();
+
 	void getComm();
 
 	void setComm();

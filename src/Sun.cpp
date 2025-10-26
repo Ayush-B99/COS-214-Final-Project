@@ -2,14 +2,11 @@
 
 Sun::Sun(Plant *plant)
 {
-	// TODO - implement Sun::SunCommand
-	throw "Not yet implemented";
 }
 
 void Sun::execute()
 {
-	// TODO - implement Sun::execute
-	throw "Not yet implemented";
+	cout << "Execute sun command" << endl;
 }
 
 void Sun::undo()

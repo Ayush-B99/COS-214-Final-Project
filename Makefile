@@ -11,34 +11,10 @@ BUILDDIR = build
 BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
-
-# Only include the files you've implemented (Abstract Factory + Decorator patterns)
-SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
-		  $(SRCDIR)/GreenHouse.cpp \
-		  $(SRCDIR)/Plant.cpp \
-          $(SRCDIR)/SmallPlant.cpp \
-          $(SRCDIR)/MediumPlant.cpp \
-          $(SRCDIR)/LargePlant.cpp \
-          $(SRCDIR)/Daisy.cpp \
-          $(SRCDIR)/AloeVera.cpp \
-          $(SRCDIR)/WhiteOak.cpp \
-          $(SRCDIR)/HenAndChicks.cpp \
-          $(SRCDIR)/Nerve.cpp \
-          $(SRCDIR)/Lilac.cpp \
-          $(SRCDIR)/BirdOfParadise.cpp \
-          $(SRCDIR)/Condelabra.cpp \
-          $(SRCDIR)/Rubber.cpp \
-          $(SRCDIR)/Sundew.cpp \
-          $(SRCDIR)/Pitcher.cpp \
-          $(SRCDIR)/Nepenthes.cpp \
-          $(SRCDIR)/PlantDecorator.cpp \
-          $(SRCDIR)/PotDecorator.cpp \
-          $(SRCDIR)/FertilizerDecorator.cpp \
-          $(SRCDIR)/TemperatePlantFactory.cpp \
-          $(SRCDIR)/TropicalPlantFactory.cpp \
-          $(SRCDIR)/CarnivorousPlantFactory.cpp \
-          $(SRCDIR)/TestingMain.cpp
-
+#the line below compiles everything
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+# this line can filter out classes listed to not build/compile and run
+#SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
 ZIP_DIR = submit

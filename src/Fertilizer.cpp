@@ -2,14 +2,11 @@
 
 Fertilizer::Fertilizer(Plant *plant)
 {
-	// TODO - implement Fertilizer::FertilizerCommand
-	throw "Not yet implemented";
 }
 
 void Fertilizer::execute()
 {
-	// TODO - implement Fertilizer::execute
-	throw "Not yet implemented";
+	cout << "Execute fertilizer command" << endl;
 }
 
 void Fertilizer::undo()

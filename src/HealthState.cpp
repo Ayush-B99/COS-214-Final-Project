@@ -2,8 +2,6 @@
 
 HealthState::~HealthState()
 {
-	// TODO - implement HealthState::~HealthState
-	throw "Not yet implemented";
 }
 
 bool HealthState::isDead()

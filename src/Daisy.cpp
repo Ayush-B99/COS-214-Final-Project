@@ -2,14 +2,12 @@
 
 Daisy::Daisy() : SmallPlant("Daisy")
 {
-	// TODO - implement Daisy::Daisy
 	setPrice(25.0);
 	setDescription("A cheerful Daisy with white petals");
 }
 
 Daisy::Daisy(Daisy &other) : SmallPlant(other)
 {
-	// TODO - implement Daisy::Daisy
 	setPrice(other.getPrice());
 }
 
