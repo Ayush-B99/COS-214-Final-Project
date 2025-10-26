@@ -54,17 +54,22 @@ public:
 
 	virtual ~Plant();
 
+	virtual string getSpecies();
+
+    virtual void setPrice(double newPrice);
+
+    virtual void setDescription(string newDesc);
+	
 	virtual double getPrice();
 
-	virtual string getDescription();
+    virtual string getDescription();
 
-	virtual string getClimate();
+    virtual string getClimate();
 
-	virtual Plant* clone() = 0;
+    virtual Plant* clone() = 0;
 
 	void setCareStrategy(PlantCareHandler* strategy);
 
-	void performWatering();
 
 	void setGrowthState(GrowthState* state);
 
@@ -85,10 +90,7 @@ public:
 	virtual void setPrice(double newPrice);
 	virtual void setDescription(string newDesc);
 
-	GrowthState* getGrowthState();
-
-	HealthState* getHealthState();
-
+	//for growth states
 	void intializeCareNeeds();
 
 	//care action methods (command)
@@ -115,11 +117,13 @@ public:
 	bool shouldRemoveFromInventory();
 	bool isReadyForStock();
 	bool isDead();
+	bool isMature();
 
 protected:
 	//subclasses set their growth requirements
 	void setGrowthRequirements(int seed, int sprout, int mature);
 	void setSize(string s);
+
 };
 
 #endif
