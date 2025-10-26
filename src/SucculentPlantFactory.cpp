@@ -2,12 +2,10 @@
 
 SucculentPlantFactory::SucculentPlantFactory() {
 	// TODO - implement SucculentPlantFactory::SucculentPlantFactory
-	throw "Not yet implemented";
 }
 
 SucculentPlantFactory::~SucculentPlantFactory() {
 	// TODO - implement SucculentPlantFactory::~SucculentPlantFactory
-	throw "Not yet implemented";
 }
 
 Plant* SucculentPlantFactory::createSmallPlant() {

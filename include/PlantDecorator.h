@@ -25,6 +25,10 @@ public:
 	double getPrice();
 
 	string getDescription();
+
+	virtual Plant* clone() = 0;
+
+	virtual string getSpecies();
 };
 
 #endif

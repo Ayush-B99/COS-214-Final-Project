@@ -1,8 +1,9 @@
 #include "../include/PotDecorator.h"
 
 // do i add more default parameters
-PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant) {
+PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant), potType(type) {
 	// TODO - implement PotDecorator::PotDecorator
+    
 	int potSwitch = 0;
     if (type == "Clay") 
     {
@@ -43,6 +44,7 @@ PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant) {
     }
 }
 
+
 double PotDecorator::getPrice() {
 	// TODO - implement PotDecorator::getPrice
 	return PlantDecorator::getPrice() + potCost;
@@ -51,4 +53,8 @@ double PotDecorator::getPrice() {
 string PotDecorator::getDescription() {
 	// TODO - implement PotDecorator::getDescription
 	return PlantDecorator::getDescription() + " in a " + potType + " pot";
+}
+
+Plant* PotDecorator::clone() {
+    return new PotDecorator(decoratedPlant->clone(), potType);
 }

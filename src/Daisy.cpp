@@ -1,18 +1,25 @@
 #include "../include/Daisy.h"
 
-Daisy::Daisy() : SmallPlant("Daisy") {
+Daisy::Daisy() : SmallPlant("Daisy")
+{
 	// TODO - implement Daisy::Daisy
+	setPrice(25.0);
+	setDescription("A cheerful Daisy with white petals");
 }
 
-Daisy::Daisy(Daisy& other) : SmallPlant(other) {
+Daisy::Daisy(Daisy &other) : SmallPlant(other)
+{
 	// TODO - implement Daisy::Daisy
+	setPrice(other.getPrice());
 }
 
-Daisy::~Daisy() {
+Daisy::~Daisy()
+{
 	// TODO - implement Daisy::~Daisy
 }
 
-Plant* Daisy::clone() {
+Plant *Daisy::clone()
+{
 	// TODO - implement Daisy::clone
 	return new Daisy(*this);
 }

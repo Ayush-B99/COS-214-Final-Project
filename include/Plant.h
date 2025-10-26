@@ -55,9 +55,9 @@ public:
 
 	virtual double getPrice();
 
-	string getDescription();
+	virtual string getDescription();
 
-	string getClimate();
+	virtual string getClimate();
 
 	virtual Plant *clone() = 0;
 
@@ -84,7 +84,10 @@ public:
 	virtual void setPrice(double newPrice);
 	virtual void setDescription(string newDesc);
 
-	// for growth states
+	GrowthState *getGrowthState();
+
+	HealthState *getHealthState();
+
 	void intializeCareNeeds();
 
 	// care action methods (command)

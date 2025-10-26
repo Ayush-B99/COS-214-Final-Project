@@ -46,3 +46,7 @@ string FertilizerDecorator::getDescription() {
 	// TODO - implement FertilizerDecorator::getDescription
 	return PlantDecorator::getDescription() + " with " + fertilizer + " fertilizer";
 }
+
+Plant* FertilizerDecorator::clone() {
+    return new FertilizerDecorator(decoratedPlant->clone(), fertilizer);
+}

@@ -1,13 +1,12 @@
 #include "../include/AloeVera.h"
 
 AloeVera::AloeVera() : MediumPlant("Aloe Vera") {
-	// leave empty
-
+	setPrice(65.0);
+    setDescription("A healing succulent with gel-filled leaves");
 }
 
 AloeVera::AloeVera(AloeVera& other) : MediumPlant(other) {
-	// leave empty
-
+	setPrice(other.getPrice());
 }
 
 AloeVera::~AloeVera() {
