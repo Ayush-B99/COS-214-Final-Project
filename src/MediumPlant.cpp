@@ -1,7 +1,8 @@
 #include "../include/MediumPlant.h"
 
-MediumPlant::MediumPlant(string species) {
+MediumPlant::MediumPlant(string species) : Plant(species) {
 	// TODO - implement MediumPlant::MediumPlant
+	size = "Medium";
 }
 
 MediumPlant::~MediumPlant() {

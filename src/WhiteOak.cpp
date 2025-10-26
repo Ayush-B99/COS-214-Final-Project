@@ -7,7 +7,6 @@ WhiteOak::WhiteOak() : LargePlant("White Oak") {
 
 WhiteOak::WhiteOak(WhiteOak& other) : LargePlant(other) {
 	// TODO - implement WhiteOak::WhiteOak
-
 }
 
 WhiteOak::~WhiteOak() {

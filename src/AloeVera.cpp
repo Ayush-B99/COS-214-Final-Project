@@ -7,7 +7,6 @@ AloeVera::AloeVera() : MediumPlant("Aloe Vera") {
 
 AloeVera::AloeVera(AloeVera& other) : MediumPlant(other) {
 	// leave empty
-
 }
 
 AloeVera::~AloeVera() {

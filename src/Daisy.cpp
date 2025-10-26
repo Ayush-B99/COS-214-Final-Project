@@ -2,7 +2,6 @@
 
 Daisy::Daisy() : SmallPlant("Daisy") {
 	// TODO - implement Daisy::Daisy
-
 }
 
 Daisy::Daisy(Daisy& other) : SmallPlant(other) {

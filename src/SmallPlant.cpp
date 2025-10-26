@@ -1,7 +1,8 @@
 #include "../include/SmallPlant.h"
 
-SmallPlant::SmallPlant(string species) {
+SmallPlant::SmallPlant(string species) : Plant(species) {
 	// TODO - implement SmallPlant::SmallPlant
+	size = "Small";
 }
 
 SmallPlant::~SmallPlant() {

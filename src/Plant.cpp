@@ -1,12 +1,9 @@
 #include "../include/Plant.h"
 
-Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0){
-	
+Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0) {
 }
 
-Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0) {
-	// TODO - implement Plant::Plant
-	
+Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0) {
 }
 
 Plant::~Plant() {
@@ -19,7 +16,7 @@ double Plant::getPrice() {
 }
 
 string Plant::getDescription() {
-	return this->description;
+    return this->description;
 }
 
 string Plant::getClimate() {

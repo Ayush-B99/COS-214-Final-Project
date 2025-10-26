@@ -16,3 +16,7 @@ double PlantDecorator::getPrice() {
 string PlantDecorator::getDescription() {
 	return decoratedPlant->getDescription();
 }
+
+string PlantDecorator::getSpecies()  {
+    return decoratedPlant->getSpecies();
+}
