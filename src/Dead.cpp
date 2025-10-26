@@ -19,3 +19,7 @@ string Dead::getStatusMessage(Plant* plant) {
 bool Dead::isDead() {
 	return true;
 }
+
+string Dead::getName() {
+	return "dead";
+}
