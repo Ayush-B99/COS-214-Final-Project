@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Plant; // Forward declaration
+class Plant; // Forward declaration (TAKE OUT LATER)
 
 class GrowthState {
 
@@ -28,6 +28,8 @@ public:
 	virtual bool isSold();
 
 	virtual bool isMature();
+
+	virtual string getName() = 0;
 };
 
 #endif

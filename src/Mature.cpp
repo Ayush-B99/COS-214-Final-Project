@@ -24,3 +24,7 @@ bool Mature::isMature() {
 	return true;
 }
 
+string Mature::getName() {
+    return "mature";
+}
+

@@ -12,9 +12,27 @@ BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 #the line below compiles everything
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+# SOURCES = $(wildcard $(SRCDIR)/*.cpp)
 # this line can filter out classes listed to not build/compile and run
-#SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
+# SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
+
+SOURCES = $(SRCDIR)/Plant.cpp \
+		  $(SRCDIR)/HealthState.cpp \
+		  $(SRCDIR)/Good.cpp \
+		  $(SRCDIR)/NeedsCare.cpp \
+		  $(SRCDIR)/Dead.cpp \
+		  $(SRCDIR)/GrowthState.cpp \
+		  $(SRCDIR)/Seed.cpp \
+		  $(SRCDIR)/Sprout.cpp \
+		  $(SRCDIR)/Mature.cpp \
+		  $(SRCDIR)/Sold.cpp \
+		  $(SRCDIR)/TestingMain.cpp 
+		  
+# 		  $(SRCDIR)/Plant.cpp \	
+# 		  $(SRCDIR)/Plant.cpp \	
+# 		  $(SRCDIR)/Plant.cpp \	
+# 		  $(SRCDIR)/Plant.cpp \	
+		  
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
 ZIP_DIR = submit

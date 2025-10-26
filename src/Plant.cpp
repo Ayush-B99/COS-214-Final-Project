@@ -1,6 +1,8 @@
 #include "../include/Plant.h"
 #include "../include/Seed.h"
 #include "../include/Good.h"
+#include "../include/GrowthState.h"
+#include "../include/HealthState.h"
 
 
 Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
@@ -249,6 +251,13 @@ bool Plant::isReadyForStock() {
 
 bool Plant::isDead() {
 	return healthState->isDead();
+}
+
+bool Plant::isMature() {
+	if (!growthState) {
+		return false;
+	}
+	return (growthState->isMature() || growthState->isSold()) && !healthState->isDead();
 }
 
 void Plant::setGrowthRequirements(int seed, int sprout, int mature) {

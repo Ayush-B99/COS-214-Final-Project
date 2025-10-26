@@ -11,7 +11,9 @@
 
 using namespace std;
 
-#include "Plant.h"
+// #include "Plant.h"
+
+class Plant;
 
 class GrowthObserver {
 

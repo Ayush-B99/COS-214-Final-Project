@@ -12,9 +12,12 @@
 using namespace std;
 
 #include "PlantCareHandler.h"
-#include "GrowthState.h"
-#include "HealthState.h"
+// #include "GrowthState.h"
+// #include "HealthState.h"
 #include "GrowthObserver.h"
+
+class GrowthState;
+class HealthState;
 
 class Plant {
 
@@ -106,6 +109,7 @@ public:
 	bool shouldRemoveFromInventory();
 	bool isReadyForStock();
 	bool isDead();
+	bool isMature();
 
 protected:
 	//subclasses set their growth requirements

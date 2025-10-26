@@ -21,7 +21,8 @@ string Sprout::getStatusMessage(Plant* plant) {
 	return plant->getSpecies() + " (Sprout): " + to_string(current) + "/" + to_string(needed) + " care cycles completed";
 }
 
-bool Sprout::isMature() {
-	return false;
+
+string Sprout::getName() {
+	return "sprout";
 }
 
