@@ -1,6 +1,8 @@
 #include "../include/Plant.h"
 #include "../include/Seed.h"
 #include "../include/Good.h"
+#include "../include/GrowthState.h"
+#include "../include/HealthState.h"
 #include "../include/ConcreteGrowthObserver.h"
 
 Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4)

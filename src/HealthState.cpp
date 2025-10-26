@@ -3,8 +3,3 @@
 HealthState::~HealthState()
 {
 }
-
-bool HealthState::isDead()
-{
-	throw "Not yet implemented";
-}

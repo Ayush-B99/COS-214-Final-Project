@@ -112,6 +112,7 @@ public:
 	bool shouldRemoveFromInventory();
 	bool isReadyForStock();
 	bool isDead();
+	bool isMature();
 
 protected:
 	// subclasses set their growth requirements

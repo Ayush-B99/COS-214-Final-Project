@@ -4,7 +4,7 @@
 GrowthState::~GrowthState()
 {
 	// TODO - implement GrowthState::~GrowthState
-	throw "Not yet implemented";
+	
 }
 
 bool GrowthState::isSold()
