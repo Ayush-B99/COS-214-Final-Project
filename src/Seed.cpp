@@ -20,6 +20,7 @@ vector<string> Seed::getRequiredCare() {
 	return {"Water", "sunlight"};
 }
 
-bool Seed::isMature() {
-	return false;
+
+string Seed::getName() {
+	return "seed";
 }

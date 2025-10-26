@@ -14,6 +14,7 @@ using namespace std;
 #include "GrowthState.h"
 #include "Plant.h"
 
+
 class Seed : public GrowthState {
 
 
@@ -24,7 +25,7 @@ public:
 
 	vector<string> getRequiredCare();
 
-	bool isMature();
+	string getName();
 };
 
 #endif

@@ -14,7 +14,7 @@ using namespace std;
 //#include "PlantCareHandler.h"
 //#include "GrowthState.h"
 //#include "HealthState.h"
-//#include "GrowthObserver.h"
+#include "GrowthObserver.h"
 
 // this is NOT CORRECT I JUST DID THIS FOR TESTING SINCE IT HASNT BEEN IMPLEMENTED YET BE AWARE
 class PlantCareHandler;

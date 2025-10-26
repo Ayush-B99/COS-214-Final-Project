@@ -25,6 +25,8 @@ public:
 	string getStatusMessage(Plant* plant);
 
 	bool isMature();
+
+	string getName();
 	
 };
 

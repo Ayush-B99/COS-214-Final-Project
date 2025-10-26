@@ -21,3 +21,7 @@ string Good::getStatusMessage(Plant* plant) {
 bool Good::isDead() {
 	return false;
 }
+
+string Good::getName() {
+	return "good";
+}

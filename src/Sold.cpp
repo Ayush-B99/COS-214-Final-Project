@@ -12,3 +12,12 @@ vector<string> Sold::getRequiredCare() {
 string Sold::getStatusMessage(Plant* plant) {
     return plant->getSpecies() + " (Sold): This plant has been sold and is no longer in the inventory.";
 }
+
+
+bool Sold::isSold() {
+    return true;
+}
+
+string Sold::getName() {
+    return "sold";
+}
