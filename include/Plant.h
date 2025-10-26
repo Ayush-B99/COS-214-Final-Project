@@ -29,6 +29,18 @@ private:
 	string climate;
 	string description;
 	double price;
+	string size; //added this "small", "medium", "large"
+
+	// For tracking care points 
+	map<string, int> carePoints;
+	int currentCycleCount;
+
+	//growth cycle requirements
+	int seedCyclesNeeded;
+	int sproutCyclesNeeded;
+	int matureCyclesNeeded;
+
+	GrowthObserver* observer;
 
 public:
 	Plant();
@@ -47,7 +59,6 @@ public:
 
 	void setCareStrategy(PlantCareHandler* strategy);
 
-	void performWatering();
 
 	void setGrowthState(GrowthState* state);
 
@@ -67,6 +78,41 @@ public:
 	virtual string getSpecies();
 	virtual void setPrice(double newPrice);
 	virtual void setDescription(string newDesc);
+
+	//for growth states
+	void intializeCareNeeds();
+
+	//care action methods (command)
+	void receiveWatering();
+	void receiveSunlight();
+	void receiveFertilizing();
+	void receivePruning();
+
+	void completeCareSession(); //called by the staff after all actions for the cycle are done
+
+	string getsize() const;
+	int getCurrentCycleCount() const;
+	int getSeedCyclesNeeded() const;
+	int getSproutCyclesNeeded() const;
+	int getMatureCyclesNeeded() const;
+	void resetCycleCount();
+
+	void printCurrentNeeds();
+	void printGrowthStatus();
+	void printHealthStatus();
+	void printFullStatus();
+
+	//inventory helpers
+	bool shouldRemoveFromInventory();
+	bool isReadyForStock();
+	bool isDead();
+
+protected:
+	//subclasses set their growth requirements
+	void setGrowthRequirements(int seed, int sprout, int mature);
+	void setSize(string s);
+
+
 };
 
 #endif
