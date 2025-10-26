@@ -73,6 +73,10 @@ public:
 	virtual string getSpecies();
 	virtual void setPrice(double newPrice);
 	virtual void setDescription(string newDesc);
+
+	GrowthState* getGrowthState();
+
+	HealthState* getHealthState();
 };
 
 #endif

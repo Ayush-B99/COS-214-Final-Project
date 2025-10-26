@@ -76,3 +76,11 @@ void Plant::setPrice(double newPrice) {
 void Plant::setDescription(string newDesc) { 
 	description = newDesc; 
 }
+
+GrowthState* Plant::getGrowthState(){
+	return this->growthState;
+}
+
+HealthState* Plant::getHealthState(){
+	return this->healthState;
+}
