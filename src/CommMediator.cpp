@@ -1,6 +1,6 @@
 #include "../include/CommMediator.h"
 
-CommMediator::~CommMediator() {
-	// TODO - implement CommMediator::~CommMediator
-	//throw "Not yet implemented";
-}
+// CommMediator::~CommMediator() 
+// {
+// }
+//its an abstract class so nothing really happens here :)
