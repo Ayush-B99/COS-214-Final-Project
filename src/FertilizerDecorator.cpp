@@ -37,10 +37,6 @@ FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecor
     }
 }
 
-FertilizerDecorator::FertilizerDecorator(const FertilizerDecorator& other) 
-    : PlantDecorator(other.decoratedPlant->clone()), fertilizer(other.fertilizer), fertilizerCost(other.fertilizerCost) {
-}
-
 double FertilizerDecorator::getPrice() {
 	// TODO - implement FertilizerDecorator::getPrice
 	return PlantDecorator::getPrice() + fertilizerCost;
@@ -52,6 +48,5 @@ string FertilizerDecorator::getDescription() {
 }
 
 Plant* FertilizerDecorator::clone() {
-    Plant* clonedPlant = decoratedPlant->clone();
-    return new FertilizerDecorator(clonedPlant, fertilizer);
+    return new FertilizerDecorator(decoratedPlant->clone(), fertilizer);
 }

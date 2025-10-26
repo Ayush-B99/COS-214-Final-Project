@@ -56,6 +56,5 @@ string PotDecorator::getDescription() {
 }
 
 Plant* PotDecorator::clone() {
-    Plant* clonedPlant = decoratedPlant->clone();
-    return new PotDecorator(clonedPlant, potType);
+    return new PotDecorator(decoratedPlant->clone(), potType);
 }
