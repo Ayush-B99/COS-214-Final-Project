@@ -9,9 +9,11 @@
 #include <sstream>
 #include <stack>
 
+using namespace std;
+
 #include "ConcreteGrowthMediator.h"
-//#include "CommMediator.h"
-//#include "Plant.h"
+// #include "CommMediator.h"
+// #include "Plant.h"
 #include "Command.h"
 
 using namespace std;
@@ -19,21 +21,22 @@ using namespace std;
 class CommMediator;
 class ConcreteGrowthMediator;
 
-class StaffMember {
+class StaffMember
+{
 
 private:
-	ConcreteGrowthMediator* mediator;
-	CommMediator* commMediator;
-	vector<Plant*> currentState;
-	vector<Command*> commandHistory;
-	vector<Command*> commandQueue;
+	ConcreteGrowthMediator *mediator;
+	CommMediator *commMediator;
+	vector<Plant *> currentState;
+	vector<Command *> commandHistory;
+	vector<Command *> commandQueue;
 
 public:
-	void setMediator(ConcreteGrowthMediator* mediator);
+	void setMediator(ConcreteGrowthMediator *mediator);
 
-	void setCommMediator(CommMediator* commMediator);
+	void setCommMediator(CommMediator *commMediator);
 
-	void setCommand(Command* cmd);
+	void setCommand(Command *cmd);
 
 	void executeCommand();
 
@@ -47,7 +50,7 @@ public:
 
 	virtual void setGrowth() = 0;
 
-	bool isBusy ();
+	bool isBusy();
 };
 
 #endif

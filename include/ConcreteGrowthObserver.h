@@ -20,7 +20,7 @@ using namespace std;
  * @class ConcreteGrowthObserver
  * @brief Observes changes in a Plant's growth and interacts with a GrowthMediator.
  *
- * The ConcreteGrowthObserver monitors the growth state of a Plant object and 
+ * The ConcreteGrowthObserver monitors the growth state of a Plant object and
  * communicates relevant changes to a GrowthMediator for further action.
  * This class implements part of the Observer design pattern in conjunction with Plant.
  */
@@ -30,17 +30,17 @@ private:
     /**
      * @brief The Plant being observed.
      */
-    Plant* subject;
+    Plant *subject;
 
     /**
      * @brief The current health state of the observed Plant.
      */
-    HealthState* state;
+    HealthState *state;
 
     /**
      * @brief Mediator responsible for coordinating growth-related communication.
      */
-    ConcreteGrowthMediator* mediator;
+    ConcreteGrowthMediator *mediator;
 
 public:
     /**
@@ -48,7 +48,7 @@ public:
      * @param plant Pointer to the Plant being observed.
      * @param med Pointer to the GrowthMediator that will handle communication.
      */
-    ConcreteGrowthObserver(Plant* plant, ConcreteGrowthMediator* med);
+    ConcreteGrowthObserver(Plant *plant, ConcreteGrowthMediator *med);
 
     /**
      * @brief Destructor for ConcreteGrowthObserver.
@@ -67,7 +67,7 @@ public:
      * @brief Gets the Plant being observed.
      * @return Pointer to the observed Plant.
      */
-    Plant* getPlant();
+    Plant *getPlant();
 };
 
 #endif // CONCRETEGROWTHOBSERVER_H

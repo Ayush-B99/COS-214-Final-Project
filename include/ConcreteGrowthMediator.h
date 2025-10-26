@@ -11,7 +11,7 @@
 
 using namespace std;
 
-//#include "StaffMember.h"
+// #include "StaffMember.h"
 #include "Plant.h"
 #include "StaffMember.h"
 
@@ -21,7 +21,7 @@ class StaffMember;
  * @class ConcreteGrowthMediator
  * @brief Mediator class that manages interactions between StaffMember objects and Plants.
  *
- * This class maintains a list of staff members and provides methods to add, remove, 
+ * This class maintains a list of staff members and provides methods to add, remove,
  * and notify them about changes or updates related to plants.
  */
 class ConcreteGrowthMediator
@@ -46,20 +46,20 @@ public:
      * @param bob Pointer to the StaffMember to add.
      * @return True if the staff member was successfully added, false if already exists.
      */
-    bool addStaffMember(StaffMember* bob);
+    bool addStaffMember(StaffMember *bob);
 
     /**
      * @brief Removes a staff member from the mediator.
      * @param bob Pointer to the StaffMember to remove.
      * @return True if the staff member was successfully removed, false if not found.
      */
-    bool removeStaffMember(StaffMember* bob);
+    bool removeStaffMember(StaffMember *bob);
 
     /**
      * @brief Notifies all staff members about an update to a plant.
      * @param plant Pointer to the Plant that triggered the notification.
      */
-    void notify(Plant* plant);
+    void notify(Plant *plant);
 };
 
 #endif

@@ -1,6 +1,23 @@
 #include "../include/Good.h"
+#include "../include/NeedsCare.h"
+#include "../include/Plant.h"
+#include "../include/Dead.h"
 
-void Good::update(Plant* plant) {
-	// TODO - implement Good::update
-	throw "Not yet implemented";
+void Good::degrade(Plant* plant) {
+	cout << plant->getSpecies() << " is starting to need care." << endl;
+	plant->setHealthState(new NeedsCare());
+	plant->notify();
+}
+
+void Good::improve(Plant* plant) {
+	// Already in good state; no improvement needed.
+	cout << plant->getSpecies() << " is already in good health." << endl;
+}
+
+string Good::getStatusMessage(Plant* plant) {
+	return plant->getSpecies() + " health: Good ";
+}
+
+bool Good::isDead() {
+	return false;
 }

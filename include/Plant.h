@@ -14,23 +14,35 @@ using namespace std;
 #include "PlantCareHandler.h"
 #include "GrowthState.h"
 #include "HealthState.h"
-//#include "GrowthObserver.h"
+#include "GrowthObserver.h"
 
-class GrowthObserver;
-
-class Plant {
+class Plant
+{
 
 protected:
 	string species;
 	int waterLevel;
 	int growthStage;
+
 private:
-	PlantCareHandler* careStrategy;
-	GrowthState* growthState;
-	HealthState* healthState;
+	PlantCareHandler *careStrategy;
+	GrowthState *growthState;
+	HealthState *healthState;
 	string climate;
 	string description;
 	double price;
+	string size; // added this "small", "medium", "large"
+
+	// For tracking care points
+	map<string, int> carePoints;
+	int currentCycleCount;
+
+	// growth cycle requirements
+	int seedCyclesNeeded;
+	int sproutCyclesNeeded;
+	int matureCyclesNeeded;
+
+	GrowthObserver *observer;
 
 public:
 	Plant();
@@ -45,27 +57,61 @@ public:
 
 	string getClimate();
 
-	virtual Plant* clone() = 0;
+	virtual Plant *clone() = 0;
 
-	void setCareStrategy(PlantCareHandler* strategy);
+	void setCareStrategy(PlantCareHandler *strategy);
 
-	void performWatering();
-
-	void setGrowthState(GrowthState* state);
+	void setGrowthState(GrowthState *state);
 
 	void grow();
 
-	void setHealthState(HealthState* state);
+	void setHealthState(HealthState *state);
 
 	void updateHealth();
 
-	void attach(GrowthObserver* observer);
+	void attach(GrowthObserver *observer);
 
-	void detach(GrowthObserver* observer);
+	void detach(GrowthObserver *observer);
 
 	void notify();
 
-	HealthState* getHealthState();
+	// for decorator, since it can alter the prices and desc.
+	virtual string getSpecies();
+	virtual void setPrice(double newPrice);
+	virtual void setDescription(string newDesc);
+
+	// for growth states
+	void intializeCareNeeds();
+
+	// care action methods (command)
+	void receiveWatering();
+	void receiveSunlight();
+	void receiveFertilizing();
+	void receivePruning();
+
+	void completeCareSession(); // called by the staff after all actions for the cycle are done
+
+	string getsize() const;
+	int getCurrentCycleCount() const;
+	int getSeedCyclesNeeded() const;
+	int getSproutCyclesNeeded() const;
+	int getMatureCyclesNeeded() const;
+	void resetCycleCount();
+
+	void printCurrentNeeds();
+	void printGrowthStatus();
+	void printHealthStatus();
+	void printFullStatus();
+
+	// inventory helpers
+	bool shouldRemoveFromInventory();
+	bool isReadyForStock();
+	bool isDead();
+
+protected:
+	// subclasses set their growth requirements
+	void setGrowthRequirements(int seed, int sprout, int mature);
+	void setSize(string s);
 };
 
 #endif

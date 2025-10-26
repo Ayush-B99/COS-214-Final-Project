@@ -15,6 +15,8 @@ using namespace std;
 #include "Plant.h"
 
 class CommMediator {
+
+
 public:
 	virtual ~CommMediator();
 

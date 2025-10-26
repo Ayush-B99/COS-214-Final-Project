@@ -1,5 +1,5 @@
-#ifndef CUSTOMER_H
-#define CUSTOMER_H
+#ifndef CLIENT_H
+#define CLIENT_H
 
 #include <iostream>
 #include <string>
@@ -11,13 +11,7 @@
 
 using namespace std;
 
-class Customer {
-
-
-public:
-	virtual double getDiscount() = 0;
-
-	~Customer();
+class Client {
 };
 
 #endif

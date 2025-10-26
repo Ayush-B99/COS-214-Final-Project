@@ -17,5 +17,5 @@ Nerve::~Nerve() {
 
 Plant* Nerve::clone() {
 	// TODO - implement Nerve::clone
-	throw "Not yet implemented";
+	return new Nerve(*this);
 }
