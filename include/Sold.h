@@ -21,7 +21,7 @@ class Sold : public GrowthState {
 
         string getStatusMessage(Plant* plant) override;
 
-        bool isSold();
+        bool isSold() override;
 };
 
 #endif
