@@ -121,28 +121,28 @@ void Plant::intializeCareNeeds() {
 
 void Plant::receiveWatering() {
 	if (carePoints.find("Water") != carePoints.end()) {
-		carePoints["Water"] == 100; //made the point 100 to indicate care received
+		carePoints["Water"] = 100; //made the point 100 to indicate care received
 		cout << species << " was watered." << endl;
 	}
 }
 
 void Plant::receiveSunlight() {
 	if (carePoints.find("Sunlight") != carePoints.end()) {
-		carePoints["Sunlight"] == 100; //made the point 100 to indicate care received
+		carePoints["Sunlight"] = 100; //made the point 100 to indicate care received
 		cout << species << " received sunlight." << endl;
 	}
 }
 
 void Plant::receiveFertilizing() {
 	if (carePoints.find("Fertilize") != carePoints.end()) {
-		carePoints["Fertilize"] == 100; //made the point 100 to indicate care received
+		carePoints["Fertilize"] = 100; //made the point 100 to indicate care received
 		cout << species << " was fertilized." << endl;
 	}
 }
 
 void Plant::receivePruning() {
 	if (carePoints.find("Prune") != carePoints.end()) {
-		carePoints["Prune"] == 100; //made the point 100 to indicate care received
+		carePoints["Prune"] = 100; //made the point 100 to indicate care received
 		cout << species << " was pruned." << endl;
 	}
 }

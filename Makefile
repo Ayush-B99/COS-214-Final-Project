@@ -26,6 +26,7 @@ SOURCES = $(SRCDIR)/Plant.cpp \
 		  $(SRCDIR)/Sprout.cpp \
 		  $(SRCDIR)/Mature.cpp \
 		  $(SRCDIR)/Sold.cpp \
+		  $(SRCDIR)/GrowthObserver.cpp \
 		  $(SRCDIR)/TestingMain.cpp 
 		  
 # 		  $(SRCDIR)/Plant.cpp \	
