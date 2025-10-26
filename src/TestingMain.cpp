@@ -12,14 +12,13 @@ int testObserverMediator()
 {
 
     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
-    CarnivorousPlantFactory *factory = new CarnivorousPlantFactory();
-    ;
+    CarnivorousPlantFactory factory;
 
-    // Plant *venusFlytrap = factory.createMediumPlant();
+    Plant *venusFlytrap = factory.createMediumPlant();
 
-    // venusFlytrap->printFullStatus();
+    venusFlytrap->printFullStatus();
 
-    // std::cout << "----------------------------------" << std::endl;
+    std::cout << "----------------------------------" << std::endl;
 
     return 0;
 }
