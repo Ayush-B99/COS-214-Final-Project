@@ -24,5 +24,9 @@ bool NeedsCare::isDead() {
 	return false;
 }
 
+string NeedsCare::getName() {
+	return "needsCare";
+}
+
 
 

@@ -25,7 +25,9 @@ public:
 
 	virtual string getStatusMessage(Plant* plant) = 0;
 
-	virtual bool isDead();
+	virtual bool isDead() = 0;
+
+	virtual string getName() = 0;
 };
 
 #endif

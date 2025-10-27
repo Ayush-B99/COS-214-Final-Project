@@ -15,13 +15,15 @@ using namespace std;
 
 class Sold : public GrowthState {
     public:
-        void grow(Plant* plant) override;
+        void grow(Plant* plant);
 
-        vector<string> getRequiredCare() override;
+        vector<string> getRequiredCare();
 
-        string getStatusMessage(Plant* plant) override;
+        string getStatusMessage(Plant* plant);
 
         bool isSold();
+
+        string getName();
 };
 
 #endif

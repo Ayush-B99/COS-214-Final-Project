@@ -36,7 +36,6 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
           $(SRCDIR)/TemperatePlantFactory.cpp \
           $(SRCDIR)/TropicalPlantFactory.cpp \
           $(SRCDIR)/CarnivorousPlantFactory.cpp \
-		  $(SRCDIR)/Plant.cpp \
 		  $(SRCDIR)/HealthState.cpp \
 		  $(SRCDIR)/Good.cpp \
 		  $(SRCDIR)/NeedsCare.cpp \
