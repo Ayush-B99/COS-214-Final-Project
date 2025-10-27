@@ -1,0 +1,145 @@
+#include "../include/PlantNode.h"
+
+PlantNode::PlantNode(string name) {
+	this->key = name;
+	this->left = nullptr;
+	this->right = nullptr;
+	this->plants;
+	cout << "New PlantNode with key " << name << " has been created!\n";
+}
+
+PlantNode::PlantNode(PlantNode* other) {
+	this->key = other->key;
+	left = nullptr;
+	right = nullptr;
+
+	//deep copy all plants in node
+	for (Plant* p : other->plants){
+		if (p){
+			plants.push_back(p->clone());
+		}
+	}
+
+	cout << "A copy of PlantNode with key " << other->key << " has been created!\n";
+
+	//recursively copy left and right subtrees
+	if (other->left){
+		left = new PlantNode(other->left);
+	}
+	if (other->right){
+		right = new PlantNode(other->right);
+	}
+
+
+}
+
+PlantNode::~PlantNode() {
+	for (Plant* p : plants){
+		delete p;
+	}
+
+	//delete left and right subtrees recursively
+	delete left;
+	delete right;
+}
+
+const string PlantNode::getKey() {
+	return this->key;
+}
+
+vector<Plant*> PlantNode::getPlants() {
+	return this->plants;
+}
+
+PlantNode* PlantNode::getLeft() {
+	return this->left;
+}
+
+PlantNode* PlantNode::getRight() {
+	return this->right;
+}
+
+void PlantNode::setLeft(PlantNode* left) {
+	this->left = left;
+}
+
+void PlantNode::setRight(PlantNode* right) {
+	this->right = right;
+}
+
+void PlantNode::addPlant(Plant* plant) {
+	plants.push_back(plant);
+}
+
+void PlantNode::addPlants(vector<Plant*> newPlants) {
+	for (Plant* p : newPlants){
+		plants.push_back(p);
+	}
+}
+
+bool PlantNode::removePlant(Plant* plant) {
+	int i = 0;
+	for (Plant* p : plants){
+		if (p == plant){
+			plants.erase(plants.begin() + i);
+			return true;
+		}
+		i++;
+	}
+	//did not find anything or plants is empty
+	return false;
+}
+
+vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
+	vector<Plant*> matches;
+	int i;
+	for (Plant* p : plants){
+		///todo: when states are fleshed out, use them to compare
+		if (p->getGrowthState() == state){ //currently pointer comparison, so wont work
+			matches.push_back(p);
+		}
+	}
+	cout << "Found and removed " << matches.size() << " plants based on growth state\n";
+	return matches;
+}
+
+vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
+	vector<Plant*> matches;
+	int i;
+	for (Plant* p : plants){
+		///todo: when states are fleshed out, use them to compare
+		if (p->getHealthState() == state){
+			matches.push_back(p);
+			plants.erase(plants.begin() + i);
+		}
+		i++;
+	}
+	cout << "Found and removed " << matches.size() << " plants based on health state\n";
+	return matches;
+}
+
+bool PlantNode::isLeaf() {
+	return (this->left == nullptr && this->right == nullptr);
+}
+
+void PlantNode::printNode(string prefix, bool isLeft){
+	//no i did not figure out this formatting on my own, nobody else has to know that though
+    //branch line and node index
+    cout << prefix;
+    cout << (isLeft ? "├── " : "└── ");
+    cout << key << " (" << plants.size() << " plant/s)" << endl;
+
+    //print details of each plant in vector
+    for (size_t i = 0; i < plants.size(); i++) {
+        cout << prefix;
+        cout << (isLeft ? "│   " : "    "); //align with branch
+        cout << "   > " << plants[i]->getSpecies();
+
+        if (plants[i]->getGrowthState() && plants[i]->getHealthState()) {
+            cout << " | Growth: " << plants[i]->getGrowthState()
+                 << " | Health: " << plants[i]->getHealthState();
+        }
+
+        cout << " | Price: R" << plants[i]->getPrice() << endl;
+    }
+}

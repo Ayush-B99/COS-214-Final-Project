@@ -1,7 +1,6 @@
-#include "Premium.h"
+#include "../include/Premium.h"
 
-double Premium::getDiscount() 
-{
-    // Premium customers get a higher discount
-    return 0.15; // 15% discount
+double Premium::getDiscount() {
+	// TODO - implement Premium::getDiscount
+	throw "Not yet implemented";
 }
