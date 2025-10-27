@@ -1,10 +1,5 @@
 #include "../include/Customer.h"
 
-// Customer::~Customer() {
-// 	// TODO - implement Customer::~Customer
-// 	throw "Not yet implemented";
-// }
-
 Customer::Customer(const string& name, CommMediator* mediator) 
     : customerName(name), commMediator(mediator) {
     if (commMediator) {
@@ -12,6 +7,11 @@ Customer::Customer(const string& name, CommMediator* mediator)
     }
 }
 Customer::~Customer() {
+}
+
+double Customer::getDiscount()
+{
+    return 0.0;
 }
 
 string Customer::getName() const {

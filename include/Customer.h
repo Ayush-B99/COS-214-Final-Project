@@ -18,8 +18,11 @@ class CommMediator;
 class StaffMember;
 class Command;
 class Plant;
+
 using namespace std;
+
 #include "CommMediator.h"
+
 class Customer {
 private:
     string customerName;
@@ -74,11 +77,7 @@ public:
 	 * @return Vector of strings representing past purchases
 	 */
 
-
-
-
-
-virtual double getDiscount() { return 0.0; }
+	virtual double getDiscount() { return 0.0; }
 
 	//TODO: implement functions for commMediator design pattern
 

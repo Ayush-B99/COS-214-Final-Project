@@ -1,16 +1,31 @@
 #include "../include/Company.h"
 
-double Company::getDiscount() {
-	// TODO - implement Company::getDiscount
-	throw "Not yet implemented";
+double Company::getDiscount() 
+{
+	double totalDiscount = 0.0;
+    for(Customer* customer : customers)
+    {
+        totalDiscount += customer->getDiscount();
+    }
+    return totalDiscount;
 }
 
-void Company::addCustomer(Customer* c) {
-	// TODO - implement Company::addCustomer
-	throw "Not yet implemented";
+void Company::addCustomer(Customer* c) 
+{
+	if(c != nullptr)
+    {
+        customers.push_back(c);
+    }
 }
 
-void Company::removeCustomer(Customer* c) {
-	// TODO - implement Company::removeCustomer
-	throw "Not yet implemented";
+void Company::removeCustomer(Customer* c) 
+{
+	for(auto it = customers.begin(); it != customers.end(); )
+    {
+        if(*it == c)
+        {
+            customers.erase(it);
+            break;
+        }
+    }
 }

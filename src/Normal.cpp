@@ -1,6 +1,7 @@
 #include "../include/Normal.h"
 
-double Normal::getDiscount() {
-	// TODO - implement Normal::getDiscount
-	throw "Not yet implemented";
+double Normal::getDiscount() 
+{
+	//normal customers get a standard discount 
+	return 0.05;
 }
