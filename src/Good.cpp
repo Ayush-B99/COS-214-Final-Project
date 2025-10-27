@@ -11,7 +11,7 @@ void Good::degrade(Plant *plant)
 {
 	cout << plant->getSpecies() << " is starting to need care." << endl;
 	plant->setHealthState(new NeedsCare());
-	plant->notify();
+
 }
 
 void Good::improve(Plant *plant)
@@ -28,4 +28,8 @@ string Good::getStatusMessage(Plant *plant)
 bool Good::isDead()
 {
 	return false;
+}
+
+string Good::getName() {
+	return "good";
 }

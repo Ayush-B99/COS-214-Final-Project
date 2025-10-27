@@ -313,42 +313,58 @@ void testBasicPlantCreation()
     cout << endl;
 }
 
-void testGrowthProgression()
-{
+void testGrowthProgression() {
     cout << "=== TEST 2: Growth Progression ===" << endl;
     TestPlant plant("Sunflower");
-    // TestObserver observer;
-    // plant.attach(&observer);
-
+    
     cout << "Initial state:" << endl;
     plant.printGrowthStatus();
+    plant.printCurrentNeeds();
 
-    for (int i = 0; i < 10; i++)
-    {
-        cout << "--- Care cycle " << (i + 1) << " ---\n";
-
-        plant.receiveWatering();
-        plant.receiveSunlight();
-
-        if (i >= 2)
-        {
-            plant.receiveFertilizing();
+    // Simulate progression through all growth stages
+    for (int i = 0; i < 15; i++) { // Increased to 15 to account for all stages
+        cout << "--- Care Cycle " << (i + 1) << " ---" << endl;
+        
+        // Print current needs to see what's required
+        plant.printCurrentNeeds();
+        
+        // ALWAYS provide ALL required care for the current growth stage
+        vector<string> requiredCare = plant.getGrowthState()->getRequiredCare();
+        
+        // Provide all required care actions
+        for (const string& care : requiredCare) {
+            if (care == "water") {
+                plant.receiveWatering();
+            } else if (care == "sunlight") {
+                plant.receiveSunlight();
+            } else if (care == "fertilizer") {
+                plant.receiveFertilizing();
+            } else if (care == "prune") {
+                plant.receivePruning();
+            }
         }
-        if (i >= 5)
-        {
-            plant.receivePruning();
-        }
-
+        
         plant.completeCareSession();
         plant.printGrowthStatus();
-
-        if (plant.shouldRemoveFromInventory())
-        {
-            cout << "big sad :( plant be dead, remove from inventory!" << endl;
+        
+        // Check if plant should be removed (dead or sold)
+        if (plant.shouldRemoveFromInventory()) {
+            if (plant.isDead()) {
+                cout << "Plant died! Remove from inventory." << endl;
+            } else {
+                cout << "Plant sold! Remove from inventory." << endl;
+            }
             break;
         }
+        
+        // Check if plant is ready for stock (mature and pruned)
+        if (plant.isReadyForStock()) {
+            cout << "*** PLANT READY FOR STOCK! ***" << endl;
+        }
+        
+        cout << endl;
     }
-    // plant.detach(&observer);
+    
     cout << endl;
 }
 

@@ -26,6 +26,8 @@ public:
 	string getStatusMessage(Plant *plant);
 
 	bool isDead();
+
+	string getName();
 };
 
 #endif

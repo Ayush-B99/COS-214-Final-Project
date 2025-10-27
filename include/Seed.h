@@ -24,7 +24,7 @@ public:
 
 	vector<string> getRequiredCare();
 
-	bool isMature();
+	string getName();
 };
 
 #endif

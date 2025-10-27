@@ -23,7 +23,10 @@ class Plant
 
 protected:
 	string species;
-	int waterLevel;
+	int waterLevel; //starts at 100
+	int sunlightLevel; //starts at 100
+	int fertilizerLevel; //starts at 100
+	int pruneLevel; //starts at 100
 	int growthStage;
 
 private:
@@ -35,8 +38,6 @@ private:
 	double price;
 	string size; // added this "small", "medium", "large"
 
-	// For tracking care points
-	map<string, int> carePoints;
 	int currentCycleCount;
 
 	// growth cycle requirements
@@ -45,6 +46,8 @@ private:
 	int matureCyclesNeeded;
 
 	ConcreteGrowthObserver *observer;
+
+	bool readyForStock; //MIGHT NEED TO GET RID OF IDK HOW WE GONNA HANDLE THIS
 
 public:
 	Plant();
@@ -69,7 +72,7 @@ public:
 
 	void setHealthState(HealthState *state);
 
-	void updateHealth();
+	
 
 	void attach(ConcreteGrowthObserver *observer);
 
@@ -86,7 +89,22 @@ public:
 
 	HealthState *getHealthState();
 
-	void intializeCareNeeds();
+
+	void tick(); //called every second for decay resources
+	bool isReadyForStock();
+	void markReadyForStock();
+
+	//getters for getting the attribute levels
+	int getWaterLevel() const;
+	int getSunlightLevel() const;
+	int getFertilizerLevel() const;
+	int getPruneLevel() const;
+
+	//restore methods (to reset)
+	void restoreWater();
+	void restoreSunlight();
+	void restoreFertilizer();
+	void restorePrune();
 
 	// care action methods (command)
 	void receiveWatering();
@@ -110,7 +128,6 @@ public:
 
 	// inventory helpers
 	bool shouldRemoveFromInventory();
-	bool isReadyForStock();
 	bool isDead();
 	bool isMature();
 
@@ -118,6 +135,8 @@ protected:
 	// subclasses set their growth requirements
 	void setGrowthRequirements(int seed, int sprout, int mature);
 	void setSize(string s);
+
+	void updateHealth();
 };
 
 #endif

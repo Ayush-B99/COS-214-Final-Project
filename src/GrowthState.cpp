@@ -9,10 +9,10 @@ GrowthState::~GrowthState()
 
 bool GrowthState::isSold()
 {
-	throw "Not yet implemented";
+	return false;
 }
 
 bool GrowthState::isMature()
 {
-	throw "Not yet implemented";
+	return false;
 }

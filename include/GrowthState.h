@@ -30,6 +30,8 @@ public:
 	virtual bool isSold();
 
 	virtual bool isMature();
+
+	virtual string getName() = 0;
 };
 
 #endif
