@@ -46,7 +46,13 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/Mature.cpp \
 		  $(SRCDIR)/Sold.cpp \
 		  $(SRCDIR)/GrowthObserver.cpp \
-          $(SRCDIR)/TestingMain.cpp
+          $(SRCDIR)/TestingMain.cpp \
+		  $(SRCDIR)/CommMediator.cpp \
+		  $(SRCDIR)/ConcreteCommMediator.cpp \
+		  $(SRCDIR)/StaffMember.cpp \
+		  $(SRCDIR)/Worker.cpp \
+		  $(SRCDIR)/Customer.cpp \
+		  $(SRCDIR)/Manager.cpp
 
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
