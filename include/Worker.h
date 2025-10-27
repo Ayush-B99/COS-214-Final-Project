@@ -51,6 +51,7 @@ public:
 
 	void providePlantCareAdvice(Customer* customer, const string& plantType);
     void checkInventory(const string& plantType);
+
 	//////////////////////so the stuff below was in the uml and um i have no idea what it is so im leaving it unimplemented for now - chinmayi//////////////////////
 	// void getComm();
 
@@ -61,10 +62,10 @@ public:
 	// void getGrowth();
 
 	// void setGrowth();
-	  void getComm() override {}
-   void setComm() override {}
-   void getGrowth() override {}
-   void setGrowth() override {}
+	void getComm() override {}
+   	void setComm() override {}
+   	void getGrowth() override {}
+   	void setGrowth() override {}
 };
 
 #endif
