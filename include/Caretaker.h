@@ -3,31 +3,36 @@
 
 #include <iostream>
 #include <string>
+#include <system_error>
 #include <vector>
 #include <memory>
 #include <map>
 #include <sstream>
 #include <stack>
-
 #include "Memento.h"
 
 using namespace std;
 
-template <typename T>
-
+template<typename T>
 class Caretaker
 {
-
-public:
-	vector<Memento<T>> mementos;
-
-	void addMemento(Memento<T> m);
-
-	void undo();
-
-	Memento<T> getMemento(int index);
-
-	Memento<T> getLastMemento();
+    private:
+    	vector<Memento<T>> mementos;
+    
+    public:
+        Caretaker();
+        
+        ~Caretaker();
+        
+    	void addMemento(Memento<T> m);
+    
+    	void undo();
+    
+    	Memento<T> getMemento(int index);
+    
+    	Memento<T> getLastMemento();
 };
+
+#include "../src/Caretaker.cpp"
 
 #endif
