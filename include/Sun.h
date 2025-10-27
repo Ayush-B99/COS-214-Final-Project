@@ -24,8 +24,6 @@ public:
 	Sun(Plant *plant);
 
 	void execute();
-
-	void undo();
 };
 
 #endif

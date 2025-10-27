@@ -16,8 +16,7 @@ class Plant;
 class PlantCareHandler
 {
 
-private:
-	PlantCareHandler *successor;
+protected:
 	PlantCareHandler *next;
 
 public:

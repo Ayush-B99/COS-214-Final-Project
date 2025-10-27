@@ -24,8 +24,6 @@ public:
 	Water(Plant *plant);
 
 	void execute();
-
-	void undo();
 };
 
 #endif

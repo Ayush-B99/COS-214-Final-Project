@@ -17,7 +17,6 @@ Plant::Plant(string species) : species(species), waterLevel(100), sunlightLevel(
 {
 	growthState = new Seed();
 	healthState = new Good();
-	
 }
 
 Plant::~Plant()
@@ -129,8 +128,6 @@ void Plant::setDescription(string newDesc)
 	description = newDesc;
 }
 
-
-
 void Plant::receiveWatering()
 {
 	restoreWater();
@@ -154,31 +151,39 @@ void Plant::receivePruning()
 void Plant::completeCareSession()
 {
 	cout << "\nCare session completed for " << species << ". Resource levels:" << endl;
-    cout << "  Water: " << waterLevel << "%" << endl;
-    cout << "  Sun: " << sunlightLevel << "%" << endl;
-    cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
-    cout << "  Prune: " << pruneLevel << "%" << endl;
+	cout << "  Water: " << waterLevel << "%" << endl;
+	cout << "  Sun: " << sunlightLevel << "%" << endl;
+	cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
+	cout << "  Prune: " << pruneLevel << "%" << endl;
 
 	vector<string> requiredCare = growthState->getRequiredCare();
 	bool successfulCycles = true;
 
-	for (const string& care : requiredCare) {
-        if (care == "Water" && waterLevel < 60) successfulCycles = false;
-        if (care == "Sunlight" && sunlightLevel < 60) successfulCycles = false;
-        if (care == "Fertilizer" && fertilizerLevel < 60) successfulCycles = false;
-        if (care == "Prune" && pruneLevel < 60) successfulCycles = false;
-    }
+	for (const string &care : requiredCare)
+	{
+		if (care == "Water" && waterLevel < 60)
+			successfulCycles = false;
+		if (care == "Sunlight" && sunlightLevel < 60)
+			successfulCycles = false;
+		if (care == "Fertilizer" && fertilizerLevel < 60)
+			successfulCycles = false;
+		if (care == "Prune" && pruneLevel < 60)
+			successfulCycles = false;
+	}
 
-	if (successfulCycles) {
-        cout << species << " care cycle completed successfully!" << endl;
-        currentCycleCount++;
-        growthState->grow(this); // Check for growth advancement
-    } else {
-        cout << species << " care cycle incomplete!" << endl;
-        // Health degradation is handled by updateHealthBasedOnResources()
-    }
-    
-    cout << endl;
+	if (successfulCycles)
+	{
+		cout << species << " care cycle completed successfully!" << endl;
+		currentCycleCount++;
+		growthState->grow(this); // Check for growth advancement
+	}
+	else
+	{
+		cout << species << " care cycle incomplete!" << endl;
+		// Health degradation is handled by updateHealthBasedOnResources()
+	}
+
+	cout << endl;
 }
 
 string Plant::getsize() const
@@ -211,24 +216,28 @@ void Plant::resetCycleCount()
 	currentCycleCount = 0;
 }
 
-void Plant::printCurrentNeeds() {
-    cout << "\n" << species << " Current Resource Levels: " << endl;
-    cout << "  Water: " << waterLevel << "%" << endl;
-    cout << "  Sun: " << sunlightLevel << "%" << endl;
-    cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
-    cout << "  Prune: " << pruneLevel << "%" << endl;
-    
-    vector<string> required = growthState->getRequiredCare();
-    if (!required.empty()) {
-        cout << "Required care actions: ";
-        for (const string& care : required) {
-            cout << care << " ";
-        }
-        cout << endl;
-    }
-    
-    cout << "Ready for stock: " << (readyForStock ? "Yes" : "No") << endl;
-    cout << endl;
+void Plant::printCurrentNeeds()
+{
+	cout << "\n"
+		 << species << " Current Resource Levels: " << endl;
+	cout << "  Water: " << waterLevel << "%" << endl;
+	cout << "  Sun: " << sunlightLevel << "%" << endl;
+	cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
+	cout << "  Prune: " << pruneLevel << "%" << endl;
+
+	vector<string> required = growthState->getRequiredCare();
+	if (!required.empty())
+	{
+		cout << "Required care actions: ";
+		for (const string &care : required)
+		{
+			cout << care << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Ready for stock: " << (readyForStock ? "Yes" : "No") << endl;
+	cout << endl;
 }
 
 void Plant::printGrowthStatus()
@@ -271,7 +280,8 @@ bool Plant::isReadyForStock()
 	return readyForStock && growthState->isMature() && !healthState->isDead();
 }
 
-void Plant::markReadyForStock() {
+void Plant::markReadyForStock()
+{
 	readyForStock = true;
 	cout << species << " is ready to be moved to stock" << endl;
 }
@@ -303,22 +313,27 @@ GrowthState *Plant::getGrowthState()
 	return growthState;
 }
 
-int Plant::getWaterLevel() const {
+int Plant::getWaterLevel() const
+{
 	return waterLevel;
 }
 
-int Plant::getSunlightLevel() const {
+int Plant::getSunlightLevel() const
+{
 	return sunlightLevel;
 }
-int Plant::getFertilizerLevel() const {
+int Plant::getFertilizerLevel() const
+{
 	return fertilizerLevel;
 }
 
-int Plant::getPruneLevel() const {
+int Plant::getPruneLevel() const
+{
 	return pruneLevel;
 }
 
-void Plant::tick() {
+void Plant::tick()
+{
 	waterLevel = max(0, waterLevel - 1);
 	sunlightLevel = max(0, sunlightLevel - 1);
 	fertilizerLevel = max(0, fertilizerLevel - 1);
@@ -326,55 +341,96 @@ void Plant::tick() {
 
 	updateHealth();
 
-	if (growthState->isMature() && !healthState->isDead()) {
-		if (currentCycleCount >= 10) {
+	if (growthState->isMature() && !healthState->isDead())
+	{
+		if (currentCycleCount >= 10)
+		{
 			setHealthState(new Dead());
 		}
 	}
 }
 
-void Plant::updateHealth() {
-	if (healthState->isDead()) {
+void Plant::updateHealth()
+{
+	if (healthState->isDead())
+	{
 		return;
 	}
 
-	int avgLevel = (waterLevel + sunlightLevel + fertilizerLevel + pruneLevel)/4;
+	int avgLevel = (waterLevel + sunlightLevel + fertilizerLevel + pruneLevel) / 4;
 
-	string currentHealth =  healthState->getName();
+	string currentHealth = healthState->getName();
 
-	if (avgLevel <= 20) { //below 20%
-		if (currentHealth != "dead") {
+	if (avgLevel <= 20)
+	{ // below 20%
+		if (currentHealth != "dead")
+		{
 			setHealthState(new Dead());
 		}
 	}
-	else if (avgLevel <= 60) { //below 60% - move to needsCare
-		if(currentHealth == "good") {
+	else if (avgLevel <= 60)
+	{ // below 60% - move to needsCare
+		if (currentHealth == "good")
+		{
 			setHealthState(new NeedsCare());
 		}
 	}
-	else { //above 60% - move to good
-		if (currentHealth == "needsCare") {
+	else
+	{ // above 60% - move to good
+		if (currentHealth == "needsCare")
+		{
 			setHealthState(new Good());
 		}
 	}
 }
 
-void Plant::restoreWater() {
+void Plant::restoreWater()
+{
 	waterLevel = 100;
 	cout << species << " Water has been restored to 100%" << endl;
 }
 
-void Plant::restoreSunlight() {
+void Plant::restoreSunlight()
+{
 	sunlightLevel = 100;
 	cout << species << " Sunlight has been restored to 100%" << endl;
 }
 
-void Plant::restoreFertilizer() {
+void Plant::restoreFertilizer()
+{
 	fertilizerLevel = 100;
 	cout << species << " Fertilizer has been restored to 100%" << endl;
 }
 
-void Plant::restorePrune() {
+void Plant::restorePrune()
+{
 	pruneLevel = 100;
 	cout << species << " Prune has been restored to 100%" << endl;
+}
+
+void Plant::handleCareRequest()
+{
+	if (careStrategy)
+	{
+		careStrategy->handleCareRequest(this);
+	}
+	else
+	{
+		cout << "No care strategy set for " << species << endl;
+	}
+}
+
+bool Plant::needsWater()
+{
+	return waterLevel < 60;
+}
+
+bool Plant::needsSun()
+{
+	return sunlightLevel < 60;
+}
+
+bool Plant::needsFertilizer()
+{
+	return fertilizerLevel < 60;
 }

@@ -24,8 +24,6 @@ public:
 	Fertilizer(Plant *plant);
 
 	void execute();
-
-	void undo();
 };
 
 #endif
