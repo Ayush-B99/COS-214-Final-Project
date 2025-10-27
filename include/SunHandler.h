@@ -1,5 +1,5 @@
-#ifndef TEMPERATECAREHANDLER_H
-#define TEMPERATECAREHANDLER_H
+#ifndef SUNHANDLER_H
+#define SUNHANDLER_H
 
 #include <iostream>
 #include <string>
@@ -13,11 +13,11 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 
-class TemperateCareHandler : public PlantCareHandler {
-
+class SunHandler : public PlantCareHandler
+{
 
 public:
-	void temperateCare();
+	void handleCareRequest(Plant *plant);
 
 	void message();
 };

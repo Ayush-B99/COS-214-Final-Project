@@ -1,5 +1,5 @@
-#ifndef SUCCULENTCAREHANDLER_H
-#define SUCCULENTCAREHANDLER_H
+#ifndef FERTILIZERHANDLER_H
+#define FERTILIZERHANDLER_H
 
 #include <iostream>
 #include <string>
@@ -13,11 +13,11 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 
-class SucculentCareHandler : public PlantCareHandler {
-
+class FertilizerHandler : public PlantCareHandler
+{
 
 public:
-	void succulentCare();
+	void handleCareRequest(Plant *plant);
 
 	void message();
 };

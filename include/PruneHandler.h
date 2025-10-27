@@ -1,5 +1,5 @@
-#ifndef CARNIVOROUSCAREHANDLER_H
-#define CARNIVOROUSCAREHANDLER_H
+#ifndef PRUNEHANDLER_H
+#define PRUNEHANDLER_H
 
 #include <iostream>
 #include <string>
@@ -13,11 +13,11 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 
-class CarnivorousCareHandler : public PlantCareHandler {
-
+class PruneHandler : public PlantCareHandler
+{
 
 public:
-	void carnivorousCare();
+	void handleCareRequest(Plant *plant);
 
 	void message();
 };

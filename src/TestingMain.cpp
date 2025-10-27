@@ -25,7 +25,6 @@
 #include "../include/Seed.h"
 #include "../include/Sprout.h"
 #include "../include/Mature.h"
-#include "../include/Sold.h"
 #include "../include/Good.h"
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
