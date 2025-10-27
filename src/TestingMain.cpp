@@ -29,9 +29,11 @@ using namespace std;
 //for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
+#include "../include/Stock.h"
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
+
 
 
 void testAbstractFactory() {
@@ -384,7 +386,7 @@ void testBasicPlantCreation() {
     cout << "Price: $" << plant.getPrice() << endl;
     cout << "Size: " << plant.getsize() << endl;
     cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
-    cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
+    //cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
     
     plant.printFullStatus();
     cout << endl;
@@ -593,11 +595,121 @@ int main()
 
 
 void testInventory(){
+cout << "=== Inventory Testing ===\n";
+
     Inventory* inv = new Inventory();
 
-    //add one large carnivorous plant
-    inv->addLargePlant(inv->getCarnivorousFactory());
+    // Add some plants
+    GreenHouse* carnivorous = inv->getCarnivorousFactory();
+    GreenHouse* tropical = inv->getTropicalFactory();
+    GreenHouse* temperate = inv->getTemperateFactory();
+
+    cout << "\n-- Adding plants --\n";
+    inv->addLargePlant(carnivorous);
+    inv->addLargePlant(tropical);
+    inv->addMediumPlant(temperate);
     inv->printInventory();
+
+    // Add duplicates and store pointers to manipulate later
+    cout << "\n-- Adding duplicates --\n";
+    Plant* healthmanip = inv->addLargePlant(carnivorous);
+    Plant* torem = inv->addLargePlant(carnivorous);
+    Plant* growthmanip = inv->addMediumPlant(temperate);
+    inv->addMediumPlant(tropical);
+    Plant* uniquerem = inv->addSmallPlant(carnivorous);
+    inv->printInventory();
+
+    // Direct removals
+    cout << "\n-- Direct removals --\n";
+    inv->removePlant(torem);
+    inv->printInventory();
+    inv->removePlant(uniquerem);
+    inv->printInventory();
+
+    // Test getPlants by specific growth and health states
+    cout << "\n-- Testing getPlants variants --\n";
+    GrowthState* seedling = new Seed();
+    GrowthState* mature = new Mature();
+    HealthState* healthy = new Good();
+    HealthState* dead = new Dead();
+
+    cout << "Plants in seedling state: " << inv->getPlants(seedling).size() << endl;
+    cout << "Plants in mature state: " << inv->getPlants(mature).size() << endl;
+    cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
+    cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
+
+    // Manipulate some plant states manually
+    cout << "\n-- Manually manipulating states --\n";
+    if (healthmanip) healthmanip->setHealthState(new Dead());
+    cout << "setting states\n";
+    if (growthmanip) growthmanip->setGrowthState(new Mature());
+    inv->printInventory();
+
+    // Remove by state across entire tree
+    cout << "\n-- Removing by GrowthState (Mature) --\n";
+    vector<Plant*> removedMature = inv->removePlants(mature);
+    cout << "Removed " << removedMature.size() << " mature plants.\n";
+    inv->printInventory();
+
+    cout << "\n-- Removing by HealthState (Dead) --\n";
+    vector<Plant*> removedDead = inv->removePlants(dead);
+    cout << "Removed " << removedDead.size() << " dead plants.\n";
+    inv->printInventory();
+
+    // Re-add a few plants for next phase
+    cout << "\n-- Re-adding plants for further tests --\n";
+    Plant* p1 = inv->addLargePlant(tropical);
+    Plant* p2 = inv->addSmallPlant(carnivorous);
+    Plant* p3 = inv->addMediumPlant(temperate);
+    if (p1) p1->setGrowthState(new Mature());
+    if (p3) p3->setGrowthState(new Mature());
+    if (p2) p2->setHealthState(new Dead());
+    inv->printInventory();
+
+    // Test moveValidPlantsToStock
+    // cout << "\n-- Testing moveValidPlantsToStock --\n";
+    // Storage* stock = new Stock();
+    // inv->moveValidPlantsToStock(stock);
+    // cout << "Stock contents after move:\n";
+    //stock->printStorage();
+
+    // Test cleanUpDeadPlants (should remove dead ones)
+    cout << "\n-- Testing cleanUpDeadPlants --\n";
+    inv->cleanUpDeadPlants();
+    inv->printInventory();
+
+    // Remove by string key
+    cout << "\n-- Testing removePlants(string key, GrowthState*) --\n";
+    vector<Plant*> removedByKeyGrowth = inv->removePlants("TropicalPlant", mature);
+    cout << "Removed " << removedByKeyGrowth.size() << " by key+growth.\n";
+    inv->printInventory();
+
+    cout << "\n-- Testing removePlants(string key, HealthState*) --\n";
+    vector<Plant*> removedByKeyHealth = inv->removePlants("CarnivorousPlant", healthy);
+    cout << "Removed " << removedByKeyHealth.size() << " by key+health.\n";
+    inv->printInventory();
+
+    // Test getNodeCount
+    cout << "\n-- Node count --\n";
+    inv->getNodeCount();
+
+    // Test iterator manually
+    cout << "\n-- Testing iterator traversal --\n";
+    InventoryIterator it(inv->getRoot());
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
+
+    cout << "\n=== All tests completed ===\n";
+
+    delete seedling;
+    delete mature;
+    delete healthy;
+    delete dead;
+    //delete stock;
+    delete inv;
 }
 
 /*

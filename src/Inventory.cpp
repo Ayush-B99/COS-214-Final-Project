@@ -129,6 +129,12 @@ void Inventory::removePlant(Plant* plant) {
 
 	//now try to remove from this node's vector
 	node->removePlant(plant);
+
+		//if node became empty, remove the node from the tree, and update the root
+	if (node->getPlants().empty()){
+		plantCatalog = removeNode(plantCatalog, node->getKey());
+	}
+	
 	cout << "Plant removed from " << node->getKey() << " node\n";
 }
 

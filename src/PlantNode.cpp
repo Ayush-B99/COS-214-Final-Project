@@ -136,8 +136,8 @@ void PlantNode::printNode(string prefix, bool isLeft){
         cout << "   > " << plants[i]->getSpecies();
 
         if (plants[i]->getGrowthState() && plants[i]->getHealthState()) {
-            cout << " | Growth: " << plants[i]->getGrowthState()
-                 << " | Health: " << plants[i]->getHealthState();
+            cout << " | Growth: " << plants[i]->getGrowthState()->getName()
+                 << " | Health: " << plants[i]->getHealthState()->getName();
         }
 
         cout << " | Price: R" << plants[i]->getPrice() << endl;

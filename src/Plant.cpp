@@ -83,7 +83,7 @@ void Plant::setHealthState(HealthState *state)
 	}
 	this->healthState = state;
 
-	observer->onGrowthChange(); // notify observer of health state change
+	if (observer) observer->onGrowthChange(); // notify observer of health state change
 }
 
 // void Plant::updateHealth() { //Took this out because i need to come back to it, i dont have an update function yet and completeCareSession needs the improve and degrade functions to move from needsCare to good, I may be stupid but its probabaly something dumb asf :)
