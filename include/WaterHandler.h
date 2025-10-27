@@ -1,5 +1,5 @@
-#ifndef TROPICALCAREHANDLER_H
-#define TROPICALCAREHANDLER_H
+#ifndef WATERHANDLER_H
+#define WATERHANDLER_H
 
 #include <iostream>
 #include <string>
@@ -13,11 +13,11 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 
-class TropicalCareHandler : public PlantCareHandler {
-
+class WaterHandler : public PlantCareHandler
+{
 
 public:
-	void tropicalCare();
+	void handleCareRequest(Plant *plant);
 
 	void message();
 };
