@@ -1,30 +1,33 @@
-#include "../include/Mature.h"
-#include "../include/Plant.h"
-#include "../include/Sold.h"
+#ifndef MATURE_H
+#define MATURE_H
 
-void Mature::grow(Plant* plant) {
-	if (plant->getCurrentCycleCount() >= plant->getMatureCyclesNeeded()) {
-    	plant->setGrowthState(new Sold());
-        plant->resetCycleCount();
-        plant->notify();
-    }
-}
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <map>
+#include <sstream>
+#include <stack>
 
-vector<string> Mature::getRequiredCare() {
-	return {"Water", "sunlight", "fertilizer", "prune"};
-}
+using namespace std;
 
-string Mature::getStatusMessage(Plant* plant) {
-    int current = plant->getCurrentCycleCount();
-    int needed = plant->getMatureCyclesNeeded();
-    return plant->getSpecies() + " (Mature): " + to_string(current) + "/" + to_string(needed) + " care cycles completed";
-}
+#include "GrowthState.h"
+#include "Plant.h"
 
-bool Mature::isMature() {
-	return true;
-}
+class Mature : public GrowthState {
 
-string Mature::getName() {
-    return "mature";
-}
 
+public:
+	void grow(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	string getStatusMessage(Plant* plant);
+
+	bool isMature();
+
+	string getName();
+	
+};
+
+#endif

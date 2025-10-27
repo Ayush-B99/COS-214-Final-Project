@@ -12,7 +12,48 @@ BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
+		  $(SRCDIR)/GreenHouse.cpp \
+		  $(SRCDIR)/Plant.cpp \
+          $(SRCDIR)/SmallPlant.cpp \
+          $(SRCDIR)/MediumPlant.cpp \
+          $(SRCDIR)/LargePlant.cpp \
+          $(SRCDIR)/Daisy.cpp \
+          $(SRCDIR)/AloeVera.cpp \
+          $(SRCDIR)/WhiteOak.cpp \
+          $(SRCDIR)/HenAndChicks.cpp \
+          $(SRCDIR)/Nerve.cpp \
+          $(SRCDIR)/Lilac.cpp \
+          $(SRCDIR)/BirdOfParadise.cpp \
+          $(SRCDIR)/Condelabra.cpp \
+          $(SRCDIR)/Rubber.cpp \
+          $(SRCDIR)/Sundew.cpp \
+          $(SRCDIR)/Pitcher.cpp \
+          $(SRCDIR)/Nepenthes.cpp \
+          $(SRCDIR)/PlantDecorator.cpp \
+          $(SRCDIR)/PotDecorator.cpp \
+          $(SRCDIR)/FertilizerDecorator.cpp \
+          $(SRCDIR)/TemperatePlantFactory.cpp \
+          $(SRCDIR)/TropicalPlantFactory.cpp \
+          $(SRCDIR)/CarnivorousPlantFactory.cpp \
+		  $(SRCDIR)/HealthState.cpp \
+		  $(SRCDIR)/Good.cpp \
+		  $(SRCDIR)/NeedsCare.cpp \
+		  $(SRCDIR)/Dead.cpp \
+		  $(SRCDIR)/GrowthState.cpp \
+		  $(SRCDIR)/Seed.cpp \
+		  $(SRCDIR)/Sprout.cpp \
+		  $(SRCDIR)/Mature.cpp \
+		  $(SRCDIR)/Sold.cpp \
+		  $(SRCDIR)/GrowthObserver.cpp \
+          $(SRCDIR)/TestingMain.cpp \
+		  $(SRCDIR)/CommMediator.cpp \
+		  $(SRCDIR)/ConcreteCommMediator.cpp \
+		  $(SRCDIR)/StaffMember.cpp \
+		  $(SRCDIR)/Worker.cpp \
+		  $(SRCDIR)/ConcreteGrowthObserver.cpp \
+		  $(SRCDIR)/Customer.cpp \
+		  $(SRCDIR)/Manager.cpp
 
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
