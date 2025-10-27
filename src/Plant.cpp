@@ -17,6 +17,12 @@ Plant::Plant(string species) :species(species), waterLevel(0), growthStage(0),ca
 	intializeCareNeeds();
 }
 
+Plant::Plant(const Plant& other) : species(other.species), waterLevel(other.waterLevel), growthStage(other.growthStage), careStrategy(NULL), growthState(NULL), healthState(NULL), climate(other.climate), description(other.description), price(other.price), observer(NULL), currentCycleCount(other.currentCycleCount), seedCyclesNeeded(other.seedCyclesNeeded), sproutCyclesNeeded(other.sproutCyclesNeeded), matureCyclesNeeded(other.matureCyclesNeeded) {
+	growthState = new Seed();
+	healthState = new Good();
+	intializeCareNeeds();
+}
+
 Plant::~Plant() {
 	// only deallocate state and strat patterns for now
 	if (growthState) {

@@ -117,6 +117,8 @@ void testAbstractFactory() {
     delete carnivorousMedium;
     delete carnivorousLarge;
     delete clonedDaisy;
+    delete clonedLilac;
+    delete clonedWhiteOak;
 }
 
 void testDecoratorPattern() {
@@ -476,7 +478,7 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        // testAbstractFactory();
+        testAbstractFactory();
         testDecoratorPattern();
         testPatternsTogether();
 

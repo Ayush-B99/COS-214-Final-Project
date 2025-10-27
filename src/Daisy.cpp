@@ -6,9 +6,9 @@ Daisy::Daisy() : SmallPlant("Daisy") {
     setDescription("A cheerful Daisy with white petals");
 }
 
-Daisy::Daisy(Daisy& other) : SmallPlant(other) {
+Daisy::Daisy(const Daisy& other) : SmallPlant(other) {
 	// TODO - implement Daisy::Daisy
-	setPrice(other.getPrice());
+	// setPrice(other.getPrice());
 }
 
 Daisy::~Daisy() {
@@ -17,5 +17,6 @@ Daisy::~Daisy() {
 
 Plant* Daisy::clone() {
 	// TODO - implement Daisy::clone
-	return new Daisy(*this);
+	Plant* newDaisy = new Daisy(*this);
+	return newDaisy;
 }

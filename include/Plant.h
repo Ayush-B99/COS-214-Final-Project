@@ -53,6 +53,8 @@ public:
 	Plant(string species);
 
 	virtual ~Plant();
+	
+	Plant(const Plant& other);
 
 	virtual string getSpecies();
 
