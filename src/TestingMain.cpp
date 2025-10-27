@@ -14,7 +14,6 @@ using namespace std;
 #include "../include/Seed.h"
 #include "../include/Sprout.h"
 #include "../include/Mature.h"
-#include "../include/Sold.h"
 #include "../include/Good.h"
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
@@ -27,6 +26,13 @@ using namespace std;
 #include "../include/PotDecorator.h"
 #include "../include/FertilizerDecorator.h"
 #include "../include/PlantDecorator.h"
+//for inventory functionality
+#include "../include/Storage.h"
+#include "../include/Inventory.h"
+#include "../include/PlantNode.h"
+#include "../include/Iterator.h"
+#include "../include/InventoryIterator.h"
+
 
 void testAbstractFactory() {
     cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
@@ -557,17 +563,17 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testSoldState();
-        testDeadState();
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testSoldState();
+        // testDeadState();
         testInventory();
 
 
@@ -587,7 +593,11 @@ int main()
 
 
 void testInventory(){
-    
+    Inventory* inv = new Inventory();
+
+    //add one large carnivorous plant
+    inv->addLargePlant(inv->getCarnivorousFactory());
+    inv->printInventory();
 }
 
 /*

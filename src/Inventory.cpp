@@ -28,7 +28,7 @@ void Inventory::setClimate(GreenHouse* factory) {	greenHouses.push_back(factory)
 Plant* Inventory::addSmallPlant(GreenHouse* house) {
 	if (!house){
 		cout << "Can't add small plant, invalid greenhouse.\n";
-		return;
+		return nullptr;
 	}
 
 	Plant* toAdd = house->createSmallPlant();
@@ -41,7 +41,7 @@ Plant* Inventory::addSmallPlant(GreenHouse* house) {
 Plant* Inventory::addMediumPlant(GreenHouse* house) {
 	if (!house){
 		cout << "Can't add small plant, invalid greenhouse.\n";
-		return;
+		return nullptr;
 	}
 
 	Plant* toAdd = house->createMediumPlant();
@@ -54,7 +54,7 @@ Plant* Inventory::addMediumPlant(GreenHouse* house) {
 Plant* Inventory::addLargePlant(GreenHouse* house) {
 	if (!house){
 		cout << "Can't add small plant, invalid greenhouse.\n";
-		return;
+		return nullptr;
 	}
 
 	Plant* toAdd = house->createLargePlant();
@@ -217,7 +217,7 @@ PlantNode* Inventory::removeByGrowthRecursive(PlantNode* node, GrowthState* stat
 
 PlantNode* Inventory::removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches){
 	//end of branch
-	if (!node) return;
+	if (!node) return nullptr;
 
 	node->setLeft(removeByHealthRecursive(node->getLeft(), state, matches));
     node->setRight(removeByHealthRecursive(node->getRight(), state, matches));

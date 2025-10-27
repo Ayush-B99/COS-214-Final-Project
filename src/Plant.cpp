@@ -273,7 +273,7 @@ bool Plant::isReadyForStock()
 
 void Plant::markReadyForStock() {
 	readyForStock = true;
-	cout << species << " is ready to be moved to stock" << endl;
+	cout << species << " iss ready to be moved to stock" << endl;
 }
 
 bool Plant::isDead()
