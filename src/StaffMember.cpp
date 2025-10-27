@@ -1,53 +1,45 @@
 #include "../include/StaffMember.h"
+#include <iostream>
+using namespace std;
 
-// StaffMember::StaffMember()
-// {
-// }
-
-// StaffMember::~StaffMember()
-// {
-// }
-
-void StaffMember::setMediator(ConcreteGrowthMediator *mediator)
+StaffMember::StaffMember(const string &name, CommMediator *mediator)
+	: mediator(nullptr), currentState(), commandHistory(), commMediator(mediator), staffName(name), isAvailable(true)
 {
-	this->mediator = mediator;
-
-	mediator->addStaffMember(this);
+	if (commMediator)
+	{
+		commMediator->addStaff(this);
+	}
 }
 
 void StaffMember::setCommMediator(CommMediator *commMediator)
 {
 	this->commMediator = commMediator;
-}
 
-void StaffMember::setCommand(Command *cmd)
-{
-	cout << "command being set" << endl;
-	commandQueue.push_back(cmd);
-}
-
-void StaffMember::executeCommand()
-{
-	cout << "commands being executed" << endl;
-	busy = true;
-	for (Command *cmd : commandQueue)
+	if (commMediator)
 	{
-		cmd->execute();
-		commandHistory.push_back(cmd);
+		commMediator->addStaff(this);
 	}
-	commandQueue.clear();
-	busy = false;
 }
 
-void StaffMember::undoLastCommand()
+string StaffMember::getName() const
 {
-	// TODO - implement StaffMember::undoLastCommand
-	throw "Not yet implemented";
-
-	// how do we undo the commands such as watering or sunlight?.
+	return staffName;
 }
 
-bool StaffMember::isBusy()
+bool StaffMember::getAvailability() const
 {
-	return busy;
+	return isAvailable;
+}
+
+void StaffMember::setAvailability(bool available)
+{
+	isAvailable = available;
+}
+
+void StaffMember::respondToCustomer(Customer *customer, const string &response, Plant *plant)
+{
+	if (commMediator)
+	{
+		commMediator->notifyCustomer(this, customer, response, plant);
+	}
 }

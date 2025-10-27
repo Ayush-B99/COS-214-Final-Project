@@ -1,5 +1,4 @@
 #include "../include/ConcreteGrowthObserver.h"
-#include "../include/ConcreteGrowthMediator.h"
 
 ConcreteGrowthObserver::ConcreteGrowthObserver(Plant *plant, ConcreteGrowthMediator *med)
 {
@@ -24,7 +23,5 @@ void ConcreteGrowthObserver::onGrowthChange()
 	if (dynamic_cast<NeedsCare *>(state)) // test if plant needs care
 	{
 		cout << "Mediator notified about plant needing care." << endl;
-
-		this->mediator->notify(subject); // notifes mediator with the plant that needs care
 	}
 }

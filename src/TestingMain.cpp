@@ -16,7 +16,6 @@
 #include "../include/FertilizerDecorator.h"
 #include "../include/PlantDecorator.h"
 #include "../include/ConcreteGrowthObserver.h"
-#include "../include/ConcreteGrowthMediator.h"
 #include "../include/Worker.h"
 #include "../include/Plant.h"
 #include "../include/Plant.h"
@@ -28,6 +27,8 @@
 #include "../include/Good.h"
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
+#include "../include/ConcreteCommMediator.h"
+#include "../include/Manager.h"
 
 void testAbstractFactory()
 {
@@ -488,74 +489,134 @@ void testDeadState()
     cout << endl;
 }
 
-int testObserverMediator()
+// int testObserverMediator()
+// {
+
+//     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
+//     CarnivorousPlantFactory factory;
+//     Plant *venusFlytrap = factory.createMediumPlant();
+
+//     venusFlytrap->detach();
+
+//     ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
+//     ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
+
+//     venusFlytrap->attach(obs);
+
+//     StaffMember *alice = new Worker();
+//     StaffMember *bob = new Worker();
+
+//     mediator->addStaffMember(alice);
+//     mediator->addStaffMember(bob);
+
+//     venusFlytrap->printHealthStatus();
+
+//     venusFlytrap->setHealthState(new NeedsCare());
+
+//     venusFlytrap->printHealthStatus();
+
+//     std::cout << "----------------------------------" << std::endl;
+
+//     return 0;
+// }
+
+int testCommMediator()
 {
+    cout << "=== COMMMEDIATOR TESTING ===" << endl
+         << endl;
 
-    std::cout << "Testing Observer and Mediator Patterns" << std::endl;
-    CarnivorousPlantFactory factory;
-    Plant *venusFlytrap = factory.createMediumPlant();
+    ConcreteCommMediator *mediator = new ConcreteCommMediator();
 
-    venusFlytrap->detach();
+    Manager *manager = new Manager("SHAVIR (Manager)", mediator);
+    Worker *worker1 = new Worker("DIYA (Worker)", mediator);
+    Worker *worker2 = new Worker("CHINMAYI (Worker)", mediator);
 
-    ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
-    ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
+    Customer *customer1 = new Customer("AYUSH");
+    Customer *customer2 = new Customer("FABIO");
+    Customer *customer3 = new Customer("DIDI");
 
-    venusFlytrap->attach(obs);
+    mediator->addCustomer(customer1);
+    mediator->addCustomer(customer2);
+    mediator->addCustomer(customer3);
 
-    StaffMember *alice = new Worker();
-    StaffMember *bob = new Worker();
+    cout << endl
+         << "=== TEST 1: Basic Customer Queries ===" << endl;
 
-    mediator->addStaffMember(alice);
-    mediator->addStaffMember(bob);
+    mediator->notifyStaff(customer1, "How often should I water my plants?", nullptr);
+    cout << endl;
 
-    venusFlytrap->printHealthStatus();
+    mediator->notifyStaff(customer2, "I want to buy plants in bulk for my office", nullptr);
+    cout << endl;
 
-    venusFlytrap->setHealthState(new NeedsCare());
+    mediator->notifyStaff(customer3, "How much sunlight do succulents need?", nullptr);
+    cout << endl;
 
-    venusFlytrap->printHealthStatus();
+    cout << "=== TEST 2: Staff Availability ===" << endl;
+    mediator->notifyStaff(customer1, "idk a plant ques", nullptr);
+    cout << endl;
 
-    std::cout << "----------------------------------" << std::endl;
+    cout << "=== TEST 3: Direct Staff Assignment ===" << endl;
+    mediator->assignStaffToCustomer(worker2, customer1);
+    cout << endl;
 
+    cout << "=== TEST 4: Get Assigned Staff ===" << endl;
+    StaffMember *assigned = mediator->getAssignedStaff(customer1);
+    if (assigned)
+    {
+        cout << "Customer " << customer1->getName() << " is assigned to: " << assigned->getName() << endl;
+    }
+    cout << endl;
+
+    // Cleanup
+    delete mediator;
+    delete manager;
+    delete worker1;
+    delete worker2;
+    delete customer1;
+    delete customer2;
+    delete customer3;
+
+    cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
     return 0;
 }
 
 int main()
-
-try
 {
-    cout << "PLANT STORE PATTERN TESTING" << endl;
-    cout << "============================" << endl;
-    cout << endl;
 
-    testAbstractFactory();
-    testDecoratorPattern();
-    testPatternsTogether();
+    try
+    {
+        cout << "PLANT STORE PATTERN TESTING" << endl;
+        cout << "============================" << endl;
+        cout << endl;
 
-    testBasicPlantCreation();
-    testGrowthProgression();
-    testHealthDegradation();
-    testHealthRecovery();
-    testIndividualCareActions();
-    testSoldState();
-    testDeadState();
+        testAbstractFactory();
+        testDecoratorPattern();
+        testPatternsTogether();
 
-    testObserverMediator();
+        testBasicPlantCreation();
+        testGrowthProgression();
+        testHealthDegradation();
+        testHealthRecovery();
+        testIndividualCareActions();
+        testSoldState();
+        testDeadState();
 
-    cout << "All tests completed successfully!" << endl;
-    return 0;
-}
-catch (const char *msg)
-{
-    cerr << "Exception caught: " << msg << endl;
-    return 1;
-}
-catch (const exception &e)
-{
-    cerr << "Exception caught: " << e.what() << endl;
-    return 1;
-}
-catch (...)
-{
-    cerr << "Unknown exception caught!" << endl;
-    return 1;
+        // testObserverMediator();
+        testCommMediator();
+    }
+    catch (const char *msg)
+    {
+        cerr << "Exception caught: " << msg << endl;
+        return 1;
+    }
+    catch (const exception &e)
+    {
+        cerr << "Exception caught: " << e.what() << endl;
+        return 1;
+    }
+    catch (...)
+    {
+        cerr << "Unknown exception caught!" << endl;
+        return 1;
+    }
 }
