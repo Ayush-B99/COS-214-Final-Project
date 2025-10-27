@@ -1,17 +1,25 @@
 #include "../include/Plant.h"
 #include "../include/Seed.h"
 #include "../include/Good.h"
-#include "../include/NeedsCare.h"
 #include "../include/GrowthState.h"
+#include "NeedsCare.h"
 #include "../include/HealthState.h"
+
 
 Plant::Plant() : species("Unknown"), waterLevel(0), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
 	growthState = new Seed();
 	healthState = new NeedsCare();
 	intializeCareNeeds();
+	
 }
 
-Plant::Plant(string species) :species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
+Plant::Plant(string species) : species(species), waterLevel(0), growthStage(0),careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A " + species + " plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4) {
+	growthState = new Seed();
+	healthState = new Good();
+	intializeCareNeeds();
+}
+
+Plant::Plant(const Plant& other) : species(other.species), waterLevel(other.waterLevel), growthStage(other.growthStage), careStrategy(NULL), growthState(NULL), healthState(NULL), climate(other.climate), description(other.description), price(other.price), observer(NULL), currentCycleCount(other.currentCycleCount), seedCyclesNeeded(other.seedCyclesNeeded), sproutCyclesNeeded(other.sproutCyclesNeeded), matureCyclesNeeded(other.matureCyclesNeeded) {
 	growthState = new Seed();
 	healthState = new Good();
 	intializeCareNeeds();
@@ -28,6 +36,7 @@ Plant::~Plant() {
 	if (careStrategy) {
 		delete careStrategy;
 	}
+	
 }
 
 double Plant::getPrice() {
@@ -35,7 +44,7 @@ double Plant::getPrice() {
 }
 
 string Plant::getDescription() {
-    return this->description;
+	return this->description;
 }
 
 string Plant::getClimate() {
@@ -45,6 +54,7 @@ string Plant::getClimate() {
 void Plant::setCareStrategy(PlantCareHandler* strategy) {
 	this->careStrategy = strategy;
 }
+
 
 void Plant::setGrowthState(GrowthState* state) {
 	if (this->growthState) {
@@ -56,11 +66,10 @@ void Plant::setGrowthState(GrowthState* state) {
 }
 
 void Plant::grow() {
-	// TODO - implement Plant::grow
 	if (growthState) {
 		growthState->grow(this);
 	}
-
+	
 }
 
 void Plant::setHealthState(HealthState* state) {
@@ -78,22 +87,22 @@ void Plant::setHealthState(HealthState* state) {
 // }
 
 void Plant::attach(GrowthObserver* observer) {
-	// TODO - implement Plant::attach
 	this->observer = observer;
+	
 }
 
 void Plant::detach(GrowthObserver* observer) {
-	// TODO - implement Plant::detach
 	if (this->observer == observer) {
 		this->observer = nullptr;
 	}
+	
 }
 
 void Plant::notify() {
-	// TODO - implement Plant::notify
 	if (observer) {
 		observer->onGrowthChange(this);
 	}
+	
 }
 
 string Plant::getSpecies() { 
@@ -106,14 +115,6 @@ void Plant::setPrice(double newPrice) {
 
 void Plant::setDescription(string newDesc) { 
 	description = newDesc; 
-}
-
-GrowthState* Plant::getGrowthState(){
-	return this->growthState;
-}
-
-HealthState* Plant::getHealthState(){
-	return this->healthState;
 }
 
 void Plant::intializeCareNeeds() {

@@ -37,15 +37,32 @@ void testAbstractFactory() {
     CarnivorousPlantFactory carnivorousFactory;
     SucculentPlantFactory succulentFactory;
 
+    // sotred in vector to try and make mem management easier
+    vector<Plant*> allPlants;
+
     // Testing Factories
     cout << "--- Temperate Plants ---" << endl;
     Plant* temperateSmall = temperateFactory.createSmallPlant();
     Plant* temperateMedium = temperateFactory.createMediumPlant();
     Plant* temperateLarge = temperateFactory.createLargePlant();
 
-    cout << "Small: " << temperateSmall->getDescription() << endl;
-    cout << "Medium: " << temperateMedium->getDescription() << endl;
-    cout << "Large: " << temperateLarge->getDescription() << endl;
+    if (temperateSmall) 
+    {
+        cout << "Small: " << temperateSmall->getDescription() << endl;
+        allPlants.push_back(temperateSmall);
+    }
+
+    if (temperateMedium) 
+    {
+        cout << "Medium: " << temperateMedium->getDescription() << endl;
+        allPlants.push_back(temperateMedium);
+    }
+
+    if (temperateLarge) 
+    {
+        cout << "Large: " << temperateLarge->getDescription() << endl;
+        allPlants.push_back(temperateLarge);
+    }
     cout << endl;
 
     cout << "--- Tropical Plants ---" << endl;
@@ -54,14 +71,22 @@ void testAbstractFactory() {
     Plant* tropicalLarge = tropicalFactory.createLargePlant();
 
     if (tropicalSmall) 
+    {
         cout << "Small: " << tropicalSmall->getDescription() << endl;
+        allPlants.push_back(tropicalSmall);
+    }
 
     if (tropicalMedium) 
+    {
         cout << "Medium: " << tropicalMedium->getDescription() << endl;
+        allPlants.push_back(tropicalMedium);
+    }
 
     if (tropicalLarge) 
+    {
         cout << "Large: " << tropicalLarge->getDescription() << endl;
-
+        allPlants.push_back(tropicalLarge);
+    }
     cout << endl;
 
     // Test Carnivorous Factory
@@ -71,14 +96,22 @@ void testAbstractFactory() {
     Plant* carnivorousLarge = carnivorousFactory.createLargePlant();
 
     if (carnivorousSmall) 
+    {
         cout << "Small: " << carnivorousSmall->getDescription() << endl;
-    
+        allPlants.push_back(carnivorousSmall);
+    }
+
     if (carnivorousMedium) 
+    {
         cout << "Medium: " << carnivorousMedium->getDescription() << endl;
+        allPlants.push_back(carnivorousMedium);
+    }
 
     if (carnivorousLarge) 
+    {
         cout << "Large: " << carnivorousLarge->getDescription() << endl;
-
+        allPlants.push_back(carnivorousLarge);
+    }
     cout << endl;
 
     cout << "--- Succulent Plants ---" << endl;
@@ -86,85 +119,113 @@ void testAbstractFactory() {
     Plant* succulentMedium = succulentFactory.createMediumPlant();
     Plant* succulentLarge = succulentFactory.createLargePlant();
 
-    cout << "Small: " << succulentSmall->getDescription() << endl;
-    cout << "Medium: " << succulentMedium->getDescription() << endl;
-    cout << "Large: " << succulentLarge->getDescription() << endl;
+    if (succulentSmall) 
+    {
+        cout << "Small: " << succulentSmall->getDescription() << endl;
+        allPlants.push_back(succulentSmall);
+    }
+
+    if (succulentMedium) 
+    {
+        cout << "Medium: " << succulentMedium->getDescription() << endl;
+        allPlants.push_back(succulentMedium);
+    }
+
+    if (succulentLarge) 
+    {
+        cout << "Large: " << succulentLarge->getDescription() << endl;
+        allPlants.push_back(succulentLarge);
+    }
     cout << endl;
 
-    // Test cloning
+    // Test cloning - manage cloned plants separately
     cout << "--- Testing Cloning ---" << endl;
-    Plant* clonedDaisy = temperateSmall->clone();
-    cout << "Original: " << temperateSmall->getDescription() << endl;
-    cout << "Clone: " << clonedDaisy->getDescription() << endl;
+    vector<Plant*> clonedPlants;
+    
+    if (temperateSmall) 
+    {
+        Plant* clonedDaisy = temperateSmall->clone();
+        cout << "Original: " << temperateSmall->getDescription() << endl;
+        cout << "Clone: " << clonedDaisy->getDescription() << endl;
+        clonedPlants.push_back(clonedDaisy);
+    }
 
-    Plant* clonedLilac = temperateMedium->clone();
-    cout << "Original: " << temperateMedium->getDescription() << endl;
-    cout << "Clone: " << clonedLilac->getDescription() << endl;
+    if (temperateMedium) 
+    {
+        Plant* clonedLilac = temperateMedium->clone();
+        cout << "Original: " << temperateMedium->getDescription() << endl;
+        cout << "Clone: " << clonedLilac->getDescription() << endl;
+        clonedPlants.push_back(clonedLilac);
+    }
 
-    Plant* clonedWhiteOak = temperateLarge->clone();
-    cout << "Original: " << temperateLarge->getDescription() << endl;
-    cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
+    if (temperateLarge) 
+    {
+        Plant* clonedWhiteOak = temperateLarge->clone();
+        cout << "Original: " << temperateLarge->getDescription() << endl;
+        cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
+        clonedPlants.push_back(clonedWhiteOak);
+    }
 
     cout << endl;
 
-    delete temperateSmall;
-    delete temperateMedium;
-    delete temperateLarge;
-    delete tropicalSmall;
-    delete tropicalMedium;
-    delete tropicalLarge;
-    delete carnivorousSmall;
-    delete carnivorousMedium;
-    delete carnivorousLarge;
-    delete clonedDaisy;
+    // Cleanup: Delete all plants
+    for (Plant* plant : allPlants) 
+    {
+        delete plant;
+    }
+    
+    for (Plant* plant : clonedPlants) 
+    {
+        delete plant;
+    }
 }
 
 void testDecoratorPattern() {
     cout << "=== TESTING DECORATOR PATTERN ===" << endl;
     cout << endl;
 
-    // create a small mediium & large plant
-    Plant* daisy = new Daisy();
-    Plant* aloe = new AloeVera();
-    Plant* nepenthes = new Nepenthes();
+    // Create plants using unique_ptr
+    auto daisy = std::make_unique<Daisy>();
+    auto aloe = std::make_unique<AloeVera>();
+    auto nepenthes = std::make_unique<Nepenthes>();
 
-    cout << "--- Basic Plantswith no decoration ---" << endl;
+    cout << "--- Basic Plants with no decoration ---" << endl;
     cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
     cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
     cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
     cout << endl;
 
-    // Test one decorators
+    // Test individual decorators - use std::move to transfer ownership
     cout << "--- Individual Decorators ---" << endl;
     
-    //  pot decorator alone test
-    Plant* daisyInClayPot = new PotDecorator(new Daisy(), "Clay");
+    auto daisyInClayPot = std::make_unique<PotDecorator>(std::move(daisy), "Clay");
     cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
     
-    // fertilizer decorator alone test
-    Plant* aloeWithFertilizer = new FertilizerDecorator(new AloeVera(), "Organic");
+    auto aloeWithFertilizer = std::make_unique<FertilizerDecorator>(std::move(aloe), "Organic");
     cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
     cout << endl;
 
-    // Test multiple decorations now
+    // Test multiple decorations - create new plants for each chain
     cout << "--- Multiple Decorations ---" << endl;
     
-    // Pot + Fertilizer
-    Plant* PremiumNepenthes = new FertilizerDecorator(new PotDecorator(new Nepenthes(), "Decorative"), "Slow-Release");
-    cout << "Premium Oak: " << PremiumNepenthes->getDescription() << " - Price: R" << PremiumNepenthes->getPrice() << endl;
+    auto premiumNepenthes = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(std::make_unique<Nepenthes>(), "Decorative"), 
+        "Slow-Release"
+    );
+    cout << "Premium Nepenthes: " << premiumNepenthes->getDescription() << " - Price: R" << premiumNepenthes->getPrice() << endl;
     
-    // Diff pot types
-    Plant* daisyCeramic = new PotDecorator(new Daisy(), "Ceramic");
-    Plant* daisyPlastic = new PotDecorator(new Daisy(), "Plastic");
+    // Different pot types
+    auto daisyCeramic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Ceramic");
+    auto daisyPlastic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Plastic");
     cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
     cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
     cout << endl;
 
-    // diff fertilizer types
+    // Different fertilizer types
     cout << "--- Different Fertilizer Types ---" << endl;
-    Plant* aloeOrganic = new FertilizerDecorator(new AloeVera(), "Organic");
-    Plant* aloeLiquid = new FertilizerDecorator(new AloeVera(), "Liquid");
-    Plant* aloeSlowRelease = new FertilizerDecorator(new AloeVera(), "Slow-Release");
+    auto aloeOrganic = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Organic");
+    auto aloeLiquid = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Liquid");
+    auto aloeSlowRelease = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Slow-Release");
     
     cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
     cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
@@ -173,27 +234,21 @@ void testDecoratorPattern() {
 
     cout << "--- Testing Construction Methods ---" << endl;
 
-// Method 1: Direct construction (current way - broken)
-Plant* broken = new FertilizerDecorator(new PotDecorator(new WhiteOak(), "Clay"), "Organic");
-cout << "Nested (broken): " << broken->getDescription() << endl;
+    // Method 1: Direct construction with smart pointers
+    auto nested = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(std::make_unique<WhiteOak>(), "Clay"), 
+        "Organic"
+    );
+    cout << "Nested (smart pointers): " << nested->getDescription() << endl;
 
-// Method 2: Step-by-step construction
-Plant* step1 = new WhiteOak();
-Plant* step2 = new PotDecorator(step1, "Clay");  
-Plant* step3 = new FertilizerDecorator(step2, "Organic");
-cout << "Step-by-step: " << step3->getDescription() << endl;
+    // Method 2: Step-by-step construction
+    auto step1 = std::make_unique<WhiteOak>();
+    auto step2 = std::make_unique<PotDecorator>(std::move(step1), "Clay");  
+    auto step3 = std::make_unique<FertilizerDecorator>(std::move(step2), "Organic");
+    cout << "Step-by-step: " << step3->getDescription() << endl;
 
-    delete daisy;
-    delete aloe;
-    delete nepenthes;
-    delete daisyInClayPot;
-    delete aloeWithFertilizer;
-    delete PremiumNepenthes;
-    delete daisyCeramic;
-    delete daisyPlastic;
-    delete aloeOrganic;
-    delete aloeLiquid;
-    delete aloeSlowRelease;
+    // No manual deletion needed - smart pointers handle cleanup automatically!
+    cout << endl;
 }
 
 void testPatternsTogether() {
@@ -208,29 +263,52 @@ void testPatternsTogether() {
 
     cout << "--- Creating Premium Plant Packages ---" << endl;
     
-    // Create plants from factories and decorate them, has both decorators being ussed
-    Plant* premiumTemperatePackage = new FertilizerDecorator(new PotDecorator(temperateFactory.createMediumPlant(), "Ceramic"), "Slow-Release");
-    Plant* premiumTropicalPackage = new FertilizerDecorator(new PotDecorator(tropicalFactory.createSmallPlant(), "Decorative"), "Liquid");
-    Plant* premiumCarnivorousPackage = new FertilizerDecorator(new PotDecorator(carnivorousFactory.createLargePlant(), "Clay"), "Organic");
-    Plant* premiumSucculentPackage = new FertilizerDecorator(new PotDecorator(succulentFactory.createLargePlant(), "Decorative"), "Slow-Release");
+    // Create plants from factories and decorate them - convert raw pointers to unique_ptr
+    auto premiumTemperatePackage = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(
+            std::unique_ptr<Plant>(temperateFactory.createMediumPlant()), 
+            "Ceramic"
+        ), 
+        "Slow-Release"
+    );
 
-    if (premiumTemperatePackage)
-    {
+    auto premiumTropicalPackage = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(
+            std::unique_ptr<Plant>(tropicalFactory.createSmallPlant()), 
+            "Decorative"
+        ), 
+        "Liquid"
+    );
+
+    auto premiumCarnivorousPackage = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(
+            std::unique_ptr<Plant>(carnivorousFactory.createLargePlant()), 
+            "Clay"
+        ), 
+        "Organic"
+    );
+
+    auto premiumSucculentPackage = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(
+            std::unique_ptr<Plant>(succulentFactory.createLargePlant()), 
+            "Decorative"
+        ), 
+        "Slow-Release"
+    );
+
+    if (premiumTemperatePackage) {
         cout << "Premium Temperate Package: " << premiumTemperatePackage->getDescription() << " - Price: R" << premiumTemperatePackage->getPrice() << endl;
     }
 
-    if (premiumTropicalPackage) 
-    {
+    if (premiumTropicalPackage) {
         cout << "Premium Tropical Package: " << premiumTropicalPackage->getDescription() << " - Price: R" << premiumTropicalPackage->getPrice() << endl;
     }
     
-    if (premiumCarnivorousPackage) 
-    {
+    if (premiumCarnivorousPackage) {
         cout << "Premium Carnivorous Package: " << premiumCarnivorousPackage->getDescription() << " - Price: R" << premiumCarnivorousPackage->getPrice() << endl;
     }
 
-    if (premiumSucculentPackage) 
-    {
+    if (premiumSucculentPackage) {
         cout << "Premium Succulent Package: " << premiumSucculentPackage->getDescription() << " - Price: R" << premiumSucculentPackage->getPrice() << endl;
     }
 
@@ -239,28 +317,31 @@ void testPatternsTogether() {
     cout << "--- Creating Multiple Decorated Plants from Factory ---" << endl;
     
     // Create multiple plants from factory and decorate differently
-    vector<Plant*> decoratedPlants;
+    vector<std::unique_ptr<Plant>> decoratedPlants;
     
-    // Different decoration combos, kfc would be great rn 
-    decoratedPlants.push_back(new PotDecorator(temperateFactory.createSmallPlant(), "Plastic"));
-    decoratedPlants.push_back(new FertilizerDecorator(temperateFactory.createSmallPlant(), "Organic"));
-    decoratedPlants.push_back(new FertilizerDecorator(new PotDecorator(temperateFactory.createLargePlant(), "Decorative"), "Slow-Release"));
+    // Different decoration combos
+    decoratedPlants.push_back(std::make_unique<PotDecorator>(
+        std::unique_ptr<Plant>(temperateFactory.createSmallPlant()), "Plastic"
+    ));
+    
+    decoratedPlants.push_back(std::make_unique<FertilizerDecorator>(
+        std::unique_ptr<Plant>(temperateFactory.createSmallPlant()), "Organic"
+    ));
+    
+    decoratedPlants.push_back(std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(
+            std::unique_ptr<Plant>(temperateFactory.createLargePlant()), 
+            "Decorative"
+        ), 
+        "Slow-Release"
+    ));
 
-    // do this type for loop with vectors diff ways usually will complian/crash @compile time
-    for (size_t i = 0; i < decoratedPlants.size(); i++) 
-    {
+    for (size_t i = 0; i < decoratedPlants.size(); i++) {
         cout << "Plant " << (i + 1) << ": " << decoratedPlants[i]->getDescription() << " - Price: R" << decoratedPlants[i]->getPrice() << endl;
     }
     cout << endl;
 
-    delete premiumTemperatePackage;
-    delete premiumTropicalPackage;
-    delete premiumCarnivorousPackage;
-
-    for (size_t i = 0; i < decoratedPlants.size(); i++) 
-    {
-        delete decoratedPlants[i];
-    }
+    // No manual deletion needed - smart pointers handle cleanup automatically!
 }
 
 //made a concrete plant class without abstract factory for testing in isolation
@@ -501,3 +582,249 @@ int main()
         return 1;
     }
 }
+
+/*
+// oboselete testing code, the new ones work better and have no memory leaks
+void testAbstractFactory() {
+    cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
+    cout << endl;
+
+    TemperatePlantFactory temperateFactory;
+    TropicalPlantFactory tropicalFactory;
+    CarnivorousPlantFactory carnivorousFactory;
+    SucculentPlantFactory succulentFactory;
+
+    // Testing Factories
+    cout << "--- Temperate Plants ---" << endl;
+    Plant* temperateSmall = temperateFactory.createSmallPlant();
+    Plant* temperateMedium = temperateFactory.createMediumPlant();
+    Plant* temperateLarge = temperateFactory.createLargePlant();
+
+    cout << "Small: " << temperateSmall->getDescription() << endl;
+    cout << "Medium: " << temperateMedium->getDescription() << endl;
+    cout << "Large: " << temperateLarge->getDescription() << endl;
+    cout << endl;
+
+    cout << "--- Tropical Plants ---" << endl;
+    Plant* tropicalSmall = tropicalFactory.createSmallPlant();
+    Plant* tropicalMedium = tropicalFactory.createMediumPlant();
+    Plant* tropicalLarge = tropicalFactory.createLargePlant();
+
+    if (tropicalSmall) 
+        cout << "Small: " << tropicalSmall->getDescription() << endl;
+
+    if (tropicalMedium) 
+        cout << "Medium: " << tropicalMedium->getDescription() << endl;
+
+    if (tropicalLarge) 
+        cout << "Large: " << tropicalLarge->getDescription() << endl;
+
+    cout << endl;
+
+    // Test Carnivorous Factory
+    cout << "--- Carnivorous Plants ---" << endl;
+    Plant* carnivorousSmall = carnivorousFactory.createSmallPlant();
+    Plant* carnivorousMedium = carnivorousFactory.createMediumPlant();
+    Plant* carnivorousLarge = carnivorousFactory.createLargePlant();
+
+    if (carnivorousSmall) 
+        cout << "Small: " << carnivorousSmall->getDescription() << endl;
+    
+    if (carnivorousMedium) 
+        cout << "Medium: " << carnivorousMedium->getDescription() << endl;
+
+    if (carnivorousLarge) 
+        cout << "Large: " << carnivorousLarge->getDescription() << endl;
+
+    cout << endl;
+
+    cout << "--- Succulent Plants ---" << endl;
+    Plant* succulentSmall = succulentFactory.createSmallPlant();
+    Plant* succulentMedium = succulentFactory.createMediumPlant();
+    Plant* succulentLarge = succulentFactory.createLargePlant();
+
+    cout << "Small: " << succulentSmall->getDescription() << endl;
+    cout << "Medium: " << succulentMedium->getDescription() << endl;
+    cout << "Large: " << succulentLarge->getDescription() << endl;
+    cout << endl;
+
+    // Test cloning
+    cout << "--- Testing Cloning ---" << endl;
+    Plant* clonedDaisy = temperateSmall->clone();
+    cout << "Original: " << temperateSmall->getDescription() << endl;
+    cout << "Clone: " << clonedDaisy->getDescription() << endl;
+
+    Plant* clonedLilac = temperateMedium->clone();
+    cout << "Original: " << temperateMedium->getDescription() << endl;
+    cout << "Clone: " << clonedLilac->getDescription() << endl;
+
+    Plant* clonedWhiteOak = temperateLarge->clone();
+    cout << "Original: " << temperateLarge->getDescription() << endl;
+    cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
+
+    cout << endl;
+
+    delete temperateSmall;
+    delete temperateMedium;
+    delete temperateLarge;
+    delete tropicalSmall;
+    delete tropicalMedium;
+    delete tropicalLarge;
+    delete carnivorousSmall;
+    delete carnivorousMedium;
+    delete carnivorousLarge;
+    delete clonedDaisy;
+    delete clonedLilac;
+    delete clonedWhiteOak;
+}
+*/
+
+// oboselete testing code, the new ones work better and have no memory leaks
+/*void testDecoratorPattern() {
+    cout << "=== TESTING DECORATOR PATTERN ===" << endl;
+    cout << endl;
+
+    // create a small mediium & large plant
+    Plant* daisy = new Daisy();
+    Plant* aloe = new AloeVera();
+    Plant* nepenthes = new Nepenthes();
+
+    cout << "--- Basic Plantswith no decoration ---" << endl;
+    cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
+    cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
+    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
+    cout << endl;
+
+    // Test one decorators
+    cout << "--- Individual Decorators ---" << endl;
+    
+    //  pot decorator alone test
+    Plant* daisyInClayPot = new PotDecorator(new Daisy(), "Clay");
+    cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
+    
+    // fertilizer decorator alone test
+    Plant* aloeWithFertilizer = new FertilizerDecorator(new AloeVera(), "Organic");
+    cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
+    cout << endl;
+
+    // Test multiple decorations now
+    cout << "--- Multiple Decorations ---" << endl;
+    
+    // Pot + Fertilizer
+    Plant* PremiumNepenthes = new FertilizerDecorator(new PotDecorator(new Nepenthes(), "Decorative"), "Slow-Release");
+    cout << "Premium Oak: " << PremiumNepenthes->getDescription() << " - Price: R" << PremiumNepenthes->getPrice() << endl;
+    
+    // Diff pot types
+    Plant* daisyCeramic = new PotDecorator(new Daisy(), "Ceramic");
+    Plant* daisyPlastic = new PotDecorator(new Daisy(), "Plastic");
+    cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
+    cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
+    cout << endl;
+
+    // diff fertilizer types
+    cout << "--- Different Fertilizer Types ---" << endl;
+    Plant* aloeOrganic = new FertilizerDecorator(new AloeVera(), "Organic");
+    Plant* aloeLiquid = new FertilizerDecorator(new AloeVera(), "Liquid");
+    Plant* aloeSlowRelease = new FertilizerDecorator(new AloeVera(), "Slow-Release");
+    
+    cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
+    cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
+    cout << "Aloe Slow-Release: " << aloeSlowRelease->getDescription() << " - Price: R" << aloeSlowRelease->getPrice() << endl;
+    cout << endl;
+
+    cout << "--- Testing Construction Methods ---" << endl;
+
+// Method 1: Direct construction (current way - broken)
+Plant* broken = new FertilizerDecorator(new PotDecorator(new WhiteOak(), "Clay"), "Organic");
+cout << "Nested (broken): " << broken->getDescription() << endl;
+
+// Method 2: Step-by-step construction
+Plant* step1 = new WhiteOak();
+Plant* step2 = new PotDecorator(step1, "Clay");  
+Plant* step3 = new FertilizerDecorator(step2, "Organic");
+cout << "Step-by-step: " << step3->getDescription() << endl;
+
+    delete daisy;
+    delete aloe;
+    delete nepenthes;
+    delete daisyInClayPot;
+    delete aloeWithFertilizer;
+    delete PremiumNepenthes;
+    delete daisyCeramic;
+    delete daisyPlastic;
+    delete aloeOrganic;
+    delete aloeLiquid;
+    delete aloeSlowRelease;
+}
+*/
+
+/*
+// oboselete testing code, the new ones work better and have no memory leaks
+
+void testPatternsTogether() {
+    cout << "=== TESTING PATTERNS TOGETHER ===" << endl;
+    cout << endl;
+
+    // Create factories
+    TemperatePlantFactory temperateFactory;
+    TropicalPlantFactory tropicalFactory;
+    CarnivorousPlantFactory carnivorousFactory;
+    SucculentPlantFactory succulentFactory;
+
+    cout << "--- Creating Premium Plant Packages ---" << endl;
+    
+    // Create plants from factories and decorate them, has both decorators being ussed
+    Plant* premiumTemperatePackage = new FertilizerDecorator(new PotDecorator(temperateFactory.createMediumPlant(), "Ceramic"), "Slow-Release");
+    Plant* premiumTropicalPackage = new FertilizerDecorator(new PotDecorator(tropicalFactory.createSmallPlant(), "Decorative"), "Liquid");
+    Plant* premiumCarnivorousPackage = new FertilizerDecorator(new PotDecorator(carnivorousFactory.createLargePlant(), "Clay"), "Organic");
+    Plant* premiumSucculentPackage = new FertilizerDecorator(new PotDecorator(succulentFactory.createLargePlant(), "Decorative"), "Slow-Release");
+
+    if (premiumTemperatePackage)
+    {
+        cout << "Premium Temperate Package: " << premiumTemperatePackage->getDescription() << " - Price: R" << premiumTemperatePackage->getPrice() << endl;
+    }
+
+    if (premiumTropicalPackage) 
+    {
+        cout << "Premium Tropical Package: " << premiumTropicalPackage->getDescription() << " - Price: R" << premiumTropicalPackage->getPrice() << endl;
+    }
+    
+    if (premiumCarnivorousPackage) 
+    {
+        cout << "Premium Carnivorous Package: " << premiumCarnivorousPackage->getDescription() << " - Price: R" << premiumCarnivorousPackage->getPrice() << endl;
+    }
+
+    if (premiumSucculentPackage) 
+    {
+        cout << "Premium Succulent Package: " << premiumSucculentPackage->getDescription() << " - Price: R" << premiumSucculentPackage->getPrice() << endl;
+    }
+
+    cout << endl;
+
+    cout << "--- Creating Multiple Decorated Plants from Factory ---" << endl;
+    
+    // Create multiple plants from factory and decorate differently
+    vector<Plant*> decoratedPlants;
+    
+    // Different decoration combos, kfc would be great rn 
+    decoratedPlants.push_back(new PotDecorator(temperateFactory.createSmallPlant(), "Plastic"));
+    decoratedPlants.push_back(new FertilizerDecorator(temperateFactory.createSmallPlant(), "Organic"));
+    decoratedPlants.push_back(new FertilizerDecorator(new PotDecorator(temperateFactory.createLargePlant(), "Decorative"), "Slow-Release"));
+
+    // do this type for loop with vectors diff ways usually will complian/crash @compile time
+    for (size_t i = 0; i < decoratedPlants.size(); i++) 
+    {
+        cout << "Plant " << (i + 1) << ": " << decoratedPlants[i]->getDescription() << " - Price: R" << decoratedPlants[i]->getPrice() << endl;
+    }
+    cout << endl;
+
+    delete premiumTemperatePackage;
+    delete premiumTropicalPackage;
+    delete premiumCarnivorousPackage;
+
+    for (size_t i = 0; i < decoratedPlants.size(); i++) 
+    {
+        delete decoratedPlants[i];
+    }
+}
+*/

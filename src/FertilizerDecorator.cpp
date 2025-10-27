@@ -1,7 +1,9 @@
 #include "../include/FertilizerDecorator.h"
 
 // do i add more default parameters?
-FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecorator(plant), fertilizer(type) {
+//FertilizerDecorator::FertilizerDecorator(Plant* plant, string type) : PlantDecorator(plant), fertilizer(type) 
+FertilizerDecorator::FertilizerDecorator(std::unique_ptr<Plant> plant, std::string type) 
+    : PlantDecorator(std::move(plant)), fertilizer(type) {
 	// TODO - implement FertilizerDecorator::FertilizerDecorator
 	int fertilizerType = 0;
     if (type == "Organic") 
@@ -48,5 +50,6 @@ string FertilizerDecorator::getDescription() {
 }
 
 Plant* FertilizerDecorator::clone() {
-    return new FertilizerDecorator(decoratedPlant->clone(), fertilizer);
+    //return new FertilizerDecorator(decoratedPlant->clone(), fertilizer);
+    return new FertilizerDecorator(std::unique_ptr<Plant>(decoratedPlant->clone()), fertilizer);
 }
