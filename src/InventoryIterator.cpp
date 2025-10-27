@@ -15,7 +15,7 @@ Plant* InventoryIterator::next() {
 	throw "Not yet implemented";
 }
 
-Plant* InventoryIterator::current() {
+Plant* InventoryIterator::currentPlant() {
 	// TODO - implement InventoryIterator::current
 	throw "Not yet implemented";
 }
@@ -53,4 +53,8 @@ PlantNode* InventoryIterator::nextCoarse() {
 void InventoryIterator::setPosition(map<PlantNode*, int> pos) {
 	// TODO - implement InventoryIterator::setPosition
 	throw "Not yet implemented";
+}
+
+bool InventoryIterator::hasNextNode(){
+	return false;
 }

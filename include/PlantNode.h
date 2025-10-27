@@ -71,6 +71,8 @@ public:
 	vector<Plant*> removeByHealthState(HealthState* state);
 
 	bool isLeaf();
+
+	void printNode(string prefix, bool isLeft);
 };
 
 #endif
