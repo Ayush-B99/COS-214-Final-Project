@@ -11,6 +11,13 @@ Customer::Customer(const string& name, CommMediator* mediator)
         commMediator->addCustomer(this);
     }
 }
+
+double Customer::getDiscount()
+{
+    return 0.0;
+
+}
+
 Customer::~Customer() {
 }
 
