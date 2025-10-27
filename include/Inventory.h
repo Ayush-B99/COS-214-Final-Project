@@ -51,9 +51,9 @@ private:
  */
 	void printHelper(PlantNode* node, string prefix, bool isLeft);
 
-	void removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
+	PlantNode* removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 
-	void removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
+	PlantNode* removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
 
 	void collectByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 

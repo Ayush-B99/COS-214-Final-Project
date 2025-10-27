@@ -12,7 +12,7 @@ Inventory::Inventory() {
 }
 
 Inventory::~Inventory() {
-	//assume ownership of Plant factories
+	//assume ownership of Plant factories`
 	for (GreenHouse* g : greenHouses){
 		if (g) delete g;
 	}
@@ -145,6 +145,12 @@ vector<Plant*> Inventory::removePlants(string key, GrowthState* state) {
 	//otherwise, search the node for matches
 	matches = node->removeByGrowthState(state);
 	cout << matches.size() << " plants removed from " << key << ".\n";
+
+	//if node became empty, remove the node from the tree, and update the root
+	if (node->getPlants().empty()){
+		plantCatalog = removeNode(plantCatalog, node->getKey());
+	}
+
 	return matches;
 }
 
@@ -161,45 +167,71 @@ vector<Plant*> Inventory::removePlants(string key, HealthState* state){
 	//otherwise, search the node for matches
 	matches = node->removeByHealthState(state);
 	cout << matches.size() << " plants removed from " << key << ".\n";
+
+	//if node became empty, remove the node from the tree, and update the root
+	if (node->getPlants().empty()){
+		plantCatalog = removeNode(plantCatalog, node->getKey());
+	}
+
 	return matches;
 }
 
 vector<Plant*> Inventory::removePlants(GrowthState* state){
 	vector<Plant*> matches;
-	removeByGrowthRecursive(plantCatalog, state, matches);
+	plantCatalog = removeByGrowthRecursive(plantCatalog, state, matches);
 	cout << matches.size() << " plants removed from the entire tree.\n";
 	return matches;
 }
 
 vector<Plant*> Inventory::removePlants(HealthState* state) {
     vector<Plant*> matches;
-    removeByHealthRecursive(plantCatalog, state, matches);
+    plantCatalog = removeByHealthRecursive(plantCatalog, state, matches);
     cout << matches.size() << " plants removed from the entire tree.\n";
     return matches;
 }
 
 //recursive helper functions for removal
 
-void Inventory::removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches){
+PlantNode* Inventory::removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches){
 	//end of branch
-	if (!node) return;
+	if (!node) return nullptr;
 
-	vector<Plant*> removed = node->removeByGrowthState(state);
-	//copy over plants removed from node to global removed vector
-	matches.insert(matches.end(), removed.begin(), removed.end());
-	removeByGrowthRecursive(node->getLeft(), state, matches);
-	removeByGrowthRecursive(node->getRight(), state, matches);
+    // recurse into children first (post-order)
+    node->setLeft(removeByGrowthRecursive(node->getLeft(), state, matches));
+    node->setRight(removeByGrowthRecursive(node->getRight(), state, matches));
+
+    // remove matching plants from this node
+    vector<Plant*> removed = node->removeByGrowthState(state);
+    if (!removed.empty())
+        matches.insert(matches.end(), removed.begin(), removed.end());
+
+    // if node has no plants now, remove the node from this subtree
+    if (node->getPlants().empty()) {
+        // removeNode expects a subtree root and key; it returns the new subtree root
+        PlantNode* newSubRoot = removeNode(node, node->getKey());
+        return newSubRoot;
+    }
+
+    return node;
 }
 
-void Inventory::removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches){
+PlantNode* Inventory::removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches){
 	//end of branch
 	if (!node) return;
 
-	vector<Plant*> removed = node->removeByHealthState(state);
-	//copy over plants removed from node to global removed vector
-	matches.insert(matches.end(), removed.begin(), removed.end());
-	removeByHealthRecursive(node->getLeft(), state, matches);
-	removeByHealthRecursive(node->getRight(), state, matches);
+	node->setLeft(removeByHealthRecursive(node->getLeft(), state, matches));
+    node->setRight(removeByHealthRecursive(node->getRight(), state, matches));
+
+    vector<Plant*> removed = node->removeByHealthState(state);
+    if (!removed.empty())
+        matches.insert(matches.end(), removed.begin(), removed.end());
+
+    if (node->getPlants().empty()) {
+        PlantNode* newSubRoot = removeNode(node, node->getKey());
+        return newSubRoot;
+    }
+
+    return node;
 }
 
 
@@ -234,7 +266,7 @@ vector<Plant*> Inventory::getPlants(string key, HealthState* state){
 
     for (Plant* p : node->getPlants()){
 		///todo: fix when states are finalized
-        if (p->getHealthState() == state){
+        if (p->getHealthState()->getName() == state->getName()){
 			matches.push_back(p);
 		}  
 	}
@@ -251,7 +283,7 @@ void Inventory::collectByGrowthRecursive(PlantNode* node, GrowthState* state, ve
 	if (!node) return; //end of subtree
     for (Plant* p : node->getPlants()){
 		///todo: fix when states are finalized
-        if (p->getGrowthState() == state){
+        if (p->getGrowthState()->getName() == state->getName()){
 		matches.push_back(p);
 		}
 	}
@@ -269,7 +301,7 @@ void Inventory::collectByHealthRecursive(PlantNode* node, HealthState* state, ve
 	if (!node) return; //end of subtree
 	for (Plant* p : node->getPlants()){
 		///todo: fix when states are finalized
-		if (p->getHealthState() == state){
+		if (p->getHealthState()->getName() == state->getName()){
 		matches.push_back(p);
 		}
 	}
@@ -299,20 +331,20 @@ void Inventory::moveValidPlantsToStock(Storage* stock){
     }
 
 	GrowthState* matureState = new Mature();
-	vector<Plant*> toMove = removePlants(matureState);
+	vector<Plant*> toMove = getPlants(matureState);
 
 	if (toMove.empty()){
 		cout << "No mature plants found to move.\n";
 		return;
 	}
 
-	cout << "Moving " << toMove.size() << " mature plants to Stock...\n";
+	cout << "Copying " << toMove.size() << " mature plants to Stock...\n";
 
 	for (Plant* p : toMove){
 		if (p) stock->addPlant(p);
 	}
 
-	cout << "Plants successfully moved to Stock!\n";
+	cout << "Plants successfully copied to Stock!\n";
 	delete matureState;
 }
 
@@ -440,7 +472,7 @@ void Inventory::printInventory() {
 void Inventory::printHelper(PlantNode* node, string prefix, bool isLeft){
 	if (!node) return;
 
-    //print current node and all of its plants
+    //print current nod e and all of its plants
     node->printNode(prefix, isLeft);
 
     PlantNode* left = node->getLeft();

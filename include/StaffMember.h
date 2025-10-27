@@ -11,20 +11,18 @@
 
 using namespace std;
 
-#include "GrowthMediator.h"
-#include "CommMediator.h"
 #include "Command.h"
+#include "CommMediator.h"
 
 class StaffMember {
 
 private:
-	GrowthMediator* mediator;
 	CommMediator* commMediator;
 	vector<Plant*> currentState;
 	vector<Command*> commandHistory;
 
 public:
-	void setMediator(GrowthMediator* mediator);
+	void setMediator(CommMediator* mediator);
 
 	void setCommMediator(CommMediator* commMediator);
 

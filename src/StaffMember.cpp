@@ -1,7 +1,7 @@
 #include "../include/StaffMember.h"
 
-void StaffMember::setMediator(GrowthMediator* mediator) {
-	this->mediator = mediator;
+void StaffMember::setMediator(CommMediator* mediator) {
+	this->commMediator = mediator;
 }
 
 void StaffMember::setCommMediator(CommMediator* commMediator) {

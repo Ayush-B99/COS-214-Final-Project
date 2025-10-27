@@ -19,7 +19,8 @@ class InventoryIterator : public Iterator
 
 private:
 	PlantNode *root;
-	map<PlantNode *, size_t> current;
+	PlantNode* currentNode;
+	size_t indexInNode;
 	stack<PlantNode *> nodeStack;
 
 public:
@@ -27,9 +28,9 @@ public:
 
 	~InventoryIterator();
 
-	Plant *next();
+	Plant* next();
 
-	Plant *currentPlant(); // TODO: fix uml function name
+	Plant* currentPlant(); // TODO: fix uml function name
 
 	bool hasNext();
 
@@ -37,15 +38,15 @@ public:
 
 	void reset();
 
-	map<string, int> getPosition();
+	map<PlantNode*, int> getPosition();
 
 	void pushLeft(PlantNode *node);
 
-	Plant *nextFine();
+	Plant* nextFine();
 
-	PlantNode *nextCoarse();
+	Plant* nextCoarse();
 
-	void setPosition(map<PlantNode*, int> pos);
+	void setPosition(map<PlantNode*, int>& pos);
 };
 
 #endif

@@ -547,7 +547,7 @@ void testDeadState() {
     cout << endl;
 }
 
-
+void testInventory();
 
 
 int main()
@@ -568,6 +568,8 @@ int main()
         testIndividualCareActions();
         testSoldState();
         testDeadState();
+        testInventory();
+
 
         cout << "All tests completed successfully!" << endl;
         return 0;
@@ -581,6 +583,11 @@ int main()
         cerr << "Unknown exception caught!" << endl;
         return 1;
     }
+}
+
+
+void testInventory(){
+    
 }
 
 /*

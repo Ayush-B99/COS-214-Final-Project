@@ -95,7 +95,7 @@ vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
 	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getGrowthState() == state){ //currently pointer comparison, so wont work
+		if (p->getGrowthState()->getName() == state->getName()){ //currently pointer comparison, so wont work
 			matches.push_back(p);
 		}
 	}
@@ -108,7 +108,7 @@ vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
 	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getHealthState() == state){
+		if (p->getHealthState()->getName() == state->getName()){
 			matches.push_back(p);
 			plants.erase(plants.begin() + i);
 		}
