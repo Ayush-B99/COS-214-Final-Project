@@ -1,3 +1,6 @@
+#ifndef MEMENTO_H
+#define MEMENTO_H
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,13 +15,14 @@ template<typename T>
 class Memento
 {
     private:
-        T state;
+        shared_ptr<T> state;
 
     public:
-        Memento(const T& state) : state(state) {}
+        Memento(shared_ptr<T> state) : state(state) {}
     
-        string getState() const
-        {
-            return state;
-        }
+        shared_ptr<T> getState() const;
 };
+
+#include "../src/Memento.cpp"
+
+#endif

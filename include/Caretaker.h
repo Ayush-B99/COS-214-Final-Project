@@ -24,46 +24,15 @@ class Caretaker
         
         ~Caretaker();
         
-    	void addMemento(Memento<T> m)
-    	{
-    		mementos.push_back(m);
-    	}
+    	void addMemento(Memento<T> m);
     
-    	void undo()
-    	{
-    		if (!mementos.empty())
-    		{
-    			mementos.pop_back();
-    		}
-    	}
+    	void undo();
     
-    	Memento<T> getMemento(int index)
-        {
-            if (index >= 0 && index < mementos.size())
-            {
-                return mementos[index];
-            }
-            else
-            {
-                cout << "Invalid index" << endl;
-
-                return NULL;
-            }
-        }
+    	Memento<T> getMemento(int index);
     
-    	Memento<T> getLastMemento()
-        {
-            if (!mementos.empty())
-            {
-                return mementos.back();
-            }
-            else
-            {
-                cout << "No backup available" << endl;
-
-                return NULL;
-            }
-        }
+    	Memento<T> getLastMemento();
 };
+
+#include "../src/Caretaker.cpp"
 
 #endif

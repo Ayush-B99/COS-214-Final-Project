@@ -27,6 +27,8 @@ using namespace std;
 #include "../include/PotDecorator.h"
 #include "../include/FertilizerDecorator.h"
 #include "../include/PlantDecorator.h"
+#include "../include/Caretaker.h"
+#include "../include/Memento.h"
 
 void testAbstractFactory() {
     cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
@@ -469,6 +471,31 @@ void testDeadState() {
 }
 
 
+void mementoTest()
+{
+    Caretaker<SmallPlant> caretaker = Caretaker<SmallPlant>();
+    // Plant plant = SmallPlant("Basil");
+    
+    // Save initial state
+    // caretaker.addMemento(plant.createMemento());
+    
+    // // Perform some actions
+    // plant.receiveWatering();
+    // plant.receiveSunlight();
+    // plant.completeCareSession();
+    
+    // // Save state after actions
+    // caretaker.addMemento(plant.createMemento());
+    
+    // // Restore initial state
+    // plant.restoreMemento(caretaker.getMemento(0));
+    
+    // // Restore state after actions
+    // plant.restoreMemento(caretaker.getMemento(1));
+    
+    // // Print final status
+    // plant.printFullStatus();
+}
 
 
 int main()
