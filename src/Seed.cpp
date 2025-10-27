@@ -4,23 +4,30 @@
 
 void Seed::grow(Plant* plant) {
 	if (plant->getCurrentCycleCount() >= plant->getSeedCyclesNeeded()) {
-		plant->setGrowthState(new Sprout());
-		plant->resetCycleCount();
-		plant->notify();
+		if (plant->getWaterLevel() >= 60 && plant->getSunlightLevel() >= 60 && plant->getFertilizerLevel() >= 60) {
+			plant->setGrowthState(new Sprout());
+			plant->resetCycleCount();
+			plant->notify();
+			cout << plant->getSpecies() << " has sprouted!" << endl;
+		}
 	}
 }
 
 string Seed::getStatusMessage(Plant* plant) {
 	int current = plant->getCurrentCycleCount();
     int needed = plant->getSeedCyclesNeeded();
-    return plant->getSpecies() + " (Seed): " + to_string(current) + "/" + to_string(needed) + " care cycles completed";
+	    return plant->getSpecies() + " (Seed): " + to_string(current) + "/" + to_string(needed) + 
+           " cycles | Water: " + to_string(plant->getWaterLevel()) + "%" +
+           " | Sun: " + to_string(plant->getSunlightLevel()) + "%"
+		   + " | fertilizer: " + to_string(plant->getFertilizerLevel()) + "%";
 }
 
 vector<string> Seed::getRequiredCare() {
-	return {"Water", "sunlight"};
+	return {"water", "sunlight", "fertilizer"};
 }
-
 
 string Seed::getName() {
 	return "seed";
 }
+
+

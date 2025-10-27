@@ -15,7 +15,6 @@
 // #include "Command.h"
 // #include "CommMediator.h"
 // #include "Customer.h"
-class GrowthMediator;
 class CommMediator;
 class Command;
 class Customer;
@@ -42,7 +41,6 @@ class CommMediator;
 class StaffMember {
 
 private:
-	GrowthMediator* mediator;
 	vector<Plant*> currentState;
 	vector<Command*> commandHistory;
 	CommMediator* commMediator;
@@ -118,7 +116,6 @@ public:
 
     
 	/////////////////////////////////////////////////not my stuff below this line - chinmayi//////////////////////////////////////////////////////
-	void setMediator(GrowthMediator* mediator);
 
 	void setCommand(Command* cmd);
 

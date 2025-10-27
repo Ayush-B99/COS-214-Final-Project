@@ -54,9 +54,6 @@ void StaffMember::respondToCustomer(Customer* customer, const string& response, 
 }
 
 /////////////////////////stuff below this aint mineeee - chinmayi///////////////////////////
-void StaffMember::setMediator(GrowthMediator* mediator) {
-	this->mediator = mediator;
-}
 
 void StaffMember::setCommand(Command* cmd) {
 	// TODO - implement StaffMember::setCommand

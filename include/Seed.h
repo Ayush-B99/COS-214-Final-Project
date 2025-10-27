@@ -14,7 +14,6 @@ using namespace std;
 #include "GrowthState.h"
 #include "Plant.h"
 
-
 class Seed : public GrowthState {
 
 
