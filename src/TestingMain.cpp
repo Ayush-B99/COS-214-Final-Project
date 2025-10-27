@@ -16,7 +16,6 @@ using namespace std;
 #include "../include/Seed.h"
 #include "../include/Sprout.h"
 #include "../include/Mature.h"
-#include "../include/Sold.h"
 #include "../include/Good.h"
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
@@ -350,42 +349,47 @@ void testPatternsTogether() {
     // No manual deletion needed - smart pointers handle cleanup automatically!
 }
 
-//made a concrete plant class without abstract factory for testing in isolation
-class TestPlant : public Plant {
+// made a concrete plant class without abstract factory for testing in isolation
+class TestPlant : public Plant
+{
 
-    public: 
-    TestPlant(string species) : Plant(species) {
-        setGrowthRequirements(2,3,4); //seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
+public:
+    TestPlant(string species) : Plant(species)
+    {
+        setGrowthRequirements(2, 3, 4); // seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
         setSize("small");
         setPrice(69.99);
         setDescription("like a little succulant idk");
-    
     }
 
-    Plant* clone() override {
+    Plant *clone() override
+    {
         return new TestPlant(*this);
     }
 };
 
 // Mock observer for testing notifications
-class TestObserver : public GrowthObserver {
-public:
-    void onGrowthChange(Plant* plant) override {
-        cout << "OBSERVER: " << plant->getSpecies() << " growth state changed!" << endl;
-    }
-};
+// class TestObserver : public ConcreteGrowthObserver
+// {
+// public:
+//     void onGrowthChange(Plant *plant) override
+//     {
+//         cout << "OBSERVER: " << plant->getSpecies() << " growth state changed!" << endl;
+//     }
+// };
 
-void testBasicPlantCreation() {
+void testBasicPlantCreation()
+{
     cout << "=== TEST 1: Basic Plant Creation ===" << endl;
     TestPlant plant("HenAndChicks");
-    
+
     cout << "Species: " << plant.getSpecies() << endl;
     cout << "Description: " << plant.getDescription() << endl;
     cout << "Price: $" << plant.getPrice() << endl;
     cout << "Size: " << plant.getsize() << endl;
     cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
-    cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
-    
+    // cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
+
     plant.printFullStatus();
     cout << endl;
 }
@@ -393,62 +397,82 @@ void testBasicPlantCreation() {
 void testGrowthProgression() {
     cout << "=== TEST 2: Growth Progression ===" << endl;
     TestPlant plant("Sunflower");
-    // TestObserver observer;
-    // plant.attach(&observer);
-
+    
     cout << "Initial state:" << endl;
     plant.printGrowthStatus();
+    plant.printCurrentNeeds();
 
-    for (int i = 0; i < 10; i++) {
-        cout << "--- Care cycle " << (i+1) << " ---\n";
-    
-
-        plant.receiveWatering();
-        plant.receiveSunlight();
-
-        if (i >= 2) {
-            plant.receiveFertilizing();
+    // Simulate progression through all growth stages
+    for (int i = 0; i < 15; i++) { // Increased to 15 to account for all stages
+        cout << "--- Care Cycle " << (i + 1) << " ---" << endl;
+        
+        // Print current needs to see what's required
+        plant.printCurrentNeeds();
+        
+        // ALWAYS provide ALL required care for the current growth stage
+        vector<string> requiredCare = plant.getGrowthState()->getRequiredCare();
+        
+        // Provide all required care actions
+        for (const string& care : requiredCare) {
+            if (care == "water") {
+                plant.receiveWatering();
+            } else if (care == "sunlight") {
+                plant.receiveSunlight();
+            } else if (care == "fertilizer") {
+                plant.receiveFertilizing();
+            } else if (care == "prune") {
+                plant.receivePruning();
+            }
         }
-        if (i >= 5) {
-            plant.receivePruning();
-
-        }
-
+        
         plant.completeCareSession();
         plant.printGrowthStatus();
-
+        
+        // Check if plant should be removed (dead or sold)
         if (plant.shouldRemoveFromInventory()) {
-            cout << "big sad :( plant be dead, remove from inventory!" << endl;
+            if (plant.isDead()) {
+                cout << "Plant died! Remove from inventory." << endl;
+            } else {
+                cout << "Plant sold! Remove from inventory." << endl;
+            }
             break;
         }
-
+        
+        // Check if plant is ready for stock (mature and pruned)
+        if (plant.isReadyForStock()) {
+            cout << "*** PLANT READY FOR STOCK! ***" << endl;
+        }
+        
+        cout << endl;
     }
-    // plant.detach(&observer);
+    
     cout << endl;
-
 }
 
-void testHealthDegradation() {
+void testHealthDegradation()
+{
     cout << "=== TEST 3: Health Degradation ===" << endl;
     TestPlant plant("Cactus");
 
     cout << "Initial health:" << endl;
     plant.printHealthStatus();
 
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++)
+    {
         cout << "--- Care Cycle " << (i + 1) << " (INCOMPLETE CARE) ---" << endl;
-    
 
-     // Only do partial care (miss some requirements)
-        if (i % 2 == 0) {
+        // Only do partial care (miss some requirements)
+        if (i % 2 == 0)
+        {
             plant.receiveWatering();
         }
         // Don't provide sunlight (incomplete care)
-        
+
         plant.completeCareSession();
         plant.printHealthStatus();
 
-         if (plant.isDead()) {
+        if (plant.isDead())
+        {
             cout << "Plant has died!" << endl;
             break;
         }
@@ -456,12 +480,14 @@ void testHealthDegradation() {
     cout << endl;
 }
 
-void testHealthRecovery() {
+void testHealthRecovery()
+{
     cout << "=== TEST 4: Health Recovery ===" << endl;
     TestPlant plant("Fern");
 
     cout << "Degrading health..." << endl;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         plant.receiveWatering(); // Only water, no sunlight
         plant.completeCareSession();
     }
@@ -469,49 +495,53 @@ void testHealthRecovery() {
 
     // Now provide complete care to recover
     cout << "Recovering health..." << endl;
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         plant.receiveWatering();
         plant.receiveSunlight();
         plant.completeCareSession();
         plant.printHealthStatus();
     }
     cout << endl;
-
 }
 
-void testIndividualCareActions() {
+void testIndividualCareActions()
+{
     cout << "=== TEST 5: Individual Care Actions ===" << endl;
     TestPlant plant("Orchid");
-    
+
     cout << "Initial needs:" << endl;
     plant.printCurrentNeeds();
-    
+
     // Test individual care actions
     plant.receiveWatering();
     plant.printCurrentNeeds();
-    
+
     plant.receiveSunlight();
     plant.printCurrentNeeds();
-    
+
     // Complete the session
     plant.completeCareSession();
     plant.printFullStatus();
     cout << endl;
 }
 
-void testSoldState() {
+void testSoldState()
+{
     cout << "=== TEST 6: Sold State ===" << endl;
     TestPlant plant("Tulip");
-    
+
     // Fast-forward to mature state
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++)
+    {
         plant.receiveWatering();
         plant.receiveSunlight();
         plant.receiveFertilizing();
         plant.receivePruning();
         plant.completeCareSession();
-        
-        if (plant.shouldRemoveFromInventory()) {
+
+        if (plant.shouldRemoveFromInventory())
+        {
             break;
         }
     }
@@ -520,22 +550,25 @@ void testSoldState() {
     cout << "Should remove from inventory: " << (plant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
     cout << "Is ready for stock: " << (plant.isReadyForStock() ? "Yes" : "No") << endl;
     cout << endl;
-
 }
 
-void testDeadState() {
+void testDeadState()
+{
     cout << "=== TEST 7: Dead State ===" << endl;
     TestPlant plant("Basil");
-    
+
     // Kill the plant
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         // Incomplete care
-        if (i % 2 == 0) {
+        if (i % 2 == 0)
+        {
             plant.receiveWatering();
         }
         plant.completeCareSession();
-        
-        if (plant.isDead()) {
+
+        if (plant.isDead())
+        {
             cout << "Plant died at cycle " << (i + 1) << endl;
             break;
         }
@@ -544,7 +577,7 @@ void testDeadState() {
     plant.printFullStatus();
     cout << "Is dead: " << (plant.isDead() ? "Yes" : "No") << endl;
     cout << "Should remove from inventory: " << (plant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
-    
+
     // Try to improve a dead plant
     cout << "Trying to improve dead plant..." << endl;
     plant.receiveWatering();
@@ -552,6 +585,37 @@ void testDeadState() {
     plant.completeCareSession();
     cout << endl;
 }
+
+// int testObserverMediator()
+// {
+
+//     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
+//     CarnivorousPlantFactory factory;
+//     Plant *venusFlytrap = factory.createMediumPlant();
+
+//     venusFlytrap->detach();
+
+//     ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
+//     ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
+
+//     venusFlytrap->attach(obs);
+
+//     StaffMember *alice = new Worker();
+//     StaffMember *bob = new Worker();
+
+//     mediator->addStaffMember(alice);
+//     mediator->addStaffMember(bob);
+
+//     venusFlytrap->printHealthStatus();
+
+//     venusFlytrap->setHealthState(new NeedsCare());
+
+//     venusFlytrap->printHealthStatus();
+
+//     std::cout << "----------------------------------" << std::endl;
+
+//     return 0;
+// }
 
 void mementoTest()
 {
