@@ -110,16 +110,16 @@ void testAbstractFactory()
 
     cout << endl;
 
-    // delete temperateSmall;
-    // delete temperateMedium;
-    //  delete temperateLarge;
-    // delete tropicalSmall;
-    // delete tropicalMedium;
-    //  delete tropicalLarge;
-    //  delete carnivorousSmall;
-    //  delete carnivorousMedium;
-    //  delete carnivorousLarge;
-    //  delete clonedDaisy;
+    delete temperateSmall;
+    delete temperateMedium;
+    delete temperateLarge;
+    delete tropicalSmall;
+    delete tropicalMedium;
+    delete tropicalLarge;
+    delete carnivorousSmall;
+    delete carnivorousMedium;
+    delete carnivorousLarge;
+    // delete clonedDaisy;
 }
 
 void testDecoratorPattern()
@@ -307,7 +307,7 @@ void testBasicPlantCreation()
     cout << "Price: $" << plant.getPrice() << endl;
     cout << "Size: " << plant.getsize() << endl;
     cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
-    cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
+    // cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
 
     plant.printFullStatus();
     cout << endl;
@@ -539,6 +539,8 @@ try
     testIndividualCareActions();
     testSoldState();
     testDeadState();
+
+    testObserverMediator();
 
     cout << "All tests completed successfully!" << endl;
     return 0;

@@ -13,19 +13,19 @@ using namespace std;
 
 #include "Plant.h"
 
-class HealthState {
-
+class HealthState
+{
 
 public:
 	virtual ~HealthState();
 
-	virtual void degrade(Plant* plant) = 0;
+	virtual void degrade(Plant *plant) = 0;
 
-	virtual void improve(Plant* plant) = 0;
+	virtual void improve(Plant *plant) = 0;
 
-	virtual string getStatusMessage(Plant* plant) = 0;
+	virtual string getStatusMessage(Plant *plant) = 0;
 
-	virtual bool isDead();
+	virtual bool isDead() = 0;
 };
 
 #endif

@@ -213,6 +213,11 @@ help:
 	@echo "  no_dtor        - Set to 1 to exclude the default destructor."
 	@echo "  methods        - A space-separated list of methods to include, passed as a quoted string."
 
+val:
+	g++ -fdiagnostics-color=always -g src/*.cpp -o build/TestingMain
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
+
+
 
 
 # Phony targets
