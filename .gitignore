@@ -1,3 +1,6 @@
 *.vpp.bak*
 *.vpp.lck
 .vscode
+*.o
+*.gcno
+*.gcda
