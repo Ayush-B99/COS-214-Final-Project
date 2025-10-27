@@ -9,20 +9,17 @@
 #include <sstream>
 #include <stack>
 
-#include "Command.h"
-
 using namespace std;
 
 #include "Command.h"
 #include "Plant.h"
 
-class Water : public Command
-{
+class Water : public Command {
 
 public:
-	Plant *receiver;
+	Plant* receiver;
 
-	void WaterCommand(Plant *plant);
+	void WaterCommand(Plant* plant);
 
 	void execute();
 

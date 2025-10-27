@@ -1,16 +1,15 @@
 #include "../include/LargePlant.h"
 
-LargePlant::LargePlant(string species) {
+LargePlant::LargePlant(string species) : Plant(species) {
 	// TODO - implement LargePlant::LargePlant
-	throw "Not yet implemented";
+	size = "Large";
 }
 
 LargePlant::~LargePlant() {
 	// TODO - implement LargePlant::~LargePlant
-	throw "Not yet implemented";
 }
 
 char LargePlant::getSize() {
 	// TODO - implement LargePlant::getSize
-	throw "Not yet implemented";
+	return 'L';
 }

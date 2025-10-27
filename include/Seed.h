@@ -14,11 +14,18 @@ using namespace std;
 #include "GrowthState.h"
 #include "Plant.h"
 
+
 class Seed : public GrowthState {
 
 
 public:
 	void grow(Plant* plant);
+
+	string getStatusMessage(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	string getName();
 };
 
 #endif

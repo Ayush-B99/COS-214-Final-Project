@@ -11,7 +11,7 @@
 
 using namespace std;
 
-class Plant;
+#include "Plant.h"
 
 class HealthState {
 
@@ -19,7 +19,15 @@ class HealthState {
 public:
 	virtual ~HealthState();
 
-	virtual void update(Plant* plant) = 0;
+	virtual void degrade(Plant* plant) = 0;
+
+	virtual void improve(Plant* plant) = 0;
+
+	virtual string getStatusMessage(Plant* plant) = 0;
+
+	virtual bool isDead() = 0;
+
+	virtual string getName() = 0;
 };
 
 #endif

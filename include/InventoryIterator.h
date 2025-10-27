@@ -33,6 +33,8 @@ public:
 
 	bool hasNext();
 
+	bool hasNextNode();
+
 	void reset();
 
 	map<string, int> getPosition();
@@ -43,7 +45,7 @@ public:
 
 	PlantNode *nextCoarse();
 
-	void setPosition(map<PlantNode *, int> pos);
+	void setPosition(map<PlantNode*, int> pos);
 };
 
 #endif

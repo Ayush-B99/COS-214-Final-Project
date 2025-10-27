@@ -19,6 +19,15 @@ class Mature : public GrowthState {
 
 public:
 	void grow(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	string getStatusMessage(Plant* plant);
+
+	bool isMature();
+
+	string getName();
+	
 };
 
 #endif

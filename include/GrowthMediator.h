@@ -9,19 +9,17 @@
 #include <sstream>
 #include <stack>
 
-//#include "StaffMember.h"
-
 using namespace std;
 
-class StaffMember;
+#include "ConcreteGrowthMediator.h"
 
-class GrowthMediator
-{
+class GrowthMediator : public ConcreteGrowthMediator {
+
 
 public:
 	virtual ~GrowthMediator();
 
-	virtual void notify(StaffMember *sender, string event) = 0;
+	virtual void notify(StaffMember* sender, string event) = 0;
 };
 
 #endif

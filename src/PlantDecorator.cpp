@@ -1,21 +1,28 @@
 #include "../include/PlantDecorator.h"
 
-PlantDecorator::PlantDecorator(Plant* plant) {
-	// TODO - implement PlantDecorator::PlantDecorator
-	throw "Not yet implemented";
+/* testing w smart pointer because of mem leaks
+PlantDecorator::PlantDecorator(Plant* plant) : decoratedPlant(plant) {
+	// leave empty
+}
+*/
+
+PlantDecorator::PlantDecorator(std::unique_ptr<Plant> plant) 
+    : decoratedPlant(std::move(plant)) {
 }
 
-PlantDecorator::~PlantDecorator() {
-	// TODO - implement PlantDecorator::~PlantDecorator
-	throw "Not yet implemented";
-}
+// PlantDecorator::~PlantDecorator() {
+// 	// comment out if double free happens
+// 	delete decoratedPlant;
+// }
 
 double PlantDecorator::getPrice() {
-	// TODO - implement PlantDecorator::getPrice
-	throw "Not yet implemented";
+	return decoratedPlant->getPrice();
 }
 
 string PlantDecorator::getDescription() {
-	// TODO - implement PlantDecorator::getDescription
-	throw "Not yet implemented";
+	return decoratedPlant->getDescription();
+}
+
+string PlantDecorator::getSpecies()  {
+    return decoratedPlant->getSpecies();
 }

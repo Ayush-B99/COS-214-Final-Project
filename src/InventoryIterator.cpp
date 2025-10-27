@@ -54,3 +54,7 @@ void InventoryIterator::setPosition(map<PlantNode*, int> pos) {
 	// TODO - implement InventoryIterator::setPosition
 	throw "Not yet implemented";
 }
+
+bool InventoryIterator::hasNextNode(){
+	return false;
+}

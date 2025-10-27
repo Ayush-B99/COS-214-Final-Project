@@ -2,20 +2,21 @@
 
 Nepenthes::Nepenthes() : LargePlant("Nepenthas") {
 	// TODO - implement Nepenthes::Nepenthes
-	throw "Not yet implemented";
+	setPrice(150.0);
+    setDescription("A tropical pitcher plant with large traps");
 }
 
 Nepenthes::Nepenthes(Nepenthes& other) : LargePlant(other) {
 	// TODO - implement Nepenthes::Nepenthes
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 Nepenthes::~Nepenthes() {
 	// TODO - implement Nepenthes::~Nepenthes
-	throw "Not yet implemented";
+	
 }
 
 Plant* Nepenthes::clone() {
 	// TODO - implement Nepenthes::clone
-	throw "Not yet implemented";
+	return new Nepenthes(*this);
 }

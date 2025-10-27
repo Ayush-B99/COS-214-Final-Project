@@ -9,19 +9,19 @@
 #include <sstream>
 #include <stack>
 
-#include "Plant.h"
-
 using namespace std;
 
-#include "Plant.h"
+// #include "Plant.h"
 
-class GrowthObserver
-{
+class Plant;
+
+class GrowthObserver {
+
 
 public:
-	GrowthObserver(); // uml change no virtual constructor
+	GrowthObserver();
 
-	virtual void onGrowthChange(Plant *plant) = 0;
+	virtual void onGrowthChange(Plant* plant) = 0;
 };
 
 #endif

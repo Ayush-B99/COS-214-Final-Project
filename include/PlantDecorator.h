@@ -16,15 +16,21 @@ using namespace std;
 class PlantDecorator : public Plant {
 
 public:
-	Plant* decoratedPlant;
+	//Plant* decoratedPlant;
+	std::unique_ptr<Plant> decoratedPlant;
 
-	PlantDecorator(Plant* plant);
+	//PlantDecorator(Plant* plant);
+	PlantDecorator(std::unique_ptr<Plant> plant);
 
-	virtual ~PlantDecorator();
+	//virtual ~PlantDecorator();
 
 	double getPrice();
 
 	string getDescription();
+
+	virtual Plant* clone() = 0;
+
+	virtual string getSpecies();
 };
 
 #endif

@@ -9,18 +9,16 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthObserver.h"
-
 using namespace std;
 
 #include "GrowthMediator.h"
 #include "Plant.h"
 
-class ConcreteGrowthObserver : public GrowthObserver
-{
+class ConcreteGrowthObserver : public GrowthObserver {
+
 
 public:
-	void onGrowthChange(Plant *plant);
+	void onGrowthChange(Plant* plant);
 };
 
 #endif

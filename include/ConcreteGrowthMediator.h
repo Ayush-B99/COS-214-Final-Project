@@ -9,22 +9,17 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthMediator.h"
-
 using namespace std;
 
-//#include "StaffMember.h"
+#include "StaffMember.h"
 
-class StaffMember;
-
-class ConcreteGrowthMediator : public GrowthMediator
-{
+class ConcreteGrowthMediator {
 
 private:
-	vector<StaffMember *> staffMembers;
+	vector<StaffMember*> staffMembers;
 
 public:
-	void notify(StaffMember *sender, string event);
+	void notify(StaffMember* sender, string event);
 };
 
 #endif

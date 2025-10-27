@@ -18,6 +18,10 @@ class Storage {
 
 public:
 	virtual Iterator* createIterator() = 0;
+
+	virtual void addPlant(Plant* plant)=0;
+
+	virtual void removePlant(Plant* plant)=0;
 };
 
 #endif
