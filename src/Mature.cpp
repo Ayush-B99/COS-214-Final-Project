@@ -1,33 +1,34 @@
-#ifndef MATURE_H
-#define MATURE_H
+#include "../include/Mature.h"
+#include "../include/Plant.h"
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-#include <map>
-#include <sstream>
-#include <stack>
+void Mature::grow(Plant *plant)
+{
+    // Mature plants don't grow further automatically
+    // They either get sold manually or die after 10 cycles (handled in Plant::tick())
+    // The plant is already ready for stock at this point
+}
 
-using namespace std;
+vector<string> Mature::getRequiredCare()
+{
+    return {};
+}
 
-#include "GrowthState.h"
-#include "Plant.h"
+string Mature::getStatusMessage(Plant *plant)
+{
+        int current = plant->getCurrentCycleCount();
+    return plant->getSpecies() + " (Mature): " + to_string(current) + "/10 cycles until auto-death" +
+           " | Water: " + to_string(plant->getWaterLevel()) + "%" +
+           " | Sun: " + to_string(plant->getSunlightLevel()) + "%" +
+           " | Fertilizer: " + to_string(plant->getFertilizerLevel()) + "%" +
+           " | Prune: " + to_string(plant->getPruneLevel()) + "%" +
+           " | READY FOR STOCK!";
+}
 
-class Mature : public GrowthState {
+bool Mature::isMature()
+{
+    return true;
+}
 
-
-public:
-	void grow(Plant* plant);
-
-	vector<string> getRequiredCare();
-
-	string getStatusMessage(Plant* plant);
-
-	bool isMature();
-
-	string getName();
-	
-};
-
-#endif
+string Mature::getName() {
+    return "mature";
+}

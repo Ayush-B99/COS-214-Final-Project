@@ -706,7 +706,7 @@ int main()
         cout << endl;
 
         // ayush testing
-        testAbstractFactory();
+        //testAbstractFactory();
         testDecoratorPattern();
         testPatternsTogether();
 

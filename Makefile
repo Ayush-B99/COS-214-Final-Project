@@ -44,7 +44,6 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/Seed.cpp \
 		  $(SRCDIR)/Sprout.cpp \
 		  $(SRCDIR)/Mature.cpp \
-		  $(SRCDIR)/Sold.cpp \
 		  $(SRCDIR)/GrowthObserver.cpp \
           $(SRCDIR)/TestingMain.cpp \
 		  $(SRCDIR)/CommMediator.cpp \
