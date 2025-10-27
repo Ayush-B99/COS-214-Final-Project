@@ -3,6 +3,9 @@
 
 void FertilizerHandler::handleCareRequest(Plant *plant)
 {
+    cout << "FertilizerHandler checking if plant needs fertilizer..." << endl;
+    cout << plant->needsFertilizer() << endl;
+
     if (plant->needsFertilizer())
     {
         Fertilizer *fertilizerCmd = new Fertilizer(plant);
@@ -11,7 +14,8 @@ void FertilizerHandler::handleCareRequest(Plant *plant)
 
         message();
     }
-    else if (next)
+
+    if (next)
     {
         next->handleCareRequest(plant);
     }

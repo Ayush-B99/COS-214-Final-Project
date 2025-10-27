@@ -3,6 +3,9 @@
 
 void SunHandler::handleCareRequest(Plant *plant)
 {
+    cout << "SunHandler checking if plant needs sunlight..." << endl;
+    cout << plant->needsSun() << endl;
+
     if (plant->needsSun())
     {
         Sun *sunCmd = new Sun(plant);
@@ -11,7 +14,8 @@ void SunHandler::handleCareRequest(Plant *plant)
 
         message();
     }
-    else if (next)
+
+    if (next)
     {
         next->handleCareRequest(plant);
     }

@@ -24,7 +24,7 @@ public:
 
 	virtual void handleCareRequest(Plant *plant) = 0;
 
-	void setNext();
+	void setNext(PlantCareHandler *nextHandler);
 
 	virtual void message() = 0;
 };

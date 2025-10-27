@@ -29,6 +29,10 @@
 #include "../include/Dead.h"
 #include "../include/ConcreteCommMediator.h"
 #include "../include/Manager.h"
+#include "../include/WaterHandler.h"
+#include "../include/SunHandler.h"
+#include "../include/FertilizerHandler.h"
+#include "../include/PruneHandler.h"
 
 void testAbstractFactory()
 {
@@ -313,58 +317,73 @@ void testBasicPlantCreation()
     cout << endl;
 }
 
-void testGrowthProgression() {
+void testGrowthProgression()
+{
     cout << "=== TEST 2: Growth Progression ===" << endl;
     TestPlant plant("Sunflower");
-    
+
     cout << "Initial state:" << endl;
     plant.printGrowthStatus();
     plant.printCurrentNeeds();
 
     // Simulate progression through all growth stages
-    for (int i = 0; i < 15; i++) { // Increased to 15 to account for all stages
+    for (int i = 0; i < 15; i++)
+    { // Increased to 15 to account for all stages
         cout << "--- Care Cycle " << (i + 1) << " ---" << endl;
-        
+
         // Print current needs to see what's required
         plant.printCurrentNeeds();
-        
+
         // ALWAYS provide ALL required care for the current growth stage
         vector<string> requiredCare = plant.getGrowthState()->getRequiredCare();
-        
+
         // Provide all required care actions
-        for (const string& care : requiredCare) {
-            if (care == "water") {
+        for (const string &care : requiredCare)
+        {
+            if (care == "water")
+            {
                 plant.receiveWatering();
-            } else if (care == "sunlight") {
+            }
+            else if (care == "sunlight")
+            {
                 plant.receiveSunlight();
-            } else if (care == "fertilizer") {
+            }
+            else if (care == "fertilizer")
+            {
                 plant.receiveFertilizing();
-            } else if (care == "prune") {
+            }
+            else if (care == "prune")
+            {
                 plant.receivePruning();
             }
         }
-        
+
         plant.completeCareSession();
         plant.printGrowthStatus();
-        
+
         // Check if plant should be removed (dead or sold)
-        if (plant.shouldRemoveFromInventory()) {
-            if (plant.isDead()) {
+        if (plant.shouldRemoveFromInventory())
+        {
+            if (plant.isDead())
+            {
                 cout << "Plant died! Remove from inventory." << endl;
-            } else {
+            }
+            else
+            {
                 cout << "Plant sold! Remove from inventory." << endl;
             }
             break;
         }
-        
+
         // Check if plant is ready for stock (mature and pruned)
-        if (plant.isReadyForStock()) {
+        if (plant.isReadyForStock())
+        {
             cout << "*** PLANT READY FOR STOCK! ***" << endl;
         }
-        
+
         cout << endl;
     }
-    
+
     cout << endl;
 }
 
@@ -505,36 +524,39 @@ void testDeadState()
     cout << endl;
 }
 
-// int testObserverMediator()
-// {
+int testPlantGrowth()
+{
+    cout << "=== PLANT GROWTH TESTING ===" << endl;
+    cout << endl;
 
-//     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
-//     CarnivorousPlantFactory factory;
-//     Plant *venusFlytrap = factory.createMediumPlant();
+    CarnivorousPlantFactory carnivorousFactory;
+    Plant *venusFlytrap = carnivorousFactory.createSmallPlant();
+    ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(venusFlytrap);
 
-//     venusFlytrap->detach();
+    WaterHandler *waterHandler = new WaterHandler();
+    SunHandler *sunHandler = new SunHandler();
+    FertilizerHandler *fertilizerHandler = new FertilizerHandler();
+    PruneHandler *pruneHandler = new PruneHandler();
 
-//     ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
-//     ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
+    waterHandler->setNext(sunHandler);
+    sunHandler->setNext(fertilizerHandler);
+    fertilizerHandler->setNext(pruneHandler);
 
-//     venusFlytrap->attach(obs);
+    venusFlytrap->setCareStrategy(waterHandler);
 
-//     StaffMember *alice = new Worker();
-//     StaffMember *bob = new Worker();
+    int i = 0;
+    while (i < 50)
+    {
+        venusFlytrap->tick();
 
-//     mediator->addStaffMember(alice);
-//     mediator->addStaffMember(bob);
+        cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
+        venusFlytrap->printFullStatus();
 
-//     venusFlytrap->printHealthStatus();
+        i++;
+    }
 
-//     venusFlytrap->setHealthState(new NeedsCare());
-
-//     venusFlytrap->printHealthStatus();
-
-//     std::cout << "----------------------------------" << std::endl;
-
-//     return 0;
-// }
+    return 0;
+}
 
 int testCommMediator()
 {
@@ -605,20 +627,22 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testSoldState();
-        testDeadState();
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testSoldState();
+        // testDeadState();
 
-        // testObserverMediator();
-        testCommMediator();
+        // testCommMediator();
+
+        testPlantGrowth();
+        return 0;
     }
     catch (const char *msg)
     {

@@ -82,7 +82,10 @@ void Plant::setHealthState(HealthState *state)
 	}
 	this->healthState = state;
 
-	observer->onGrowthChange(); // notify observer of health state change
+	if (observer)
+	{
+		observer->onGrowthChange(); // notify observer of health state change
+	}
 }
 
 // void Plant::updateHealth() { //Took this out because i need to come back to it, i dont have an update function yet and completeCareSession needs the improve and degrade functions to move from needsCare to good, I may be stupid but its probabaly something dumb asf :)
@@ -161,13 +164,13 @@ void Plant::completeCareSession()
 
 	for (const string &care : requiredCare)
 	{
-		if (care == "Water" && waterLevel < 60)
+		if (care == "water" && waterLevel < 60)
 			successfulCycles = false;
-		if (care == "Sunlight" && sunlightLevel < 60)
+		if (care == "sunlight" && sunlightLevel < 60)
 			successfulCycles = false;
-		if (care == "Fertilizer" && fertilizerLevel < 60)
+		if (care == "fertilizer" && fertilizerLevel < 60)
 			successfulCycles = false;
-		if (care == "Prune" && pruneLevel < 60)
+		if (care == "prune" && pruneLevel < 60)
 			successfulCycles = false;
 	}
 
@@ -422,15 +425,20 @@ void Plant::handleCareRequest()
 
 bool Plant::needsWater()
 {
-	return waterLevel < 60;
+	return waterLevel <= 60;
 }
 
 bool Plant::needsSun()
 {
-	return sunlightLevel < 60;
+	return sunlightLevel <= 60;
 }
 
 bool Plant::needsFertilizer()
 {
-	return fertilizerLevel < 60;
+	return fertilizerLevel <= 60;
+}
+
+bool Plant::isMature()
+{
+	return growthState->isMature();
 }

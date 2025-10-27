@@ -1,9 +1,8 @@
 #include "../include/ConcreteGrowthObserver.h"
 
-ConcreteGrowthObserver::ConcreteGrowthObserver(Plant *plant, ConcreteGrowthMediator *med)
+ConcreteGrowthObserver::ConcreteGrowthObserver(Plant *plant)
 {
 	this->subject = plant; // create a shallow copy of the plant
-	this->mediator = med;  // shallow copy of growth mediator
 
 	plant->attach(this); // attach this observer to the plant
 }
@@ -22,6 +21,7 @@ void ConcreteGrowthObserver::onGrowthChange()
 
 	if (dynamic_cast<NeedsCare *>(state)) // test if plant needs care
 	{
-		cout << "Mediator notified about plant needing care." << endl;
+		cout << "BEGIN CHAIN" << endl;
+		subject->handleCareRequest(); // start chain of responsibility to handle care
 	}
 }
