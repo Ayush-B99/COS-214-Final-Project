@@ -133,6 +133,7 @@ public:
 	bool needsWater();
 	bool needsSun();
 	bool needsFertilizer();
+	bool needsPrune();
 
 protected:
 	// subclasses set their growth requirements

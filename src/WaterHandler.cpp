@@ -18,6 +18,10 @@ void WaterHandler::handleCareRequest(Plant *plant)
 	{
 		next->handleCareRequest(plant);
 	}
+	else
+	{
+		plant->completeCareSession(); // complete care session if this is the last handler
+	}
 }
 
 void WaterHandler::message()

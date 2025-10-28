@@ -2,27 +2,31 @@
 #include "../include/Plant.h"
 #include "../include/Mature.h"
 
-void Sprout::grow(Plant* plant) {
-	    if (plant->getCurrentCycleCount() >= plant->getSproutCyclesNeeded()) {
+void Sprout::grow(Plant *plant)
+{
+    if (plant->getCurrentCycleCount() >= plant->getSproutCyclesNeeded())
+    {
         // Check if required resources are adequate AND plant is ready for stock
-        if (plant->getWaterLevel() >= 60 && plant->getSunlightLevel() >= 60 && plant->getFertilizerLevel() >= 60 && plant->isReadyForStock()) {
+        if (plant->getWaterLevel() >= 60 && plant->getSunlightLevel() >= 60 && plant->getFertilizerLevel() >= 60)
+        {
             plant->setGrowthState(new Mature());
             plant->resetCycleCount();
-            plant->notify();
+            // plant->notify();
             cout << plant->getSpecies() << " has matured!" << endl;
         }
-	}
+    }
 }
 
-vector<string> Sprout::getRequiredCare() {
-	return {"water", "sunlight", "fertilizer", "prune"};
-
+vector<string> Sprout::getRequiredCare()
+{
+    return {"water", "sunlight", "fertilizer", "prune"};
 }
 
-string Sprout::getStatusMessage(Plant* plant) {
-	int current = plant->getCurrentCycleCount();
-	int needed = plant->getSproutCyclesNeeded();
-	    return plant->getSpecies() + " (Sprout): " + to_string(current) + "/" + to_string(needed) + 
+string Sprout::getStatusMessage(Plant *plant)
+{
+    int current = plant->getCurrentCycleCount();
+    int needed = plant->getSproutCyclesNeeded();
+    return plant->getSpecies() + " (Sprout): " + to_string(current) + "/" + to_string(needed) +
            " cycles | Water: " + to_string(plant->getWaterLevel()) + "%" +
            " | Sun: " + to_string(plant->getSunlightLevel()) + "%" +
            " | Fertilizer: " + to_string(plant->getFertilizerLevel()) + "%" +
@@ -30,7 +34,7 @@ string Sprout::getStatusMessage(Plant* plant) {
            " | Ready for Stock: " + (plant->isReadyForStock() ? "Yes" : "No");
 }
 
-string Sprout::getName() {
-	return "sprout";
+string Sprout::getName()
+{
+    return "sprout";
 }
-

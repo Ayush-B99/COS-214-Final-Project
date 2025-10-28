@@ -19,9 +19,13 @@ void FertilizerHandler::handleCareRequest(Plant *plant)
     {
         next->handleCareRequest(plant);
     }
+    else
+    {
+        plant->completeCareSession(); // complete care session if this is the last handler
+    }
 }
 
 void FertilizerHandler::message()
 {
-    cout << "CHAIN: Fertilizer has been provided to the plant.";
+    cout << "CHAIN: Fertilizer has been provided to the plant." << endl;
 }

@@ -4,7 +4,9 @@
 void PruneHandler::handleCareRequest(Plant *plant)
 {
     cout << "PruneHandler checking if plant is mature..." << endl;
-    if (plant->isMature())
+    cout << plant->needsPrune() << endl;
+
+    if (plant->needsPrune())
     {
         Prune *pruneCmd = new Prune(plant);
         pruneCmd->execute();
@@ -13,11 +15,13 @@ void PruneHandler::handleCareRequest(Plant *plant)
         message();
     }
 
-    plant->completeCareSession();
-
     if (next)
     {
         next->handleCareRequest(plant);
+    }
+    else
+    {
+        plant->completeCareSession(); // complete care session if this is the last handler
     }
 }
 

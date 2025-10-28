@@ -545,11 +545,14 @@ int testPlantGrowth()
     venusFlytrap->setCareStrategy(waterHandler);
 
     int i = 0;
-    while (i < 100)
+    while (i < 650)
     {
+        cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
+        venusFlytrap->printHealthStatus();
+        venusFlytrap->printGrowthStatus();
+
         venusFlytrap->tick();
 
-        cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
         // venusFlytrap->printFullStatus();
 
         i++;

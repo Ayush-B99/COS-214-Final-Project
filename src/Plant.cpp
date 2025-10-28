@@ -153,6 +153,11 @@ void Plant::receivePruning()
 
 void Plant::completeCareSession()
 {
+	if (healthState->getName() == "good")
+	{
+		return;
+	}
+
 	cout << "\nCare session completed for " << species << ". Resource levels:" << endl;
 	cout << "  Water: " << waterLevel << "%" << endl;
 	cout << "  Sun: " << sunlightLevel << "%" << endl;
@@ -179,6 +184,7 @@ void Plant::completeCareSession()
 		cout << species << " care cycle completed successfully!" << endl;
 		currentCycleCount++;
 		growthState->grow(this); // Check for growth advancement
+		updateHealth();			 // Improve health if care was successful
 	}
 	else
 	{
@@ -337,10 +343,20 @@ int Plant::getPruneLevel() const
 
 void Plant::tick()
 {
+
+	if (healthState->isDead())
+	{
+		return;
+	}
+
 	waterLevel = max(0, waterLevel - 1);
 	sunlightLevel = max(0, sunlightLevel - 1);
 	fertilizerLevel = max(0, fertilizerLevel - 1);
-	pruneLevel = max(0, pruneLevel - 1);
+
+	if (growthState->getName() == "sprout" || growthState->getName() == "mature")
+	{
+		pruneLevel = max(0, pruneLevel - 1);
+	}
 
 	updateHealth();
 
@@ -436,6 +452,10 @@ bool Plant::needsSun()
 bool Plant::needsFertilizer()
 {
 	return fertilizerLevel <= 60;
+}
+bool Plant::needsPrune()
+{
+	return pruneLevel <= 60;
 }
 
 bool Plant::isMature()
