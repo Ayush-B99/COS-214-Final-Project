@@ -32,6 +32,13 @@ using namespace std;
 #include "../include/Manager.h"
 #include "../include/Worker.h"
 #include "../include/Customer.h"
+//for inventory functionality
+#include "../include/Storage.h"
+#include "../include/Inventory.h"
+#include "../include/Stock.h"
+#include "../include/PlantNode.h"
+#include "../include/Iterator.h"
+#include "../include/InventoryIterator.h"
 
 // this is giving leaks again
 void testAbstractFactory() {
@@ -618,30 +625,7 @@ void testDeadState()
 //     return 0;
 // }
 
-void mementoTest()
-{
-    Caretaker<SmallPlant> caretaker = Caretaker<SmallPlant>();
-    // Plant plant = SmallPlant("Basil");
-    
-    // Save initial state
-    // caretaker.addMemento(plant.createMemento());
-    
-    // // Perform some actions
-    // plant.receiveWatering();
-    // plant.receiveSunlight();
-    // plant.completeCareSession();
-    
-    // // Save state after actions
-    // caretaker.addMemento(plant.createMemento());
-    
-    // // Restore initial state
-    // plant.restoreMemento(caretaker.getMemento(0));
-    
-    // // Restore state after actions
-    // plant.restoreMemento(caretaker.getMemento(1));
-    
-    // // Print final status
-}
+
 
 void testCommMediator() {
     cout << "=== COMMMEDIATOR TESTING ===" << endl << endl;
@@ -698,6 +682,7 @@ void testCommMediator() {
     cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
 }
 
+//void testInventory();
 
 int main()
 {
@@ -723,6 +708,9 @@ int main()
         //chimney testing
         testCommMediator();
 
+        //shavir testing
+        //testInventory();
+
         cout << "All tests completed successfully!" << endl;
         return 0;
     } catch (const char* msg) {
@@ -736,6 +724,172 @@ int main()
         return 1;
     }
 }
+
+// void testInventory(){
+// cout << "=== Inventory Testing ===\n";
+
+//     Inventory* inv = new Inventory();
+
+//     // Add some plants
+//     GreenHouse* carnivorous = inv->getCarnivorousFactory();
+//     GreenHouse* tropical = inv->getTropicalFactory();
+//     GreenHouse* temperate = inv->getTemperateFactory();
+
+//     cout << "\n-- Adding plants --\n";
+//     inv->addLargePlant(carnivorous);
+//     inv->addLargePlant(tropical);
+//     inv->addMediumPlant(temperate);
+//     inv->print();
+
+//     // Add duplicates and store pointers to manipulate later
+//     cout << "\n-- Adding duplicates --\n";
+//     Plant* healthmanip = inv->addLargePlant(carnivorous);
+//     Plant* torem = inv->addLargePlant(carnivorous);
+//     Plant* growthmanip = inv->addMediumPlant(temperate);
+//     Plant* bird = inv->addMediumPlant(tropical);
+//     Plant* uniquerem = inv->addSmallPlant(carnivorous);
+//     inv->print();
+
+//     // Direct removals
+//     cout << "\n-- Direct removals --\n";
+//     inv->removePlant(torem);
+//     inv->print();
+//     inv->removePlant(uniquerem);
+//     inv->print();
+
+//     // Test getPlants by specific growth and health states
+//     cout << "\n-- Testing getPlants variants --\n";
+//     GrowthState* seedling = new Seed();
+//     GrowthState* mature = new Mature();
+//     HealthState* healthy = new Good();
+//     HealthState* dead = new Dead();
+
+//     cout << "Plants in seedling state: " << inv->getPlants(seedling).size() << endl;
+//     cout << "Plants in mature state: " << inv->getPlants(mature).size() << endl;
+//     cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
+//     cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
+
+//     // Manipulate some plant states manually
+//     cout << "\n-- Manually manipulating states --\n";
+//     if (healthmanip) healthmanip->setHealthState(new Dead());
+//     cout << "setting states\n";
+//     if (growthmanip) growthmanip->setGrowthState(new Mature());
+//     inv->print();
+
+//     // Remove by state across entire tree
+//     cout << "\n-- Removing by GrowthState (Mature) --\n";
+//     vector<Plant*> removedMature = inv->removePlants(mature);
+//     cout << "Removed " << removedMature.size() << " mature plants.\n";
+//     inv->print();
+
+//     cout << "\n-- Removing by HealthState (Dead) --\n";
+//     vector<Plant*> removedDead = inv->removePlants(dead);
+//     cout << "Removed " << removedDead.size() << " dead plants.\n";
+//     inv->print();
+
+//     // Re-add a few plants for next phase
+//     cout << "\n-- Re-adding plants for further tests --\n";
+//     Plant* p1 = inv->addLargePlant(tropical);
+//     Plant* p2 = inv->addSmallPlant(carnivorous);
+//     Plant* p3 = inv->addMediumPlant(temperate);
+//     if (p1) p1->setGrowthState(new Mature());
+//     if (p3) p3->setGrowthState(new Mature());
+//     if (p2) p2->setHealthState(new Dead());
+//     inv->print();
+
+//     // Test moveValidPlantsToStock
+//     // cout << "\n-- Testing moveValidPlantsToStock --\n";
+//     // Storage* stock = new Stock();
+//     // inv->moveValidPlantsToStock(stock);
+//     // cout << "Stock contents after move:\n";
+//     //stock->printStorage();
+
+//     // Test cleanUpDeadPlants (should remove dead ones)
+//     cout << "\n-- Testing cleanUpDeadPlants --\n";
+//     inv->cleanUpDeadPlants();
+//     inv->print();
+
+//     // Remove by string key
+//     cout << "\n-- Testing removePlants(string key, GrowthState*) --\n";
+//     vector<Plant*> removedByKeyGrowth = inv->removePlants("TropicalPlant", mature);
+//     cout << "Removed " << removedByKeyGrowth.size() << " by key+growth.\n";
+//     inv->print();
+
+//     cout << "\n-- Testing removePlants(string key, HealthState*) --\n";
+//     vector<Plant*> removedByKeyHealth = inv->removePlants("CarnivorousPlant", healthy);
+//     cout << "Removed " << removedByKeyHealth.size() << " by key+health.\n";
+//     inv->print();
+
+//     // Test getNodeCount
+//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+
+//     // Test iterator manually
+//     cout << "\n-- Testing iterator traversal --\n";
+//     InventoryIterator it(inv->getRoot());
+//     while (it.hasNext()) {
+//         Plant* p = it.next();
+//         if (p)
+//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+//     }
+
+//     //bugs might be here
+//     cout << "trying to find a bird of paradise (medium tropical) since thats not found by the iterator\n";
+//     vector<Plant*> birds = inv->getPlants(bird->getSpecies());
+//     for (Plant* p : birds){
+//         cout << "   > " << p->getSpecies();
+
+//         if (p->getGrowthState() && p->getHealthState()) {
+//             cout << " | Growth: " << p->getGrowthState()->getName()
+//                  << " | Health: " << p->getHealthState()->getName();
+//         }
+
+//         cout << " | Price: R" << p->getPrice() << endl;
+//     }
+
+//     cout << "now try to delete the bird of paradise, print out the tree again, and run the stats again\n";
+
+//     inv->print();
+    
+//     it.reset();
+//     while (it.hasNext()) {
+//         Plant* p = it.next();
+//         if (p)
+//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+//     }
+
+//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+
+//     inv->removePlant(bird);
+
+//     inv->print();
+
+//     it.reset();
+//     while (it.hasNext()) {
+//         Plant* p = it.next();
+//         if (p)
+//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+//     }
+
+//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+
+//     cout << "\nlooks like coarse isnt working properly, print out the trace\n";
+    
+//     it.reset();
+//     while(it.hasNextNode()){
+//         Plant* p = it.nextCoarse();
+//         cout << "iterated: " << p->getSpecies() << " node.\n";
+//     }
+
+//     delete seedling;
+//     delete mature;
+//     delete healthy;
+//     delete dead;
+//     //delete stock;
+//     delete inv;
+// }
 
 /*
 // oboselete testing code, the new ones work better and have no memory leaks

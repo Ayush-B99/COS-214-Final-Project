@@ -95,7 +95,7 @@ vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
 	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getGrowthState() == state){ //currently pointer comparison, so wont work
+		if (p->getGrowthState()->getName() == state->getName()){ //currently pointer comparison, so wont work
 			matches.push_back(p);
 		}
 	}
@@ -108,7 +108,7 @@ vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
 	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getHealthState() == state){
+		if (p->getHealthState()->getName() == state->getName()){
 			matches.push_back(p);
 			plants.erase(plants.begin() + i);
 		}
@@ -136,10 +136,19 @@ void PlantNode::printNode(string prefix, bool isLeft){
         cout << "   > " << plants[i]->getSpecies();
 
         if (plants[i]->getGrowthState() && plants[i]->getHealthState()) {
-            cout << " | Growth: " << plants[i]->getGrowthState()
-                 << " | Health: " << plants[i]->getHealthState();
+            cout << " | Growth: " << plants[i]->getGrowthState()->getName()
+                 << " | Health: " << plants[i]->getHealthState()->getName();
         }
 
         cout << " | Price: R" << plants[i]->getPrice() << endl;
     }
+}
+
+bool PlantNode::plantInNode(Plant* plant){
+	for (Plant* p : plants){
+		if (p == plant){ //pointer comparisons for exact match
+			return true;
+		}
+	}
+	return false;
 }

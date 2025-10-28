@@ -1,28 +1,29 @@
-#ifndef MEMENTO_H
-#define MEMENTO_H
+// #ifndef MEMENTO_H
+// #define MEMENTO_H
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-#include <map>
-#include <sstream>
-#include <stack>
+// #include <iostream>
+// #include <string>
+// #include <memory>
 
-using namespace std;
+// using namespace std;
 
-template<typename T>
-class Memento
-{
-    private:
-        shared_ptr<T> state;
+// template <typename T>
 
-    public:
-        Memento(shared_ptr<T> state) : state(state) {}
+// class Memento {
+//     private:
+//         T state;
+//         string date;
     
-        shared_ptr<T> getState() const;
-};
+//     public:
+//         Memento(T state, string date) : state(state), date(date) {}
 
-#include "../src/Memento.cpp"
+//         T getState() {
+//             return &state;
+//         }
 
-#endif
+//         string getDate() {
+//             return date;
+//         }
+// };
+
+// #endif
