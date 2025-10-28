@@ -1,6 +1,10 @@
 #include "../include/WaterHandler.h"
 #include "../include/Water.h"
 
+WaterHandler::~WaterHandler()
+{
+}
+
 void WaterHandler::handleCareRequest(Plant *plant)
 {
 	cout << "WaterHandler checking if plant needs water..." << endl;

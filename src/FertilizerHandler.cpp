@@ -1,6 +1,10 @@
 #include "../include/FertilizerHandler.h"
 #include "../include/Fertilizer.h"
 
+FertilizerHandler::~FertilizerHandler()
+{
+}
+
 void FertilizerHandler::handleCareRequest(Plant *plant)
 {
     cout << "FertilizerHandler checking if plant needs fertilizer..." << endl;

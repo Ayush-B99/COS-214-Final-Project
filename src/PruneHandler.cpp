@@ -1,6 +1,10 @@
 #include "../include/PruneHandler.h"
 #include "../include/Prune.h"
 
+PruneHandler::~PruneHandler()
+{
+}
+
 void PruneHandler::handleCareRequest(Plant *plant)
 {
     cout << "PruneHandler checking if plant is mature..." << endl;

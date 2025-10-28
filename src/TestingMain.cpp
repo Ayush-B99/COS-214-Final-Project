@@ -558,6 +558,12 @@ int testPlantGrowth()
         i++;
     }
 
+    delete venusFlytrap;
+    delete waterHandler;
+    delete sunHandler;
+    delete pruneHandler;
+    delete fertilizerHandler;
+
     return 0;
 }
 

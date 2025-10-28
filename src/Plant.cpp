@@ -30,10 +30,6 @@ Plant::~Plant()
 	{
 		delete healthState;
 	}
-	if (careStrategy)
-	{
-		delete careStrategy;
-	}
 }
 
 double Plant::getPrice()

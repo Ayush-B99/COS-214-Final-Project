@@ -1,6 +1,10 @@
 #include "../include/SunHandler.h"
 #include "../include/Sun.h"
 
+SunHandler::~SunHandler()
+{
+}
+
 void SunHandler::handleCareRequest(Plant *plant)
 {
     cout << "SunHandler checking if plant needs sunlight..." << endl;

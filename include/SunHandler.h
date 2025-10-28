@@ -17,6 +17,7 @@ class SunHandler : public PlantCareHandler
 {
 
 public:
+	~SunHandler();
 	void handleCareRequest(Plant *plant);
 
 	void message();

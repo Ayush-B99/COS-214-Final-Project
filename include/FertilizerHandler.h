@@ -17,6 +17,7 @@ class FertilizerHandler : public PlantCareHandler
 {
 
 public:
+	~FertilizerHandler();
 	void handleCareRequest(Plant *plant);
 
 	void message();

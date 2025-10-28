@@ -17,6 +17,8 @@ class PruneHandler : public PlantCareHandler
 {
 
 public:
+	~PruneHandler();
+
 	void handleCareRequest(Plant *plant);
 
 	void message();

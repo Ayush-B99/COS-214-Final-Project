@@ -17,6 +17,7 @@ class WaterHandler : public PlantCareHandler
 {
 
 public:
+	~WaterHandler();
 	void handleCareRequest(Plant *plant);
 
 	void message();
