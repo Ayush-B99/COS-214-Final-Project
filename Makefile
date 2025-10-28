@@ -50,6 +50,18 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/ConcreteCommMediator.cpp \
 		  $(SRCDIR)/StaffMember.cpp \
 		  $(SRCDIR)/Worker.cpp \
+		  $(SRCDIR)/Inventory.cpp \
+		  $(SRCDIR)/InventoryIterator.cpp \
+		  $(SRCDIR)/Order.cpp \
+		  $(SRCDIR)/OrderIterator.cpp \
+		  $(SRCDIR)/PlantNode.cpp \
+		  $(SRCDIR)/Iterator.cpp \
+		  $(SRCDIR)/StockIterator.cpp \
+		  $(SRCDIR)/OrderState.cpp \
+		  $(SRCDIR)/Draft.cpp \
+		  $(SRCDIR)/Cancelled.cpp \
+		  $(SRCDIR)/Completed.cpp \
+		  $(SRCDIR)/Paid.cpp \
 		  $(SRCDIR)/ConcreteGrowthObserver.cpp \
 		  $(SRCDIR)/Customer.cpp \
 		  $(SRCDIR)/Manager.cpp

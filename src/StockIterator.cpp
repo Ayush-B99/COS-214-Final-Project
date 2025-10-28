@@ -17,7 +17,7 @@ Plant* StockIterator::next() {
 }
 
 Plant* StockIterator::currentPlant() {
-	if (!currentNode || indexInNode >= currentNode->getPlants().size());{
+	if (!currentNode || indexInNode >= currentNode->getPlants().size()){
 		return nullptr;
 	}
 	return currentNode->getPlants().at(indexInNode);

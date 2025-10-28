@@ -594,39 +594,6 @@ void testDeadState()
     cout << endl;
 }
 
-// int testObserverMediator()
-// {
-
-//     std::cout << "Testing Observer and Mediator Patterns" << std::endl;
-//     CarnivorousPlantFactory factory;
-//     Plant *venusFlytrap = factory.createMediumPlant();
-
-//     venusFlytrap->detach();
-
-//     ConcreteGrowthMediator *mediator = new ConcreteGrowthMediator();
-//     ConcreteGrowthObserver *obs = new ConcreteGrowthObserver(venusFlytrap, mediator);
-
-//     venusFlytrap->attach(obs);
-
-//     StaffMember *alice = new Worker();
-//     StaffMember *bob = new Worker();
-
-//     mediator->addStaffMember(alice);
-//     mediator->addStaffMember(bob);
-
-//     venusFlytrap->printHealthStatus();
-
-//     venusFlytrap->setHealthState(new NeedsCare());
-
-//     venusFlytrap->printHealthStatus();
-
-//     std::cout << "----------------------------------" << std::endl;
-
-//     return 0;
-// }
-
-
-
 void testCommMediator() {
     cout << "=== COMMMEDIATOR TESTING ===" << endl << endl;
     
@@ -682,7 +649,7 @@ void testCommMediator() {
     cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
 }
 
-//void testInventory();
+void testInventory();
 
 int main()
 {
@@ -692,24 +659,24 @@ int main()
         cout << endl;
 
         // ayush testing
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        // diya testing
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testSoldState();
-        testDeadState();
+        // // diya testing
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testSoldState();
+        // testDeadState();
 
-        //chimney testing
-        testCommMediator();
+        // //chimney testing
+        // testCommMediator();
 
         //shavir testing
-        //testInventory();
+        testInventory();
 
         cout << "All tests completed successfully!" << endl;
         return 0;
@@ -725,414 +692,169 @@ int main()
     }
 }
 
-// void testInventory(){
-// cout << "=== Inventory Testing ===\n";
+void testInventory(){
+cout << "=== Inventory Testing ===\n";
 
-//     Inventory* inv = new Inventory();
+    Inventory* inv = new Inventory();
 
-//     // Add some plants
-//     GreenHouse* carnivorous = inv->getCarnivorousFactory();
-//     GreenHouse* tropical = inv->getTropicalFactory();
-//     GreenHouse* temperate = inv->getTemperateFactory();
+    // Add some plants
+    GreenHouse* carnivorous = inv->getCarnivorousFactory();
+    GreenHouse* tropical = inv->getTropicalFactory();
+    GreenHouse* temperate = inv->getTemperateFactory();
 
-//     cout << "\n-- Adding plants --\n";
-//     inv->addLargePlant(carnivorous);
-//     inv->addLargePlant(tropical);
-//     inv->addMediumPlant(temperate);
-//     inv->print();
+    cout << "\n-- Adding plants --\n";
+    inv->addLargePlant(carnivorous);
+    inv->addLargePlant(tropical);
+    inv->addMediumPlant(temperate);
+    inv->print();
 
-//     // Add duplicates and store pointers to manipulate later
-//     cout << "\n-- Adding duplicates --\n";
-//     Plant* healthmanip = inv->addLargePlant(carnivorous);
-//     Plant* torem = inv->addLargePlant(carnivorous);
-//     Plant* growthmanip = inv->addMediumPlant(temperate);
-//     Plant* bird = inv->addMediumPlant(tropical);
-//     Plant* uniquerem = inv->addSmallPlant(carnivorous);
-//     inv->print();
+    // Add duplicates and store pointers to manipulate later
+    cout << "\n-- Adding duplicates --\n";
+    Plant* healthmanip = inv->addLargePlant(carnivorous);
+    Plant* torem = inv->addLargePlant(carnivorous);
+    Plant* growthmanip = inv->addMediumPlant(temperate);
+    Plant* bird = inv->addMediumPlant(tropical);
+    Plant* uniquerem = inv->addSmallPlant(carnivorous);
+    inv->print();
 
-//     // Direct removals
-//     cout << "\n-- Direct removals --\n";
-//     inv->removePlant(torem);
-//     inv->print();
-//     inv->removePlant(uniquerem);
-//     inv->print();
+    // Direct removals
+    cout << "\n-- Direct removals --\n";
+    inv->removePlant(torem);
+    inv->print();
+    inv->removePlant(uniquerem);
+    inv->print();
 
-//     // Test getPlants by specific growth and health states
-//     cout << "\n-- Testing getPlants variants --\n";
-//     GrowthState* seedling = new Seed();
-//     GrowthState* mature = new Mature();
-//     HealthState* healthy = new Good();
-//     HealthState* dead = new Dead();
+    // Test getPlants by specific growth and health states
+    cout << "\n-- Testing getPlants variants --\n";
+    GrowthState* seedling = new Seed();
+    GrowthState* mature = new Mature();
+    HealthState* healthy = new Good();
+    HealthState* dead = new Dead();
 
-//     cout << "Plants in seedling state: " << inv->getPlants(seedling).size() << endl;
-//     cout << "Plants in mature state: " << inv->getPlants(mature).size() << endl;
-//     cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
-//     cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
+    cout << "Plants in seedling state: " << inv->getPlants(seedling).size() << endl;
+    cout << "Plants in mature state: " << inv->getPlants(mature).size() << endl;
+    cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
+    cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
 
-//     // Manipulate some plant states manually
-//     cout << "\n-- Manually manipulating states --\n";
-//     if (healthmanip) healthmanip->setHealthState(new Dead());
-//     cout << "setting states\n";
-//     if (growthmanip) growthmanip->setGrowthState(new Mature());
-//     inv->print();
+    // Manipulate some plant states manually
+    cout << "\n-- Manually manipulating states --\n";
+    if (healthmanip) healthmanip->setHealthState(new Dead());
+    cout << "setting states\n";
+    if (growthmanip) growthmanip->setGrowthState(new Mature());
+    inv->print();
 
-//     // Remove by state across entire tree
-//     cout << "\n-- Removing by GrowthState (Mature) --\n";
-//     vector<Plant*> removedMature = inv->removePlants(mature);
-//     cout << "Removed " << removedMature.size() << " mature plants.\n";
-//     inv->print();
+    // Remove by state across entire tree
+    cout << "\n-- Removing by GrowthState (Mature) --\n";
+    vector<Plant*> removedMature = inv->removePlants(mature);
+    cout << "Removed " << removedMature.size() << " mature plants.\n";
+    inv->print();
 
-//     cout << "\n-- Removing by HealthState (Dead) --\n";
-//     vector<Plant*> removedDead = inv->removePlants(dead);
-//     cout << "Removed " << removedDead.size() << " dead plants.\n";
-//     inv->print();
+    cout << "\n-- Removing by HealthState (Dead) --\n";
+    vector<Plant*> removedDead = inv->removePlants(dead);
+    cout << "Removed " << removedDead.size() << " dead plants.\n";
+    inv->print();
 
-//     // Re-add a few plants for next phase
-//     cout << "\n-- Re-adding plants for further tests --\n";
-//     Plant* p1 = inv->addLargePlant(tropical);
-//     Plant* p2 = inv->addSmallPlant(carnivorous);
-//     Plant* p3 = inv->addMediumPlant(temperate);
-//     if (p1) p1->setGrowthState(new Mature());
-//     if (p3) p3->setGrowthState(new Mature());
-//     if (p2) p2->setHealthState(new Dead());
-//     inv->print();
+    // Re-add a few plants for next phase
+    cout << "\n-- Re-adding plants for further tests --\n";
+    Plant* p1 = inv->addLargePlant(tropical);
+    Plant* p2 = inv->addSmallPlant(carnivorous);
+    Plant* p3 = inv->addMediumPlant(temperate);
+    if (p1) p1->setGrowthState(new Mature());
+    if (p3) p3->setGrowthState(new Mature());
+    if (p2) p2->setHealthState(new Dead());
+    inv->print();
 
-//     // Test moveValidPlantsToStock
-//     // cout << "\n-- Testing moveValidPlantsToStock --\n";
-//     // Storage* stock = new Stock();
-//     // inv->moveValidPlantsToStock(stock);
-//     // cout << "Stock contents after move:\n";
-//     //stock->printStorage();
+    // Test moveValidPlantsToStock
+    // cout << "\n-- Testing moveValidPlantsToStock --\n";
+    // Storage* stock = new Stock();
+    // inv->moveValidPlantsToStock(stock);
+    // cout << "Stock contents after move:\n";
+    //stock->printStorage();
 
-//     // Test cleanUpDeadPlants (should remove dead ones)
-//     cout << "\n-- Testing cleanUpDeadPlants --\n";
-//     inv->cleanUpDeadPlants();
-//     inv->print();
+    // Test cleanUpDeadPlants (should remove dead ones)
+    cout << "\n-- Testing cleanUpDeadPlants --\n";
+    inv->cleanUpDeadPlants();
+    inv->print();
 
-//     // Remove by string key
-//     cout << "\n-- Testing removePlants(string key, GrowthState*) --\n";
-//     vector<Plant*> removedByKeyGrowth = inv->removePlants("TropicalPlant", mature);
-//     cout << "Removed " << removedByKeyGrowth.size() << " by key+growth.\n";
-//     inv->print();
+    // Remove by string key
+    cout << "\n-- Testing removePlants(string key, GrowthState*) --\n";
+    vector<Plant*> removedByKeyGrowth = inv->removePlants("TropicalPlant", mature);
+    cout << "Removed " << removedByKeyGrowth.size() << " by key+growth.\n";
+    inv->print();
 
-//     cout << "\n-- Testing removePlants(string key, HealthState*) --\n";
-//     vector<Plant*> removedByKeyHealth = inv->removePlants("CarnivorousPlant", healthy);
-//     cout << "Removed " << removedByKeyHealth.size() << " by key+health.\n";
-//     inv->print();
+    cout << "\n-- Testing removePlants(string key, HealthState*) --\n";
+    vector<Plant*> removedByKeyHealth = inv->removePlants("CarnivorousPlant", healthy);
+    cout << "Removed " << removedByKeyHealth.size() << " by key+health.\n";
+    inv->print();
 
-//     // Test getNodeCount
-//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
-//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+    // Test getNodeCount
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
 
-//     // Test iterator manually
-//     cout << "\n-- Testing iterator traversal --\n";
-//     InventoryIterator it(inv->getRoot());
-//     while (it.hasNext()) {
-//         Plant* p = it.next();
-//         if (p)
-//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
-//     }
+    // Test iterator manually
+    cout << "\n-- Testing iterator traversal --\n";
+    InventoryIterator it(inv->getRoot());
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
 
-//     //bugs might be here
-//     cout << "trying to find a bird of paradise (medium tropical) since thats not found by the iterator\n";
-//     vector<Plant*> birds = inv->getPlants(bird->getSpecies());
-//     for (Plant* p : birds){
-//         cout << "   > " << p->getSpecies();
+    //bugs might be here
+    cout << "trying to find a bird of paradise (medium tropical) since thats not found by the iterator\n";
+    vector<Plant*> birds = inv->getPlants(bird->getSpecies());
+    for (Plant* p : birds){
+        cout << "   > " << p->getSpecies();
 
-//         if (p->getGrowthState() && p->getHealthState()) {
-//             cout << " | Growth: " << p->getGrowthState()->getName()
-//                  << " | Health: " << p->getHealthState()->getName();
-//         }
+        if (p->getGrowthState() && p->getHealthState()) {
+            cout << " | Growth: " << p->getGrowthState()->getName()
+                 << " | Health: " << p->getHealthState()->getName();
+        }
 
-//         cout << " | Price: R" << p->getPrice() << endl;
-//     }
+        cout << " | Price: R" << p->getPrice() << endl;
+    }
 
-//     cout << "now try to delete the bird of paradise, print out the tree again, and run the stats again\n";
+    cout << "now try to delete the bird of paradise, print out the tree again, and run the stats again\n";
 
-//     inv->print();
+    inv->print();
     
-//     it.reset();
-//     while (it.hasNext()) {
-//         Plant* p = it.next();
-//         if (p)
-//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
-//     }
+    it.reset();
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
 
-//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
-//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
 
-//     inv->removePlant(bird);
+    inv->removePlant(bird);
 
-//     inv->print();
+    inv->print();
 
-//     it.reset();
-//     while (it.hasNext()) {
-//         Plant* p = it.next();
-//         if (p)
-//             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
-//     }
+    it.reset();
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
 
-//     cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
-//     cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
 
-//     cout << "\nlooks like coarse isnt working properly, print out the trace\n";
+    cout << "\nlooks like coarse isnt working properly, print out the trace\n";
     
-//     it.reset();
-//     while(it.hasNextNode()){
-//         Plant* p = it.nextCoarse();
-//         cout << "iterated: " << p->getSpecies() << " node.\n";
-//     }
+    it.reset();
+    while(it.hasNextNode()){
+        Plant* p = it.nextCoarse();
+        cout << "iterated: " << p->getSpecies() << " node.\n";
+    }
 
-//     delete seedling;
-//     delete mature;
-//     delete healthy;
-//     delete dead;
-//     //delete stock;
-//     delete inv;
-// }
-
-/*
-// oboselete testing code, the new ones work better and have no memory leaks
-void testAbstractFactory() {
-    cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
-    cout << endl;
-
-    TemperatePlantFactory temperateFactory;
-    TropicalPlantFactory tropicalFactory;
-    CarnivorousPlantFactory carnivorousFactory;
-    SucculentPlantFactory succulentFactory;
-
-    // Testing Factories
-    cout << "--- Temperate Plants ---" << endl;
-    Plant* temperateSmall = temperateFactory.createSmallPlant();
-    Plant* temperateMedium = temperateFactory.createMediumPlant();
-    Plant* temperateLarge = temperateFactory.createLargePlant();
-
-    cout << "Small: " << temperateSmall->getDescription() << endl;
-    cout << "Medium: " << temperateMedium->getDescription() << endl;
-    cout << "Large: " << temperateLarge->getDescription() << endl;
-    cout << endl;
-
-    cout << "--- Tropical Plants ---" << endl;
-    Plant* tropicalSmall = tropicalFactory.createSmallPlant();
-    Plant* tropicalMedium = tropicalFactory.createMediumPlant();
-    Plant* tropicalLarge = tropicalFactory.createLargePlant();
-
-    if (tropicalSmall) 
-        cout << "Small: " << tropicalSmall->getDescription() << endl;
-
-    if (tropicalMedium) 
-        cout << "Medium: " << tropicalMedium->getDescription() << endl;
-
-    if (tropicalLarge) 
-        cout << "Large: " << tropicalLarge->getDescription() << endl;
-
-    cout << endl;
-
-    // Test Carnivorous Factory
-    cout << "--- Carnivorous Plants ---" << endl;
-    Plant* carnivorousSmall = carnivorousFactory.createSmallPlant();
-    Plant* carnivorousMedium = carnivorousFactory.createMediumPlant();
-    Plant* carnivorousLarge = carnivorousFactory.createLargePlant();
-
-    if (carnivorousSmall) 
-        cout << "Small: " << carnivorousSmall->getDescription() << endl;
-    
-    if (carnivorousMedium) 
-        cout << "Medium: " << carnivorousMedium->getDescription() << endl;
-
-    if (carnivorousLarge) 
-        cout << "Large: " << carnivorousLarge->getDescription() << endl;
-
-    cout << endl;
-
-    cout << "--- Succulent Plants ---" << endl;
-    Plant* succulentSmall = succulentFactory.createSmallPlant();
-    Plant* succulentMedium = succulentFactory.createMediumPlant();
-    Plant* succulentLarge = succulentFactory.createLargePlant();
-
-    cout << "Small: " << succulentSmall->getDescription() << endl;
-    cout << "Medium: " << succulentMedium->getDescription() << endl;
-    cout << "Large: " << succulentLarge->getDescription() << endl;
-    cout << endl;
-
-    // Test cloning
-    cout << "--- Testing Cloning ---" << endl;
-    Plant* clonedDaisy = temperateSmall->clone();
-    cout << "Original: " << temperateSmall->getDescription() << endl;
-    cout << "Clone: " << clonedDaisy->getDescription() << endl;
-
-    Plant* clonedLilac = temperateMedium->clone();
-    cout << "Original: " << temperateMedium->getDescription() << endl;
-    cout << "Clone: " << clonedLilac->getDescription() << endl;
-
-    Plant* clonedWhiteOak = temperateLarge->clone();
-    cout << "Original: " << temperateLarge->getDescription() << endl;
-    cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
-
-    cout << endl;
-
-    delete temperateSmall;
-    delete temperateMedium;
-    delete temperateLarge;
-    delete tropicalSmall;
-    delete tropicalMedium;
-    delete tropicalLarge;
-    delete carnivorousSmall;
-    delete carnivorousMedium;
-    delete carnivorousLarge;
-    delete clonedDaisy;
-    delete clonedLilac;
-    delete clonedWhiteOak;
+    delete seedling;
+    delete mature;
+    delete healthy;
+    delete dead;
+    //delete stock;
+    delete inv;
 }
-*/
 
-// oboselete testing code, the new ones work better and have no memory leaks
-/*void testDecoratorPattern() {
-    cout << "=== TESTING DECORATOR PATTERN ===" << endl;
-    cout << endl;
-
-    // create a small mediium & large plant
-    Plant* daisy = new Daisy();
-    Plant* aloe = new AloeVera();
-    Plant* nepenthes = new Nepenthes();
-
-    cout << "--- Basic Plantswith no decoration ---" << endl;
-    cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
-    cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
-    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
-    cout << endl;
-
-    // Test one decorators
-    cout << "--- Individual Decorators ---" << endl;
-    
-    //  pot decorator alone test
-    Plant* daisyInClayPot = new PotDecorator(new Daisy(), "Clay");
-    cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
-    
-    // fertilizer decorator alone test
-    Plant* aloeWithFertilizer = new FertilizerDecorator(new AloeVera(), "Organic");
-    cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
-    cout << endl;
-
-    // Test multiple decorations now
-    cout << "--- Multiple Decorations ---" << endl;
-    
-    // Pot + Fertilizer
-    Plant* PremiumNepenthes = new FertilizerDecorator(new PotDecorator(new Nepenthes(), "Decorative"), "Slow-Release");
-    cout << "Premium Oak: " << PremiumNepenthes->getDescription() << " - Price: R" << PremiumNepenthes->getPrice() << endl;
-    
-    // Diff pot types
-    Plant* daisyCeramic = new PotDecorator(new Daisy(), "Ceramic");
-    Plant* daisyPlastic = new PotDecorator(new Daisy(), "Plastic");
-    cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
-    cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
-    cout << endl;
-
-    // diff fertilizer types
-    cout << "--- Different Fertilizer Types ---" << endl;
-    Plant* aloeOrganic = new FertilizerDecorator(new AloeVera(), "Organic");
-    Plant* aloeLiquid = new FertilizerDecorator(new AloeVera(), "Liquid");
-    Plant* aloeSlowRelease = new FertilizerDecorator(new AloeVera(), "Slow-Release");
-    
-    cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
-    cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
-    cout << "Aloe Slow-Release: " << aloeSlowRelease->getDescription() << " - Price: R" << aloeSlowRelease->getPrice() << endl;
-    cout << endl;
-
-    cout << "--- Testing Construction Methods ---" << endl;
-
-// Method 1: Direct construction (current way - broken)
-Plant* broken = new FertilizerDecorator(new PotDecorator(new WhiteOak(), "Clay"), "Organic");
-cout << "Nested (broken): " << broken->getDescription() << endl;
-
-// Method 2: Step-by-step construction
-Plant* step1 = new WhiteOak();
-Plant* step2 = new PotDecorator(step1, "Clay");  
-Plant* step3 = new FertilizerDecorator(step2, "Organic");
-cout << "Step-by-step: " << step3->getDescription() << endl;
-
-    delete daisy;
-    delete aloe;
-    delete nepenthes;
-    delete daisyInClayPot;
-    delete aloeWithFertilizer;
-    delete PremiumNepenthes;
-    delete daisyCeramic;
-    delete daisyPlastic;
-    delete aloeOrganic;
-    delete aloeLiquid;
-    delete aloeSlowRelease;
-}
-*/
-
-/*
-// oboselete testing code, the new ones work better and have no memory leaks
-
-void testPatternsTogether() {
-    cout << "=== TESTING PATTERNS TOGETHER ===" << endl;
-    cout << endl;
-
-    // Create factories
-    TemperatePlantFactory temperateFactory;
-    TropicalPlantFactory tropicalFactory;
-    CarnivorousPlantFactory carnivorousFactory;
-    SucculentPlantFactory succulentFactory;
-
-    cout << "--- Creating Premium Plant Packages ---" << endl;
-    
-    // Create plants from factories and decorate them, has both decorators being ussed
-    Plant* premiumTemperatePackage = new FertilizerDecorator(new PotDecorator(temperateFactory.createMediumPlant(), "Ceramic"), "Slow-Release");
-    Plant* premiumTropicalPackage = new FertilizerDecorator(new PotDecorator(tropicalFactory.createSmallPlant(), "Decorative"), "Liquid");
-    Plant* premiumCarnivorousPackage = new FertilizerDecorator(new PotDecorator(carnivorousFactory.createLargePlant(), "Clay"), "Organic");
-    Plant* premiumSucculentPackage = new FertilizerDecorator(new PotDecorator(succulentFactory.createLargePlant(), "Decorative"), "Slow-Release");
-
-    if (premiumTemperatePackage)
-    {
-        cout << "Premium Temperate Package: " << premiumTemperatePackage->getDescription() << " - Price: R" << premiumTemperatePackage->getPrice() << endl;
-    }
-
-    if (premiumTropicalPackage) 
-    {
-        cout << "Premium Tropical Package: " << premiumTropicalPackage->getDescription() << " - Price: R" << premiumTropicalPackage->getPrice() << endl;
-    }
-    
-    if (premiumCarnivorousPackage) 
-    {
-        cout << "Premium Carnivorous Package: " << premiumCarnivorousPackage->getDescription() << " - Price: R" << premiumCarnivorousPackage->getPrice() << endl;
-    }
-
-    if (premiumSucculentPackage) 
-    {
-        cout << "Premium Succulent Package: " << premiumSucculentPackage->getDescription() << " - Price: R" << premiumSucculentPackage->getPrice() << endl;
-    }
-
-    cout << endl;
-
-    cout << "--- Creating Multiple Decorated Plants from Factory ---" << endl;
-    
-    // Create multiple plants from factory and decorate differently
-    vector<Plant*> decoratedPlants;
-    
-    // Different decoration combos, kfc would be great rn 
-    decoratedPlants.push_back(new PotDecorator(temperateFactory.createSmallPlant(), "Plastic"));
-    decoratedPlants.push_back(new FertilizerDecorator(temperateFactory.createSmallPlant(), "Organic"));
-    decoratedPlants.push_back(new FertilizerDecorator(new PotDecorator(temperateFactory.createLargePlant(), "Decorative"), "Slow-Release"));
-
-    // do this type for loop with vectors diff ways usually will complian/crash @compile time
-    for (size_t i = 0; i < decoratedPlants.size(); i++) 
-    {
-        cout << "Plant " << (i + 1) << ": " << decoratedPlants[i]->getDescription() << " - Price: R" << decoratedPlants[i]->getPrice() << endl;
-    }
-    cout << endl;
-
-    delete premiumTemperatePackage;
-    delete premiumTropicalPackage;
-    delete premiumCarnivorousPackage;
-
-    for (size_t i = 0; i < decoratedPlants.size(); i++) 
-    {
-        delete decoratedPlants[i];
-    }
-}
-*/
