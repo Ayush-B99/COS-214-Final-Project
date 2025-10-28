@@ -1,25 +1,33 @@
 #include "../include/CarnivorousPlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
-CarnivorousPlantFactory::CarnivorousPlantFactory() {
+CarnivorousPlantFactory::CarnivorousPlantFactory()
+{
 	// TODO - implement CarnivorousPlantFactory::CarnivorousPlantFactory
 }
 
-CarnivorousPlantFactory::~CarnivorousPlantFactory() {
+CarnivorousPlantFactory::~CarnivorousPlantFactory()
+{
 	// TODO - implement CarnivorousPlantFactory::~CarnivorousPlantFactory
-
 }
 
-Plant* CarnivorousPlantFactory::createSmallPlant() {
-	// TODO - implement CarnivorousPlantFactory::createSmallPlant
-	return new Sundew();
+Plant *CarnivorousPlantFactory::createSmallPlant()
+{
+	Sundew *sundew = new Sundew();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(sundew);
+	return sundew;
 }
 
-Plant* CarnivorousPlantFactory::createMediumPlant() {
-	// TODO - implement CarnivorousPlantFactory::createMediumPlant
-	return new Pitcher();
+Plant *CarnivorousPlantFactory::createMediumPlant()
+{
+	Pitcher *pitcher = new Pitcher();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(pitcher);
+	return pitcher;
 }
 
-Plant* CarnivorousPlantFactory::createLargePlant() {
-	// TODO - implement CarnivorousPlantFactory::createLargePlant
-	return new Nepenthes();
+Plant *CarnivorousPlantFactory::createLargePlant()
+{
+	Nepenthes *nepenthes = new Nepenthes();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(nepenthes);
+	return nepenthes;
 }

@@ -1,23 +1,33 @@
 #include "../include/TemperatePlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
-TemperatePlantFactory::TemperatePlantFactory() {
+TemperatePlantFactory::TemperatePlantFactory()
+{
 	// empty constructor
-	
 }
 
-TemperatePlantFactory::~TemperatePlantFactory() {
+TemperatePlantFactory::~TemperatePlantFactory()
+{
 	// no mem management needed for now
 }
 
-Plant* TemperatePlantFactory::createSmallPlant() {
-	// TODO - implement TemperatePlantFactory::createSmallPlant
-	return new Daisy();
+Plant *TemperatePlantFactory::createSmallPlant()
+{
+	Daisy *daisy = new Daisy();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(daisy);
+	return daisy;
 }
 
-Plant* TemperatePlantFactory::createMediumPlant() {
-	return new Lilac();
+Plant *TemperatePlantFactory::createMediumPlant()
+{
+	Lilac *lilac = new Lilac();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(lilac);
+	return lilac;
 }
 
-Plant* TemperatePlantFactory::createLargePlant() {
-	return new WhiteOak();
+Plant *TemperatePlantFactory::createLargePlant()
+{
+	WhiteOak *whiteOak = new WhiteOak();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(whiteOak);
+	return whiteOak;
 }
