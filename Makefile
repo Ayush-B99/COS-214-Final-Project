@@ -64,8 +64,17 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/Paid.cpp \
 		  $(SRCDIR)/ConcreteGrowthObserver.cpp \
 		  $(SRCDIR)/Customer.cpp \
-		  $(SRCDIR)/Manager.cpp
-
+		  $(SRCDIR)/Manager.cpp \
+		  $(SRCDIR)/PlantCareHandler.cpp \
+		  $(SRCDIR)/WaterHandler.cpp \
+		  $(SRCDIR)/SunHandler.cpp \
+		  $(SRCDIR)/FertilizerHandler.cpp \
+		  $(SRCDIR)/PruneHandler.cpp \
+		  $(SRCDIR)/Water.cpp \
+		  $(SRCDIR)/Sun.cpp \
+		  $(SRCDIR)/Prune.cpp \
+		  $(SRCDIR)/Fertilizer.cpp \
+		  $(SRCDIR)/Command.cpp
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp

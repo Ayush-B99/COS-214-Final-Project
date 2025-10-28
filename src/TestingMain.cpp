@@ -53,8 +53,52 @@ void testGrowthProgression();
 void testHealthDegradation();
 void testHealthRecovery();
 void testIndividualCareActions();
-void testSoldState();
 void testDeadState();
+
+//void testPlantGrowth();
+
+int testPlantGrowth()
+{
+    cout << "=== PLANT GROWTH TESTING ===" << endl;
+    cout << endl;
+
+    CarnivorousPlantFactory carnivorousFactory;
+    Plant *venusFlytrap = carnivorousFactory.createSmallPlant();
+    // ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(venusFlytrap);
+
+    WaterHandler *waterHandler = new WaterHandler();
+    SunHandler *sunHandler = new SunHandler();
+    FertilizerHandler *fertilizerHandler = new FertilizerHandler();
+    PruneHandler *pruneHandler = new PruneHandler();
+
+    waterHandler->setNext(sunHandler);
+    sunHandler->setNext(fertilizerHandler);
+    fertilizerHandler->setNext(pruneHandler);
+
+    venusFlytrap->setCareStrategy(waterHandler);
+
+    int i = 0;
+    while (i < 650)
+    {
+        cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
+        venusFlytrap->printHealthStatus();
+        venusFlytrap->printGrowthStatus();
+
+        venusFlytrap->tick();
+
+        // venusFlytrap->printFullStatus();
+
+        i++;
+    }
+
+    delete venusFlytrap;
+    delete waterHandler;
+    delete sunHandler;
+    delete pruneHandler;
+    delete fertilizerHandler;
+
+    return 0;
+}
 
 void testCommMediator();
 
@@ -78,8 +122,10 @@ int main()
         testHealthDegradation();
         testHealthRecovery();
         testIndividualCareActions();
-        testSoldState();
         testDeadState();
+
+        //jaitin testing
+        testPlantGrowth();
 
         //chimney testing
         testCommMediator();
@@ -594,32 +640,6 @@ void testIndividualCareActions()
     cout << endl;
 }
 
-void testSoldState()
-{
-    cout << "=== TEST 6: Sold State ===" << endl;
-    TestPlant plant("Tulip");
-
-    // Fast-forward to mature state
-    for (int i = 0; i < 9; i++)
-    {
-        plant.receiveWatering();
-        plant.receiveSunlight();
-        plant.receiveFertilizing();
-        plant.receivePruning();
-        plant.completeCareSession();
-
-        if (plant.shouldRemoveFromInventory())
-        {
-            break;
-        }
-    }
-
-    plant.printFullStatus();
-    cout << "Should remove from inventory: " << (plant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
-    cout << "Is ready for stock: " << (plant.isReadyForStock() ? "Yes" : "No") << endl;
-    cout << endl;
-}
-
 void testDeadState()
 {
     cout << "=== TEST 7: Dead State ===" << endl;
@@ -653,6 +673,7 @@ void testDeadState()
     plant.completeCareSession();
     cout << endl;
 }
+
 
 void testCommMediator() {
     cout << "=== COMMMEDIATOR TESTING ===" << endl << endl;
@@ -753,12 +774,7 @@ cout << "=== Inventory Testing ===\n";
     cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
     cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
 
-    // Manipulate some plant states manually
-    // cout << "\n-- Manually manipulating states --\n";
-    // if (healthmanip) healthmanip->setHealthState(new Dead());
-    // cout << "setting states\n";
-    // if (growthmanip) growthmanip->setGrowthState(new Mature());
-    // inv->print();
+    //
 
     // Remove by state across entire tree
     cout << "\n-- Removing by GrowthState (Mature) --\n";
@@ -781,12 +797,12 @@ cout << "=== Inventory Testing ===\n";
     if (p2) p2->setHealthState(new Dead());
     inv->print();
 
-    // Test moveValidPlantsToStock
+    //Test moveValidPlantsToStock
     // cout << "\n-- Testing moveValidPlantsToStock --\n";
     // Storage* stock = new Stock();
     // inv->moveValidPlantsToStock(stock);
     // cout << "Stock contents after move:\n";
-    //stock->printStorage();
+    // stock->printStorage();
 
     // Test cleanUpDeadPlants (should remove dead ones)
     cout << "\n-- Testing cleanUpDeadPlants --\n";
