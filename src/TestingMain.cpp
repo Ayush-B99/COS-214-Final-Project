@@ -40,7 +40,63 @@ using namespace std;
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
 
-// this is giving leaks again
+void testAbstractFactory();
+void testDecoratorPattern();
+void testPatternsTogether();
+
+void testBasicPlantCreation();
+void testGrowthProgression();
+void testHealthDegradation();
+void testHealthRecovery();
+void testIndividualCareActions();
+void testSoldState();
+void testDeadState();
+
+void testCommMediator();
+
+void testInventory();
+
+int main()
+{
+    try {
+        cout << "PLANT STORE PATTERN TESTING" << endl;
+        cout << "============================" << endl;
+        cout << endl;
+
+        // ayush testing
+        testAbstractFactory();
+        testDecoratorPattern();
+        testPatternsTogether();
+
+        // diya testing
+        testBasicPlantCreation();
+        testGrowthProgression();
+        testHealthDegradation();
+        testHealthRecovery();
+        testIndividualCareActions();
+        testSoldState();
+        testDeadState();
+
+        //chimney testing
+        testCommMediator();
+
+        //shavir testing
+        testInventory();
+
+        cout << "All tests completed successfully!" << endl;
+        return 0;
+    } catch (const char* msg) {
+        cerr << "Exception caught: " << msg << endl;
+        return 1;
+    } catch (const exception& e) {
+        cerr << "Exception caught: " << e.what() << endl;
+        return 1;
+    } catch (...) {
+        cerr << "Unknown exception caught!" << endl;
+        return 1;
+    }
+}
+
 void testAbstractFactory() {
     cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
     cout << endl;
@@ -649,49 +705,6 @@ void testCommMediator() {
     cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
 }
 
-void testInventory();
-
-int main()
-{
-    try {
-        cout << "PLANT STORE PATTERN TESTING" << endl;
-        cout << "============================" << endl;
-        cout << endl;
-
-        // ayush testing
-        // testAbstractFactory();
-        // testDecoratorPattern();
-        // testPatternsTogether();
-
-        // // diya testing
-        // testBasicPlantCreation();
-        // testGrowthProgression();
-        // testHealthDegradation();
-        // testHealthRecovery();
-        // testIndividualCareActions();
-        // testSoldState();
-        // testDeadState();
-
-        // //chimney testing
-        // testCommMediator();
-
-        //shavir testing
-        testInventory();
-
-        cout << "All tests completed successfully!" << endl;
-        return 0;
-    } catch (const char* msg) {
-        cerr << "Exception caught: " << msg << endl;
-        return 1;
-    } catch (const exception& e) {
-        cerr << "Exception caught: " << e.what() << endl;
-        return 1;
-    } catch (...) {
-        cerr << "Unknown exception caught!" << endl;
-        return 1;
-    }
-}
-
 void testInventory(){
 cout << "=== Inventory Testing ===\n";
 
@@ -737,11 +750,11 @@ cout << "=== Inventory Testing ===\n";
     cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
 
     // Manipulate some plant states manually
-    cout << "\n-- Manually manipulating states --\n";
-    if (healthmanip) healthmanip->setHealthState(new Dead());
-    cout << "setting states\n";
-    if (growthmanip) growthmanip->setGrowthState(new Mature());
-    inv->print();
+    // cout << "\n-- Manually manipulating states --\n";
+    // if (healthmanip) healthmanip->setHealthState(new Dead());
+    // cout << "setting states\n";
+    // if (growthmanip) growthmanip->setGrowthState(new Mature());
+    // inv->print();
 
     // Remove by state across entire tree
     cout << "\n-- Removing by GrowthState (Mature) --\n";
