@@ -531,7 +531,7 @@ int testPlantGrowth()
 
     CarnivorousPlantFactory carnivorousFactory;
     Plant *venusFlytrap = carnivorousFactory.createSmallPlant();
-    ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(venusFlytrap);
+    // ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(venusFlytrap);
 
     WaterHandler *waterHandler = new WaterHandler();
     SunHandler *sunHandler = new SunHandler();
@@ -545,12 +545,12 @@ int testPlantGrowth()
     venusFlytrap->setCareStrategy(waterHandler);
 
     int i = 0;
-    while (i < 50)
+    while (i < 100)
     {
         venusFlytrap->tick();
 
         cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
-        venusFlytrap->printFullStatus();
+        // venusFlytrap->printFullStatus();
 
         i++;
     }

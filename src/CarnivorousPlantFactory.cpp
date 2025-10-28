@@ -1,4 +1,5 @@
 #include "../include/CarnivorousPlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
 CarnivorousPlantFactory::CarnivorousPlantFactory()
 {
@@ -12,18 +13,21 @@ CarnivorousPlantFactory::~CarnivorousPlantFactory()
 
 Plant *CarnivorousPlantFactory::createSmallPlant()
 {
-	// TODO - implement CarnivorousPlantFactory::createSmallPlant
-	return new Sundew();
+	Sundew *sundew = new Sundew();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(sundew);
+	return sundew;
 }
 
 Plant *CarnivorousPlantFactory::createMediumPlant()
 {
-	// TODO - implement CarnivorousPlantFactory::createMediumPlant
-	return new Pitcher();
+	Pitcher *pitcher = new Pitcher();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(pitcher);
+	return pitcher;
 }
 
 Plant *CarnivorousPlantFactory::createLargePlant()
 {
-	// TODO - implement CarnivorousPlantFactory::createLargePlant
-	return new Nepenthes();
+	Nepenthes *nepenthes = new Nepenthes();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(nepenthes);
+	return nepenthes;
 }

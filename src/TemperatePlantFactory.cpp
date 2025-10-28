@@ -1,4 +1,5 @@
 #include "../include/TemperatePlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
 TemperatePlantFactory::TemperatePlantFactory()
 {
@@ -12,16 +13,21 @@ TemperatePlantFactory::~TemperatePlantFactory()
 
 Plant *TemperatePlantFactory::createSmallPlant()
 {
-
-	return new Daisy();
+	Daisy *daisy = new Daisy();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(daisy);
+	return daisy;
 }
 
 Plant *TemperatePlantFactory::createMediumPlant()
 {
-	return new Lilac();
+	Lilac *lilac = new Lilac();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(lilac);
+	return lilac;
 }
 
 Plant *TemperatePlantFactory::createLargePlant()
 {
-	return new WhiteOak();
+	WhiteOak *whiteOak = new WhiteOak();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(whiteOak);
+	return whiteOak;
 }
