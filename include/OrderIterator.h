@@ -22,7 +22,7 @@ private:
 	int position;
 
 public:
-	OrderIterator(vector<Plant*>& collection);
+	OrderIterator(PlantNode* order);
 
 	~OrderIterator();
 
@@ -30,7 +30,7 @@ public:
 	Plant* next();
 
 	// possible fix -> Plant* return type
-	Plant* current();
+	Plant* currentPlant();
 
 	bool hasNext();
 

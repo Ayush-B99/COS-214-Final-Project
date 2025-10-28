@@ -143,3 +143,13 @@ void PlantNode::printNode(string prefix, bool isLeft){
         cout << " | Price: R" << plants[i]->getPrice() << endl;
     }
 }
+
+bool PlantNode::plantInNode(Plant* plant){
+	for (Plant* p : plants){
+		if (p == plant){ //pointer comparisons for exact match
+			return true;
+		}
+	}
+	return false;
+}
+

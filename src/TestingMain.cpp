@@ -608,23 +608,23 @@ cout << "=== Inventory Testing ===\n";
     inv->addLargePlant(carnivorous);
     inv->addLargePlant(tropical);
     inv->addMediumPlant(temperate);
-    inv->printInventory();
+    inv->print();
 
     // Add duplicates and store pointers to manipulate later
     cout << "\n-- Adding duplicates --\n";
     Plant* healthmanip = inv->addLargePlant(carnivorous);
     Plant* torem = inv->addLargePlant(carnivorous);
     Plant* growthmanip = inv->addMediumPlant(temperate);
-    inv->addMediumPlant(tropical);
+    Plant* bird = inv->addMediumPlant(tropical);
     Plant* uniquerem = inv->addSmallPlant(carnivorous);
-    inv->printInventory();
+    inv->print();
 
     // Direct removals
     cout << "\n-- Direct removals --\n";
     inv->removePlant(torem);
-    inv->printInventory();
+    inv->print();
     inv->removePlant(uniquerem);
-    inv->printInventory();
+    inv->print();
 
     // Test getPlants by specific growth and health states
     cout << "\n-- Testing getPlants variants --\n";
@@ -643,18 +643,18 @@ cout << "=== Inventory Testing ===\n";
     if (healthmanip) healthmanip->setHealthState(new Dead());
     cout << "setting states\n";
     if (growthmanip) growthmanip->setGrowthState(new Mature());
-    inv->printInventory();
+    inv->print();
 
     // Remove by state across entire tree
     cout << "\n-- Removing by GrowthState (Mature) --\n";
     vector<Plant*> removedMature = inv->removePlants(mature);
     cout << "Removed " << removedMature.size() << " mature plants.\n";
-    inv->printInventory();
+    inv->print();
 
     cout << "\n-- Removing by HealthState (Dead) --\n";
     vector<Plant*> removedDead = inv->removePlants(dead);
     cout << "Removed " << removedDead.size() << " dead plants.\n";
-    inv->printInventory();
+    inv->print();
 
     // Re-add a few plants for next phase
     cout << "\n-- Re-adding plants for further tests --\n";
@@ -664,7 +664,7 @@ cout << "=== Inventory Testing ===\n";
     if (p1) p1->setGrowthState(new Mature());
     if (p3) p3->setGrowthState(new Mature());
     if (p2) p2->setHealthState(new Dead());
-    inv->printInventory();
+    inv->print();
 
     // Test moveValidPlantsToStock
     // cout << "\n-- Testing moveValidPlantsToStock --\n";
@@ -676,22 +676,22 @@ cout << "=== Inventory Testing ===\n";
     // Test cleanUpDeadPlants (should remove dead ones)
     cout << "\n-- Testing cleanUpDeadPlants --\n";
     inv->cleanUpDeadPlants();
-    inv->printInventory();
+    inv->print();
 
     // Remove by string key
     cout << "\n-- Testing removePlants(string key, GrowthState*) --\n";
     vector<Plant*> removedByKeyGrowth = inv->removePlants("TropicalPlant", mature);
     cout << "Removed " << removedByKeyGrowth.size() << " by key+growth.\n";
-    inv->printInventory();
+    inv->print();
 
     cout << "\n-- Testing removePlants(string key, HealthState*) --\n";
     vector<Plant*> removedByKeyHealth = inv->removePlants("CarnivorousPlant", healthy);
     cout << "Removed " << removedByKeyHealth.size() << " by key+health.\n";
-    inv->printInventory();
+    inv->print();
 
     // Test getNodeCount
-    cout << "\n-- Node count --\n";
-    inv->getNodeCount();
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
 
     // Test iterator manually
     cout << "\n-- Testing iterator traversal --\n";
@@ -702,7 +702,55 @@ cout << "=== Inventory Testing ===\n";
             cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
     }
 
-    cout << "\n=== All tests completed ===\n";
+    //bugs might be here
+    cout << "trying to find a bird of paradise (medium tropical) since thats not found by the iterator\n";
+    vector<Plant*> birds = inv->getPlants(bird->getSpecies());
+    for (Plant* p : birds){
+        cout << "   > " << p->getSpecies();
+
+        if (p->getGrowthState() && p->getHealthState()) {
+            cout << " | Growth: " << p->getGrowthState()->getName()
+                 << " | Health: " << p->getHealthState()->getName();
+        }
+
+        cout << " | Price: R" << p->getPrice() << endl;
+    }
+
+    cout << "now try to delete the bird of paradise, print out the tree again, and run the stats again\n";
+
+    inv->print();
+    
+    it.reset();
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
+
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+
+    inv->removePlant(bird);
+
+    inv->print();
+
+    it.reset();
+    while (it.hasNext()) {
+        Plant* p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")\n";
+    }
+
+    cout << "\n-- Node count: " << inv->getNodeCount() << " types of plants in inventory\n";
+    cout << "\n-- Plant count: " << inv->getPlantCount() << " plants in inventory\n";
+
+    cout << "\nlooks like coarse isnt working properly, print out the trace\n";
+    
+    it.reset();
+    while(it.hasNextNode()){
+        Plant* p = it.nextCoarse();
+        cout << "iterated: " << p->getSpecies() << " node.\n";
+    }
 
     delete seedling;
     delete mature;

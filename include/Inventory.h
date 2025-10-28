@@ -158,7 +158,7 @@ public:
 	/**
 	 * @brief prints a fancy looking representation of the tree structure, along with the contents of each node
 	 */
-	void printInventory();
+	void print();
 
 	//getters and setters (only adding them as needed rn)
 

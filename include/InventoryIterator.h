@@ -30,6 +30,10 @@ public:
 
 	Plant* next();
 
+	Plant* nextFine();
+
+	Plant* nextCoarse();
+
 	Plant* currentPlant(); // TODO: fix uml function name
 
 	bool hasNext();
@@ -38,14 +42,11 @@ public:
 
 	void reset();
 
-	map<PlantNode*, int> getPosition();
-
+	
 	void pushLeft(PlantNode *node);
-
-	Plant* nextFine();
-
-	Plant* nextCoarse();
-
+	
+	map<PlantNode*, int> getPosition();
+	
 	void setPosition(map<PlantNode*, int>& pos);
 };
 

@@ -128,14 +128,16 @@ void Inventory::removePlant(Plant* plant) {
 	}
 
 	//now try to remove from this node's vector
-	node->removePlant(plant);
+	if(node->removePlant(plant)){
+		cout << "Plant removed from " << node->getKey() << " node\n";
+	}
 
-		//if node became empty, remove the node from the tree, and update the root
+	
+	//if node became empty, remove the node from the tree, and update the root
 	if (node->getPlants().empty()){
 		plantCatalog = removeNode(plantCatalog, node->getKey());
 	}
-	
-	cout << "Plant removed from " << node->getKey() << " node\n";
+
 }
 
 vector<Plant*> Inventory::removePlants(string key, GrowthState* state) {
@@ -455,18 +457,27 @@ PlantNode* Inventory::addNode(PlantNode* root, string key) {
 }
 
 int Inventory::getNodeCount() {
-	int i = 0; 
-	InventoryIterator* it = new InventoryIterator(plantCatalog);
-	while (it->hasNext()){
-		i++;
-		it->nextCoarse(); //goto next node, not next plant
+	int count = 0;
+	InventoryIterator it(plantCatalog);
+	
+	//check if we started on a valid node
+	// if (it.currentPlant()){
+	// 	count++;
+	// }
+
+	//now jump to each next distinct node
+	while (true){
+		Plant* p = it.nextCoarse();
+		if (!p) break; //null if end of tree
+		count++;
 	}
-	delete it;
-	return i;
+
+	return count-1;
 }
 
-void Inventory::printInventory() {
+void Inventory::print() {
 	cout << "\n== Inventory Tree Structure ==\n";
+	cout << "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
 	if (!plantCatalog){
 		cout << "The tree is empty.\n";
 	} else {

@@ -1,58 +1,77 @@
 #include "../include/Order.h"
 
 Order::Order(string& orderId) {
-	// TODO - implement Order::Order
-	throw "Not yet implemented";
+	this-> id = orderId;
+	this->orderItems = new PlantNode(id);
+	total = 0;
+	state = new Submitted();
 }
 
 Order::~Order() {
-	// TODO - implement Order::~Order
-	throw "Not yet implemented";
+	//ownership of plants is transferred to owners
+	if (orderItems) delete orderItems;
 }
 
 void Order::submitted() {
-	// TODO - implement Order::submitted
-	throw "Not yet implemented";
+	
 }
 
 void Order::paid() {
-	// TODO - implement Order::paid
-	throw "Not yet implemented";
+
 }
 
 void Order::cancelled() {
-	// TODO - implement Order::cancelled
-	throw "Not yet implemented";
+
 }
 
 void Order::completed() {
-	// TODO - implement Order::completed
-	throw "Not yet implemented";
+
 }
 
 void Order::addItem(Plant* item) {
-	// TODO - implement Order::addItem
-	throw "Not yet implemented";
+	if (orderItems->plantInNode(item)){
+		cout << "This plant is already in your order.\n";
+		return;
+	}
+
+	orderItems->addPlant(item);
+	cout << item->getSpecies() << " successfully added to your order!\n";
+
+	calculateTotal();
 }
 
-void Order::removeItem(Plant* item) {
-	// TODO - implement Order::removeItem
-	throw "Not yet implemented";
+void Order::removeItem(Plant* item, Inventory* inv) {
+	if (!orderItems->removePlant(item)){
+		cout << item->getSpecies() << " either not found or not removed.\n";
+	}
+	cout << item->getSpecies() << " successfully removed from your order!\n";
+
+	//need to move the plant back into inventory
+	///ideally move back to stock as well but we cant maintain all those pointers
+	if (item){
+		inv->addPlant(item);
+	}
 }
 
 vector<Plant*>& Order::getOrderItems() {
-	// TODO - implement Order::getOrderItems
-	throw "Not yet implemented";
+	vector<Plant*> ret = orderItems->getPlants();
+	return ret;
 }
 
 double Order::calculateTotal() {
-	// TODO - implement Order::calculateTotal
-	throw "Not yet implemented";
+	double running = 0;
+	for (Plant* p : orderItems->getPlants()){
+		if (p){
+			running += p->getPrice();
+		}
+	}
+	
+	this->total = running;
+	return total;
 }
 
-Iterator* Order::createIterator() {
-	// TODO - implement Order::createIterator
-	throw "Not yet implemented";
+OrderIterator* Order::createIterator() {
+	return new OrderIterator(orderItems);
 }
 
 double Order::getTotal() {
@@ -60,8 +79,7 @@ double Order::getTotal() {
 }
 
 string Order::getStateName() {
-	// TODO - implement Order::getStateName
-	throw "Not yet implemented";
+	return state->getName();
 }
 
 OrderState* Order::getState() {
@@ -73,6 +91,12 @@ void Order::setState(OrderState* state) {
 }
 
 string& Order::getId() {
-	// TODO - implement Order::getId
-	throw "Not yet implemented";
+	return this->id;
+}
+
+void Order::print(){
+	cout << "Order " << id 
+		 << "Total: R" << total << endl;
+
+	orderItems->printNode("", false);
 }
