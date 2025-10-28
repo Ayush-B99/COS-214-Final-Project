@@ -16,6 +16,9 @@ using namespace std;
 #include "PlantNode.h"
 #include "Plant.h"
 #include "OrderIterator.h"
+#include "Submitted.h"
+#include "Draft.h"
+#include "Inventory.h"
 
 class Order : public Storage {
 
@@ -40,14 +43,13 @@ public:
 
 	void addItem(Plant* item);
 
-	void removeItem(Plant* item);
+	void removeItem(Plant* item, Inventory* inv);
 
 	vector<Plant*>& getOrderItems();
 
 	double calculateTotal();
 
-	// possible fix -> InventoryIterator* return type
-	Iterator* createIterator();
+	OrderIterator* createIterator();
 
 	double getTotal();
 
@@ -58,6 +60,8 @@ public:
 	void setState(OrderState* state);
 
 	string& getId();
+
+	void print();
 };
 
 #endif
