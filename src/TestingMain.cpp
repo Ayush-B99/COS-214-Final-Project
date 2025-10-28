@@ -5,6 +5,7 @@
 #include <map>
 #include <sstream>
 #include <stack>
+#include <cassert> //for testing with asserts
 
 using namespace std;
 
@@ -556,6 +557,7 @@ void testDeadState() {
 }
 
 void testInventory();
+void testInventoryAndStock();
 
 
 int main()
@@ -576,7 +578,8 @@ int main()
         // testIndividualCareActions();
         // testSoldState();
         // testDeadState();
-        testInventory();
+        //testInventory();
+        testInventoryAndStock();
 
 
         cout << "All tests completed successfully!" << endl;
@@ -667,11 +670,11 @@ cout << "=== Inventory Testing ===\n";
     inv->print();
 
     // Test moveValidPlantsToStock
-    // cout << "\n-- Testing moveValidPlantsToStock --\n";
-    // Storage* stock = new Stock();
-    // inv->moveValidPlantsToStock(stock);
-    // cout << "Stock contents after move:\n";
-    //stock->printStorage();
+    cout << "\n-- Testing moveValidPlantsToStock --\n";
+    Stock* stock = new Stock();
+    inv->moveValidPlantsToStock(stock);
+    cout << "Stock contents after move:\n";
+    stock->print();
 
     // Test cleanUpDeadPlants (should remove dead ones)
     cout << "\n-- Testing cleanUpDeadPlants --\n";
@@ -756,8 +759,124 @@ cout << "=== Inventory Testing ===\n";
     delete mature;
     delete healthy;
     delete dead;
-    //delete stock;
+    delete stock;
     delete inv;
+}
+
+void testInventoryAndStock(){
+         cout << "\n=============================================\n";
+    cout << "           STOCK / STOCKITERATOR TEST\n";
+    cout << "=============================================\n";
+
+    Inventory* inv = new Inventory();
+    Stock* stock = new Stock();
+
+    GreenHouse* carnivorous = inv->getCarnivorousFactory();
+    GreenHouse* tropical = inv->getTropicalFactory();
+    GreenHouse* temperate = inv->getTemperateFactory();
+
+    // ---------- 1. Populate inventory ----------
+    cout << "\n[1] Populating inventory with test plants...\n";
+    Plant* p1 = inv->addLargePlant(carnivorous);
+    Plant* p2 = inv->addMediumPlant(tropical);
+    Plant* p3 = inv->addMediumPlant(temperate);
+    Plant* p4 = inv->addSmallPlant(tropical);
+
+    // Adjust states so some are sellable
+    p1->setHealthState(new Good());
+    p1->setGrowthState(new Mature());
+    p2->setHealthState(new Good());
+    p2->setGrowthState(new Mature());
+    p3->setHealthState(new Dead());  // Should be excluded
+    p4->setGrowthState(new Seed());  // Not yet mature, excluded
+
+    inv->print();
+
+    // ---------- 2. Move valid plants to stock ----------
+    cout << "\n[2] Moving valid plants to stock...\n";
+    inv->moveValidPlantsToStock(stock);
+    stock->print();
+
+    // ---------- 3. Verify that stock has correct plants ----------
+    cout << "\n[3] Verifying stock content integrity...\n";
+    auto stockPlants = stock->getAllPlants();
+    for (auto* s : stockPlants) {
+        cout << "Stock contains: " << s->getSpecies() << " | Health: " 
+             << s->getHealthState()->getName()
+             << " | Growth: " << s->getGrowthState()->getName() << endl;
+        assert(dynamic_cast<Good*>(s->getHealthState()) != nullptr);
+        assert(dynamic_cast<Mature*>(s->getGrowthState()) != nullptr);
+    }
+
+    cout << "✅ Stock only contains healthy, mature plants.\n";
+
+    // ---------- 4. Test fine iterator ----------
+    cout << "\n[4] Testing fine-grained iterator traversal...\n";
+    StockIterator fine(stock->getRoot());
+    int fineCount = 0;
+    while (fine.hasNext()) {
+        Plant* p = fine.next();
+        if (p) {
+            fineCount++;
+            cout << "Iterated (fine): " << p->getSpecies() << endl;
+        }
+    }
+    cout << "Total fine traversal count: " << fineCount << endl;
+
+    // ---------- 5. Test coarse iterator ----------
+    cout << "\n[5] Testing coarse-grained node traversal...\n";
+    StockIterator coarse(stock->getRoot());
+    int nodeCount = 0;
+    while (coarse.hasNextNode()) {
+        PlantNode* node = coarse.nextCoarse();
+        if (node) {
+            nodeCount++;
+            cout << "Visited node: " << node->getKey() 
+                 << " (" << node->getPlants().size() << " plants)" << endl;
+        }
+    }
+    cout << "Total node count visited: " << nodeCount << endl;
+
+    //6. try to force an empty node
+    PlantNode* birds = stock->findNode(stock->getRoot(), "Bird Of Paradise");
+    Plant* bird = birds->getPlants()[0];
+    cout << bird->getSpecies() << "aaaaa we found the bird\n";
+    stock->removePlant(bird);
+
+    stock->print();
+    inv->print();
+
+    // ---------- 7. Re-run coarse iterator to confirm empty node visibility ----------
+    cout << "\n[7] Re-testing coarse traversal with empty nodes...\n";
+    StockIterator emptyTest(stock->getRoot());
+    while (emptyTest.hasNextNode()) {
+        PlantNode* node = emptyTest.nextCoarse();
+        cout << "Node: " << node->getKey()
+             << " | plants: " << node->getPlants().size() << endl;
+    }
+
+    cout << "✅ Empty nodes are retained in Stock traversal.\n";
+
+    // ---------- 8. Add new plants to repopulate stock ----------
+    cout << "\n[8] Adding new valid plants (restock)...\n";
+    Plant* p5 = inv->addLargePlant(tropical);
+    p5->setGrowthState(new Mature());
+    p5->setHealthState(new Good());
+    inv->moveValidPlantsToStock(stock);
+    stock->print();
+
+    // ---------- 9. Re-verify consistency after restock ----------
+    cout << "\n[9] Final verification: total plants and nodes\n";
+    cout << "Stock node count: " << stock->getNodeCount() << endl;
+    cout << "Stock plant count: " << stock->getPlantCount() << endl;
+
+    // ---------- Cleanup ----------
+    delete inv;
+    delete stock;
+
+    cout << "\n=============================================\n";
+    cout << "           END OF STOCK TEST SUITE\n";
+    cout << "=============================================\n";
 }
 
 /*

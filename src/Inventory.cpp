@@ -332,7 +332,7 @@ void Inventory::collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& match
 	collectAllPlantsRecursive(node->getRight(), matches);
 }
 
-void Inventory::moveValidPlantsToStock(Storage* stock){
+void Inventory::moveValidPlantsToStock(Stock* stock){
 	    if (!stock) {
         cout << "Cant move plants to stock, invalid Storage pointer.\n";
         return;

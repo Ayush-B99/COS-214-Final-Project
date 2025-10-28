@@ -12,6 +12,7 @@
 using namespace std;
 
 #include "Storage.h"
+#include "Stock.h"
 #include "Plant.h"
 #include "PlantNode.h"
 #include "GreenHouse.h"
@@ -125,7 +126,7 @@ public:
 	 * moves plants that have matured to the stock pointer passed in, using the Storage interface to prevent weird dependencies.
 	 * growth state needs to be mature to be moved
 	 */
-	void moveValidPlantsToStock(Storage* stock);
+	void moveValidPlantsToStock(Stock* stock);
 
 	/**.
 	 * @brief essentially just a simplified RemovePlants wrapper again.
