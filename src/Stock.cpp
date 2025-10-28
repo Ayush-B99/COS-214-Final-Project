@@ -1,4 +1,6 @@
 #include "../include/Stock.h"
+#include "../include/Inventory.h" //only way to resolve these weird dependencies
+#include "../include/Order.h" 
 
 Stock::Stock() {
 	stockCatalog = nullptr;
@@ -403,4 +405,30 @@ void Stock::cleanUpDeadPlants(){
 	//does not clean up any memory, since Inventory owns these plants
 
 	delete deadState;
+}
+
+void Stock::moveToOrder(Plant* plant, Inventory* inventory, Order* order){
+
+	//remove from both stock and inventory
+	if (plantInTree(plant)){
+		removePlant(plant);
+	}
+	if (inventory->plantInTree(plant)){
+		removePlant(plant);
+	}
+
+	order->addItem(plant);
+	cout << "a " << plant->getSpecies() << " has been added to order " << order->getId() << endl;
+
+}
+
+bool Stock::plantInTree(Plant* plant){
+	//first find the node that it should belong to
+	PlantNode* node = findNode(stockCatalog, plant->getSpecies());
+
+	if (!node) return false;
+
+	//now try to find the plant in the node
+
+	return node->plantInNode(plant);
 }

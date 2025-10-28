@@ -12,7 +12,6 @@
 using namespace std;
 
 #include "Storage.h"
-#include "Stock.h"
 #include "Plant.h"
 #include "PlantNode.h"
 #include "GreenHouse.h"
@@ -25,6 +24,9 @@ using namespace std;
 #include "HealthState.h"
 #include "Mature.h"
 #include "Dead.h"
+
+class Stock;
+class Order;
 
 /**
  * @class Inventory
@@ -164,6 +166,10 @@ public:
 	//getters and setters (only adding them as needed rn)
 
 	PlantNode* getRoot();
+
+	void tick();
+
+	bool plantInTree(Plant* plant);
 
 };
 

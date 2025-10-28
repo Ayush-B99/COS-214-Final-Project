@@ -99,7 +99,7 @@ vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
 			matches.push_back(p);
 		}
 	}
-	cout << "Found and removed " << matches.size() << " plants based on growth state\n";
+	//cout << "Found and removed " << matches.size() << " plants based on growth state\n";
 	return matches;
 }
 
@@ -114,7 +114,7 @@ vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
 		}
 		i++;
 	}
-	cout << "Found and removed " << matches.size() << " plants based on health state\n";
+	//cout << "Found and removed " << matches.size() << " plants based on health state\n";
 	return matches;
 }
 

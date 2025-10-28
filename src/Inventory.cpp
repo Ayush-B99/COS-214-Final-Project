@@ -1,4 +1,6 @@
 #include "../include/Inventory.h"
+#include "../include/Stock.h" //only way to resolve this particular issue
+#include "../include/Order.h"
 
 Inventory::Inventory() {
 	plantCatalog = nullptr;
@@ -464,6 +466,7 @@ int Inventory::getNodeCount() {
 	while (true){
 		Plant* p = it.nextCoarse();
 		if (!p) break; //null if end of tree
+		//cout << "inviterator at node " << p->getSpecies() << endl;
 		count++;
 	}
 
@@ -501,6 +504,28 @@ void Inventory::printHelper(PlantNode* node, string prefix, bool isLeft){
 
 PlantNode* Inventory::getRoot(){
 	return plantCatalog;
+}
+
+void Inventory::tick(){
+	InventoryIterator* it = new InventoryIterator(plantCatalog);
+
+	while (it->hasNext()){
+		Plant* curr = it->nextFine();
+		curr->tick();
+	}
+
+	delete it;
+}
+
+bool Inventory::plantInTree(Plant* plant){
+	//first find the node that it should belong to
+	PlantNode* node = findNode(plantCatalog, plant->getSpecies());
+
+	if (!node) return false;
+
+	//now try to find the plant in the node
+
+	return node->plantInNode(plant);
 }
 
 

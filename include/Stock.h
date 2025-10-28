@@ -19,6 +19,7 @@ using namespace std;
 
 //forward declarations
 class Inventory;
+class Order;
 
 /**
  * @class Stock
@@ -96,6 +97,10 @@ public:
 	void print();
 
 	PlantNode* getRoot();
+
+	void moveToOrder(Plant* plant, Inventory* inventory, Order* order);
+
+	bool plantInTree(Plant* plant);
 };
 
 #endif

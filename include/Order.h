@@ -18,7 +18,9 @@ using namespace std;
 #include "OrderIterator.h"
 #include "Submitted.h"
 #include "Draft.h"
-#include "Inventory.h"
+
+class Inventory;
+class Stock;
 
 class Order : public Storage {
 

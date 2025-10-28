@@ -578,7 +578,7 @@ int main()
         // testIndividualCareActions();
         // testSoldState();
         // testDeadState();
-        //testInventory();
+        testInventory();
         testInventoryAndStock();
 
 

@@ -1,4 +1,6 @@
 #include "../include/Order.h"
+#include "../include/Stock.h"
+#include "../include/Inventory.h"
 
 Order::Order(string& orderId) {
 	this-> id = orderId;
