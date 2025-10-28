@@ -127,7 +127,7 @@ public:
 	 */
 	void moveValidPlantsToStock(Storage* stock);
 
-	/**
+	/**.
 	 * @brief essentially just a simplified RemovePlants wrapper again.
 	 * removes plants from the tree entirely, if their health state is dead.
 	 */

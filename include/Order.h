@@ -17,6 +17,7 @@ using namespace std;
 #include "Plant.h"
 #include "OrderIterator.h"
 #include "Submitted.h"
+#include "Draft.h"
 #include "Inventory.h"
 
 class Order : public Storage {
@@ -48,7 +49,6 @@ public:
 
 	double calculateTotal();
 
-	// possible fix -> InventoryIterator* return type
 	OrderIterator* createIterator();
 
 	double getTotal();

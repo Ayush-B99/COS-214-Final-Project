@@ -14,6 +14,11 @@ using namespace std;
 #include "Iterator.h"
 #include "PlantNode.h"
 
+/**
+ * @class InventoryIterator
+ * 
+ * 
+ */
 class InventoryIterator : public Iterator
 {
 
@@ -34,14 +39,13 @@ public:
 
 	Plant* nextCoarse();
 
-	Plant* currentPlant(); // TODO: fix uml function name
+	Plant* currentPlant();
 
 	bool hasNext();
 
 	bool hasNextNode();
 
 	void reset();
-
 	
 	void pushLeft(PlantNode *node);
 	

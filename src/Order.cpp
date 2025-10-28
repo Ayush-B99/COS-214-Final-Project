@@ -4,12 +4,14 @@ Order::Order(string& orderId) {
 	this-> id = orderId;
 	this->orderItems = new PlantNode(id);
 	total = 0;
-	state = new Submitted();
+	state = new Draft();
 }
 
 Order::~Order() {
-	//ownership of plants is transferred to owners
+	//ownership of plants is transferred to order
 	if (orderItems) delete orderItems;
+
+	if (state) delete state;
 }
 
 void Order::submitted() {
@@ -29,6 +31,11 @@ void Order::completed() {
 }
 
 void Order::addItem(Plant* item) {
+	//block adding based on state
+	if (state->getName() != "draft"){
+		cout << "You cannot edit an order after it has been submitted";
+	}
+
 	if (orderItems->plantInNode(item)){
 		cout << "This plant is already in your order.\n";
 		return;
@@ -41,6 +48,10 @@ void Order::addItem(Plant* item) {
 }
 
 void Order::removeItem(Plant* item, Inventory* inv) {
+	if (state->getName() != "draft"){
+		cout << "You cannot edit an order after it has been submitted";
+	}
+
 	if (!orderItems->removePlant(item)){
 		cout << item->getSpecies() << " either not found or not removed.\n";
 	}

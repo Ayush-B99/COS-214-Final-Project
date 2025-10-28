@@ -148,15 +148,6 @@ if (nodeStack.empty() && !currentNode)
 }
 
 Plant* InventoryIterator::currentPlant() {
-	// if (!currentNode || currentNode->getPlants().empty()){
-	// 	return nullptr;
-	// }
-	// ///maybe change this as it does not take overflow into consideration
-	// if (indexInNode >= currentNode->getPlants().size()){
-	// 	return nullptr;
-	// }
-	// return currentNode->getPlants().at(indexInNode);
-
 	if (!currentNode || indexInNode >= currentNode->getPlants().size());{
 		return nullptr;
 	}
@@ -164,50 +155,12 @@ Plant* InventoryIterator::currentPlant() {
 }
 
 bool InventoryIterator::hasNext() {
-	// if (!currentNode){
-	// 	return !nodeStack.empty();
-	// }
 
-	// //are there still plants left in this node
-	// bool hasMoreInNode = (indexInNode + 1 < currentNode->getPlants().size());
-	// bool hasMoreNodes = !nodeStack.empty();
-
-	// return hasMoreInNode || hasMoreNodes;
 	return (currentNode != nullptr);
 }
 
 bool InventoryIterator::hasNextNode(){
-	// stack<PlantNode*> temp = nodeStack;
-	// PlantNode* tempNode = currentNode;
-	// size_t tempIndex = indexInNode;
 
-	// PlantNode* node = tempNode;
-
-	// while (true){
-	// 	//go to next node (leftmost of right subtree)
-	// 	if (node && node->getRight()){
-	// 		node = node->getRight();
-	// 		while (node && node->getLeft()){
-	// 			node = node->getLeft();
-	// 		}
-	// 	} else {
-	// 		if (temp.empty()){
-	// 			return false;
-	// 		}
-	// 		node = temp.top();
-	// 		temp.pop();
-	// 	}
-
-	// 	if (node && !node->getPlants().empty()){
-	// 		return true;
-	// 	}
-	// 	if (temp.empty() && (!node || node->getPlants().empty())){
-	// 		return false;
-	// 	}
-	// }
-
-	    // Simulate whether there's another node after the current position
-    // Make copies so we don't mutate iterator state
     stack<PlantNode*> tempStack = nodeStack;
     PlantNode* tempCurrent = currentNode;
     size_t tempIndex = indexInNode;

@@ -459,11 +459,6 @@ PlantNode* Inventory::addNode(PlantNode* root, string key) {
 int Inventory::getNodeCount() {
 	int count = 0;
 	InventoryIterator it(plantCatalog);
-	
-	//check if we started on a valid node
-	// if (it.currentPlant()){
-	// 	count++;
-	// }
 
 	//now jump to each next distinct node
 	while (true){
