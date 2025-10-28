@@ -23,10 +23,10 @@ class Plant
 
 protected:
 	string species;
-	int waterLevel; //starts at 100
-	int sunlightLevel; //starts at 100
-	int fertilizerLevel; //starts at 100
-	int pruneLevel; //starts at 100
+	int waterLevel;		 // starts at 100
+	int sunlightLevel;	 // starts at 100
+	int fertilizerLevel; // starts at 100
+	int pruneLevel;		 // starts at 100
 	int growthStage;
 
 private:
@@ -47,14 +47,12 @@ private:
 
 	ConcreteGrowthObserver *observer;
 
-	bool readyForStock; //MIGHT NEED TO GET RID OF IDK HOW WE GONNA HANDLE THIS
+	bool readyForStock; // MIGHT NEED TO GET RID OF IDK HOW WE GONNA HANDLE THIS
 
 public:
 	Plant();
 
 	Plant(string species);
-
-	Plant(const Plant& other);
 
 	virtual ~Plant();
 
@@ -74,8 +72,6 @@ public:
 
 	void setHealthState(HealthState *state);
 
-	
-
 	void attach(ConcreteGrowthObserver *observer);
 
 	void detach();
@@ -91,18 +87,17 @@ public:
 
 	HealthState *getHealthState();
 
-
-	void tick(); //called every second for decay resources
+	void tick(); // called every second for decay resources
 	bool isReadyForStock();
 	void markReadyForStock();
 
-	//getters for getting the attribute levels
+	// getters for getting the attribute levels
 	int getWaterLevel() const;
 	int getSunlightLevel() const;
 	int getFertilizerLevel() const;
 	int getPruneLevel() const;
 
-	//restore methods (to reset)
+	// restore methods (to reset)
 	void restoreWater();
 	void restoreSunlight();
 	void restoreFertilizer();
@@ -132,6 +127,13 @@ public:
 	bool shouldRemoveFromInventory();
 	bool isDead();
 	bool isMature();
+
+	// chain of responsibility
+	void handleCareRequest();
+	bool needsWater();
+	bool needsSun();
+	bool needsFertilizer();
+	bool needsPrune();
 
 protected:
 	// subclasses set their growth requirements

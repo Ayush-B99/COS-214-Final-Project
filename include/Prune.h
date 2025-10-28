@@ -14,16 +14,16 @@ using namespace std;
 #include "Command.h"
 #include "Plant.h"
 
-class Prune : public Command {
+class Prune : public Command
+{
+
+private:
+	Plant *receiver;
 
 public:
-	Plant* receiver;
-
-	void PruneCommand(Plant* plant);
+	Prune(Plant *plant);
 
 	void execute();
-
-	void undo();
 };
 
 #endif
