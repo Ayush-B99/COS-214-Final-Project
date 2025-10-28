@@ -33,6 +33,7 @@ using namespace std;
 #include "../include/Worker.h"
 #include "../include/Customer.h"
 
+// this is giving leaks again
 void testAbstractFactory() {
     cout << "=== ABSTRACT FACTORY PATTERN TESTING: ===" << endl;
     cout << endl;
@@ -706,7 +707,7 @@ int main()
         cout << endl;
 
         // ayush testing
-        //testAbstractFactory();
+        testAbstractFactory();
         testDecoratorPattern();
         testPatternsTogether();
 
