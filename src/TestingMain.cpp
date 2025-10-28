@@ -32,6 +32,10 @@ using namespace std;
 #include "../include/Manager.h"
 #include "../include/Worker.h"
 #include "../include/Customer.h"
+#include "../include/WaterHandler.h"
+#include "../include/SunHandler.h"
+#include "../include/FertilizerHandler.h"
+#include "../include/PruneHandler.h"
 //for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
