@@ -314,7 +314,115 @@ void testDecoratorPattern()
     cout << "Decorator Pattern Test Completed!" << endl << endl;
 }
 
-int testPlantGrowth()
+void testStatePattern()
+{
+    cout << "=== STATE PATTERN TESTING (Growth & Health States) ===" << endl;
+    cout << endl;
+
+    // Test 1: Basic Plant Creation
+    cout << "--- TEST 1: Basic Plant Creation ---" << endl;
+    TestPlant plant("HenAndChicks");
+
+    cout << "Species: " << plant.getSpecies() << endl;
+    cout << "Description: " << plant.getDescription() << endl;
+    cout << "Price: R" << plant.getPrice() << endl;
+    cout << "Size: " << plant.getsize() << endl;
+    cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
+    plant.printFullStatus();
+    cout << endl;
+
+    // Test 2: Growth Progression
+    cout << "--- TEST 2: Growth Progression ---" << endl;
+    TestPlant growthPlant("Sunflower");
+
+    cout << "Initial state:" << endl;
+    growthPlant.printGrowthStatus();
+    growthPlant.printCurrentNeeds();
+
+    // Simulate progression through growth stages
+    for (int i = 0; i < 15; i++)
+    {
+        cout << "--- Care Cycle " << (i + 1) << " ---" << endl;
+        growthPlant.printCurrentNeeds();
+
+        // Provide all required care actions
+        vector<string> requiredCare = growthPlant.getGrowthState()->getRequiredCare();
+        for (const string &care : requiredCare)
+        {
+            if (care == "water") growthPlant.receiveWatering();
+            else if (care == "sunlight") growthPlant.receiveSunlight();
+            else if (care == "fertilizer") growthPlant.receiveFertilizing();
+            else if (care == "prune") growthPlant.receivePruning();
+        }
+
+        growthPlant.completeCareSession();
+        growthPlant.printGrowthStatus();
+
+        if (growthPlant.shouldRemoveFromInventory())
+        {
+            if (growthPlant.isDead()) cout << "Plant died! Remove from inventory." << endl;
+            else cout << "Plant sold! Remove from inventory." << endl;
+            break;
+        }
+
+        if (growthPlant.isReadyForStock())
+        {
+            cout << "*** PLANT READY FOR STOCK! ***" << endl;
+        }
+        cout << endl;
+    }
+
+    // Test 3: Health Degradation & Recovery
+    cout << "--- TEST 3: Health Degradation & Recovery ---" << endl;
+    TestPlant healthPlant("Cactus");
+
+    cout << "Degrading health..." << endl;
+    for (int i = 0; i < 2; i++)
+    {
+        healthPlant.receiveWatering(); // Only water, no sunlight (incomplete care)
+        healthPlant.completeCareSession();
+    }
+    healthPlant.printHealthStatus();
+
+    cout << "Recovering health..." << endl;
+    for (int i = 0; i < 2; i++)
+    {
+        healthPlant.receiveWatering();
+        healthPlant.receiveSunlight();
+        healthPlant.completeCareSession();
+        healthPlant.printHealthStatus();
+    }
+
+    // Test 4: Dead State
+    cout << "--- TEST 4: Dead State ---" << endl;
+    TestPlant deadPlant("Basil");
+
+    // Kill the plant with incomplete care
+    for (int i = 0; i < 4; i++)
+    {
+        if (i % 2 == 0) deadPlant.receiveWatering();
+        deadPlant.completeCareSession();
+        if (deadPlant.isDead())
+        {
+            cout << "Plant died at cycle " << (i + 1) << endl;
+            break;
+        }
+    }
+
+    deadPlant.printFullStatus();
+    cout << "Is dead: " << (deadPlant.isDead() ? "Yes" : "No") << endl;
+    cout << "Should remove from inventory: " << (deadPlant.shouldRemoveFromInventory() ? "Yes" : "No") << endl;
+
+    // Try to improve a dead plant (should not work)
+    cout << "Trying to improve dead plant..." << endl;
+    deadPlant.receiveWatering();
+    deadPlant.receiveSunlight();
+    deadPlant.completeCareSession();
+
+    cout << "State Pattern Test Completed!" << endl << endl;
+}
+
+/*int testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
     cout << endl;
@@ -564,7 +672,7 @@ void testAbstractFactory()
     }
 }
 
-void testDecoratorPattern()
+/*void testDecoratorPattern()
 {
     cout << "=== TESTING DECORATOR PATTERN ===" << endl;
     cout << endl;
@@ -633,6 +741,7 @@ void testDecoratorPattern()
     // No manual deletion needed - smart pointers handle cleanup automatically!
     cout << endl;
 }
+    
 
 void testPatternsTogether()
 {
@@ -1176,3 +1285,4 @@ void testInventory()
     // delete stock;
     delete inv;
 }
+    */
