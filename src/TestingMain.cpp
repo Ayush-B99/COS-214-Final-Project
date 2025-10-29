@@ -569,9 +569,9 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        // testAbstractFactory();
-        // testDecoratorPattern();
-        // testPatternsTogether();
+        //testAbstractFactory();
+        testDecoratorPattern();
+        testPatternsTogether();
 
         // testBasicPlantCreation();
         // testGrowthProgression();
@@ -581,7 +581,7 @@ int main()
         // testSoldState();
         // testDeadState();
         //testInventory();
-        testInventoryAndStock();
+        //testInventoryAndStock();
         testAllStorage();
 
 
@@ -1081,10 +1081,14 @@ void testAllStorage(){
 
     // ---------- Cleanup ----------
     cout << "\nCleaning up memory...\n";
-    delete order;
-    delete emptyOrder;
     delete inv;
+    cout << "deleted inv\n";
+    delete order;
+    cout << "deleted order\n";
+    delete emptyOrder;
+    cout << "deleted emptyorder\n";
     delete stock;
+    cout << "deleted stock\n";
 
     cout << "\n=============================================\n";
     cout << "           END OF STOCK TEST SUITE\n";

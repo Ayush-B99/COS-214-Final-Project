@@ -16,6 +16,9 @@ Order::~Order() {
 	if (orderItems) delete orderItems;
 
 	if (state) delete state;
+
+	orderItems = nullptr;
+	state = nullptr;
 }
 
 void Order::proceed(){

@@ -34,7 +34,7 @@ PlantNode::PlantNode(PlantNode* other) {
 
 PlantNode::~PlantNode() {
 	for (Plant* p : plants){
-		delete p;
+		if (p) delete p;
 	}
 
 	//delete left and right subtrees recursively

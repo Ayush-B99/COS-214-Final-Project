@@ -10,6 +10,7 @@ Stock::Stock() {
 
 Stock::~Stock() {
 	//stock does not own its plant* since its a shallow copy subset
+	stockCatalog = nullptr;
 }
 
 vector<Plant*> Stock::getLowStockItems() {

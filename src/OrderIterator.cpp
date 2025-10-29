@@ -2,7 +2,7 @@
 
 OrderIterator::OrderIterator(PlantNode* order) {
 	position = 0;
-	this->order = order->getPlants(); 
+	if (order) this->order = order->getPlants(); 
 }
 
 OrderIterator::~OrderIterator() {

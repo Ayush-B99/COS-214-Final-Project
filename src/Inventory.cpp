@@ -16,11 +16,18 @@ Inventory::Inventory() {
 Inventory::~Inventory() {
 	//assume ownership of Plant factories`
 	for (GreenHouse* g : greenHouses){
-		if (g) delete g;
+		if (g){
+			delete g;
+			g = nullptr;
+		} 
+	
 	}
 
 	//will recursively delete according to PlantNode destructor
-	if (plantCatalog) delete plantCatalog;
+	if (plantCatalog){
+		delete plantCatalog;
+		plantCatalog = nullptr;
+	}
 }
 
 void Inventory::setClimate(GreenHouse* factory) {	greenHouses.push_back(factory);
