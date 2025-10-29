@@ -51,9 +51,9 @@ private:
  */
 	void printHelper(PlantNode* node, string prefix, bool isLeft);
 
-	void removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
+	PlantNode* removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 
-	void removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
+	PlantNode* removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
 
 	void collectByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 
@@ -127,7 +127,7 @@ public:
 	 */
 	void moveValidPlantsToStock(Storage* stock);
 
-	/**
+	/**.
 	 * @brief essentially just a simplified RemovePlants wrapper again.
 	 * removes plants from the tree entirely, if their health state is dead.
 	 */
@@ -158,7 +158,7 @@ public:
 	/**
 	 * @brief prints a fancy looking representation of the tree structure, along with the contents of each node
 	 */
-	void printInventory();
+	void print();
 
 	//getters and setters (only adding them as needed rn)
 

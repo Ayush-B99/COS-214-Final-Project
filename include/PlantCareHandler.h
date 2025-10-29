@@ -11,24 +11,20 @@
 
 using namespace std;
 
-class PlantCareHandler {
+class Plant;
 
-private:
-	PlantCareHandler* successor;
-	PlantCareHandler* next;
+class PlantCareHandler
+{
+
+protected:
+	PlantCareHandler *next;
 
 public:
 	virtual ~PlantCareHandler();
 
-	virtual void temperateCare() = 0;
+	virtual void handleCareRequest(Plant *plant) = 0;
 
-	virtual void carnivorousCare() = 0;
-
-	virtual void succulentCare() = 0;
-
-	virtual void tropicalCare() = 0;
-
-	void setNext();
+	void setNext(PlantCareHandler *nextHandler);
 
 	virtual void message() = 0;
 };

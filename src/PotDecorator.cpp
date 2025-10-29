@@ -1,6 +1,5 @@
 #include "../include/PotDecorator.h"
 
-// do i add more default parameters
 //PotDecorator::PotDecorator(Plant* plant, string type) : PlantDecorator(plant), potType(type) {
 PotDecorator::PotDecorator(std::unique_ptr<Plant> plant, std::string type) : PlantDecorator(std::move(plant)), potType(type) {
 	// TODO - implement PotDecorator::PotDecorator

@@ -3,5 +3,5 @@
 double Premium::getDiscount() 
 {
 	//premium customers get 15% discount 
-	 return 0.15;
+	return 0.15;
 }

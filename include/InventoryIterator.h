@@ -14,12 +14,18 @@ using namespace std;
 #include "Iterator.h"
 #include "PlantNode.h"
 
+/**
+ * @class InventoryIterator
+ * 
+ * 
+ */
 class InventoryIterator : public Iterator
 {
 
 private:
 	PlantNode *root;
-	map<PlantNode *, size_t> current;
+	PlantNode* currentNode;
+	size_t indexInNode;
 	stack<PlantNode *> nodeStack;
 
 public:
@@ -27,25 +33,25 @@ public:
 
 	~InventoryIterator();
 
-	Plant *next();
+	Plant* next();
 
-	Plant *currentPlant(); // TODO: fix uml function name
+	Plant* nextFine();
+
+	Plant* nextCoarse();
+
+	Plant* currentPlant();
 
 	bool hasNext();
 
 	bool hasNextNode();
 
 	void reset();
-
-	map<string, int> getPosition();
-
+	
 	void pushLeft(PlantNode *node);
-
-	Plant *nextFine();
-
-	PlantNode *nextCoarse();
-
-	void setPosition(map<PlantNode*, int> pos);
+	
+	map<PlantNode*, int> getPosition();
+	
+	void setPosition(map<PlantNode*, int>& pos);
 };
 
 #endif

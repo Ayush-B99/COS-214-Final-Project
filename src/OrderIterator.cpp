@@ -1,6 +1,6 @@
 #include "../include/OrderIterator.h"
 
-OrderIterator::OrderIterator(vector<Plant*>& collection) {
+OrderIterator::OrderIterator(PlantNode* order) {
 	// TODO - implement OrderIterator::OrderIterator
 	throw "Not yet implemented";
 }
@@ -15,7 +15,7 @@ Plant* OrderIterator::next() {
 	throw "Not yet implemented";
 }
 
-Plant* OrderIterator::current() {
+Plant* OrderIterator::currentPlant() {
 	// TODO - implement OrderIterator::current
 	throw "Not yet implemented";
 }

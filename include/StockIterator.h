@@ -18,9 +18,10 @@ using namespace std;
 class StockIterator : public Iterator {
 
 private:
-	PlantNode* root;
-	map<PlantNode*, size_t> current;
-	stack<PlantNode*> nodeStack;
+	PlantNode *root;
+	PlantNode* currentNode;
+	size_t indexInNode;
+	stack<PlantNode *> nodeStack;
 
 public:
 	StockIterator(PlantNode* root);
@@ -29,21 +30,23 @@ public:
 
 	Plant* next();
 
-	Plant* current();
-
-	bool hasNext();
-
-	void reset();
-
-	map<string, int> getPosition();
-
-	void pushLeft(PlantNode* node);
-
 	Plant* nextFine();
 
 	PlantNode* nextCoarse();
 
-	void setPosition(map<PlantNode*, size_t> pos);
+	Plant* currentPlant(); // TODO: fix uml function name
+
+	bool hasNext();
+
+	bool hasNextNode();
+
+	void reset();
+
+	void pushLeft(PlantNode *node);
+	
+	map<PlantNode*, int> getPosition();
+	
+	void setPosition(map<PlantNode*, int>& pos);
 };
 
 #endif

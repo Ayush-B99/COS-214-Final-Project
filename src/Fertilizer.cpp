@@ -1,16 +1,12 @@
 #include "../include/Fertilizer.h"
 
-void Fertilizer::FertilizerCommand(Plant* plant) {
-	// TODO - implement Fertilizer::FertilizerCommand
-	throw "Not yet implemented";
+Fertilizer::Fertilizer(Plant *plant)
+{
+	receiver = plant;
 }
 
-void Fertilizer::execute() {
-	// TODO - implement Fertilizer::execute
-	throw "Not yet implemented";
-}
-
-void Fertilizer::undo() {
-	// TODO - implement Fertilizer::undo
-	throw "Not yet implemented";
+void Fertilizer::execute()
+{
+	cout << "Execute fertilizer command" << endl;
+	receiver->receiveFertilizing();
 }

@@ -72,6 +72,8 @@ public:
 
 	bool isLeaf();
 
+	bool plantInNode(Plant* plant);
+
 	void printNode(string prefix, bool isLeft);
 };
 
