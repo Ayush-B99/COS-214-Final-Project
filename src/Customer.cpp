@@ -7,11 +7,12 @@ Customer::Customer(const string& name, CommMediator* mediator)
     }
 }
 
-double Customer::getDiscount()
+/*double Customer::getDiscount()
 {
     return 0.0;
 
 }
+*/
 
 Customer::~Customer() {
 }

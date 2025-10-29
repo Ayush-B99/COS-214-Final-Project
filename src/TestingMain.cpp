@@ -43,10 +43,27 @@ using namespace std;
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
-
+//Pattern 1 : Abstract Factory
 void testAbstractFactory();
+//Pattern 2 : Decorator
 void testDecoratorPattern();
-void testPatternsTogether();
+//Pattern 3 : State Pattern (Plant Growth & Health State)
+void testStatePattern();
+//Patten 4 : Chain of Responsibility(Care Handlers)
+void testChainOfResponsibility();
+//Pattern 5: Command Pattern(Care Commands)
+void testCommandPattern();
+// Pattern 6: Observer Pattern (Growth Observer)
+void testObserverPattern();
+// Pattern 7: Mediator (Communication System)
+void testMediatorPattern();
+// Pattern 8: Strategy Pattern (Customer Discounts)
+void testStrategyPattern();
+// Pattern 9: Composite & Iterator (Inventory System)
+void testCompositeIteratorPattern();
+// Pattern 10: Integrated System Test
+void testIntegratedSystem();
+/*void testPatternsTogether();
 
 void testBasicPlantCreation();
 void testGrowthProgression();
@@ -54,8 +71,182 @@ void testHealthDegradation();
 void testHealthRecovery();
 void testIndividualCareActions();
 void testDeadState();
+*/
 
-// void testPlantGrowth();
+// Helper class for testing
+class TestPlant : public Plant
+{
+public:
+    TestPlant(string species) : Plant(species)
+    {
+        setGrowthRequirements(2, 3, 4); // seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
+        setSize("small");
+        setPrice(69.99);
+        setDescription("like a little succulent idk");
+    }
+
+    Plant *clone() override
+    {
+        return new TestPlant(*this);
+    }
+};
+
+void testAbstractFactoryPattern()
+{
+    cout << "=== ABSTRACT FACTORY PATTERN TESTING ===" << endl;
+    cout << endl;
+
+    TemperatePlantFactory temperateFactory;
+    TropicalPlantFactory tropicalFactory;
+    CarnivorousPlantFactory carnivorousFactory;
+    SucculentPlantFactory succulentFactory;
+
+    // Store in vector for memory management
+    vector<Plant *> allPlants;
+    vector<Plant *> clonedPlants;
+
+    // Testing Temperate Factory
+    cout << "--- Temperate Plants ---" << endl;
+    Plant *temperateSmall = temperateFactory.createSmallPlant();
+    Plant *temperateMedium = temperateFactory.createMediumPlant();
+    Plant *temperateLarge = temperateFactory.createLargePlant();
+
+    if (temperateSmall)
+    {
+        cout << "Small: " << temperateSmall->getDescription() << endl;
+        allPlants.push_back(temperateSmall);
+    }
+
+    if (temperateMedium)
+    {
+        cout << "Medium: " << temperateMedium->getDescription() << endl;
+        allPlants.push_back(temperateMedium);
+    }
+
+    if (temperateLarge)
+    {
+        cout << "Large: " << temperateLarge->getDescription() << endl;
+        allPlants.push_back(temperateLarge);
+    }
+    cout << endl;
+
+    // Testing Tropical Factory
+    cout << "--- Tropical Plants ---" << endl;
+    Plant *tropicalSmall = tropicalFactory.createSmallPlant();
+    Plant *tropicalMedium = tropicalFactory.createMediumPlant();
+    Plant *tropicalLarge = tropicalFactory.createLargePlant();
+
+    if (tropicalSmall)
+    {
+        cout << "Small: " << tropicalSmall->getDescription() << endl;
+        allPlants.push_back(tropicalSmall);
+    }
+
+    if (tropicalMedium)
+    {
+        cout << "Medium: " << tropicalMedium->getDescription() << endl;
+        allPlants.push_back(tropicalMedium);
+    }
+
+    if (tropicalLarge)
+    {
+        cout << "Large: " << tropicalLarge->getDescription() << endl;
+        allPlants.push_back(tropicalLarge);
+    }
+    cout << endl;
+
+    // Test Carnivorous Factory
+    cout << "--- Carnivorous Plants ---" << endl;
+    Plant *carnivorousSmall = carnivorousFactory.createSmallPlant();
+    Plant *carnivorousMedium = carnivorousFactory.createMediumPlant();
+    Plant *carnivorousLarge = carnivorousFactory.createLargePlant();
+
+    if (carnivorousSmall)
+    {
+        cout << "Small: " << carnivorousSmall->getDescription() << endl;
+        allPlants.push_back(carnivorousSmall);
+    }
+
+    if (carnivorousMedium)
+    {
+        cout << "Medium: " << carnivorousMedium->getDescription() << endl;
+        allPlants.push_back(carnivorousMedium);
+    }
+
+    if (carnivorousLarge)
+    {
+        cout << "Large: " << carnivorousLarge->getDescription() << endl;
+        allPlants.push_back(carnivorousLarge);
+    }
+    cout << endl;
+
+    // Test Succulent Factory
+    cout << "--- Succulent Plants ---" << endl;
+    Plant *succulentSmall = succulentFactory.createSmallPlant();
+    Plant *succulentMedium = succulentFactory.createMediumPlant();
+    Plant *succulentLarge = succulentFactory.createLargePlant();
+
+    if (succulentSmall)
+    {
+        cout << "Small: " << succulentSmall->getDescription() << endl;
+        allPlants.push_back(succulentSmall);
+    }
+
+    if (succulentMedium)
+    {
+        cout << "Medium: " << succulentMedium->getDescription() << endl;
+        allPlants.push_back(succulentMedium);
+    }
+
+    if (succulentLarge)
+    {
+        cout << "Large: " << succulentLarge->getDescription() << endl;
+        allPlants.push_back(succulentLarge);
+    }
+    cout << endl;
+
+    // Test cloning functionality
+    cout << "--- Testing Cloning ---" << endl;
+    if (temperateSmall)
+    {
+        Plant *clonedDaisy = temperateSmall->clone();
+        cout << "Original: " << temperateSmall->getDescription() << endl;
+        cout << "Clone: " << clonedDaisy->getDescription() << endl;
+        clonedPlants.push_back(clonedDaisy);
+    }
+
+    if (temperateMedium)
+    {
+        Plant *clonedLilac = temperateMedium->clone();
+        cout << "Original: " << temperateMedium->getDescription() << endl;
+        cout << "Clone: " << clonedLilac->getDescription() << endl;
+        clonedPlants.push_back(clonedLilac);
+    }
+
+    if (temperateLarge)
+    {
+        Plant *clonedWhiteOak = temperateLarge->clone();
+        cout << "Original: " << temperateLarge->getDescription() << endl;
+        cout << "Clone: " << clonedWhiteOak->getDescription() << endl;
+        clonedPlants.push_back(clonedWhiteOak);
+    }
+
+    cout << endl;
+
+    // Cleanup
+    cout << "--- Cleanup ---" << endl;
+    for (Plant *plant : allPlants)
+    {
+        delete plant;
+    }
+
+    for (Plant *plant : clonedPlants)
+    {
+        delete plant;
+    }
+    
+    cout << "Abstract Factory Pattern Test Completed!" << endl << endl;
+}
 
 int testPlantGrowth()
 {
