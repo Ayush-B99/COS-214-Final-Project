@@ -43,7 +43,7 @@ using namespace std;
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
-
+void testStaffWithInventory(); 
 void testAbstractFactory();
 void testDecoratorPattern();
 void testPatternsTogether();
@@ -129,6 +129,8 @@ int main()
 
         //chimney testing
         testCommMediator();
+        testStaffWithInventory();
+
 
         //shavir testing
         testInventory();
@@ -674,15 +676,155 @@ void testDeadState()
     cout << endl;
 }
 
+void testStaffWithInventory() {
+    cout << "=== STAFF WITH INVENTORY TESTING ===" << endl;
+    cout << endl;
+
+    // Create system components
+    Inventory* nurseryInventory = new Inventory();
+    ConcreteCommMediator* commMediator = new ConcreteCommMediator();
+    
+    // ADD SOME PLANTS TO INVENTORY FIRST
+    cout << "=== SETUP: Adding plants to inventory ===" << endl;
+    GreenHouse* carnivorous = nurseryInventory->getCarnivorousFactory();
+    GreenHouse* tropical = nurseryInventory->getTropicalFactory();
+    GreenHouse* temperate = nurseryInventory->getTemperateFactory();
+    GreenHouse* succulent = nurseryInventory->getSucculentFactory();
+    
+    nurseryInventory->addMediumPlant(carnivorous);
+    nurseryInventory->addSmallPlant(tropical);
+    nurseryInventory->addLargePlant(temperate);
+    nurseryInventory->addMediumPlant(carnivorous); // Add another carnivorous
+    nurseryInventory->addSmallPlant(succulent);
+    nurseryInventory->addLargePlant(tropical);
+    
+    cout << "Initial inventory state:" << endl;
+    nurseryInventory->print();
+    cout << endl;
+    
+    // Create staff with inventory access
+    Worker worker1("Alice", commMediator, nurseryInventory);
+    Worker worker2("Charlie", commMediator, nurseryInventory);
+    Manager manager1("Bob", commMediator, nurseryInventory);
+    
+    // Create test customers
+    Customer customer1("John");
+    Customer customer2("Sarah");
+    Customer customer3("Mike");
+
+    // Add customers to mediator
+    commMediator->addCustomer(&customer1);
+    commMediator->addCustomer(&customer2);
+    commMediator->addCustomer(&customer3);
+
+    cout << "=== TEST 1: Customer Queries with Real Inventory ===" << endl;
+
+    // USE CORRECT PLANT NAMES THAT MATCH FACTORY OUTPUT
+    commMediator->notifyStaff(&customer1, "Do you have any carnivorous plants in stock?", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer2, "I need care advice for my tropical plant", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer3, "I want to make a bulk purchase of temperate plants", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 2: Purchase Requests with Inventory Checking ===" << endl;
+    commMediator->notifyStaff(&customer1, "I want to buy 2 carnivorous plants", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer2, "Can I purchase 1 tropical plant?", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer3, "I need 10 temperate plants for my garden", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 3: Direct Staff Inventory Methods ===" << endl;
+    // Worker checking inventory directly
+    cout << "Worker checking inventory:" << endl;
+    worker1.checkInventory("CarnivorousPlant");
+    worker2.checkInventory("TropicalPlant");
+    worker1.checkInventory("SucculentPlant");
+    cout << endl;
+    
+    // Manager checking overall status
+    cout << "Manager checking inventory status:" << endl;
+    manager1.checkInventoryStatus();
+    cout << endl;
+
+    cout << "=== TEST 4: Inventory After Operations ===" << endl;
+    nurseryInventory->print();
+    cout << endl;
+
+    cout << "=== TEST 5: Staff Information and Availability ===" << endl;
+    cout << "Worker 1 name: " << worker1.getName() << endl;
+    cout << "Worker 2 name: " << worker2.getName() << endl;
+    cout << "Manager name: " << manager1.getName() << endl;
+    
+    cout << "Setting worker 1 as unavailable..." << endl;
+    worker1.setAvailability(false);
+    cout << "Worker 1 availability: " << (worker1.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << "Worker 2 availability: " << (worker2.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << "Manager availability: " << (manager1.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << endl;
+
+    cout << "=== TEST 6: Advanced Inventory Queries ===" << endl;
+    // Test plant availability checks
+    cout << "Carnivorous plant availability (2 plants): " 
+         << (worker1.checkPlantAvailability("CarnivorousPlant", 2) ? "Available" : "Not Available") << endl;
+    cout << "Carnivorous plant stock count: " << worker1.getPlantStockCount("CarnivorousPlant") << endl;
+    cout << "Tropical plant stock count: " << worker1.getPlantStockCount("TropicalPlant") << endl;
+    cout << "Temperate plant stock count: " << worker1.getPlantStockCount("TemperatePlant") << endl;
+    cout << "Succulent plant stock count: " << worker1.getPlantStockCount("SucculentPlant") << endl;
+    cout << "Total plants in inventory: " << manager1.getTotalPlantCount() << endl;
+    cout << endl;
+
+    cout << "=== TEST 7: Edge Cases ===" << endl;
+    // Non-existent plant type
+    commMediator->notifyStaff(&customer1, "Do you have blue moonflowers?", nullptr);
+    cout << endl;
+    
+    // Large quantity request
+    commMediator->notifyStaff(&customer2, "I want to buy 100 carnivorous plants", nullptr);
+    cout << endl;
+
+    // Test with plants that don't exist in inventory
+    cout << "Checking availability for non-existent plant:" << endl;
+    cout << "BlueMoonflower availability: " << (worker1.checkPlantAvailability("BlueMoonflower") ? "Available" : "Not Available") << endl;
+    cout << "BlueMoonflower stock count: " << worker1.getPlantStockCount("BlueMoonflower") << endl;
+    cout << endl;
+
+    cout << "=== TEST 8: Mixed Queries ===" << endl;
+    commMediator->notifyStaff(&customer1, "What's the price of succulent plants?", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer2, "How much sunlight do carnivorous plants need?", nullptr);
+    cout << endl;
+    
+    commMediator->notifyStaff(&customer3, "I have a complaint about my recent purchase", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 9: Final Inventory State ===" << endl;
+    manager1.checkInventoryStatus();
+    cout << endl;
+
+    // Cleanup
+    delete nurseryInventory;
+    delete commMediator;
+
+    cout << "=== STAFF WITH INVENTORY TESTING COMPLETE ===" << endl;
+    cout << endl;
+}
 
 void testCommMediator() {
     cout << "=== COMMMEDIATOR TESTING ===" << endl << endl;
     
     ConcreteCommMediator* mediator = new ConcreteCommMediator();
+    Inventory* inventory = new Inventory();  
     
-    Manager* manager = new Manager("SHAVIR (Manager)", mediator);
-    Worker* worker1 = new Worker("DIYA (Worker)", mediator);
-    Worker* worker2 = new Worker("CHINMAYI (Worker)", mediator);
+    Manager* manager = new Manager("SHAVIR (Manager)", mediator, inventory);
+    Worker* worker1 = new Worker("DIYA (Worker)", mediator, inventory);
+    Worker* worker2 = new Worker("CHINMAYI (Worker)", mediator, inventory);
     
     Customer* customer1 = new Customer("AYUSH");
     Customer* customer2 = new Customer("FABIO");
@@ -703,22 +845,31 @@ void testCommMediator() {
     mediator->notifyStaff(customer3, "How much sunlight do succulents need?", nullptr);
     cout << endl;
     
-    cout << "=== TEST 2: Staff Availability ===" << endl;
+    cout << "=== TEST 2: Inventory-Based Queries ===" << endl;  // NEW TEST SECTION
+    mediator->notifyStaff(customer1, "Do you have carnivorous plants in stock?", nullptr);
+    cout << endl;
+    
+    mediator->notifyStaff(customer2, "I want to buy 2 tropical plants", nullptr);
+    cout << endl;
+    
+    mediator->notifyStaff(customer3, "What temperate plants do you have available?", nullptr);
+    cout << endl;
+    
+    cout << "=== TEST 3: Staff Availability ===" << endl;
     mediator->notifyStaff(customer1, "idk a plant ques", nullptr);
     cout << endl;
     
-    cout << "=== TEST 3: Direct Staff Assignment ===" << endl;
+    cout << "=== TEST 4: Direct Staff Assignment ===" << endl;
     mediator->assignStaffToCustomer(worker2, customer1);
     cout << endl;
     
-    cout << "=== TEST 4: Get Assigned Staff ===" << endl;
+    cout << "=== TEST 5: Get Assigned Staff ===" << endl;
     StaffMember* assigned = mediator->getAssignedStaff(customer1);
     if (assigned) {
         cout << "Customer " << customer1->getName() << " is assigned to: " << assigned->getName() << endl;
     }
     cout << endl;
     
-    // Cleanup
     delete mediator;
     delete manager;
     delete worker1;
@@ -726,6 +877,7 @@ void testCommMediator() {
     delete customer1;
     delete customer2;
     delete customer3;
+    delete inventory;  
     
     cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
 }
