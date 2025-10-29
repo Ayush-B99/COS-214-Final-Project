@@ -274,7 +274,12 @@ help:
 	@echo "  no_dtor        - Set to 1 to exclude the default destructor."
 	@echo "  methods        - A space-separated list of methods to include, passed as a quoted string."
 
-
+val: $(TARGET)
+	valgrind --leak-check=full \
+	         --show-leak-kinds=all \
+	         --track-origins=yes \
+	         --error-exitcode=1 \
+	         ./$(TARGET)
 
 # Phony targets
 .PHONY: all run run_only clean check coverage leaks summary zip_test zip prepare_zip_test prepare_zip setup h cpp class help
