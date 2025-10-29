@@ -16,6 +16,7 @@ using namespace std;
 class Company : public Customer {
 
 public:
+	Company(const string& name, CommMediator* mediator) : Customer(name, mediator) {}
 	vector<Customer*> customers;
 
 	double getDiscount();

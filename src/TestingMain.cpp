@@ -41,6 +41,10 @@ using namespace std;
 #include "../include/Fertilizer.h"
 #include "../include/Prune.h"
 #include "../include/ConcreteGrowthObserver.h"
+#include "../include/Normal.h"
+#include "../include/Premium.h"
+#include "../include/Company.h"
+
 // for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
@@ -62,10 +66,10 @@ void testCommandPattern();
 void testObserverPattern();
 // Pattern 7: Mediator (Communication System)
 void testMediatorPattern();
-// Pattern 8: Strategy Pattern (Customer Discounts)
-void testStrategyPattern();
-// Pattern 9: Composite & Iterator (Inventory System)
+// Pattern 8: Composite & Iterator (Inventory System)
 void testCompositeIteratorPattern();
+//pattern 9: composite
+void testCompositePattern();
 // Pattern 10: Integrated System Test
 void testIntegratedSystem();
 /*void testPatternsTogether();
@@ -603,6 +607,161 @@ void testMediatorPattern()
 
     cout << "Mediator Pattern Test Completed!" << endl << endl;
 }
+
+void testCompositePattern()
+{
+    cout << "=== COMPOSITE PATTERN TESTING (Customer Hierarchy) ===" << endl;
+    cout << endl;
+
+    // Create mediator for communication
+    ConcreteCommMediator *mediator = new ConcreteCommMediator();
+
+    cout << "--- Creating Individual Customers (Leaf Nodes) ---" << endl;
+    
+    // Create individual customers (leaves)
+    Customer *individual1 = new Customer("DIDI", mediator);
+    Customer *individual2 = new Customer("AYUSH", mediator);
+    Customer *individual3 = new Customer("JAITIN", mediator);
+    Customer *individual4 = new Customer("SHAVIR", mediator);
+    
+    cout << "Individual customers created:" << endl;
+    cout << " - " << individual1->getName() << endl;
+    cout << " - " << individual2->getName() << endl;
+    cout << " - " << individual3->getName() << endl;
+    cout << " - " << individual4->getName() << endl;
+    cout << endl;
+
+    cout << "--- Creating Company Composites ---" << endl;
+    
+    // Create companies (composite nodes)
+    Company *techCompany = new Company("Tech Corp", mediator);
+    Company *designStudio = new Company("Design Studio", mediator);
+    Company *holdingCompany = new Company("Global Holdings", mediator);
+    
+    cout << "Companies created:" << endl;
+    cout << " - " << techCompany->getName() << endl;
+    cout << " - " << designStudio->getName() << endl;
+    cout << " - " << holdingCompany->getName() << endl;
+    cout << endl;
+
+    cout << "--- Building Customer Hierarchy ---" << endl;
+    
+    // Add individual customers to companies
+    techCompany->addCustomer(individual1);
+    techCompany->addCustomer(individual2);
+    designStudio->addCustomer(individual3);
+    
+    cout << "Customers added to companies:" << endl;
+    cout << " - " << individual1->getName() << " added to " << techCompany->getName() << endl;
+    cout << " - " << individual2->getName() << " added to " << techCompany->getName() << endl;
+    cout << " - " << individual3->getName() << " added to " << designStudio->getName() << endl;
+    cout << endl;
+
+    cout << "--- Testing Nested Composite Structure ---" << endl;
+    
+    // Create a hierarchical structure: holding company contains other companies
+    holdingCompany->addCustomer(techCompany);
+    holdingCompany->addCustomer(designStudio);
+    holdingCompany->addCustomer(individual4);  // Also add an individual directly
+    
+    cout << "Nested hierarchy created:" << endl;
+    cout << " - " << holdingCompany->getName() << " contains:" << endl;
+    cout << "   * " << techCompany->getName() << " (with 2 customers)" << endl;
+    cout << "   * " << designStudio->getName() << " (with 1 customer)" << endl;
+    cout << "   * " << individual4->getName() << " (direct customer)" << endl;
+    cout << endl;
+
+    cout << "--- Testing Composite Operations ---" << endl;
+    
+    // Test discount calculation across the entire hierarchy
+    cout << "Testing discount aggregation:" << endl;
+    double techDiscount = techCompany->getDiscount();
+    double designDiscount = designStudio->getDiscount();
+    double holdingDiscount = holdingCompany->getDiscount();
+    
+    cout << "Tech Company total discount: " << techDiscount << endl;
+    cout << "Design Studio total discount: " << designDiscount << endl;
+    cout << "Holding Company total discount: " << holdingDiscount << endl;
+    cout << "Note: Discount values represent aggregated customer discounts" << endl;
+    cout << endl;
+
+    cout << "--- Testing Customer Removal ---" << endl;
+    
+    // Remove a customer from a company
+    cout << "Before removal - Tech Company discount: " << techCompany->getDiscount() << endl;
+    techCompany->removeCustomer(individual1);
+    cout << "Removed " << individual1->getName() << " from " << techCompany->getName() << endl;
+    cout << "After removal - Tech Company discount: " << techCompany->getDiscount() << endl;
+    cout << endl;
+
+    cout << "--- Testing Communication Through Hierarchy ---" << endl;
+    
+    // Test that all customers in the hierarchy can communicate
+    cout << "Testing customer inquiries through mediator:" << endl;
+    individual2->askQuestion("Do you offer corporate plant maintenance?", nullptr);
+    cout << endl;
+    
+    individual3->requestPurchase("Office Plants", 15);
+    cout << endl;
+    
+    individual4->askQuestion("What are your bulk purchase options?", nullptr);
+    cout << endl;
+
+    cout << "--- Testing Purchase History Tracking ---" << endl;
+    
+    // Simulate purchases across the hierarchy
+    individual2->requestPurchase("Snake Plant", 5);
+    individual3->requestPurchase("Peace Lily", 8);
+    individual4->requestPurchase("Rubber Plant", 12);
+    
+    cout << "Purchase histories across hierarchy:" << endl;
+    
+    vector<string> history2 = individual2->getPurchaseHistory();
+    cout << individual2->getName() << " (" << techCompany->getName() << "): ";
+    for (const string& purchase : history2) {
+        cout << purchase << "; ";
+    }
+    cout << endl;
+    
+    vector<string> history3 = individual3->getPurchaseHistory();
+    cout << individual3->getName() << " (" << designStudio->getName() << "): ";
+    for (const string& purchase : history3) {
+        cout << purchase << "; ";
+    }
+    cout << endl;
+    
+    vector<string> history4 = individual4->getPurchaseHistory();
+    cout << individual4->getName() << " (" << holdingCompany->getName() << " direct): ";
+    for (const string& purchase : history4) 
+    {
+        cout << purchase << "; ";
+    }
+    cout << endl << endl;
+
+    cout << "--- Testing Uniform Treatment (Composite Pattern Benefit) ---" << endl;
+    
+    // Demonstrate that we can treat individual customers and companies uniformly
+    vector<Customer*> allEntities = {individual2, individual3, techCompany, holdingCompany};
+    
+    cout << "Treating all customer entities uniformly:" << endl;
+    for (Customer* entity : allEntities) 
+    {
+        cout << " - " << entity->getName() << " can communicate and has discount: " << entity->getDiscount() << endl;
+    }
+    cout << endl;
+
+    // Cleanup
+    cout << "--- Cleanup ---" << endl;
+    
+    delete individual1;  // Was removed from techCompany
+    delete holdingCompany;   
+    delete mediator;
+    
+    cout << "Composite Pattern Test Completed Successfully!" << endl;
+    cout << "Demonstrated: Leaf nodes (individuals), Composite nodes (companies), and nested hierarchies" << endl;
+    cout << "All customer types treated uniformly through Customer interface" << endl << endl;
+}
+
 /*int testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
