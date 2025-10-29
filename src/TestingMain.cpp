@@ -1079,20 +1079,66 @@ void testAllStorage(){
     cout << "Empty order iterator hasNext(): " << emptyIter.hasNext() << endl;
     emptyOrder->print();
 
-    // ---------- Cleanup ----------
-    cout << "\nCleaning up memory...\n";
-    delete inv;
-    cout << "deleted inv\n";
-    delete order;
-    cout << "deleted order\n";
-    delete emptyOrder;
-    cout << "deleted emptyorder\n";
-    delete stock;
-    cout << "deleted stock\n";
-
     cout << "\n=============================================\n";
     cout << "           END OF STOCK TEST SUITE\n";
     cout << "=============================================\n";
+
+
+    //---------- 13. stock report ----------
+    stock->getLowStockItems();
+    stock->print();
+
+    //---------- 14. order states ----------
+    order->print();
+    order->proceed();
+    order->print();
+    //should fail
+    stock->moveToOrder(stockPlants[0], inv, order);
+
+
+        // ---------- 13. DECORATOR PATTERN IN CONTEXT OF STOCK ----------
+    cout << "\n[13] DECORATOR PATTERN WITH STOCK PLANTS\n";
+
+    // Create a new order for demonstration
+    Order* decoratedOrder = new Order("DecoratedOrder");
+
+    // Pick some stock plants to decorate
+    auto stockPlantsForDecor = stock->getAllPlants();
+    for (int i = 0; i < 5 && i < (int)stockPlantsForDecor.size(); ++i) {
+        Plant* p = stockPlantsForDecor[i];
+
+        // Alternate decorations
+        if (i % 2 == 0) {
+            auto decorated = Order::decorateWithClayPot(std::unique_ptr<Plant>(p));
+            p = decorated.release();
+        } else {
+            auto decorated = Order::decorateWithOrganicFertilizer(std::unique_ptr<Plant>(p));
+            p = decorated.release();
+        }
+
+        stock->moveToOrder(p, inv, decoratedOrder);
+    }
+
+    // Print the decorated order
+    cout << "\nDecorated Order after additions:\n";
+    decoratedOrder->print();
+
+    // Iterate decorated order to show full descriptions and prices
+    cout << "\nIterating decorated order via OrderIterator:\n";
+    PlantNode* decoratedNode = decoratedOrder->getNode();
+    OrderIterator decoratedIter(decoratedNode);
+    int decorCount = 0;
+    while (decoratedIter.hasNext()) {
+        Plant* p = decoratedIter.next();
+        cout << "DecorOrderIter: " << p->getDescription() 
+            << " - Price: R" << p->getPrice() << endl;
+        ++decorCount;
+    }
+    cout << "Decorated order iterator traversed " << decorCount << " plants.\n";
+
+    // Clean up decorated order
+    delete decoratedOrder;
+    cout << "Deleted decorated order\n";
 }
 
 

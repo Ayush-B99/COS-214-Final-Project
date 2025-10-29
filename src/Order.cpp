@@ -44,6 +44,7 @@ void Order::addPlant(Plant* item) {
 	//block adding based on state
 	if (state->getName() != "draft"){
 		cout << "You cannot edit an order after it has been submitted";
+		return;
 	}
 
 	if (orderItems->plantInNode(item)){
@@ -121,7 +122,8 @@ void Order::print(){
 	}
 
 	cout << "Order " << id 
-		 << " Total: R" << total << endl;
+		 << " Total: R" << total 
+		 << " in state " << state->getName() << endl;
 
 	orderItems->printNode("", false);
 }
@@ -133,4 +135,12 @@ void Order::removePlant(Plant* plant){
 
 PlantNode* Order::getNode(){
 	return orderItems;
+}
+
+unique_ptr<Plant> Order::decorateWithPot(unique_ptr<Plant> p, const string& potType) {
+    return make_unique<PotDecorator>(std::move(p), potType);
+}
+
+unique_ptr<Plant> Order::decorateWithFertilizer(unique_ptr<Plant> p, const string& fertilizerType) {
+    return make_unique<FertilizerDecorator>(std::move(p), fertilizerType);
 }

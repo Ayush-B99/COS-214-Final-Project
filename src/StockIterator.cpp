@@ -169,20 +169,15 @@ Plant* StockIterator::nextFine() {
 }
 
 PlantNode* StockIterator::nextCoarse() {
-	if (nodeStack.empty() && !currentNode)
-        return nullptr;
+	if (!currentNode && nodeStack.empty()) return nullptr;
 
-    PlantNode* node = nullptr;
-
-    // Case 1: first call or after reset
+    // If this is the first call
     if (!currentNode) {
-        if (nodeStack.empty()) return nullptr;
-        node = nodeStack.top();
+        currentNode = nodeStack.top();
         nodeStack.pop();
-        pushLeft(node->getRight());
     } 
     else {
-        // Case 2: move to next node in-order
+        // Move to the next in-order node
         if (currentNode->getRight()) {
             pushLeft(currentNode->getRight());
         }
@@ -192,12 +187,10 @@ PlantNode* StockIterator::nextCoarse() {
             return nullptr;
         }
 
-        node = nodeStack.top();
+        currentNode = nodeStack.top();
         nodeStack.pop();
-        pushLeft(node->getRight());
     }
 
-    currentNode = node;
     indexInNode = 0;
     return currentNode;
 }

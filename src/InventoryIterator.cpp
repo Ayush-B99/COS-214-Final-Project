@@ -104,19 +104,15 @@ Plant* InventoryIterator::nextFine() {
 }	
 
 Plant* InventoryIterator::nextCoarse() {
-if (nodeStack.empty() && !currentNode)
-        return nullptr;
+    if (!currentNode && nodeStack.empty()) return nullptr;
 
-    PlantNode* node = nullptr;
-
-    // First call or after finishing previous node
+    // If this is the first call
     if (!currentNode) {
-        if (nodeStack.empty()) return nullptr;
-        node = nodeStack.top();
+        currentNode = nodeStack.top();
         nodeStack.pop();
-        pushLeft(node->getRight());
-    } else {
-        // Move to next node in in-order traversal
+    } 
+    else {
+        // Move to the next in-order node
         if (currentNode->getRight()) {
             pushLeft(currentNode->getRight());
         }
@@ -126,24 +122,11 @@ if (nodeStack.empty() && !currentNode)
             return nullptr;
         }
 
-        node = nodeStack.top();
+        currentNode = nodeStack.top();
         nodeStack.pop();
-        pushLeft(node->getRight());
     }
 
-    // Skip invalid (empty) nodes
-    while (node && node->getPlants().empty()) {
-        if (nodeStack.empty()) {
-            currentNode = nullptr;
-            return nullptr;
-        }
-        node = nodeStack.top();
-        nodeStack.pop();
-        pushLeft(node->getRight());
-    }
-
-    currentNode = node;
-    indexInNode = 0;  // Reset index for fine traversal (if needed later)
+    indexInNode = 0;
     return currentNode->getPlants().at(0);
 }
 

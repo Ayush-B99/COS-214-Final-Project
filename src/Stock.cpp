@@ -13,9 +13,16 @@ Stock::~Stock() {
 	stockCatalog = nullptr;
 }
 
-vector<Plant*> Stock::getLowStockItems() {
-	// TODO - implement Stock::getLowStockItems
-	throw "Not yet implemented";
+void Stock::getLowStockItems() {
+	StockIterator* it = new StockIterator(stockCatalog);
+
+	while (it->hasNextNode()){
+		PlantNode* curr = it->nextCoarse();
+		if (curr && curr->getPlants().size() <= 1){
+			cout << "Low stock for " << curr->getKey() << " " << curr->getPlants().size() << " plants remaining.\n";
+		}
+	}
+	delete it;
 }
 
 double Stock::getTotalStockValue() {
@@ -123,7 +130,7 @@ int Stock::getNodeCount() {
 		count++;
 	}
 
-	return count-1;
+	return count;
 }
 
 int Stock::getPlantCount(){
@@ -409,6 +416,11 @@ void Stock::cleanUpDeadPlants(){
 }
 
 void Stock::moveToOrder(Plant* plant, Inventory* inventory, Order* order){
+	//block depending on order state
+	if (order->getState()->getName() != "draft"){
+		cout << "You cannot edit an order after it has been submitted";
+		return;
+	}
 
 	//remove from both stock and inventory
 	if (plantInTree(plant)){

@@ -18,6 +18,8 @@ using namespace std;
 #include "OrderIterator.h"
 #include "Submitted.h"
 #include "Draft.h"
+#include "PotDecorator.h"
+#include "FertilizerDecorator.h"
 
 class Inventory;
 class Stock;
@@ -64,6 +66,30 @@ public:
 	void print();
 
 	PlantNode* getNode();
+
+    static unique_ptr<Plant> decorateWithPot(unique_ptr<Plant> p, const string& potType);
+    static unique_ptr<Plant> decorateWithFertilizer(unique_ptr<Plant> p, const string& fertilizerType);
+
+    //prebuilt decorators for testing
+    static unique_ptr<Plant> decorateWithClayPot(unique_ptr<Plant> p) {
+        return decorateWithPot(std::move(p), "Clay");
+    }
+
+    static unique_ptr<Plant> decorateWithCeramicPot(unique_ptr<Plant> p) {
+        return decorateWithPot(std::move(p), "Ceramic");
+    }
+
+    static unique_ptr<Plant> decorateWithOrganicFertilizer(unique_ptr<Plant> p) {
+        return decorateWithFertilizer(std::move(p), "Organic");
+    }
+
+    static unique_ptr<Plant> decorateWithLiquidFertilizer(unique_ptr<Plant> p) {
+        return decorateWithFertilizer(std::move(p), "Liquid");
+    }
+
+    static unique_ptr<Plant> decorateWithSlowReleaseFertilizer(unique_ptr<Plant> p) {
+        return decorateWithFertilizer(std::move(p), "Slow-Release");
+    }
 };
 
 #endif

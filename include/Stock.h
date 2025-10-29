@@ -52,7 +52,7 @@ public:
 
 	~Stock();
 
-	vector<Plant*> getLowStockItems();
+	void getLowStockItems();
 
 	double getTotalStockValue();
 
