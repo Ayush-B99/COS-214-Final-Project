@@ -31,7 +31,7 @@ private:
 	double total;
 
 public:
-	Order(string& orderId);
+	Order(string orderId);
 
 	~Order();
 
@@ -43,9 +43,11 @@ public:
 
 	void completed();
 
-	void addItem(Plant* item);
+	void addPlant(Plant* item);
 
-	void removeItem(Plant* item, Inventory* inv);
+	void removePlant(Plant* item, Inventory* inv, Stock* stock);
+
+	void removePlant(Plant* item);
 
 	vector<Plant*>& getOrderItems();
 

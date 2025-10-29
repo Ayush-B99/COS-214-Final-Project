@@ -18,6 +18,8 @@ class Draft : public OrderState {
 
 
 public:
+	Draft();
+	
 	void submitted(Order* order);
 
 	void paid(Order* order);

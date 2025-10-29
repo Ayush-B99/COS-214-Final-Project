@@ -2,11 +2,13 @@
 #include "../include/Stock.h"
 #include "../include/Inventory.h"
 
-Order::Order(string& orderId) {
+Order::Order(string orderId) {
 	this-> id = orderId;
 	this->orderItems = new PlantNode(id);
 	total = 0;
 	state = new Draft();
+
+	cout << "Order " << orderId << " has been created successfully!\n";
 }
 
 Order::~Order() {
@@ -32,7 +34,7 @@ void Order::completed() {
 
 }
 
-void Order::addItem(Plant* item) {
+void Order::addPlant(Plant* item) {
 	//block adding based on state
 	if (state->getName() != "draft"){
 		cout << "You cannot edit an order after it has been submitted";
@@ -49,7 +51,7 @@ void Order::addItem(Plant* item) {
 	calculateTotal();
 }
 
-void Order::removeItem(Plant* item, Inventory* inv) {
+void Order::removePlant(Plant* item, Inventory* inv, Stock* stock) {
 	if (state->getName() != "draft"){
 		cout << "You cannot edit an order after it has been submitted";
 	}
@@ -59,10 +61,9 @@ void Order::removeItem(Plant* item, Inventory* inv) {
 	}
 	cout << item->getSpecies() << " successfully removed from your order!\n";
 
-	//need to move the plant back into inventory
-	///ideally move back to stock as well but we cant maintain all those pointers
 	if (item){
-		inv->addPlant(item);
+		if (inv) inv->addPlant(item);
+		if (stock) stock->addPlant(item);
 	}
 }
 
@@ -108,8 +109,18 @@ string& Order::getId() {
 }
 
 void Order::print(){
+	if (!orderItems || orderItems->getPlants().empty()){
+		cout << "Order " << id << " is empty. Engage in consumerism!\n";
+		return;
+	}
+
 	cout << "Order " << id 
-		 << "Total: R" << total << endl;
+		 << " Total: R" << total << endl;
 
 	orderItems->printNode("", false);
+}
+
+//DO NOT USE THIS ITS JUST SO I STOP GETTING YELLED AT BY COMPILER
+void Order::removePlant(Plant* plant){
+	removePlant(plant, nullptr, nullptr);
 }

@@ -1,41 +1,54 @@
 #include "../include/OrderIterator.h"
 
 OrderIterator::OrderIterator(PlantNode* order) {
-	// TODO - implement OrderIterator::OrderIterator
-	throw "Not yet implemented";
+	position = 0;
+	this->order = order->getPlants(); 
 }
 
 OrderIterator::~OrderIterator() {
-	// TODO - implement OrderIterator::~OrderIterator
-	throw "Not yet implemented";
+	//does not own any dynamic memory
 }
 
 Plant* OrderIterator::next() {
-	// TODO - implement OrderIterator::next
-	throw "Not yet implemented";
+	if (!hasNext()){
+		return nullptr;
+	}
+	return order.at(position++);
 }
 
 Plant* OrderIterator::currentPlant() {
-	// TODO - implement OrderIterator::current
-	throw "Not yet implemented";
+	if (position < 0 || position >= static_cast<int>(order.size())){
+		return nullptr;
+	}
+	return order.at(position);
 }
 
 bool OrderIterator::hasNext() {
-	// TODO - implement OrderIterator::hasNext
-	throw "Not yet implemented";
+	return position < static_cast<int>(order.size());
 }
 
 void OrderIterator::reset() {
-	// TODO - implement OrderIterator::reset
-	throw "Not yet implemented";
+	position = 0;
 }
 
-map<string, int> OrderIterator::getPosition() {
-	// TODO - implement OrderIterator::getPosition
-	throw "Not yet implemented";
+int OrderIterator::getPosition() {
+	return position;
 }
 
-void OrderIterator::setPosition(size_t index) {
-	// TODO - implement OrderIterator::setPosition
-	throw "Not yet implemented";
+void OrderIterator::setPosition(int index) {
+		if (index >= 0 && index < static_cast<int>(order.size())) {
+		position = index;
+	} else {
+		cerr << "[OrderIterator] Invalid index: " << index
+		          << " (size=" << order.size() << ")\n";
+	}
+}
+
+bool OrderIterator::hasPrevious() {
+	return position > 0;
+}
+
+Plant* OrderIterator::previous() {
+	if (!hasPrevious()) return nullptr;
+	return order.at(--position);
 }

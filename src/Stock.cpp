@@ -414,10 +414,10 @@ void Stock::moveToOrder(Plant* plant, Inventory* inventory, Order* order){
 		removePlant(plant);
 	}
 	if (inventory->plantInTree(plant)){
-		removePlant(plant);
+		inventory->removePlant(plant);
 	}
 
-	order->addItem(plant);
+	order->addPlant(plant);
 	cout << "a " << plant->getSpecies() << " has been added to order " << order->getId() << endl;
 
 }

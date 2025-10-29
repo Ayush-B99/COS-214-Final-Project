@@ -1,5 +1,9 @@
 #include "../include/Draft.h"
 
+Draft::Draft(){
+
+}
+
 void Draft::submitted(Order* order) {
 	// TODO - implement Draft::submitted
 	throw "Not yet implemented";
@@ -21,8 +25,7 @@ void Draft::completed(Order* order) {
 }
 
 const string Draft::getName() {
-	// TODO - implement Draft::getName
-	throw "Not yet implemented";
+	return "draft";
 }
 
 bool Draft::canEdit() {

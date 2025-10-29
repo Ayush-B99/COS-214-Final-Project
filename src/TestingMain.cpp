@@ -34,6 +34,8 @@ using namespace std;
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
+#include "../include/Order.h"
+#include "../include/OrderIterator.h"
 
 
 
@@ -808,7 +810,7 @@ void testInventoryAndStock(){
         assert(dynamic_cast<Mature*>(s->getGrowthState()) != nullptr);
     }
 
-    cout << "✅ Stock only contains healthy, mature plants.\n";
+    cout << " Stock only contains healthy, mature plants.\n";
 
     // ---------- 4. Test fine iterator ----------
     cout << "\n[4] Testing fine-grained iterator traversal...\n";
@@ -855,7 +857,7 @@ void testInventoryAndStock(){
              << " | plants: " << node->getPlants().size() << endl;
     }
 
-    cout << "✅ Empty nodes are retained in Stock traversal.\n";
+    cout << " Empty nodes are retained in Stock traversal.\n";
 
     // ---------- 8. Add new plants to repopulate stock ----------
     cout << "\n[8] Adding new valid plants (restock)...\n";
@@ -870,7 +872,26 @@ void testInventoryAndStock(){
     cout << "Stock node count: " << stock->getNodeCount() << endl;
     cout << "Stock plant count: " << stock->getPlantCount() << endl;
 
+    cout << "\n[10] Order testing\n";
+
+    Order* order = new Order("shav");
+    cout << "adding some items to the order\n";
+    stock->moveToOrder(p2, inv, order);
+    cout << "bird of paradise should no longer be in stock or inventory\n";
+    order->print();
+    stock->print();
+    inv->print();
+
+    cout << "now removing that plant\n";
+
+    order->removePlant(p2, inv, stock);
+    order->print();
+    stock->print();
+    inv->print();
+
+
     // ---------- Cleanup ----------
+    cout << "\ncleaning up memory\n";
     delete inv;
     delete stock;
 
