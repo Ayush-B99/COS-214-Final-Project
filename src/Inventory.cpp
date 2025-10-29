@@ -351,7 +351,7 @@ void Inventory::moveValidPlantsToStock(Stock* stock){
 	cout << "Copying " << toMove.size() << " mature plants to Stock...\n";
 
 	for (Plant* p : toMove){
-		if (p) stock->addPlant(p);
+		if (p != nullptr && !stock->plantInTree(p)) stock->addPlant(p);
 	}
 
 	cout << "Plants successfully copied to Stock!\n";
