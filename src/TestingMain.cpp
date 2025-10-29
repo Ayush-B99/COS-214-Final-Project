@@ -36,6 +36,10 @@ using namespace std;
 #include "../include/SunHandler.h"
 #include "../include/FertilizerHandler.h"
 #include "../include/PruneHandler.h"
+#include "../include/Water.h"
+#include "../include/Sun.h"
+#include "../include/Fertilizer.h"
+#include "../include/Prune.h"
 // for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
@@ -468,7 +472,52 @@ void testChainOfResponsibilityPattern()
     cout << "Chain of Responsibility Pattern Test Completed!" << endl << endl;
 }
 
+void testCommandPattern()
+{
+    cout << "=== COMMAND PATTERN TESTING ===" << endl;
+    cout << endl;
 
+    // Create a test plant
+    TestPlant plant("TestPlant");
+    
+    cout << "--- Testing Individual Care Commands ---" << endl;
+    
+    // Create commands
+    Water waterCmd(&plant);
+    Sun sunCmd(&plant);
+    Fertilizer fertilizerCmd(&plant);
+    Prune pruneCmd(&plant);
+    
+    // Test initial state
+    cout << "Initial resource levels:" << endl;
+    cout << "Water: " << plant.getWaterLevel() << "%" << endl;
+    cout << "Sunlight: " << plant.getSunlightLevel() << "%" << endl;
+    cout << "Fertilizer: " << plant.getFertilizerLevel() << "%" << endl;
+    cout << "Prune: " << plant.getPruneLevel() << "%" << endl;
+    cout << endl;
+    
+    // Execute commands
+    cout << "Executing water command..." << endl;
+    waterCmd.execute();
+    
+    cout << "Executing sunlight command..." << endl;
+    sunCmd.execute();
+    
+    cout << "Executing fertilizer command..." << endl;
+    fertilizerCmd.execute();
+    
+    cout << "Executing prune command..." << endl;
+    pruneCmd.execute();
+    
+    // Test final state
+    cout << "Final resource levels:" << endl;
+    cout << "Water: " << plant.getWaterLevel() << "%" << endl;
+    cout << "Sunlight: " << plant.getSunlightLevel() << "%" << endl;
+    cout << "Fertilizer: " << plant.getFertilizerLevel() << "%" << endl;
+    cout << "Prune: " << plant.getPruneLevel() << "%" << endl;
+    
+    cout << "Command Pattern Test Completed!" << endl << endl;
+}
 
 /*int testPlantGrowth()
 {
