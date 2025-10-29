@@ -18,6 +18,10 @@ class Company : public Customer {
 public:
 	vector<Customer*> customers;
 
+	Company(const string& name, CommMediator* mediator) : Customer(name, mediator) {}
+
+	~Company();
+
 	double getDiscount();
 
 	void addCustomer(Customer* c);
