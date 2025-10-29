@@ -67,7 +67,7 @@ void testObserverPattern();
 // Pattern 7: Mediator (Communication System)
 void testMediatorPattern();
 // Pattern 8: Composite & Iterator (Inventory System)
-void testCompositeIteratorPattern();
+void testIteratorPattern();
 //pattern 9: composite
 void testCompositePattern();
 // Pattern 10: Integrated System Test
@@ -545,8 +545,6 @@ void testObserverPattern()
     // Manually set to needs care to trigger observer
     plant.setHealthState(new NeedsCare());
     
-    // Cleanup
-    delete observer;
     
     cout << "Observer Pattern Test Completed!" << endl << endl;
 }
@@ -760,6 +758,225 @@ void testCompositePattern()
     cout << "Composite Pattern Test Completed Successfully!" << endl;
     cout << "Demonstrated: Leaf nodes (individuals), Composite nodes (companies), and nested hierarchies" << endl;
     cout << "All customer types treated uniformly through Customer interface" << endl << endl;
+}
+
+void testIteratorPattern()
+{
+    cout << "=== ITERATOR PATTERN TESTING (Inventory System) ===" << endl;
+    cout << endl;
+
+    Inventory *inv = new Inventory();
+
+    // Add some plants
+    GreenHouse *carnivorous = inv->getCarnivorousFactory();
+    GreenHouse *tropical = inv->getTropicalFactory();
+    GreenHouse *temperate = inv->getTemperateFactory();
+
+    cout << "--- Adding Plants to Inventory ---" << endl;
+    inv->addLargePlant(carnivorous);
+    inv->addLargePlant(tropical);
+    inv->addMediumPlant(temperate);
+    inv->print();
+
+    cout << "--- Adding Duplicates ---" << endl;
+    Plant *healthmanip = inv->addLargePlant(carnivorous);
+    Plant *torem = inv->addLargePlant(carnivorous);
+    Plant *growthmanip = inv->addMediumPlant(temperate);
+    Plant *bird = inv->addMediumPlant(tropical);
+    Plant *uniquerem = inv->addSmallPlant(carnivorous);
+    inv->print();
+
+    cout << "--- Testing Direct Removals ---" << endl;
+    inv->removePlant(torem);
+    inv->print();
+    inv->removePlant(uniquerem);
+    inv->print();
+
+    // Test state-based operations
+    cout << "--- Testing State-Based Operations ---" << endl;
+    GrowthState *seedling = new Seed();
+    GrowthState *mature = new Mature();
+    HealthState *healthy = new Good();
+    HealthState *dead = new Dead();
+
+    cout << "Plants in seedling state: " << inv->getPlants(seedling).size() << endl;
+    cout << "Plants in mature state: " << inv->getPlants(mature).size() << endl;
+    cout << "Healthy plants: " << inv->getPlants(healthy).size() << endl;
+    cout << "Dead plants: " << inv->getPlants(dead).size() << endl;
+
+    cout << "--- Testing Iterator Traversal ---" << endl;
+    InventoryIterator it(inv->getRoot());
+    while (it.hasNext())
+    {
+        Plant *p = it.next();
+        if (p)
+            cout << "Iterated: " << p->getSpecies() << " (" << p->getGrowthState()->getName() << ")" << endl;
+    }
+
+    cout << "--- Testing Inventory Statistics ---" << endl;
+    cout << "Node count: " << inv->getNodeCount() << " types of plants in inventory" << endl;
+    cout << "Plant count: " << inv->getPlantCount() << " plants in inventory" << endl;
+
+    // Cleanup - JUST delete the inventory, it will handle plant cleanup
+    cout << "--- Cleanup ---" << endl;
+    delete seedling;
+    delete mature;
+    delete healthy;
+    delete dead;
+    delete inv;  // Inventory destructor should handle plant deletion
+
+    cout << "Iterator Pattern Test Completed!" << endl << endl;
+}
+
+void testIntegratedSystem()
+{
+    cout << "====================================================================" << endl;
+    cout << "=== INTEGRATED SYSTEM TEST - ALL PATTERNS WORKING TOGETHER ===" << endl;
+    cout << "====================================================================" << endl;
+    cout << endl;
+
+    // PHASE 1: SYSTEM SETUP
+    cout << "--- PHASE 1: SYSTEM INITIALIZATION ---" << endl;
+    TemperatePlantFactory temperateFactory;
+    ConcreteCommMediator *mediator = new ConcreteCommMediator();
+    Inventory *inventory = new Inventory();
+    
+    Manager *manager = new Manager("Store Manager", mediator);
+    Worker *worker = new Worker("Plant Specialist", mediator);
+    cout << "System initialized with factories, inventory, staff, and mediator" << endl << endl;
+
+    // PHASE 2: PLANT CREATION & ENHANCEMENT - FIXED
+    cout << "--- PHASE 2: PLANT CREATION & ENHANCEMENT ---" << endl;
+    // Option 1: Use decorator with direct plant creation (recommended)
+    {
+        auto premiumPlant = std::make_unique<FertilizerDecorator>(
+            std::make_unique<PotDecorator>(
+                std::make_unique<Lilac>(),  // Create plant directly, not from factory
+                "Ceramic"),
+            "Organic");
+        cout << "Created: " << premiumPlant->getDescription() << endl;
+    } // premiumPlant automatically destroyed here
+    
+    // Option 2: If you want to use factory, don't mix raw and smart pointers
+    Plant *simplePlant = temperateFactory.createMediumPlant();
+    cout << "Also created: " << simplePlant->getDescription() << endl;
+    cout << endl;
+
+    // PHASE 3: INVENTORY MANAGEMENT
+    cout << "--- PHASE 3: INVENTORY MANAGEMENT ---" << endl;
+    inventory->addMediumPlant(inventory->getTemperateFactory());
+    cout << "Inventory now contains " << inventory->getPlantCount() << " plants" << endl << endl;
+
+    // PHASE 4: AUTOMATED PLANT CARE SYSTEM
+    cout << "--- PHASE 4: AUTOMATED PLANT CARE SYSTEM ---" << endl;
+    Plant *carePlant = temperateFactory.createSmallPlant();
+    
+    // Set up Chain of Responsibility
+    WaterHandler *waterHandler = new WaterHandler();
+    SunHandler *sunHandler = new SunHandler();
+    waterHandler->setNext(sunHandler);
+    carePlant->setCareStrategy(waterHandler);
+    
+    // Attach Observer - FIXED: Don't delete observer, plant owns it
+    ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(carePlant);
+    
+    // Simulate care cycle
+    carePlant->tick();
+    carePlant->tick();
+    carePlant->handleCareRequest();
+    cout << "Automated care system processed plant needs" << endl << endl;
+
+    // PHASE 5: CUSTOMER INTERACTION
+    cout << "--- PHASE 5: CUSTOMER INTERACTION SYSTEM ---" << endl;
+    Customer *customer = new Customer("Retail Customer", mediator);
+    
+    customer->askQuestion("Do you have mature plants available?", carePlant);
+    cout << "Customer communication handled through mediator" << endl << endl;
+
+    // PHASE 6: COMMAND SYSTEM
+    cout << "--- PHASE 6: MANUAL COMMAND SYSTEM ---" << endl;
+    Water waterCmd(carePlant);
+    waterCmd.execute();
+    cout << " Manual care commands executed successfully" << endl << endl;
+
+    // PHASE 7: SYSTEM CLEANUP - FIXED
+    cout << "--- PHASE 7: SYSTEM CLEANUP ---" << endl;
+    
+    // Delete care plant (observer is owned by plant, so don't delete separately)
+    delete carePlant;
+    
+    // Delete the simple plant we created
+    delete simplePlant;
+    
+    // Delete handlers
+    delete waterHandler;
+    delete sunHandler;
+    
+    // Delete customer
+    delete customer;
+    
+    // Delete inventory (it manages its own plants)
+    delete inventory;
+    
+    // Delete mediator and staff
+    delete mediator;
+    delete manager;
+    delete worker;
+    
+    cout << " All resources properly cleaned up" << endl << endl;
+
+    cout << "================================================================" << endl;
+    cout << "=== ALL DESIGN PATTERNS SUCCESSFULLY INTEGRATED AND WORKING ===" << endl;
+    cout << "================================================================" << endl;
+    cout << endl;
+}
+
+int main()
+{
+    try
+    {
+        cout << "PLANT STORE DESIGN PATTERNS TEST SUITE" << endl;
+        cout << "============================================" << endl;
+        cout << endl;
+
+        // Test each design pattern individually
+        cout << "INDIVIDUAL PATTERN TESTS:" << endl;
+        cout << "----------------------------" << endl;
+        testAbstractFactoryPattern();
+        testDecoratorPattern();
+        testStatePattern();
+        testChainOfResponsibilityPattern();
+        testCommandPattern();
+        testObserverPattern();
+        testMediatorPattern();
+        testCompositePattern();
+        testIteratorPattern();
+        
+        cout << endl;
+        cout << "INTEGRATED SYSTEM TEST:" << endl;
+        cout << "-------------------------" << endl;
+        testIntegratedSystem();
+
+        cout << "============================================" << endl;
+        cout << "ALL TESTS COMPLETED SUCCESSFULLY!" << endl;
+        cout << "============================================" << endl;
+        return 0;
+    }
+    catch (const char *msg)
+    {
+        cerr << "Exception caught: " << msg << endl;
+        return 1;
+    }
+    catch (const exception &e)
+    {
+        cerr << "Exception caught: " << e.what() << endl;
+        return 1;
+    }
+    catch (...)
+    {
+        cerr << "Unknown exception caught!" << endl;
+        return 1;
+    }
 }
 
 /*int testPlantGrowth()

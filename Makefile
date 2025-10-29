@@ -74,7 +74,10 @@ SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
 		  $(SRCDIR)/Sun.cpp \
 		  $(SRCDIR)/Prune.cpp \
 		  $(SRCDIR)/Fertilizer.cpp \
-		  $(SRCDIR)/Command.cpp
+		  $(SRCDIR)/Command.cpp \
+		  $(SRCDIR)/Company.cpp \
+		  $(SRCDIR)/Stock.cpp
+
 
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp

@@ -10,6 +10,15 @@ double Company::getDiscount()
     return totalDiscount;
 }
 
+Company::~Company() 
+{
+    for(Customer* customer : customers)
+    {
+        delete customer;
+    }
+    customers.clear();
+}
+
 void Company::addCustomer(Customer* c) 
 {
 	if(c != nullptr)
