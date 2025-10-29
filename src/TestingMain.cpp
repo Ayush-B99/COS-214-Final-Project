@@ -248,6 +248,72 @@ void testAbstractFactoryPattern()
     cout << "Abstract Factory Pattern Test Completed!" << endl << endl;
 }
 
+void testDecoratorPattern()
+{
+    cout << "=== DECORATOR PATTERN TESTING ===" << endl;
+    cout << endl;
+
+    // Create plants using unique_ptr
+    auto daisy = std::make_unique<Daisy>();
+    auto aloe = std::make_unique<AloeVera>();
+    auto nepenthes = std::make_unique<Nepenthes>();
+
+    cout << "--- Basic Plants with no decoration ---" << endl;
+    cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
+    cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
+    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
+    cout << endl;
+
+    // Test individual decorators
+    cout << "--- Individual Decorators ---" << endl;
+    auto daisyInClayPot = std::make_unique<PotDecorator>(std::move(daisy), "Clay");
+    cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
+
+    auto aloeWithFertilizer = std::make_unique<FertilizerDecorator>(std::move(aloe), "Organic");
+    cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
+    cout << endl;
+
+    // Test multiple decorations
+    cout << "--- Multiple Decorations ---" << endl;
+    auto premiumNepenthes = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(std::make_unique<Nepenthes>(), "Decorative"),
+        "Slow-Release");
+    cout << "Premium Nepenthes: " << premiumNepenthes->getDescription() << " - Price: R" << premiumNepenthes->getPrice() << endl;
+
+    // Different pot types
+    auto daisyCeramic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Ceramic");
+    auto daisyPlastic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Plastic");
+    cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
+    cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
+    cout << endl;
+
+    // Different fertilizer types
+    cout << "--- Different Fertilizer Types ---" << endl;
+    auto aloeOrganic = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Organic");
+    auto aloeLiquid = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Liquid");
+    auto aloeSlowRelease = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Slow-Release");
+
+    cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
+    cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
+    cout << "Aloe Slow-Release: " << aloeSlowRelease->getDescription() << " - Price: R" << aloeSlowRelease->getPrice() << endl;
+    cout << endl;
+
+    cout << "--- Testing Construction Methods ---" << endl;
+    // Method 1: Direct construction with smart pointers
+    auto nested = std::make_unique<FertilizerDecorator>(
+        std::make_unique<PotDecorator>(std::make_unique<WhiteOak>(), "Clay"),
+        "Organic");
+    cout << "Nested (smart pointers): " << nested->getDescription() << endl;
+
+    // Method 2: Step-by-step construction
+    auto step1 = std::make_unique<WhiteOak>();
+    auto step2 = std::make_unique<PotDecorator>(std::move(step1), "Clay");
+    auto step3 = std::make_unique<FertilizerDecorator>(std::move(step2), "Organic");
+    cout << "Step-by-step: " << step3->getDescription() << endl;
+
+    cout << "Decorator Pattern Test Completed!" << endl << endl;
+}
+
 int testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
