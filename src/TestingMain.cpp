@@ -40,6 +40,7 @@ using namespace std;
 #include "../include/Sun.h"
 #include "../include/Fertilizer.h"
 #include "../include/Prune.h"
+#include "../include/ConcreteGrowthObserver.h"
 // for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
@@ -517,6 +518,33 @@ void testCommandPattern()
     cout << "Prune: " << plant.getPruneLevel() << "%" << endl;
     
     cout << "Command Pattern Test Completed!" << endl << endl;
+}
+
+void testObserverPattern()
+{
+    cout << "=== OBSERVER PATTERN TESTING ===" << endl;
+    cout << endl;
+
+    // Create a plant and observer
+    TestPlant plant("ObservedPlant");
+    ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(&plant);
+    
+    cout << "--- Testing Observer Notifications ---" << endl;
+    
+    // Degrade plant health to trigger observer
+    cout << "Degrading plant health to trigger observer..." << endl;
+    for (int i = 0; i < 5; i++)
+    {
+        plant.tick(); // This degrades resources
+    }
+    
+    // Manually set to needs care to trigger observer
+    plant.setHealthState(new NeedsCare());
+    
+    // Cleanup
+    delete observer;
+    
+    cout << "Observer Pattern Test Completed!" << endl << endl;
 }
 
 /*int testPlantGrowth()
