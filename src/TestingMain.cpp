@@ -422,6 +422,54 @@ void testStatePattern()
     cout << "State Pattern Test Completed!" << endl << endl;
 }
 
+void testChainOfResponsibilityPattern()
+{
+    cout << "=== CHAIN OF RESPONSIBILITY PATTERN TESTING ===" << endl;
+    cout << endl;
+
+    CarnivorousPlantFactory carnivorousFactory;
+    Plant *venusFlytrap = carnivorousFactory.createSmallPlant();
+
+    // Create the chain of responsibility
+    WaterHandler *waterHandler = new WaterHandler();
+    SunHandler *sunHandler = new SunHandler();
+    FertilizerHandler *fertilizerHandler = new FertilizerHandler();
+    PruneHandler *pruneHandler = new PruneHandler();
+
+    waterHandler->setNext(sunHandler);
+    sunHandler->setNext(fertilizerHandler);
+    fertilizerHandler->setNext(pruneHandler);
+
+    venusFlytrap->setCareStrategy(waterHandler);
+
+    cout << "--- Testing Plant Growth with Care Chain ---" << endl;
+    for (int i = 0; i < 10; i++)
+    {
+        cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
+        venusFlytrap->printHealthStatus();
+        venusFlytrap->printGrowthStatus();
+
+        // Process care through the chain
+        venusFlytrap->handleCareRequest();
+        
+        venusFlytrap->tick();
+        venusFlytrap->completeCareSession();
+        
+        if (venusFlytrap->isDead()) break;
+    }
+
+    // Cleanup
+    delete venusFlytrap;
+    delete waterHandler;
+    delete sunHandler;
+    delete pruneHandler;
+    delete fertilizerHandler;
+
+    cout << "Chain of Responsibility Pattern Test Completed!" << endl << endl;
+}
+
+
+
 /*int testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
