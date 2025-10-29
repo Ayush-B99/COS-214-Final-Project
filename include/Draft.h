@@ -13,26 +13,20 @@ using namespace std;
 
 #include "OrderState.h"
 #include "Order.h"
+#include "Cancelled.h"
+#include "Submitted.h"
 
 class Draft : public OrderState {
 
 
 public:
 	Draft();
-	
-	void submitted(Order* order);
 
-	void paid(Order* order);
+	void proceed(Order* order);
 
-	void cancelled(Order* order);
+	void cancel(Order* order);
 
-	void completed(Order* order);
-
-	const string getName();
-
-	bool canEdit();
-
-	bool canCancel();
+	string const getName();
 };
 
 #endif

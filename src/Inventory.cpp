@@ -351,7 +351,9 @@ void Inventory::moveValidPlantsToStock(Stock* stock){
 	cout << "Copying " << toMove.size() << " mature plants to Stock...\n";
 
 	for (Plant* p : toMove){
-		if (p != nullptr && !stock->plantInTree(p)) stock->addPlant(p);
+		if (p != nullptr && !stock->plantInTree(p) && p->getHealthState()->getName() != "dead"){
+			stock->addPlant(p);
+		} 
 	}
 
 	cout << "Plants successfully copied to Stock!\n";
@@ -415,7 +417,7 @@ PlantNode* Inventory::removeNode(PlantNode* root, string key) {
 
 PlantNode* Inventory::findNode(PlantNode* root, string key) {
 	if (!root){
-		cout << "Empty plant catalog.\n";
+		//cout << "Empty plant catalog.\n";
 		return nullptr;
 	}
 
@@ -423,7 +425,7 @@ PlantNode* Inventory::findNode(PlantNode* root, string key) {
 	int compare = root->getKey().compare(key);
 
 	if (compare == 0){
-		cout << "Found a matching node!\n";
+		//cout << "Found a matching node!\n";
 		return root;
 	} else if (compare < 0) {
 		return findNode(root->getRight(), key);

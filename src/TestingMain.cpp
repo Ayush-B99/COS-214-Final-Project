@@ -560,7 +560,7 @@ void testDeadState() {
 
 void testInventory();
 void testInventoryAndStock();
-
+void testAllStorage();
 
 int main()
 {
@@ -580,8 +580,9 @@ int main()
         // testIndividualCareActions();
         // testSoldState();
         // testDeadState();
-        testInventory();
+        //testInventory();
         testInventoryAndStock();
+        testAllStorage();
 
 
         cout << "All tests completed successfully!" << endl;
@@ -597,7 +598,6 @@ int main()
         return 1;
     }
 }
-
 
 void testInventory(){
 cout << "=== Inventory Testing ===\n";
@@ -766,7 +766,7 @@ cout << "=== Inventory Testing ===\n";
 }
 
 void testInventoryAndStock(){
-         cout << "\n=============================================\n";
+    cout << "\n=============================================\n";
     cout << "           STOCK / STOCKITERATOR TEST\n";
     cout << "=============================================\n";
 
@@ -776,6 +776,7 @@ void testInventoryAndStock(){
     GreenHouse* carnivorous = inv->getCarnivorousFactory();
     GreenHouse* tropical = inv->getTropicalFactory();
     GreenHouse* temperate = inv->getTemperateFactory();
+    GreenHouse* succulent = inv->getSucculentFactory();
 
     // ---------- 1. Populate inventory ----------
     cout << "\n[1] Populating inventory with test plants...\n";
@@ -889,6 +890,10 @@ void testInventoryAndStock(){
     stock->print();
     inv->print();
 
+    cout << "adding a bunch of things to the order\n";
+
+
+
 
     // ---------- Cleanup ----------
     cout << "\ncleaning up memory\n";
@@ -899,6 +904,194 @@ void testInventoryAndStock(){
     cout << "           END OF STOCK TEST SUITE\n";
     cout << "=============================================\n";
 }
+
+void testAllStorage(){
+    cout << "\n=============================================\n";
+    cout << "           STOCK / STOCKITERATOR TEST\n";
+    cout << "=============================================\n";
+
+    Inventory* inv = new Inventory();
+    Stock* stock = new Stock();
+
+    GreenHouse* carnivorous = inv->getCarnivorousFactory();
+    GreenHouse* tropical = inv->getTropicalFactory();
+    GreenHouse* temperate = inv->getTemperateFactory();
+    GreenHouse* succulent = inv->getSucculentFactory();
+
+    // ---------- 1. Populate inventory massively ----------
+    cout << "\n[1] Populating inventory with test plants...\n";
+
+    vector<Plant*> allPlants;
+    for (int i = 0; i < 25; ++i) {
+        GreenHouse* src = nullptr;
+        if (i % 4 == 0) src = carnivorous;
+        else if (i % 4 == 1) src = tropical;
+        else if (i % 4 == 2) src = temperate;
+        else src = succulent;
+
+        Plant* p;
+        if (i % 3 == 0) p = inv->addLargePlant(src);
+        else if (i % 3 == 1) p = inv->addMediumPlant(src);
+        else p = inv->addSmallPlant(src);
+
+        // Randomize states
+        if (i % 5 == 0) p->setHealthState(new Dead());
+        else p->setHealthState(new Good());
+
+        if (i % 7 == 0) p->setGrowthState(new Seed());
+        else p->setGrowthState(new Mature());
+
+        allPlants.push_back(p);
+    }
+
+    inv->print();
+
+    // ---------- 2. Move valid plants to stock ----------
+    cout << "\n[2] Moving valid plants to stock...\n";
+    inv->moveValidPlantsToStock(stock);
+    stock->print();
+
+    // ---------- 3. Verify that stock has correct plants ----------
+    cout << "\n[3] Verifying stock content integrity...\n";
+    auto stockPlants = stock->getAllPlants();
+    for (auto* s : stockPlants) {
+        assert(dynamic_cast<Good*>(s->getHealthState()) != nullptr);
+        assert(dynamic_cast<Mature*>(s->getGrowthState()) != nullptr);
+    }
+    cout << " Stock only contains healthy, mature plants.\n";
+
+    // ---------- 4. Fine iterator ----------
+    cout << "\n[4] Testing fine-grained iterator traversal...\n";
+    StockIterator fine(stock->getRoot());
+    int fineCount = 0;
+    while (fine.hasNext()) {
+        Plant* p = fine.next();
+        if (p) {
+            fineCount++;
+            cout << "Iterated (fine): " << p->getSpecies() << endl;
+        }
+    }
+    cout << "Total fine traversal count: " << fineCount << endl;
+
+    // ---------- 5. Coarse iterator ----------
+    cout << "\n[5] Testing coarse-grained node traversal...\n";
+    StockIterator coarse(stock->getRoot());
+    int nodeCount = 0;
+    while (coarse.hasNextNode()) {
+        PlantNode* node = coarse.nextCoarse();
+        if (node) {
+            nodeCount++;
+            cout << "Visited node: " << node->getKey()
+                 << " (" << node->getPlants().size() << " plants)" << endl;
+        }
+    }
+    cout << "Total node count visited: " << nodeCount << endl;
+
+    // ---------- 6. Force empty node ----------
+    cout << "\n[6] Forcing an empty node...\n";
+    PlantNode* node = stock->findNode(stock->getRoot(), "Bird Of Paradise");
+    if (node && !node->getPlants().empty()) {
+        Plant* bird = node->getPlants()[0];
+        stock->removePlant(bird);
+        cout << "Removed Bird Of Paradise -> node should now be empty.\n";
+    }
+    stock->print();
+
+    // ---------- 7. Re-test coarse traversal ----------
+    cout << "\n[7] Re-testing coarse traversal with empty nodes...\n";
+    StockIterator emptyTest(stock->getRoot());
+    while (emptyTest.hasNextNode()) {
+        PlantNode* n = emptyTest.nextCoarse();
+        cout << "Node: " << n->getKey()
+             << " | plants: " << n->getPlants().size() << endl;
+    }
+
+    // ---------- 8. Bulk restock ----------
+    cout << "\n[8] Adding 10 new valid plants for restock...\n";
+    for (int i = 0; i < 10; ++i) {
+        Plant* p = inv->addMediumPlant(tropical);
+        p->setHealthState(new Good());
+        p->setGrowthState(new Mature());
+    }
+    inv->moveValidPlantsToStock(stock);
+    stock->print();
+
+    // ---------- 9. Final consistency checks ----------
+    cout << "\n[9] Final verification: total plants and nodes\n";
+    cout << "Stock node count: " << stock->getNodeCount() << endl;
+    cout << "Stock plant count: " << stock->getPlantCount() << endl;
+
+    // ---------- 10. Order tests ----------
+    cout << "\n[10] ORDER TESTING\n";
+    Order* order = new Order("Shavir");
+    cout << "Adding items to order from stock...\n";
+
+    // Move first 5 stock plants to order
+    stockPlants = stock->getAllPlants();
+    for (int i = 0; i < 5 && i < (int)stockPlants.size(); ++i) {
+        stock->moveToOrder(stockPlants[i], inv, order);
+    }
+
+    cout << "\nOrder after additions:\n";
+    order->print();
+    cout << "\nStock after removals:\n";
+    stock->print();
+
+    cout << "\nRe-adding a few to order (duplicates)...\n";
+    for (int i = 0; i < 3 && i < (int)stockPlants.size(); ++i) {
+        stock->moveToOrder(stockPlants[i], inv, order);
+    }
+    order->print();
+
+    cout << "\nIterating order via OrderIterator:\n";
+    PlantNode* orderNode = order->getNode();
+    OrderIterator oit(orderNode);
+    int ocount = 0;
+    while (oit.hasNext()) {
+        Plant* p = oit.next();
+        cout << "OrderIter: " << p->getSpecies() << endl;
+        ++ocount;
+    }
+    cout << "Order iterator traversed " << ocount << " plants.\n";
+
+    // ---------- 11. Remove and restock ----------
+    order->print();
+
+    cout << "\n[11] Removing plants from order (simulate returns)...\n";
+    vector<Plant*> orderPlants = order->getOrderItems();
+    cout <<"made it past getter\n";
+    if (!orderPlants.empty()) {
+        for (size_t i = 0; i < orderPlants.size() / 2; ++i) {
+            cout << i <<endl;
+            order->removePlant(orderPlants[i], inv, stock);
+        }
+    }
+
+    cout << "\nOrder after removals:\n";
+    order->print();
+    cout << "\nStock after returns:\n";
+    stock->print();
+
+    // ---------- 12. Empty order edge case ----------
+    cout << "\n[12] Testing empty order behavior...\n";
+    Order* emptyOrder = new Order("shrek");
+    OrderIterator emptyIter(nullptr);
+    cout << "Empty order iterator hasNext(): " << emptyIter.hasNext() << endl;
+    emptyOrder->print();
+
+    // ---------- Cleanup ----------
+    cout << "\nCleaning up memory...\n";
+    delete order;
+    delete emptyOrder;
+    delete inv;
+    delete stock;
+
+    cout << "\n=============================================\n";
+    cout << "           END OF STOCK TEST SUITE\n";
+    cout << "=============================================\n";
+}
+
+
 
 /*
 // oboselete testing code, the new ones work better and have no memory leaks

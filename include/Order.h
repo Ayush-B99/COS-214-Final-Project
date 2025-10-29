@@ -35,13 +35,9 @@ public:
 
 	~Order();
 
-	void submitted();
+	void proceed();
 
-	void paid();
-
-	void cancelled();
-
-	void completed();
+	void cancel(Inventory* inv, Stock* stock);
 
 	void addPlant(Plant* item);
 
@@ -49,7 +45,7 @@ public:
 
 	void removePlant(Plant* item);
 
-	vector<Plant*>& getOrderItems();
+	vector<Plant*> getOrderItems();
 
 	double calculateTotal();
 
@@ -66,6 +62,8 @@ public:
 	string& getId();
 
 	void print();
+
+	PlantNode* getNode();
 };
 
 #endif

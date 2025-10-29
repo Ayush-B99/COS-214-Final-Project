@@ -1,39 +1,17 @@
 #include "../include/Draft.h"
 
 Draft::Draft(){
-
+	cout << "Order has been initialised as a draft!\n";
 }
 
-void Draft::submitted(Order* order) {
-	// TODO - implement Draft::submitted
-	throw "Not yet implemented";
+void Draft::proceed(Order* order){
+	order->setState(new Submitted());
 }
 
-void Draft::paid(Order* order) {
-	// TODO - implement Draft::paid
-	throw "Not yet implemented";
+void Draft::cancel(Order* order){
+	order->setState(new Cancelled());
 }
 
-void Draft::cancelled(Order* order) {
-	// TODO - implement Draft::cancelled
-	throw "Not yet implemented";
-}
-
-void Draft::completed(Order* order) {
-	// TODO - implement Draft::completed
-	throw "Not yet implemented";
-}
-
-const string Draft::getName() {
+string const Draft::getName(){
 	return "draft";
-}
-
-bool Draft::canEdit() {
-	// TODO - implement Draft::canEdit
-	throw "Not yet implemented";
-}
-
-bool Draft::canCancel() {
-	// TODO - implement Draft::canCancel
-	throw "Not yet implemented";
 }

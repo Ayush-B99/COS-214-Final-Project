@@ -68,7 +68,7 @@ void Stock::removePlant(Plant* plant) {
 
 PlantNode* Stock::findNode(PlantNode* root, string key) {
 	if (!root){
-		cout << "Empty plant catalog.\n";
+		//cout << "Empty plant catalog.\n";
 		return nullptr;
 	}
 
@@ -76,7 +76,7 @@ PlantNode* Stock::findNode(PlantNode* root, string key) {
 	int compare = root->getKey().compare(key);
 
 	if (compare == 0){
-		cout << "Found a matching node!\n";
+		//cout << "Found a matching node!\n";
 		return root;
 	} else if (compare < 0) {
 		return findNode(root->getRight(), key);

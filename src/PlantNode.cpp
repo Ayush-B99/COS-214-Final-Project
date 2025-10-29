@@ -30,7 +30,6 @@ PlantNode::PlantNode(PlantNode* other) {
 		right = new PlantNode(other->right);
 	}
 
-
 }
 
 PlantNode::~PlantNode() {

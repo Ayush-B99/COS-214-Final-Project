@@ -18,20 +18,23 @@ Order::~Order() {
 	if (state) delete state;
 }
 
-void Order::submitted() {
-	
+void Order::proceed(){
+	if (state){
+		state->proceed(this);
+	}
 }
 
-void Order::paid() {
-
-}
-
-void Order::cancelled() {
-
-}
-
-void Order::completed() {
-
+void Order::cancel(Inventory* inv, Stock* stock){
+	if (state){
+		state->cancel(this);
+	}
+	//remove all plants and place them back in stock/inventory
+	for (Plant* p : orderItems->getPlants()){
+		if (p){
+			inv->removePlant(p);
+			stock->removePlant(p);
+		}
+	}
 }
 
 void Order::addPlant(Plant* item) {
@@ -67,9 +70,9 @@ void Order::removePlant(Plant* item, Inventory* inv, Stock* stock) {
 	}
 }
 
-vector<Plant*>& Order::getOrderItems() {
-	vector<Plant*> ret = orderItems->getPlants();
-	return ret;
+vector<Plant*> Order::getOrderItems() {
+	vector<Plant*> items = orderItems->getPlants();
+	return items;
 }
 
 double Order::calculateTotal() {
@@ -123,4 +126,8 @@ void Order::print(){
 //DO NOT USE THIS ITS JUST SO I STOP GETTING YELLED AT BY COMPILER
 void Order::removePlant(Plant* plant){
 	removePlant(plant, nullptr, nullptr);
+}
+
+PlantNode* Order::getNode(){
+	return orderItems;
 }
