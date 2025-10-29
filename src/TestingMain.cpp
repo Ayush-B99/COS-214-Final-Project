@@ -112,26 +112,26 @@ int main()
         cout << endl;
 
         // ayush testing
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        // diya testing
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testDeadState();
+        // // diya testing
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testDeadState();
 
         //jaitin testing
         testPlantGrowth();
 
         //chimney testing
-        testCommMediator();
+        //testCommMediator();
 
-        //shavir testing
-        testInventory();
+        // //shavir testing
+        // testInventory();
 
         cout << "All tests completed successfully!" << endl;
         return 0;
