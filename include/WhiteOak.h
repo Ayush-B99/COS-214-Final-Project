@@ -27,6 +27,10 @@ using namespace std;
  * 
  * Inherits from LargePlant and implements the Prototype pattern through clone method.
  * White Oaks are majestic trees that provide important habitat and are valued for their timber.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class WhiteOak : public LargePlant {
 public:

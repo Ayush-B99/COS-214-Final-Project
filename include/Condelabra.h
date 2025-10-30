@@ -28,6 +28,10 @@ using namespace std;
  * 
  * Inherits from LargePlant and implements the Prototype pattern through clone method.
  * Condelabra plants are characterized by their tree-like growth and candelabra branching.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class Condelabra : public LargePlant {
 public:

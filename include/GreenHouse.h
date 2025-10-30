@@ -27,7 +27,12 @@ using namespace std;
  * 
  * This class defines the interface that concrete factory classes must implement
  * to create small, medium, and large plant objects specific to their plant category.
+ * 
+ * @note Concrete factories utilize the Prototype pattern through the clone() method
+ * available on all Plant objects, allowing efficient object creation by copying
+ * prototype instances rather than constructing from scratch.
  */
+
 class GreenHouse {
 public:
     /**

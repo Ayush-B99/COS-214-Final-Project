@@ -27,6 +27,10 @@ using namespace std;
  * 
  * Inherits from MediumPlant and implements the Prototype pattern through clone method.
  * Aloe Vera is widely cultivated for agricultural and medicinal uses.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class AloeVera : public MediumPlant {
 public:

@@ -32,6 +32,9 @@ using namespace std;
  * 
  * Implements the GreenHouse interface to create small, medium, and large
  * temperate plants such as Lilacs, Daisies, and White Oaks.
+ * 
+ * @note This factory leverages the Prototype pattern through the clone() method
+ * to efficiently create new plant instances by copying existing prototypes.
  */
 class TemperatePlantFactory : public GreenHouse {
 public:

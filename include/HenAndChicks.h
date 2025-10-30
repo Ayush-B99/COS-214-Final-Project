@@ -28,6 +28,10 @@ using namespace std;
  * 
  * Inherits from SmallPlant and implements the Prototype pattern through clone method.
  * These succulents are known for their ability to form dense mats of rosettes.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class HenAndChicks : public SmallPlant {
 public:

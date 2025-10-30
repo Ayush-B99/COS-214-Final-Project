@@ -4,6 +4,10 @@
  * 
  * Sundew is a small carnivorous plant that traps insects with sticky tentacles.
  * Part of the carnivorous plant family in the Abstract Factory pattern.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 
 #ifndef SUNDEW_H

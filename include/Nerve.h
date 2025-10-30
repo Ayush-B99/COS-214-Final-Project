@@ -27,6 +27,10 @@ using namespace std;
  * 
  * Inherits from SmallPlant and implements the Prototype pattern through clone method.
  * Nerve plants are prized for their decorative foliage with intricate vein patterns.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class Nerve : public SmallPlant {
 public:

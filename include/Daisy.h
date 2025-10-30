@@ -28,6 +28,10 @@ using namespace std;
  * 
  * Inherits from SmallPlant and implements the Prototype pattern through clone method.
  * Daisies are cheerful, hardy flowers commonly found in temperate gardens and meadows.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class Daisy : public SmallPlant {
 public:

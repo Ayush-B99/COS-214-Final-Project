@@ -32,6 +32,12 @@ using namespace std;
  * 
  * Implements the GreenHouse interface to create small, medium, and large
  * tropical plants such as Nerve plants, Birds of Paradise, and Rubber plants.
+ * 
+ *  @note This factory leverages the Prototype pattern through the clone() method
+ * to efficiently create new plant instances by copying existing prototypes.
+ * 
+ * * @note This factory leverages the Prototype pattern through the clone() method
+ * to efficiently create new plant instances by copying existing prototypes.
  */
 class TropicalPlantFactory : public GreenHouse {
 public:

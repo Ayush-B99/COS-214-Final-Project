@@ -29,6 +29,11 @@ using namespace std;
  * Inherits from Plant and serves as the base class for concrete decorators.
  * Maintains a reference to a decorated Plant object and delegates core operations
  * to it while adding new functionality. Uses smart pointers for automatic memory management.
+ * 
+ * @note All concrete decorators must implement the clone() method as part of the
+ * Prototype pattern, ensuring that decorated plants can be properly copied along
+ * with their decorations. This maintains the Prototype pattern consistency throughout
+ * the entire plant hierarchy.
  */
 class PlantDecorator : public Plant {
 public:
@@ -55,6 +60,9 @@ public:
     /**
      * @brief Pure virtual clone method for creating copies of decorated plants.
      * @return Pointer to a new Plant object that is a copy of this decorated plant.
+     * 
+     * @note Concrete decorators must implement this to ensure proper deep copying
+     * of both the decoration and the decorated plant, maintaining the Prototype pattern.
      */
     virtual Plant* clone() = 0;
 

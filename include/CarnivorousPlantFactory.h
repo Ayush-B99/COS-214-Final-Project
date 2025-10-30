@@ -33,6 +33,9 @@ using namespace std;
  * 
  * Implements the GreenHouse interface to create small, medium, and large
  * carnivorous plants such as Pitcher plants, Sundews, and Nepenthes.
+ * 
+ * @note This factory uses the Prototype pattern internally by calling clone()
+ * on prototype plant objects to create new instances efficiently.
  */
 class CarnivorousPlantFactory : public GreenHouse {
 public:

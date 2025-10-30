@@ -4,6 +4,10 @@
  * 
  * Nepenthes, also known as tropical pitcher plants, are large carnivorous plants
  * known for their elaborate and often colorful pitfall traps.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 
 #ifndef NEPENTHES_H

@@ -30,6 +30,11 @@ using namespace std;
  * Decorates a Plant object with fertilizer properties, modifying the price
  * and description to include fertilizer information. Different fertilizer types
  * can be applied with varying costs.
+ * 
+ * @note Implements the Prototype pattern through the clone() method, ensuring
+ * that fertilized plants can be properly copied along with their fertilizer
+ * configuration. This maintains Prototype pattern consistency when factories
+ * create decorated plant instances.
  */
 class FertilizerDecorator : public PlantDecorator {
 private:
@@ -59,6 +64,10 @@ public:
     /**
      * @brief Creates a deep copy of the fertilized plant.
      * @return Pointer to a new Plant object with the same fertilizer decoration.
+     * 
+     * @note This method implements the Prototype pattern, ensuring that both
+     * the base plant and fertilizer decoration are properly cloned to create
+     * an independent copy of the decorated plant.
      */
     Plant* clone();
 };

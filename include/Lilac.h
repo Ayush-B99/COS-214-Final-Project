@@ -27,6 +27,10 @@ using namespace std;
  * 
  * Inherits from MediumPlant and implements the Prototype pattern through clone method.
  * Lilacs are beloved for their sweet fragrance and beautiful spring blooms.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
  */
 class Lilac : public MediumPlant {
 public:

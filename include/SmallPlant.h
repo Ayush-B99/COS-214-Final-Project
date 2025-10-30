@@ -27,6 +27,10 @@ using namespace std;
  * 
  * Derived from Plant, this class represents the small size variant
  * in the plant hierarchy. Concrete small plant classes should inherit from this.
+ * 
+ * * @note All derived classes must implement the clone() method as part of
+ * the Prototype pattern, enabling factories to create new instances efficiently
+ * through copying rather than construction from scratch.
  */
 class SmallPlant : public Plant {
 public:
