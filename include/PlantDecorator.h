@@ -1,3 +1,12 @@
+/**
+ * @file PlantDecorator.h
+ * @brief Abstract decorator class for adding responsibilities to Plant objects dynamically.
+ * 
+ * The PlantDecorator class follows the Decorator pattern, allowing additional features
+ * like pots and fertilizers to be added to plant objects without modifying their core structure.
+ * This enables flexible composition of plant features at runtime.
+ */
+
 #ifndef PLANTDECORATOR_H
 #define PLANTDECORATOR_H
 
@@ -13,24 +22,47 @@ using namespace std;
 
 #include "Plant.h"
 
+/**
+ * @class PlantDecorator
+ * @brief Abstract base class for all plant decorators.
+ * 
+ * Inherits from Plant and serves as the base class for concrete decorators.
+ * Maintains a reference to a decorated Plant object and delegates core operations
+ * to it while adding new functionality. Uses smart pointers for automatic memory management.
+ */
 class PlantDecorator : public Plant {
-
 public:
-	//Plant* decoratedPlant;
-	std::unique_ptr<Plant> decoratedPlant;
+    std::unique_ptr<Plant> decoratedPlant; ///< Smart pointer to the plant being decorated
 
-	//PlantDecorator(Plant* plant);
-	PlantDecorator(std::unique_ptr<Plant> plant);
+    /**
+     * @brief Constructs a PlantDecorator wrapping the specified plant.
+     * @param plant Unique pointer to the Plant object to be decorated.
+     */
+    PlantDecorator(std::unique_ptr<Plant> plant);
 
-	//virtual ~PlantDecorator();
+    /**
+     * @brief Gets the total price including the base plant and decorator additions.
+     * @return Total price of the plant with all decorator additions.
+     */
+    double getPrice();
 
-	double getPrice();
+    /**
+     * @brief Gets the description including the base plant and decorator features.
+     * @return Comprehensive description of the plant with all decorator features.
+     */
+    string getDescription();
 
-	string getDescription();
+    /**
+     * @brief Pure virtual clone method for creating copies of decorated plants.
+     * @return Pointer to a new Plant object that is a copy of this decorated plant.
+     */
+    virtual Plant* clone() = 0;
 
-	virtual Plant* clone() = 0;
-
-	virtual string getSpecies();
+    /**
+     * @brief Gets the species of the decorated plant.
+     * @return Species name of the underlying plant.
+     */
+    virtual string getSpecies();
 };
 
 #endif
