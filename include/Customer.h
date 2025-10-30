@@ -79,7 +79,6 @@ public:
 
 	virtual double getDiscount() { return 0.0; }
 
-	//TODO: implement functions for commMediator design pattern
 
 	virtual ~Customer();
 };

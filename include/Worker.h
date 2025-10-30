@@ -88,22 +88,6 @@ public:
      * @return Vector of available plant type names
      */
     vector<string> getAvailablePlantTypes();
-
-    //////////////////////////////////////////////////////////////////
-    // Methods from original UML - implemented as empty for now
-    //////////////////////////////////////////////////////////////////
-    
-    
-    void getComm() override {}
-
-   
-    void setComm() override {}
-
-    
-    void getGrowth(Plant *plant) override {}
-
-    
-    void setGrowth() override {}
 };
 
 #endif
