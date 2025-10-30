@@ -1,3 +1,12 @@
+/**
+ * @file ConcreteGrowthObserver.h
+ * @brief Observer that monitors plant growth changes and coordinates care.
+ * 
+ * The ConcreteGrowthObserver implements the Observer pattern to monitor
+ * changes in plant growth states and coordinate with the care handler system.
+ * It bridges the State pattern (growth states) with the Chain of Responsibility.
+ */
+
 #ifndef CONCRETEGROWTHOBSERVER_H
 #define CONCRETEGROWTHOBSERVER_H
 
@@ -17,34 +26,22 @@ using namespace std;
 
 /**
  * @class ConcreteGrowthObserver
- * @brief Observes changes in a Plant's growth and interacts with a GrowthMediator.
+ * @brief Observes changes in a Plant's growth and triggers appropriate care.
  *
  * The ConcreteGrowthObserver monitors the growth state of a Plant object and
- * communicates relevant changes to a GrowthMediator for further action.
- * This class implements part of the Observer design pattern in conjunction with Plant.
+ * coordinates with the care handler system when growth-related changes occur.
+ * This class implements the Observer pattern, watching for growth state
+ * transitions and ensuring plants receive appropriate care at each stage.
  */
-class ConcreteGrowthObserver
-{
+class ConcreteGrowthObserver {
 private:
-    /**
-     * @brief The Plant being observed.
-     */
-    Plant *subject;
-
-    /**
-     * @brief The current health state of the observed Plant.
-     */
-    HealthState *state;
-
-    /**
-     * @brief Mediator responsible for coordinating growth-related communication.
-     */
+    Plant *subject;      ///< The Plant being observed for growth changes
+    HealthState *state;  ///< The current health state of the observed Plant
 
 public:
     /**
      * @brief Constructs a ConcreteGrowthObserver.
      * @param plant Pointer to the Plant being observed.
-     * @param med Pointer to the GrowthMediator that will handle communication.
      */
     ConcreteGrowthObserver(Plant *plant);
 
@@ -56,8 +53,9 @@ public:
     /**
      * @brief Called when the observed Plant undergoes a growth change.
      *
-     * This function should be triggered when the Plant's growth state changes,
-     * allowing the observer to update its internal state and notify the mediator if necessary.
+     * This function is triggered when the Plant's growth state changes.
+     * It updates internal state and may trigger care requests through
+     * the handler chain based on the new growth requirements.
      */
     void onGrowthChange();
 
