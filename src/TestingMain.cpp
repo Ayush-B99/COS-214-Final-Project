@@ -5,6 +5,9 @@
 #include <map>
 #include <sstream>
 #include <stack>
+#include <thread>
+#include <future>
+
 #include "../include/Caretaker.h"
 #include "../include/Memento.h"
 
@@ -59,7 +62,7 @@ void testAll();
 
 // void testPlantGrowth();
 
-int testPlantGrowth()
+void testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
     cout << endl;
@@ -80,7 +83,7 @@ int testPlantGrowth()
     venusFlytrap->setCareStrategy(waterHandler);
 
     int i = 0;
-    while (i < 650)
+    while (i < 800)
     {
         cout << "--- Growth Cycle " << (i + 1) << " ---" << endl;
         venusFlytrap->printHealthStatus();
@@ -98,8 +101,6 @@ int testPlantGrowth()
     delete sunHandler;
     delete pruneHandler;
     delete fertilizerHandler;
-
-    return 0;
 }
 
 void testCommMediator();
@@ -116,28 +117,31 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        // ayush testing mem fine
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        // // ayush testing mem fine
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        // // diya testing mem fine
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testDeadState();
+        // // // diya testing mem fine
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testDeadState();
 
-        // //jaitin testing mem fine
-        testPlantGrowth();
+        // // //jaitin testing mem fine
+        // testPlantGrowth();
 
-        // //chimney testing mem fine
-        testCommMediator();
-        testStaffWithInventory();
+        // // //chimney testing mem fine
+        // testCommMediator();
+        // testStaffWithInventory();
 
-        // //shavir testing mem leaks
-        testInventory();
+        // // //shavir testing mem leaks
+        // testInventory();
+
+        // testall
+        testAll();
 
         cout << "All tests completed successfully!" << endl;
         return 0;
@@ -766,18 +770,18 @@ void testInventory()
     GreenHouse *temperate = inv->getTemperateFactory();
 
     cout << "\n-- Adding plants --\n";
-    inv->addLargePlant(carnivorous);
-    inv->addLargePlant(tropical);
-    inv->addMediumPlant(temperate);
+    inv->addLargePlant(carnivorous, nullptr);
+    inv->addLargePlant(tropical, nullptr);
+    inv->addMediumPlant(temperate, nullptr);
     inv->print();
 
     // Add duplicates and store pointers to manipulate later
     cout << "\n-- Adding duplicates --\n";
-    Plant *healthmanip = inv->addLargePlant(carnivorous);
-    Plant *torem = inv->addLargePlant(carnivorous);
-    Plant *growthmanip = inv->addMediumPlant(temperate);
-    Plant *bird = inv->addMediumPlant(tropical);
-    Plant *uniquerem = inv->addSmallPlant(carnivorous);
+    Plant *healthmanip = inv->addLargePlant(carnivorous, nullptr);
+    Plant *torem = inv->addLargePlant(carnivorous, nullptr);
+    Plant *growthmanip = inv->addMediumPlant(temperate, nullptr);
+    Plant *bird = inv->addMediumPlant(tropical, nullptr);
+    Plant *uniquerem = inv->addSmallPlant(carnivorous, nullptr);
     inv->print();
 
     // Direct removals
@@ -814,9 +818,9 @@ void testInventory()
 
     // Re-add a few plants for next phase
     cout << "\n-- Re-adding plants for further tests --\n";
-    Plant *p1 = inv->addLargePlant(tropical);
-    Plant *p2 = inv->addSmallPlant(carnivorous);
-    Plant *p3 = inv->addMediumPlant(temperate);
+    Plant *p1 = inv->addLargePlant(tropical, nullptr);
+    Plant *p2 = inv->addSmallPlant(carnivorous, nullptr);
+    Plant *p3 = inv->addMediumPlant(temperate, nullptr);
     if (p1)
         p1->setGrowthState(new Mature());
     if (p3)
@@ -941,12 +945,12 @@ void testStaffWithInventory()
     GreenHouse *temperate = nurseryInventory->getTemperateFactory();
     GreenHouse *succulent = nurseryInventory->getSucculentFactory();
 
-    nurseryInventory->addMediumPlant(carnivorous);
-    nurseryInventory->addSmallPlant(tropical);
-    nurseryInventory->addLargePlant(temperate);
-    nurseryInventory->addMediumPlant(carnivorous); // Add another carnivorous
-    nurseryInventory->addSmallPlant(succulent);
-    nurseryInventory->addLargePlant(tropical);
+    nurseryInventory->addMediumPlant(carnivorous, nullptr);
+    nurseryInventory->addSmallPlant(tropical, nullptr);
+    nurseryInventory->addLargePlant(temperate, nullptr);
+    nurseryInventory->addMediumPlant(carnivorous, nullptr); // Add another carnivorous
+    nurseryInventory->addSmallPlant(succulent, nullptr);
+    nurseryInventory->addLargePlant(tropical, nullptr);
 
     cout << "Initial inventory state:" << endl;
     nurseryInventory->print();
@@ -1066,7 +1070,66 @@ void testStaffWithInventory()
     cout << endl;
 }
 
+int decayPlants(Inventory *inv, Stock *stock, PlantCareHandler *handler)
+{
+    int cycles = 0;
+
+    while (cycles < 10000)
+    {
+        cout << "iteration " << cycles << endl;
+        if (cycles % 100 == 0)
+        {
+            // stock->cleanUpDeadPlants();
+            // inv->cleanUpDeadPlants();
+            inv->moveValidPlantsToStock(stock);
+
+            inv->addLargePlant(inv->getCarnivorousFactory(), handler);
+            inv->addMediumPlant(inv->getCarnivorousFactory(), handler);
+            inv->addSmallPlant(inv->getCarnivorousFactory(), handler);
+
+            inv->addLargePlant(inv->getTemperateFactory(), handler);
+            inv->addMediumPlant(inv->getTemperateFactory(), handler);
+            inv->addSmallPlant(inv->getTemperateFactory(), handler);
+
+            inv->addLargePlant(inv->getTropicalFactory(), handler);
+            inv->addMediumPlant(inv->getTropicalFactory(), handler);
+            inv->addSmallPlant(inv->getTropicalFactory(), handler);
+
+            inv->addLargePlant(inv->getSucculentFactory(), handler);
+            inv->addMediumPlant(inv->getSucculentFactory(), handler);
+            inv->addSmallPlant(inv->getSucculentFactory(), handler);
+
+            inv->print();
+        }
+
+        inv->tick();
+
+        cycles++;
+
+        this_thread::sleep_for(chrono::milliseconds(0));
+    }
+    return 0;
+}
+
 void testAll()
 {
+    // inventory
     Inventory *inv = new Inventory();
+    Stock *stock = new Stock();
+
+    // chain
+    WaterHandler *waterHandler = new WaterHandler();
+    SunHandler *sunlightHandler = new SunHandler();
+    FertilizerHandler *fertilizerHandler = new FertilizerHandler();
+    PruneHandler *pruneHandler = new PruneHandler();
+
+    waterHandler->setNext(sunlightHandler);
+    sunlightHandler->setNext(fertilizerHandler);
+    fertilizerHandler->setNext(pruneHandler);
+
+    future<int> result = async(launch::async, decayPlants, inv, stock, waterHandler);
+
+    result.wait();
+
+    inv->print();
 }
