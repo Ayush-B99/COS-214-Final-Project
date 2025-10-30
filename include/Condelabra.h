@@ -1,3 +1,11 @@
+/**
+ * @file Condelabra.h
+ * @brief Concrete product representing a Condelabra succulent plant (large size).
+ * 
+ * Condelabra (likely referring to Euphorbia species) is a large succulent
+ * with distinctive candelabra-like branching patterns.
+ */
+
 #ifndef CONDELABRA_H
 #define CONDELABRA_H
 
@@ -14,17 +22,37 @@ using namespace std;
 #include "LargePlant.h"
 #include "Plant.h"
 
+/**
+ * @class Condelabra
+ * @brief Concrete large succulent plant class representing a Condelabra plant.
+ * 
+ * Inherits from LargePlant and implements the Prototype pattern through clone method.
+ * Condelabra plants are characterized by their tree-like growth and candelabra branching.
+ */
 class Condelabra : public LargePlant {
-
-
 public:
-	Condelabra();
+    /**
+     * @brief Default constructor.
+     * Initializes a Condelabra plant with species name and large size.
+     */
+    Condelabra();
 
-	Condelabra(Condelabra& other);
+    /**
+     * @brief Copy constructor.
+     * @param other Reference to another Condelabra object to copy from.
+     */
+    Condelabra(Condelabra& other);
 
-	~Condelabra();
+    /**
+     * @brief Destructor.
+     */
+    ~Condelabra();
 
-	Plant* clone();
+    /**
+     * @brief Creates a clone of the current Condelabra object.
+     * @return Pointer to a new Plant object that is a copy of this Condelabra.
+     */
+    Plant* clone();
 };
 
 #endif

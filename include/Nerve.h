@@ -1,3 +1,11 @@
+/**
+ * @file Nerve.h
+ * @brief Concrete product representing a Nerve tropical plant (small size).
+ * 
+ * Nerve plant (Fittonia) is a small tropical plant known for its striking
+ * veined patterns on its leaves, typically in pink, white, or red.
+ */
+
 #ifndef NERVE_H
 #define NERVE_H
 
@@ -13,17 +21,37 @@ using namespace std;
 
 #include "SmallPlant.h"
 
+/**
+ * @class Nerve
+ * @brief Concrete small tropical plant class representing a Nerve plant.
+ * 
+ * Inherits from SmallPlant and implements the Prototype pattern through clone method.
+ * Nerve plants are prized for their decorative foliage with intricate vein patterns.
+ */
 class Nerve : public SmallPlant {
-
-
 public:
-	Nerve();
+    /**
+     * @brief Default constructor.
+     * Initializes a Nerve plant with species name and small size.
+     */
+    Nerve();
 
-	Nerve(Nerve& other);
+    /**
+     * @brief Copy constructor.
+     * @param other Reference to another Nerve object to copy from.
+     */
+    Nerve(Nerve& other);
 
-	~Nerve();
+    /**
+     * @brief Destructor.
+     */
+    ~Nerve();
 
-	Plant* clone();
+    /**
+     * @brief Creates a clone of the current Nerve object.
+     * @return Pointer to a new Plant object that is a copy of this Nerve.
+     */
+    Plant* clone();
 };
 
 #endif

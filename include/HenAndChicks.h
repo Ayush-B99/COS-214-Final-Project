@@ -1,3 +1,11 @@
+/**
+ * @file HenAndChicks.h
+ * @brief Concrete product representing a Hen and Chicks succulent plant (small size).
+ * 
+ * Hen and Chicks (Sempervivum) is a small succulent plant that forms rosettes
+ * and produces numerous offsets ("chicks") around the main plant ("hen").
+ */
+
 #ifndef HENANDCHICKS_H
 #define HENANDCHICKS_H
 
@@ -14,17 +22,37 @@ using namespace std;
 #include "SmallPlant.h"
 #include "Plant.h"
 
+/**
+ * @class HenAndChicks
+ * @brief Concrete small succulent plant class representing Hen and Chicks.
+ * 
+ * Inherits from SmallPlant and implements the Prototype pattern through clone method.
+ * These succulents are known for their ability to form dense mats of rosettes.
+ */
 class HenAndChicks : public SmallPlant {
-
-
 public:
-	HenAndChicks();
+    /**
+     * @brief Default constructor.
+     * Initializes a Hen and Chicks plant with species name and small size.
+     */
+    HenAndChicks();
 
-	HenAndChicks(HenAndChicks& other);
+    /**
+     * @brief Copy constructor.
+     * @param other Reference to another HenAndChicks object to copy from.
+     */
+    HenAndChicks(HenAndChicks& other);
 
-	~HenAndChicks();
+    /**
+     * @brief Destructor.
+     */
+    ~HenAndChicks();
 
-	Plant* clone();
+    /**
+     * @brief Creates a clone of the current HenAndChicks object.
+     * @return Pointer to a new Plant object that is a copy of this HenAndChicks.
+     */
+    Plant* clone();
 };
 
 #endif

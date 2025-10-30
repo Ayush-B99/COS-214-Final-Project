@@ -1,3 +1,11 @@
+/**
+ * @file Nepenthes.h
+ * @brief Concrete product representing a Nepenthes carnivorous plant (large size).
+ * 
+ * Nepenthes, also known as tropical pitcher plants, are large carnivorous plants
+ * known for their elaborate and often colorful pitfall traps.
+ */
+
 #ifndef NEPENTHES_H
 #define NEPENTHES_H
 
@@ -13,17 +21,37 @@ using namespace std;
 
 #include "LargePlant.h"
 
+/**
+ * @class Nepenthes
+ * @brief Concrete large carnivorous plant class representing a Nepenthes.
+ * 
+ * Inherits from LargePlant and implements the Prototype pattern through clone method.
+ * Nepenthes are tropical pitcher plants that can grow quite large and complex traps.
+ */
 class Nepenthes : public LargePlant {
-
-
 public:
-	Nepenthes();
+    /**
+     * @brief Default constructor.
+     * Initializes a Nepenthes plant with species name and large size.
+     */
+    Nepenthes();
 
-	Nepenthes(Nepenthes& other);
+    /**
+     * @brief Copy constructor.
+     * @param other Reference to another Nepenthes object to copy from.
+     */
+    Nepenthes(Nepenthes& other);
 
-	~Nepenthes();
+    /**
+     * @brief Destructor.
+     */
+    ~Nepenthes();
 
-	Plant* clone();
+    /**
+     * @brief Creates a clone of the current Nepenthes object.
+     * @return Pointer to a new Plant object that is a copy of this Nepenthes.
+     */
+    Plant* clone();
 };
 
 #endif
