@@ -39,6 +39,7 @@ using namespace std;
 #include "../include/SunHandler.h"
 #include "../include/FertilizerHandler.h"
 #include "../include/PruneHandler.h"
+#include "../include/Company.h"
 // for inventory functionality
 #include "../include/Storage.h"
 #include "../include/Inventory.h"
@@ -1074,6 +1075,18 @@ int decayPlants(Inventory *inv, Stock *stock, PlantCareHandler *handler)
 {
     int cycles = 0;
 
+    /*
+    Patterns implemented
+
+    Command
+    Chain of Responsibility
+    Health State
+    Growth State
+    Observer
+    Abstract Factory
+    Iterator
+    */
+
     while (cycles < 10000)
     {
         cout << "iteration " << cycles << endl;
@@ -1111,7 +1124,7 @@ int decayPlants(Inventory *inv, Stock *stock, PlantCareHandler *handler)
     return 0;
 }
 
-void testAll()
+void testAll() // cant check memory until inventory leaks are fixed
 {
     // inventory
     Inventory *inv = new Inventory();
@@ -1127,9 +1140,65 @@ void testAll()
     sunlightHandler->setNext(fertilizerHandler);
     fertilizerHandler->setNext(pruneHandler);
 
+    // start async decayPlants
     future<int> result = async(launch::async, decayPlants, inv, stock, waterHandler);
+
+    CommMediator *mediator = new ConcreteCommMediator();
+    vector<StaffMember *> staff;
+
+    for (int i = 0; i < 5; i++)
+    {
+        Worker *worker = new Worker("Worker" + to_string(i + 1), mediator, inv);
+        staff.push_back(worker);
+    }
+
+    vector<Customer *> customers;
+
+    for (int i = 0; i < 10; i++)
+    {
+        Customer *customer = new Customer("Customer" + to_string(i + 1), mediator);
+        customers.push_back(customer);
+    }
+
+    Company *company = new Company("Company", mediator);
+
+    customers.push_back(company);
+
+    customers[6]->askQuestion("How often should I water my plants?");
+    customers[2]->askQuestion("I want to buy plants in bulk for my office");
+    customers[9]->askQuestion("How much sunlight do succulents need?");
+    customers[0]->askQuestion("I want to buy 3 carnivorous plants");
+    customers[4]->askQuestion("Can I purchase 1 tropical plant?");
+    customers[5]->askQuestion("I need 10 temperate plants for my garden");
+    customers[3]->askQuestion("Do you have any carnivorous plants in stock?");
+    customers[1]->askQuestion("I need care advice for my tropical plant");
+    customers[8]->askQuestion("I want to make a bulk purchase of temperate plants");
+    customers[7]->askQuestion("What's the price of succulent plants?");
+
+    // company ask question creates a seg fault
+    // customers[11]->askQuestion("herro");
 
     result.wait();
 
     inv->print();
+
+    delete inv;
+    delete stock;
+
+    delete waterHandler;
+    delete sunlightHandler;
+    delete fertilizerHandler;
+    delete pruneHandler;
+
+    delete mediator;
+
+    for (StaffMember *s : staff)
+    {
+        delete s;
+    }
+
+    for (Customer *c : customers)
+    {
+        delete c;
+    }
 }
