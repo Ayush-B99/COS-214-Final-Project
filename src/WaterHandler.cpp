@@ -14,7 +14,7 @@ void WaterHandler::handleCareRequest(Plant *plant)
 		cout << "WaterHandler: Plant needs water. Executing watering command." << endl;
 		Water *waterCmd = new Water(plant);
 		waterCmd->execute();
-		// delete waterCmd;
+		delete waterCmd;
 		//  message();
 	}
 
