@@ -1,3 +1,12 @@
+/**
+ * @file Manager.h
+ * @brief Concrete staff member responsible for oversight and coordination.
+ * 
+ * Managers handle higher-level nursery operations including inventory management,
+ * staff coordination, scheduling, and complex customer requests.
+ * They receive notifications from Workers through the mediator system.
+ */
+
 #ifndef MANAGER_H
 #define MANAGER_H
 
@@ -16,7 +25,7 @@ using namespace std;
 
 /**
  * @class Manager
- * @brief Concrete staff member responsible for oversight and coordination
+ * @brief Concrete staff member for nursery management and coordination.
  *
  * Managers handle higher-level nursery operations:
  * - Inventory management and ordering
@@ -26,49 +35,44 @@ using namespace std;
  * - Bulk order processing and special requests
  *
  * In the Mediator pattern, Managers are ConcreteColleagues that receive
- * notifications from Workers and provide strategic direction.
+ * notifications from Workers and provide strategic direction through the mediator.
  */
-class Manager : public StaffMember
-{
+class Manager : public StaffMember {
 public:
     /**
-     * @brief Construct a new Manager with automatic mediator registration
-     * @param name The manager's name
-     * @param mediator Pointer to the communication mediator (optional)
-     * @param inventory Pointer to the inventory system (optional)
+     * @brief Construct a new Manager with automatic mediator registration.
+     * @param name The manager's name.
+     * @param mediator Pointer to the communication mediator (optional).
+     * @param inventory Pointer to the inventory system (optional).
      */
     Manager(const string &name, CommMediator *mediator = nullptr, Inventory* inventory = nullptr);
 
     /**
-     * @brief Handle complex customer queries and special requests
-     * @param customer The customer asking the question
-     * @param query The customer's question
-     * @param plant Optional plant related to the query
+     * @brief Handle complex customer queries and special requests.
+     * @param customer The customer asking the question.
+     * @param query The customer's question.
+     * @param plant Optional plant related to the query.
      */
     void handleCustomerQuery(Customer *customer, const string &query, Plant *plant = nullptr) override;
 
     /**
-     * @brief Process bulk purchases and special orders
-     * @param customer The customer making the purchase request
-     * @param plantType The type of plant requested
-     * @param quantity Number of plants requested
+     * @brief Process bulk purchases and special orders.
+     * @param customer The customer making the purchase request.
+     * @param plantType The type of plant requested.
+     * @param quantity Number of plants requested.
      */
     void handlePurchaseRequest(Customer *customer, const string &plantType, int quantity) override;
 
-    
-
     /**
-     * @brief Check overall inventory status and display information
+     * @brief Check overall inventory status and display information.
      */
     void checkInventoryStatus();
 
     /**
-     * @brief Get total plant count in inventory
-     * @return Total number of plants in inventory
+     * @brief Get total plant count in inventory.
+     * @return Total number of plants in inventory.
      */
     int getTotalPlantCount();
-
-   
 };
 
 #endif
