@@ -16,12 +16,24 @@ vector<string> Mature::getRequiredCare()
 string Mature::getStatusMessage(Plant *plant)
 {
         int current = plant->getCurrentCycleCount();
+        string output;
+        if (plant->isMature() && !plant->isDead()) {
+            output = "Ready for stock!";
+        }
+        else {
+            output = "Not ready for stock";
+        }
+
+        if (plant->isDead()) {
+            output = "DEAD";
+        }
+
     return plant->getSpecies() + " (Mature): " + to_string(current) + "/10 cycles until auto-death" +
            " | Water: " + to_string(plant->getWaterLevel()) + "%" +
            " | Sun: " + to_string(plant->getSunlightLevel()) + "%" +
            " | Fertilizer: " + to_string(plant->getFertilizerLevel()) + "%" +
            " | Prune: " + to_string(plant->getPruneLevel()) + "%" +
-           " | READY FOR STOCK!";
+           " | Status: " + output;
 }
 
 bool Mature::isMature()
