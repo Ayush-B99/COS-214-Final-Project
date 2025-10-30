@@ -135,24 +135,6 @@ public:
      */
     void respondToCustomer(Customer *customer, const string &response, Plant *plant = nullptr);
 
-    //////////////////////////////////////////////////////////////////
-    // Methods from original UML - left unimplemented for now
-    //////////////////////////////////////////////////////////////////
-    
-    
-    void setMediator(GrowthMediator *mediator);
-
-    
-    virtual void getComm() = 0;
-
-   
-    virtual void setComm() = 0;
-
-   
-    virtual void getGrowth(Plant *plant) = 0;
-
-    
-    virtual void setGrowth() = 0;
 };
 
 #endif

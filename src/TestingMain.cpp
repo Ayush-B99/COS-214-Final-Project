@@ -43,6 +43,7 @@ using namespace std;
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
+#include "../include/Inventory.h"
 void testStaffWithInventory(); 
 void testAbstractFactory();
 void testDecoratorPattern();
