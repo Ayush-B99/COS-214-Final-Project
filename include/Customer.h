@@ -1,10 +1,10 @@
 /**
  * @file Customer.h
- * @brief Customer class representing nursery customers.
+ * @brief Abstract component in the Composite pattern for customer hierarchy.
  * 
- * Customers are colleagues in the Mediator pattern who communicate with
- * staff members through the mediator rather than directly. They can ask
- * questions, request assistance, and make purchases through the mediator.
+ * Customer serves as the Component interface in the Composite pattern, defining
+ * common operations for both individual customers (leaves) and customer groups (composites).
+ * It also functions as a Colleague in the Mediator pattern for communication.
  */
 
 #ifndef CUSTOMER_H
@@ -30,12 +30,15 @@ using namespace std;
 
 /**
  * @class Customer
- * @brief Concrete colleague class representing nursery customers.
+ * @brief Abstract component interface in the Composite pattern.
  * 
- * Customers interact with the nursery system through the communication mediator.
- * They can ask questions, request assistance, make purchases, and receive
- * responses from staff members without knowing which specific staff member
- * handles their request.
+ * This class defines the common interface for all customer types in the
+ * customer hierarchy. It supports both individual customers (Normal, Premium)
+ * and composite customer groups (Company) through the Composite pattern.
+ * 
+ * As a Component, it declares operations that are applicable to both
+ * individual customers and customer composites, enabling uniform treatment
+ * of simple and complex customer structures.
  */
 class Customer {
 private:
@@ -45,7 +48,7 @@ private:
 
 public:
     /**
-     * @brief Construct a new Customer.
+     * @brief Construct a new Customer component.
      * @param name Customer's name.
      * @param mediator Communication mediator (optional).
      */
@@ -96,13 +99,16 @@ public:
     vector<string> getPurchaseHistory() const;
 
     /**
-     * @brief Get customer discount rate (virtual for potential loyalty programs).
-     * @return Discount rate as a decimal (0.0 for base customers).
+     * @brief Get customer discount rate (Component operation).
+     * @return Discount rate as a decimal.
+     * 
+     * This is a key Composite pattern operation that must be implemented
+     * by all concrete components (both leaves and composites).
      */
     virtual double getDiscount() { return 0.0; }
 
     /**
-     * @brief Virtual destructor for proper cleanup.
+     * @brief Virtual destructor for proper cleanup in derived components.
      */
     virtual ~Customer();
 };
