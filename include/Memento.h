@@ -1,29 +1,32 @@
-// #ifndef MEMENTO_H
-// #define MEMENTO_H
+#ifndef MEMENTO_H
+#define MEMENTO_H
 
-// #include <iostream>
-// #include <string>
-// #include <memory>
+#include <iostream>
+#include <string>
+#include <memory>
 
-// using namespace std;
+using namespace std;
 
-// template <typename T>
+template <typename T>
 
-// class Memento {
-//     private:
-//         T state;
-//         string date;
-    
-//     public:
-//         Memento(T state, string date) : state(state), date(date) {}
+class Memento
+{
+private:
+    T state;
+    string date;
 
-//         T getState() {
-//             return &state;
-//         }
+public:
+    Memento(T state, string date) : state(state), date(date) {}
 
-//         string getDate() {
-//             return date;
-//         }
-// };
+    T getState()
+    {
+        return &state;
+    }
 
-// #endif
+    string getDate()
+    {
+        return date;
+    }
+};
+
+#endif
