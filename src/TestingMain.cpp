@@ -5,6 +5,8 @@
 #include <map>
 #include <sstream>
 #include <stack>
+#include <fstream>
+
 #include "../include/Caretaker.h"
 #include "../include/Memento.h"
 
@@ -103,11 +105,28 @@ int testPlantGrowth()
     return 0;
 }
 
+void displayPlantNurseryArt() {
+    std::ifstream file("plant.md");
+    std::string line;
+    
+    if (file.is_open()) {
+        while (std::getline(file, line)) {
+            std::cout << line << std::endl;
+        }
+        file.close();
+    } else {
+        std::cout << "PLANT NURSERY SYSTEM" << std::endl; // Fallback
+    }
+}
+
+
 void testCommMediator();
 
 void testInventory();
 
 void testStaffWithInventory();
+
+void displayPlantNurseryArt();
 
 int main()
 {
@@ -118,24 +137,26 @@ int main()
         cout << endl;
 
         // ayush testing mem fine
-        testAbstractFactory();
-        testDecoratorPattern();
-        testPatternsTogether();
+        displayPlantNurseryArt();
 
-        // // diya testing mem fine
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testDeadState();
+        // testAbstractFactory();
+        // testDecoratorPattern();
+        // testPatternsTogether();
 
-        // //jaitin testing mem fine
-        testPlantGrowth();
+        // // // diya testing mem fine
+        // testBasicPlantCreation();
+        // testGrowthProgression();
+        // testHealthDegradation();
+        // testHealthRecovery();
+        // testIndividualCareActions();
+        // testDeadState();
 
-        // //chimney testing mem fine
-        testCommMediator();
-        testStaffWithInventory();
+        // // //jaitin testing mem fine
+        // testPlantGrowth();
+
+        // // //chimney testing mem fine
+        // testCommMediator();
+        // testStaffWithInventory();
 
         // //shavir testing mem leaks
         //testInventory();
