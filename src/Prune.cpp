@@ -1,16 +1,13 @@
 #include "../include/Prune.h"
 
-void Prune::PruneCommand(Plant* plant) {
-	// TODO - implement Prune::PruneCommand
-	throw "Not yet implemented";
+Prune::Prune(Plant *plant)
+{
+	this->receiver = plant;
 }
 
-void Prune::execute() {
-	// TODO - implement Prune::execute
-	throw "Not yet implemented";
-}
-
-void Prune::undo() {
-	// TODO - implement Prune::undo
-	throw "Not yet implemented";
+void Prune::execute()
+{
+	cout << "Execute prune command" << endl;
+	receiver->receivePruning();
+	receiver->completeCareSession(); // i think this is gonna break when testing with full development of a plant (seed -> mature)
 }

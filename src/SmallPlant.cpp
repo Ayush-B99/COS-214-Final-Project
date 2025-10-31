@@ -1,16 +1,16 @@
 #include "../include/SmallPlant.h"
 
-SmallPlant::SmallPlant(string species) {
+SmallPlant::SmallPlant(string species) : Plant(species) {
 	// TODO - implement SmallPlant::SmallPlant
-	throw "Not yet implemented";
+	size = "Small";
 }
 
 SmallPlant::~SmallPlant() {
 	// TODO - implement SmallPlant::~SmallPlant
-	throw "Not yet implemented";
+
 }
 
 char SmallPlant::getSize() {
 	// TODO - implement SmallPlant::getSize
-	throw "Not yet implemented";
+	return 'S';
 }

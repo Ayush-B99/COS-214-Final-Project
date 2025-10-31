@@ -23,7 +23,7 @@ public:
 
 	virtual bool hasNext() = 0;
 
-	virtual Plant *current() = 0;
+	virtual Plant* currentPlant() = 0;
 
 	virtual void reset() = 0;
 };

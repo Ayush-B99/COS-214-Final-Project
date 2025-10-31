@@ -13,57 +13,136 @@ using namespace std;
 
 #include "PlantCareHandler.h"
 #include "GrowthState.h"
-#include "HealthState.h"
-//#include "GrowthObserver.h"
+// #include "HealthState.h"
 
-class GrowthObserver;
+class ConcreteGrowthObserver;
+class HealthState;
 
-class Plant {
+class Plant
+{
 
 protected:
 	string species;
-	int waterLevel;
+	int waterLevel;		 // starts at 100
+	int sunlightLevel;	 // starts at 100
+	int fertilizerLevel; // starts at 100
+	int pruneLevel;		 // starts at 100
 	int growthStage;
+
 private:
-	PlantCareHandler* careStrategy;
-	GrowthState* growthState;
-	HealthState* healthState;
+	PlantCareHandler *careStrategy;
+	GrowthState *growthState;
+	HealthState *healthState;
 	string climate;
 	string description;
 	double price;
+	string size; // added this "small", "medium", "large"
+
+	int currentCycleCount;
+
+	// growth cycle requirements
+	int seedCyclesNeeded;
+	int sproutCyclesNeeded;
+	int matureCyclesNeeded;
+
+	ConcreteGrowthObserver *observer;
+
+	bool readyForStock; // MIGHT NEED TO GET RID OF IDK HOW WE GONNA HANDLE THIS
 
 public:
 	Plant();
 
 	Plant(string species);
 
+	Plant(const Plant& other);
+
 	virtual ~Plant();
 
 	virtual double getPrice();
 
-	string getDescription();
+	virtual string getDescription();
 
-	string getClimate();
+	virtual string getClimate();
 
-	virtual Plant* clone() = 0;
+	virtual Plant *clone() = 0;
 
-	void setCareStrategy(PlantCareHandler* strategy);
+	void setCareStrategy(PlantCareHandler *strategy);
 
-	void performWatering();
-
-	void setGrowthState(GrowthState* state);
+	void setGrowthState(GrowthState *state);
 
 	void grow();
 
-	void setHealthState(HealthState* state);
+	void setHealthState(HealthState *state);
 
-	void updateHealth();
+	void attach(ConcreteGrowthObserver *observer);
 
-	void attach(GrowthObserver* observer);
-
-	void detach(GrowthObserver* observer);
+	void detach();
 
 	void notify();
+
+	// for decorator, since it can alter the prices and desc.
+	virtual string getSpecies();
+	virtual void setPrice(double newPrice);
+	virtual void setDescription(string newDesc);
+
+	GrowthState *getGrowthState();
+
+	HealthState *getHealthState();
+
+	void tick(); // called every second for decay resources
+	bool isReadyForStock();
+	void markReadyForStock();
+
+	// getters for getting the attribute levels
+	int getWaterLevel() const;
+	int getSunlightLevel() const;
+	int getFertilizerLevel() const;
+	int getPruneLevel() const;
+
+	// restore methods (to reset)
+	void restoreWater();
+	void restoreSunlight();
+	void restoreFertilizer();
+	void restorePrune();
+
+	// care action methods (command)
+	void receiveWatering();
+	void receiveSunlight();
+	void receiveFertilizing();
+	void receivePruning();
+
+	void completeCareSession(); // called by the staff after all actions for the cycle are done
+
+	string getsize() const;
+	int getCurrentCycleCount() const;
+	int getSeedCyclesNeeded() const;
+	int getSproutCyclesNeeded() const;
+	int getMatureCyclesNeeded() const;
+	void resetCycleCount();
+
+	void printCurrentNeeds();
+	void printGrowthStatus();
+	void printHealthStatus();
+	void printFullStatus();
+
+	// inventory helpers
+	bool shouldRemoveFromInventory();
+	bool isDead();
+	bool isMature();
+
+	// chain of responsibility
+	void handleCareRequest();
+	bool needsWater();
+	bool needsSun();
+	bool needsFertilizer();
+	bool needsPrune();
+
+protected:
+	// subclasses set their growth requirements
+	void setGrowthRequirements(int seed, int sprout, int mature);
+	void setSize(string s);
+
+	void updateHealth();
 };
 
 #endif

@@ -11,7 +11,6 @@
 
 using namespace std;
 
-#include "Plant.h"
 #include "MediumPlant.h"
 
 class AloeVera : public MediumPlant {

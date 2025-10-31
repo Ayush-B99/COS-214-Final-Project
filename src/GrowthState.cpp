@@ -1,6 +1,18 @@
 #include "../include/GrowthState.h"
+#include "../include/Plant.h"
 
-GrowthState::~GrowthState() {
+GrowthState::~GrowthState()
+{
 	// TODO - implement GrowthState::~GrowthState
-	throw "Not yet implemented";
+	
+}
+
+bool GrowthState::isSold()
+{
+	return false;
+}
+
+bool GrowthState::isMature()
+{
+	return false;
 }
