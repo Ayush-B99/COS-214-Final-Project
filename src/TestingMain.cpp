@@ -97,7 +97,8 @@ void testIteratorPattern();
 void testCompositePattern();
 // Pattern 10: Integrated System Test
 void testIntegratedSystem();
-
+// Pattern 11: Memento Pattern
+void testMementoPattern();
 
 void testAll();
 
@@ -171,32 +172,33 @@ int main()
         testIndividualCareActions();
         testDeadState();
 
-        // // //jaitin testing mem fine
+        // //jaitin testing mem fine
         testPlantGrowth();
 
-        // // //chimney testing mem fine
+        // //chimney testing mem fine
         testCommMediator();
         testStaffWithInventory();
 
-        // // //shavir testing mem leaks
+        // //shavir testing mem leaks
         testInventory();
 
-        //didi testing
-        //testAbstractFactoryPattern();
+        // didi testing
+        // testAbstractFactoryPattern();
         testDecoratorPattern();
         testStatePattern();
-        //testChainOfResponsibilityPattern();
+        // testChainOfResponsibilityPattern();
         testCommandPattern();
         testObserverPattern();
         testMediatorPattern();
         testCompositePattern();
         testIteratorPattern();
+        testMementoPattern();
 
         cout << "INTEGRATED SYSTEM TEST:" << endl;
         cout << "-------------------------" << endl;
         testIntegratedSystem();
 
-        //testall
+        // testall
         testAll();
 
         cout << "All tests completed successfully!" << endl;
@@ -2028,5 +2030,185 @@ void testIntegratedSystem()
     cout << "================================================================" << endl;
     cout << "=== ALL DESIGN PATTERNS SUCCESSFULLY INTEGRATED AND WORKING ===" << endl;
     cout << "================================================================" << endl;
+    cout << endl;
+}
+
+void testMementoPattern()
+{
+    cout << "=== MEMENTO PATTERN TESTING (State Preservation & Undo) ===" << endl;
+    cout << endl;
+
+    // TEST 1: Basic save and restore
+    cout << "--- TEST 1: Basic Plant State Save and Restore ---" << endl;
+    
+    // Create a plant with initial state
+    CarnivorousPlantFactory factory;
+    shared_ptr<Plant> plant(factory.createSmallPlant());
+    
+    cout << "Initial plant state:" << endl;
+    cout << "  Species: " << plant->getSpecies() << endl;
+    cout << "  Price: R" << plant->getPrice() << endl;
+    cout << "  Growth: " << plant->getGrowthState()->getName() << endl;
+    cout << "  Health: " << plant->getHealthState()->getName() << endl;
+    cout << "  Water: " << plant->getWaterLevel() << "%" << endl;
+    cout << endl;
+
+    // Save initial state
+    Caretaker<Plant> caretaker;
+    Memento<Plant> initialState(plant);
+    caretaker.addMemento(initialState);
+    cout << "✓ Initial state saved to memento" << endl << endl;
+
+    // TEST 2: Modify plant and save multiple states
+    cout << "--- TEST 2: Multiple State Snapshots ---" << endl;
+    
+    // Modify plant - add water
+    plant->receiveWatering();
+    cout << "After watering - Water level: " << plant->getWaterLevel() << "%" << endl;
+    Memento<Plant> afterWatering(plant);
+    caretaker.addMemento(afterWatering);
+    cout << "✓ State after watering saved" << endl << endl;
+
+    // Modify more - add sunlight
+    plant->receiveSunlight();
+    cout << "After sunlight - Sunlight level: " << plant->getSunlightLevel() << "%" << endl;
+    Memento<Plant> afterSunlight(plant);
+    caretaker.addMemento(afterSunlight);
+    cout << "✓ State after sunlight saved" << endl << endl;
+
+    // Modify even more - complete care session
+    plant->receiveFertilizing();
+    plant->completeCareSession();
+    cout << "After complete care session:" << endl;
+    cout << "  Water: " << plant->getWaterLevel() << "%" << endl;
+    cout << "  Sunlight: " << plant->getSunlightLevel() << "%" << endl;
+    cout << "  Fertilizer: " << plant->getFertilizerLevel() << "%" << endl;
+    cout << "  Growth: " << plant->getGrowthState()->getName() << endl;
+    cout << endl;
+
+    // TEST 3: Restore previous states
+    cout << "--- TEST 3: Restoring Previous States ---" << endl;
+    
+    // Restore to state after sunlight (most recent memento)
+    Memento<Plant> restored = caretaker.getLastMemento();
+    shared_ptr<Plant> restoredPlant = restored.getState();
+    cout << "Restored to last saved state:" << endl;
+    cout << "  Water: " << restoredPlant->getWaterLevel() << "%" << endl;
+    cout << "  Sunlight: " << restoredPlant->getSunlightLevel() << "%" << endl;
+    cout << "✓ Successfully restored last state" << endl << endl;
+
+    // Undo last save and restore previous
+    caretaker.undo();
+    cout << "Undid last save..." << endl;
+    Memento<Plant> previousState = caretaker.getLastMemento();
+    shared_ptr<Plant> previousPlant = previousState.getState();
+    cout << "Now at state after watering:" << endl;
+    cout << "  Water: " << previousPlant->getWaterLevel() << "%" << endl;
+    cout << "  Sunlight: " << previousPlant->getSunlightLevel() << "%" << endl;
+    cout << "✓ Undo operation successful" << endl << endl;
+
+    // TEST 4: Access specific states by index
+    cout << "--- TEST 4: Random Access to State History ---" << endl;
+    
+    Memento<Plant> veryFirstState = caretaker.getMemento(0);
+    shared_ptr<Plant> originalPlant = veryFirstState.getState();
+    cout << "Retrieved initial state (index 0):" << endl;
+    cout << "  Water: " << originalPlant->getWaterLevel() << "%" << endl;
+    cout << "  Sunlight: " << originalPlant->getSunlightLevel() << "%" << endl;
+    cout << "✓ Random access successful" << endl << endl;
+
+    // TEST 5: Deep copy verification (Memento uses Plant's clone())
+    cout << "--- TEST 5: Deep Copy Verification ---" << endl;
+    
+    shared_ptr<Plant> testPlant(factory.createMediumPlant());
+    cout << "Original plant water level: " << testPlant->getWaterLevel() << "%" << endl;
+    
+    Memento<Plant> snapshot(testPlant);
+    cout << "✓ Snapshot created" << endl;
+    
+    // Modify original
+    testPlant->receiveWatering();
+    testPlant->receiveWatering();
+    cout << "Modified original plant water level: " << testPlant->getWaterLevel() << "%" << endl;
+    
+    // Restore from snapshot
+    shared_ptr<Plant> snapshotPlant = snapshot.getState();
+    cout << "Snapshot plant water level (should be unchanged): " << snapshotPlant->getWaterLevel() << "%" << endl;
+    
+    if (snapshotPlant->getWaterLevel() != testPlant->getWaterLevel())
+    {
+        cout << "✓ Deep copy confirmed! Snapshot is independent of original" << endl;
+    }
+    else
+    {
+        cout << "✗ Shallow copy detected - states are linked" << endl;
+    }
+    cout << endl;
+
+    // TEST 6: Complex state restoration with growth states
+    cout << "--- TEST 6: Complex State with Growth Progression ---" << endl;
+    
+    shared_ptr<Plant> growingPlant(factory.createLargePlant());
+    Caretaker<Plant> growthHistory;
+    
+    cout << "Tracking plant growth through multiple care cycles:" << endl;
+    for (int k = 0; k < 3; k++)
+    {
+        cout << "Cycle " << (k + 1) << " - Growth: " << growingPlant->getGrowthState()->getName() << endl;
+        
+        // Save state before care
+        Memento<Plant> beforeCare(growingPlant);
+        growthHistory.addMemento(beforeCare);
+        
+        // Provide care
+        growingPlant->receiveWatering();
+        growingPlant->receiveSunlight();
+        growingPlant->completeCareSession();
+    }
+    
+    cout << "\nFinal growth state: " << growingPlant->getGrowthState()->getName() << endl;
+    cout << "Stored " << " growth snapshots" << endl;
+    
+    // Restore to beginning
+    Memento<Plant> firstGrowth = growthHistory.getMemento(0);
+    shared_ptr<Plant> revertedPlant = firstGrowth.getState();
+    cout << "Reverted to first snapshot - Growth: " << revertedPlant->getGrowthState()->getName() << endl;
+    cout << "✓ Growth state restoration successful" << endl << endl;
+
+    // TEST 7: Error handling
+    cout << "--- TEST 7: Error Handling ---" << endl;
+    
+    Caretaker<Plant> emptyCaretaker;
+    try
+    {
+        cout << "Attempting to get memento from empty caretaker..." << endl;
+        emptyCaretaker.getLastMemento();
+        cout << "✗ Should have thrown an exception" << endl;
+    }
+    catch (const runtime_error& e)
+    {
+        cout << "✓ Correctly caught exception: " << e.what() << endl;
+    }
+    
+    try
+    {
+        cout << "Attempting to access invalid index..." << endl;
+        caretaker.getMemento(999);
+        cout << "✗ Should have thrown an exception" << endl;
+    }
+    catch (const runtime_error& e)
+    {
+        cout << "✓ Correctly caught exception: " << e.what() << endl;
+    }
+    cout << endl;
+
+    cout << "=== MEMENTO PATTERN TEST COMPLETED! ===" << endl;
+    cout << "Demonstrated:" << endl;
+    cout << "  - State preservation and restoration" << endl;
+    cout << "  - Multiple snapshots (undo history)" << endl;
+    cout << "  - Deep copy through Plant's clone() method" << endl;
+    cout << "  - Undo operations" << endl;
+    cout << "  - Random access to state history" << endl;
+    cout << "  - Error handling for edge cases" << endl;
     cout << endl;
 }

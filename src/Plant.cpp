@@ -22,7 +22,7 @@ Plant::Plant(string species) : species(species), waterLevel(100), sunlightLevel(
 	healthState = new Good();
 }
 
-Plant::Plant(const Plant &other) : species(other.species), waterLevel(other.waterLevel), growthStage(other.growthStage), careStrategy(NULL), growthState(NULL), healthState(NULL), climate(other.climate), description(other.description), price(other.price), observer(NULL), currentCycleCount(other.currentCycleCount), seedCyclesNeeded(other.seedCyclesNeeded), sproutCyclesNeeded(other.sproutCyclesNeeded), matureCyclesNeeded(other.matureCyclesNeeded)
+Plant::Plant(const Plant &other) : species(other.species), waterLevel(other.waterLevel), growthStage(other.growthStage), careStrategy(NULL), growthState(NULL), healthState(NULL), climate(other.climate), description(other.description), price(other.price), observer(NULL), currentCycleCount(other.currentCycleCount), seedCyclesNeeded(other.seedCyclesNeeded), sproutCyclesNeeded(other.sproutCyclesNeeded), matureCyclesNeeded(other.matureCyclesNeeded), sunlightLevel(other.sunlightLevel), fertilizerLevel(other.fertilizerLevel), pruneLevel(other.pruneLevel), size(other.size), readyForStock(other.readyForStock)
 {
 	growthState = new Seed();
 	healthState = new Good();
