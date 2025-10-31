@@ -1,3 +1,12 @@
+/**
+ * @file ConcreteGrowthObserver.h
+ * @brief Observer that monitors plant growth changes and coordinates care.
+ * 
+ * The ConcreteGrowthObserver implements the Observer pattern to monitor
+ * changes in plant growth states and coordinate with the care handler system.
+ * It bridges the State pattern (growth states) with the Chain of Responsibility.
+ */
+
 #ifndef CONCRETEGROWTHOBSERVER_H
 #define CONCRETEGROWTHOBSERVER_H
 

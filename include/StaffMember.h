@@ -1,4 +1,12 @@
-// StaffMember.h
+/**
+ * @file StaffMember.h
+ * @brief Abstract base class for all staff members in the nursery.
+ * 
+ * StaffMember represents the "Colleague" in the Mediator pattern.
+ * Staff members know about the mediator but not about other staff members directly.
+ * All communication happens through the commMediator to maintain loose coupling.
+ */
+
 #ifndef STAFFMEMBER_H
 #define STAFFMEMBER_H
 

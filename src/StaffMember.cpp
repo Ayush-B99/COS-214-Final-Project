@@ -32,14 +32,14 @@ string StaffMember::getName() const
 	return staffName;
 }
 
-bool StaffMember::getAvailability() const
-{
-	return isAvailable;
-}
-
 void StaffMember::setAvailability(bool available)
 {
 	isAvailable = available;
+}
+
+bool StaffMember::getAvailability() const
+{
+	return isAvailable;
 }
 
 void StaffMember::respondToCustomer(Customer *customer, const string &response, Plant *plant)

@@ -36,6 +36,10 @@ Plant::~Plant()
 	{
 		delete healthState;
 	}
+	if (observer)
+	{
+		delete observer;
+	}
 }
 
 double Plant::getPrice()
@@ -367,6 +371,11 @@ void Plant::tick()
 		if (currentCycleCount >= 10)
 		{
 			setHealthState(new Dead());
+			waterLevel = 0;
+			sunlightLevel = 0;
+			fertilizerLevel = 0;
+			pruneLevel = 0;
+			cout << species << " has died of old age." << endl;
 		}
 	}
 }
@@ -378,18 +387,25 @@ void Plant::updateHealth()
 		return;
 	}
 
-	int avgLevel = (waterLevel + sunlightLevel + fertilizerLevel + pruneLevel) / 4;
+	int avgLevel;
+
+	if (growthState->getName() == "seed") {
+		avgLevel = (waterLevel + sunlightLevel + fertilizerLevel)/3;
+	}
+	else {
+		avgLevel = (waterLevel + sunlightLevel + fertilizerLevel + pruneLevel)/4;
+	}
 
 	string currentHealth = healthState->getName();
 
-	if (avgLevel <= 20)
+	if (avgLevel < 20)
 	{ // below 20%
 		if (currentHealth != "dead")
 		{
 			setHealthState(new Dead());
 		}
 	}
-	else if (avgLevel <= 60)
+	else if (avgLevel < 60)
 	{ // below 60% - move to needsCare
 		if (currentHealth == "good")
 		{
