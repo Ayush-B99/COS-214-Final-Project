@@ -1974,9 +1974,6 @@ void testIntegratedSystem()
     waterHandler->setNext(sunHandler);
     carePlant->setCareStrategy(waterHandler);
     
-    // Attach Observer - FIXED: Don't delete observer, plant owns it
-    ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(carePlant);
-    
     // Simulate care cycle
     carePlant->tick();
     carePlant->tick();
