@@ -12,7 +12,7 @@ BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 #the line below compiles everything
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+SOURCES = $(filter-out $(SRCDIR)/Memento.cpp $(SRCDIR)/Caretaker.cpp, $(wildcard $(SRCDIR)/*.cpp))
 # this line can filter out classes listed to not build/compile and run
 #SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
