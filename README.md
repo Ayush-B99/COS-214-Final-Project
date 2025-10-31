@@ -17,18 +17,17 @@ It involves a variety of features and interactions, such as being able to view p
 
 ## 🗂️ Project Structure (Main Branch)
 
-
 ## 📋 UML Diagrams
 
 ### Structural Diagrams
-- [**Class Diagram**](./Diagram/Class-Diagram.jpg) - System class structure and relationships
-- [**Object Diagram**](./Diagram/Object\Diagram.jpg) - Runtime object instances and links
-- [**Communication Diagram**](./Diagram/Communication/Diagram.jpg) - Object interactions and messaging
+- [**Class Diagram**](./Diagram/Class%20Diagram.jpg) - System class structure and relationships
+- [**Object Diagram**](./Diagram/Object%20Diagram.jpg) - Runtime object instances and links
+- [**Communication Diagram**](./Diagram/Communication%20Diagram.jpg) - Object interactions and messaging
 
 ### Behavioral Diagrams
-- [**Sequence Diagrams**](./Diagram/Sequence-Diagram.jpg) - Time-ordered object interactions
-- [**State Machine Diagram**](./Diagram/State-Machine-Diagram.pdf) - Object state transitions
-- [**Activity Diagram**](./Diagram/Activity-Diagram.jpg) - Business process workflows
+- [**Sequence Diagrams**](./Diagram/Sequence%20Diagram.jpg) - Time-ordered object interactions
+- [**State Machine Diagram**](./Diagram/State%20Machine%20Diagram.pdf) - Object state transitions
+- [**Activity Diagram**](./Diagram/Activity%20Diagram.jpg) - Business process workflows
 
 ## 🚀 Quick Start
 
