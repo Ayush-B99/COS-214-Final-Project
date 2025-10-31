@@ -23,10 +23,10 @@ class Order;
 
 /**
  * @class Stock
- * @brief A BST structure similar to Inventory. the main difference is that this structure only holds plants that are ready to be sold
+ * @brief A BST structure similar to Inventory. Holds plants that are ready to be sold.
  * 
- * Plants are stored as a shallow copy of items already in inventory, so Stock does not own any plants itself, rather it is simply an interface to view and access plants that already are owned by Inventory
- * Is the interface for addint plants to an Order.
+ * Stock NOW OWNS the plants it contains (not shallow copies). Plants are moved from 
+ * Inventory to Stock, transferring ownership.
  */
 class Stock : public Storage {
 
@@ -44,6 +44,8 @@ private:
 	void collectByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 
     void collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& matches);
+
+	int countNodesRecursive(PlantNode* node);
 
 	
 public:
@@ -98,7 +100,7 @@ public:
 
 	PlantNode* getRoot();
 
-	void moveToOrder(Plant* plant, Inventory* inventory, Order* order);
+	void moveToOrder(Plant* plant, Order* order);
 
 	bool plantInTree(Plant* plant);
 };

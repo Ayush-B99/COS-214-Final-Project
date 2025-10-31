@@ -580,8 +580,8 @@ int main()
         // testIndividualCareActions();
         // testSoldState();
         // testDeadState();
-        //testInventory();
-        //testInventoryAndStock();
+        testInventory();
+        testInventoryAndStock();
         testAllStorage();
 
 
@@ -753,8 +753,8 @@ cout << "=== Inventory Testing ===\n";
     
     it.reset();
     while(it.hasNextNode()){
-        Plant* p = it.nextCoarse();
-        cout << "iterated: " << p->getSpecies() << " node.\n";
+        PlantNode* p = it.nextCoarse();
+        if (p )cout << "iterated: " << p->getKey() << " node.\n";
     }
 
     delete seedling;
@@ -877,7 +877,7 @@ void testInventoryAndStock(){
 
     Order* order = new Order("shav");
     cout << "adding some items to the order\n";
-    stock->moveToOrder(p2, inv, order);
+    stock->moveToOrder(p2, order);
     cout << "bird of paradise should no longer be in stock or inventory\n";
     order->print();
     stock->print();
@@ -1021,38 +1021,56 @@ void testAllStorage(){
     cout << "Stock node count: " << stock->getNodeCount() << endl;
     cout << "Stock plant count: " << stock->getPlantCount() << endl;
 
-    // ---------- 10. Order tests ----------
-    cout << "\n[10] ORDER TESTING\n";
-    Order* order = new Order("Shavir");
-    cout << "Adding items to order from stock...\n";
+//     // ---------- 10. Order tests ----------
+// cout << "\n[10] ORDER TESTING\n";
 
-    // Move first 5 stock plants to order
-    stockPlants = stock->getAllPlants();
-    for (int i = 0; i < 5 && i < (int)stockPlants.size(); ++i) {
-        stock->moveToOrder(stockPlants[i], inv, order);
+Order* order = new Order("Shavir");
+cout << "Adding items to order from stock...\n";
+
+// IMPORTANT: Get fresh list of plants each iteration
+// because moveToOrder modifies the stock tree
+for (int i = 0; i < 5; i++) {
+    // Get current plants in stock
+    vector<Plant*> currentStockPlants = stock->getAllPlants();
+    
+    // Break if no more plants
+    if (currentStockPlants.empty() || !currentStockPlants[0]) {
+        cout << "No more plants in stock.\n";
+        break;
     }
+    
+    // Move the first plant
+    stock->moveToOrder(currentStockPlants[0], order);
+}
 
-    cout << "\nOrder after additions:\n";
-    order->print();
-    cout << "\nStock after removals:\n";
-    stock->print();
+cout << "\nOrder after additions:\n";
+order->print();
 
-    cout << "\nRe-adding a few to order (duplicates)...\n";
-    for (int i = 0; i < 3 && i < (int)stockPlants.size(); ++i) {
-        stock->moveToOrder(stockPlants[i], inv, order);
-    }
-    order->print();
+cout << "\nStock after removals:\n";
+stock->print();
 
-    cout << "\nIterating order via OrderIterator:\n";
-    PlantNode* orderNode = order->getNode();
-    OrderIterator oit(orderNode);
-    int ocount = 0;
-    while (oit.hasNext()) {
-        Plant* p = oit.next();
+cout << "\nRe-adding a few to order (test duplicate prevention)...\n";
+// Get current order items
+vector<Plant*> orderItems = order->getOrderItems();
+if (!orderItems.empty()) {
+    // Try to add same plant again (should be prevented)
+    order->addPlant(orderItems[0]);
+}
+
+order->print();
+
+cout << "\nIterating order via OrderIterator:\n";
+PlantNode* orderNode = order->getNode();
+OrderIterator oit(orderNode);
+int ocount = 0;
+while (oit.hasNext()) {
+    Plant* p = oit.next();
+    if (p) {
         cout << "OrderIter: " << p->getSpecies() << endl;
         ++ocount;
     }
-    cout << "Order iterator traversed " << ocount << " plants.\n";
+}
+cout << "Order iterator traversed " << ocount << " plants.\n";
 
     // ---------- 11. Remove and restock ----------
     order->print();
@@ -1093,7 +1111,7 @@ void testAllStorage(){
     order->proceed();
     order->print();
     //should fail
-    stock->moveToOrder(stockPlants[0], inv, order);
+    stock->moveToOrder(stockPlants[0], order);
 
 
         // ---------- 13. DECORATOR PATTERN IN CONTEXT OF STOCK ----------
@@ -1116,7 +1134,7 @@ void testAllStorage(){
             p = decorated.release();
         }
 
-        stock->moveToOrder(p, inv, decoratedOrder);
+        stock->moveToOrder(p, decoratedOrder);
     }
 
     // Print the decorated order

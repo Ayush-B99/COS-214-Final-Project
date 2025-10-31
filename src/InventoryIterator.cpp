@@ -30,7 +30,7 @@ void InventoryIterator::reset() {
 	currentNode = nullptr;
 	indexInNode = 0;
 
-	//find the first valid node
+	//find the first valid node with plants
 	while (!nodeStack.empty()){
 		PlantNode* top = nodeStack.top();
 		if (!top->getPlants().empty()){
@@ -39,10 +39,9 @@ void InventoryIterator::reset() {
 			indexInNode = 0;
 			return;
 		}
-		//skipp empty nodes by popping them and prepping their right subtree
+		//skip empty nodes by popping them and prepping their right subtree
 		nodeStack.pop();
 		pushLeft(top->getRight());
-
 	}
 	//no valid nodes, do nothing
 	currentNode = nullptr;
@@ -59,148 +58,241 @@ Plant* InventoryIterator::nextFine() {
 		return nullptr;
 	}
 
-    //advance within current node if possible
-	///fixed possibly: return the current plant not the next plant
-	Plant* result = nullptr;
-	//get current plant
-	if (indexInNode < currentNode->getPlants().size()){
-		result = currentNode->getPlants().at(indexInNode);
-	} else {
-		//handle overflow and fix later
-		result = nullptr;
+	// Safety check: ensure current node has plants
+	if (currentNode->getPlants().empty()) {
+		// This shouldn't happen, but handle it gracefully
+		currentNode = nullptr;
+		return nullptr;
 	}
 
-	//advance the iterator state
-    if (indexInNode + 1 < currentNode->getPlants().size()){
-		indexInNode++;
-		return result; //guaranteed to not be null by current plant get
+	// Safety check: ensure indexInNode is within bounds
+	if (indexInNode >= currentNode->getPlants().size()) {
+		// Index out of bounds, reset to find next valid node
+		if (!nodeStack.empty() && nodeStack.top() == currentNode){
+			nodeStack.pop();
+		}
+		pushLeft(currentNode->getRight());
+		
+		// Find next non-empty node
+		currentNode = nullptr;
+		while (!nodeStack.empty()){
+			PlantNode* top = nodeStack.top();
+			if (!top->getPlants().empty()){
+				currentNode = top;
+				indexInNode = 0;
+				break;
+			}
+			nodeStack.pop();
+			pushLeft(top->getRight());
+		}
+		
+		// Try again with new position
+		if (currentNode && indexInNode < currentNode->getPlants().size()) {
+			return nextFine();
+		}
+		return nullptr;
 	}
 
-	//otherwise, we've reached the end of the node
-	//pop current and move into its right subtree inorder
-	if (!nodeStack.empty() && nodeStack.top() == currentNode){
-		nodeStack.pop();
-	} else {
-		///add alt condition here if needed, but probably not
-	}
+	// Get current plant
+	Plant* result = currentNode->getPlants().at(indexInNode);
 
-	pushLeft(currentNode->getRight());
+	// Advance the iterator state
+	indexInNode++;
 
-	//find the next nonempty node
-	currentNode = nullptr;
-	while (!nodeStack.empty()){
-		PlantNode* top = nodeStack.top();
-		if (!top->getPlants().empty()){
-			currentNode = top;
-			indexInNode = 0;
-			break;
+	// Check if we need to move to next node
+	if (indexInNode >= currentNode->getPlants().size()){
+		// We've reached the end of the node, move to next
+		if (!nodeStack.empty() && nodeStack.top() == currentNode){
+			nodeStack.pop();
 		}
 
-		nodeStack.pop();
-		pushLeft(top->getRight());
+		pushLeft(currentNode->getRight());
+
+		// Find the next nonempty node
+		currentNode = nullptr;
+		while (!nodeStack.empty()){
+			PlantNode* top = nodeStack.top();
+			if (!top->getPlants().empty()){
+				currentNode = top;
+				indexInNode = 0;
+				break;
+			}
+
+			nodeStack.pop();
+			pushLeft(top->getRight());
+		}
 	}
 
 	return result;
 }	
 
-Plant* InventoryIterator::nextCoarse() {
-    if (!currentNode && nodeStack.empty()) return nullptr;
+PlantNode* InventoryIterator::nextCoarse() {
+	// Skip empty nodes entirely
+	while (true) {
+		if (!currentNode && nodeStack.empty()) {
+			return nullptr;
+		}
 
-    // If this is the first call
-    if (!currentNode) {
-        currentNode = nodeStack.top();
-        nodeStack.pop();
-    } 
-    else {
-        // Move to the next in-order node
-        if (currentNode->getRight()) {
-            pushLeft(currentNode->getRight());
-        }
+		// If this is the first call
+		if (!currentNode) {
+			if (nodeStack.empty()) return nullptr;
+			currentNode = nodeStack.top();
+			nodeStack.pop();
+		} 
+		else {
+			// Move to the next in-order node
+			if (currentNode->getRight()) {
+				pushLeft(currentNode->getRight());
+			}
 
-        if (nodeStack.empty()) {
-            currentNode = nullptr;
-            return nullptr;
-        }
+			if (nodeStack.empty()) {
+				currentNode = nullptr;
+				return nullptr;
+			}
 
-        currentNode = nodeStack.top();
-        nodeStack.pop();
-    }
+			currentNode = nodeStack.top();
+			nodeStack.pop();
+		}
 
-    indexInNode = 0;
-    return currentNode->getPlants().at(0);
+		// Check if current node has plants
+		if (!currentNode->getPlants().empty()) {
+			indexInNode = 0;
+			return currentNode;
+		}
+		
+		// If current node is empty, continue to next node
+	}
 }
 
 Plant* InventoryIterator::currentPlant() {
-	if (!currentNode || indexInNode >= currentNode->getPlants().size());{
+	if (!currentNode) {
 		return nullptr;
 	}
+	
+	// Safety check for empty vector
+	if (currentNode->getPlants().empty()) {
+		return nullptr;
+	}
+	
+	// Safety check for index bounds
+	if (indexInNode >= currentNode->getPlants().size()) {
+		return nullptr;
+	}
+	
 	return currentNode->getPlants().at(indexInNode);
 }
 
 bool InventoryIterator::hasNext() {
-
-	return (currentNode != nullptr);
+	if (!currentNode) {
+		return false;
+	}
+	
+	// Check if current node has plants at current index
+	if (!currentNode->getPlants().empty() && indexInNode < currentNode->getPlants().size()) {
+		return true;
+	}
+	
+	// Check if there are more nodes with plants in the traversal
+	stack<PlantNode*> tempStack = nodeStack;
+	PlantNode* tempCurrent = currentNode;
+	
+	// Pop current node if it's on top
+	if (!tempStack.empty() && tempStack.top() == tempCurrent) {
+		tempStack.pop();
+	}
+	
+	// Check right subtree of current node
+	if (tempCurrent && tempCurrent->getRight()) {
+		PlantNode* right = tempCurrent->getRight();
+		// Do an in-order traversal to check for any non-empty nodes
+		stack<PlantNode*> checkStack;
+		PlantNode* checkNode = right;
+		
+		// Push all left nodes
+		while (checkNode) {
+			checkStack.push(checkNode);
+			checkNode = checkNode->getLeft();
+		}
+		
+		// Check all nodes in right subtree
+		while (!checkStack.empty()) {
+			PlantNode* node = checkStack.top();
+			checkStack.pop();
+			
+			if (!node->getPlants().empty()) {
+				return true;
+			}
+			
+			// Push right subtree
+			checkNode = node->getRight();
+			while (checkNode) {
+				checkStack.push(checkNode);
+				checkNode = checkNode->getLeft();
+			}
+		}
+	}
+	
+	// Check remaining nodes in stack
+	while (!tempStack.empty()) {
+		PlantNode* top = tempStack.top();
+		tempStack.pop();
+		
+		if (!top->getPlants().empty()) {
+			return true;
+		}
+		
+		// Check right subtree
+		if (top->getRight()) {
+			PlantNode* right = top->getRight();
+			stack<PlantNode*> checkStack;
+			PlantNode* checkNode = right;
+			
+			while (checkNode) {
+				checkStack.push(checkNode);
+				checkNode = checkNode->getLeft();
+			}
+			
+			while (!checkStack.empty()) {
+				PlantNode* node = checkStack.top();
+				checkStack.pop();
+				
+				if (!node->getPlants().empty()) {
+					return true;
+				}
+				
+				checkNode = node->getRight();
+				while (checkNode) {
+					checkStack.push(checkNode);
+					checkNode = checkNode->getLeft();
+				}
+			}
+		}
+	}
+	
+	return false;
 }
 
 bool InventoryIterator::hasNextNode(){
+	// Check if there's another node (empty or not) in the traversal
+	stack<PlantNode*> tempStack = nodeStack;
+	PlantNode* tempCurrent = currentNode;
 
-    stack<PlantNode*> tempStack = nodeStack;
-    PlantNode* tempCurrent = currentNode;
-    size_t tempIndex = indexInNode;
+	if (!tempCurrent && tempStack.empty()) {
+		return false;
+	}
 
-    // If currentNode has more nodes in its vector beyond tempIndex, then there is a next node only if you mean same node,
-    // but for node-level "next node" we need to see if there exists another distinct node below the traversal.
-    // Pop currentNode (if present on top) and look for next non-empty node.
-    if (tempCurrent && !tempStack.empty() && tempStack.top() == tempCurrent) {
-        tempStack.pop();
-    }
+	// Pop current node if it's on top
+	if (tempCurrent && !tempStack.empty() && tempStack.top() == tempCurrent) {
+		tempStack.pop();
+	}
 
-    if (tempCurrent) {
-        // check right subtree first
-        PlantNode* r = tempCurrent->getRight();
-        if (r) {
-            // find leftmost in r
-            PlantNode* n = r;
-            while (n && n->getLeft()) n = n->getLeft();
-            // check recursively if n has plants or its right descendants do
-            stack<PlantNode*> s;
-            if (n) s.push(n);
-            while (!s.empty()) {
-                PlantNode* t = s.top(); s.pop();
-                if (!t->getPlants().empty()) return true;
-                if (t->getRight()) {
-                    PlantNode* m = t->getRight();
-                    while (m) { s.push(m); m = m->getLeft(); }
-                }
-            }
-        }
-    }
+	// Check right subtree
+	if (tempCurrent && tempCurrent->getRight()) {
+		return true; // There's at least one more node
+	}
 
-    // then check nodes in stack
-    while (!tempStack.empty()) {
-        PlantNode* top = tempStack.top();
-        tempStack.pop();
-        if (!top->getPlants().empty()) return true;
-        // simulate pushLeft(top->right)
-        PlantNode* r = top->getRight();
-        PlantNode* n = r;
-        while (n && n->getLeft()) n = n->getLeft();
-        if (n) {
-            // quick DFS to find any non-empty node rooted at n
-            stack<PlantNode*> s;
-            s.push(n);
-            while (!s.empty()) {
-                PlantNode* t = s.top(); s.pop();
-                if (!t->getPlants().empty()) return true;
-                if (t->getRight()) {
-                    PlantNode* m = t->getRight();
-                    while (m) { s.push(m); m = m->getLeft(); }
-                }
-            }
-        }
-    }
-
-    return false;
+	// Check if there are more nodes in stack
+	return !tempStack.empty();
 }
 
 map<PlantNode*, int> InventoryIterator::getPosition() {
@@ -210,14 +302,12 @@ map<PlantNode*, int> InventoryIterator::getPosition() {
 	return {{currentNode, indexInNode}};
 }
 
-
-
 void InventoryIterator::setPosition(map<PlantNode*, int>& pos) {
 	if (pos.empty()) return;
 
 	currentNode = pos.begin()->first;
 	indexInNode = pos.begin()->second;
 
-	///dont know if we need to repopulate nodestack for traversal
+	// Note: This doesn't rebuild the stack, which could cause issues
+	// For proper functionality, consider rebuilding the stack to maintain traversal state
 }
-

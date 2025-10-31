@@ -37,7 +37,7 @@ public:
 
 	Plant* nextFine();
 
-	Plant* nextCoarse();
+	PlantNode* nextCoarse();
 
 	Plant* currentPlant();
 

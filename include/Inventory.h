@@ -64,6 +64,8 @@ private:
 
     void collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& matches);
 
+	int countNodesRecursive(PlantNode* node);
+
 public:
 	Inventory();
 

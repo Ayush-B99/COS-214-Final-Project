@@ -31,14 +31,18 @@ void Order::cancel(Inventory* inv, Stock* stock){
 	if (state){
 		state->cancel(this);
 	}
-	//remove all plants and place them back in stock/inventory
+	
+	// Return all plants back to stock only
 	for (Plant* p : orderItems->getPlants()){
-		if (p){
-			inv->removePlant(p);
-			stock->removePlant(p);
+		if (p && stock){
+			stock->addPlant(p);
 		}
 	}
+	
+	// Clear the order without deleting plants (stock owns them now)
+	orderItems->getPlants().clear();
 }
+
 
 void Order::addPlant(Plant* item) {
 	//block adding based on state
@@ -60,18 +64,23 @@ void Order::addPlant(Plant* item) {
 
 void Order::removePlant(Plant* item, Inventory* inv, Stock* stock) {
 	if (state->getName() != "draft"){
-		cout << "You cannot edit an order after it has been submitted";
+		cout << "You cannot edit an order after it has been submitted.\n";
+		return;
 	}
 
 	if (!orderItems->removePlant(item)){
 		cout << item->getSpecies() << " either not found or not removed.\n";
+		return;
 	}
+	
 	cout << item->getSpecies() << " successfully removed from your order!\n";
 
-	if (item){
-		if (inv) inv->addPlant(item);
-		if (stock) stock->addPlant(item);
+	// Return plant to Stock only (Stock owns it)
+	if (item && stock) {
+		stock->addPlant(item);
 	}
+	
+	calculateTotal();
 }
 
 vector<Plant*> Order::getOrderItems() {
