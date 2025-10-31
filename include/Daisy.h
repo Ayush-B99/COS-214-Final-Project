@@ -20,7 +20,7 @@ class Daisy : public SmallPlant {
 public:
 	Daisy();
 
-	Daisy(Daisy& other);
+	Daisy(const Daisy& other);
 
 	~Daisy();
 
