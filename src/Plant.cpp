@@ -6,6 +6,9 @@
 #include "../include/ConcreteGrowthObserver.h"
 #include "../include/NeedsCare.h"
 #include "../include/Dead.h"
+#include "../include/ConcreteGrowthObserver.h"
+#include "../include/NeedsCare.h"
+#include "../include/Dead.h"
 
 Plant::Plant() : species("Unknown"), waterLevel(100), sunlightLevel(100), fertilizerLevel(100), pruneLevel(100), growthStage(0), careStrategy(NULL), growthState(NULL), healthState(NULL), climate("Unknown"), description("A plant"), price(0.0), observer(NULL), currentCycleCount(0), seedCyclesNeeded(2), sproutCyclesNeeded(3), matureCyclesNeeded(4), readyForStock(false)
 {

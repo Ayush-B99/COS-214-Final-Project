@@ -22,6 +22,7 @@ using namespace std;
 
 #include "StaffMember.h"
 #include "Inventory.h"
+#include "Inventory.h"
 
 /**
  * @class Worker

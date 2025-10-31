@@ -23,6 +23,8 @@ using namespace std;
 #include "StaffMember.h"
 #include "Inventory.h"
 
+#include "Inventory.h"
+
 /**
  * @class Manager
  * @brief Concrete staff member for nursery management and coordination.
@@ -32,6 +34,8 @@ using namespace std;
  * - Staff coordination and assignment
  * - Scheduling and maintenance planning
  * - Problem escalation and resolution
+ * - Bulk order processing and special requests
+ *
  * - Bulk order processing and special requests
  *
  * In the Mediator pattern, Managers are ConcreteColleagues that receive

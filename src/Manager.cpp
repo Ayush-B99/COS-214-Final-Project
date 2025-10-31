@@ -17,6 +17,7 @@ void Manager::handleCustomerQuery(Customer *customer, const string &query, Plant
     {
         response = "I can help with bulk purchases! We offer discounts for orders over 20 plants.";
     }
+  
     else if (query.find("rare") != string::npos || query.find("special") != string::npos)
     {
         response = "We can special order rare plants for you. It takes 2-3 weeks.";

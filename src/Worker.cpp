@@ -5,6 +5,7 @@ Worker::Worker(const string &name, CommMediator *mediator, Inventory *inventory)
     : StaffMember(name, mediator, inventory)
 {
     // Staffmember handles mediator registration which happens automatically
+    // Staffmember handles mediator registration which happens automatically
 }
 
 void Worker::handleCustomerQuery(Customer *customer, const string &query, Plant *plant)
@@ -12,12 +13,15 @@ void Worker::handleCustomerQuery(Customer *customer, const string &query, Plant 
     cout << getName() << " handling query from " << customer->getName()
          << ": \"" << query << "\"" << endl;
 
+
     string response;
+
     if (query.find("water") != string::npos || query.find("care") != string::npos)
     {
         response = "I can help with plant care! Most plants need watering once a week.";
         providePlantCareAdvice(customer, "general");
     }
+ 
     else if (query.find("price") != string::npos || query.find("cost") != string::npos)
     {
         response = "Let me check the prices for you. Our plants range from $5 to $50.";
@@ -84,6 +88,7 @@ void Worker::handleCustomerQuery(Customer *customer, const string &query, Plant 
         response = "I'll be happy to help you with that!";
     }
 
+
     respondToCustomer(customer, response, plant);
 }
 
@@ -122,6 +127,7 @@ void Worker::handlePurchaseRequest(Customer *customer, const string &plantType, 
 
     respondToCustomer(customer, response);
 }
+
 
 void Worker::checkInventory(const string &plantType)
 {

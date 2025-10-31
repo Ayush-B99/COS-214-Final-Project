@@ -19,6 +19,10 @@ using namespace std;
 #include "TropicalPlantFactory.h"
 #include "SucculentPlantFactory.h"
 #include "CarnivorousPlantFactory.h"
+#include "TemperatePlantFactory.h"
+#include "TropicalPlantFactory.h"
+#include "SucculentPlantFactory.h"
+#include "CarnivorousPlantFactory.h"
 #include "InventoryIterator.h"
 #include "GrowthState.h"
 #include "HealthState.h"
@@ -72,15 +76,15 @@ public:
 	 */
 	void setClimate(GreenHouse* factory);
 
-	Plant* addSmallPlant(GreenHouse* house);
+	Plant* addSmallPlant(GreenHouse* house,PlantCareHandler* handler);
 
-	Plant* addMediumPlant(GreenHouse* house);
+	Plant* addMediumPlant(GreenHouse* house,PlantCareHandler* handler);
 
-	Plant* addLargePlant(GreenHouse* house);
+	Plant* addLargePlant(GreenHouse* house,PlantCareHandler* handler);
 
-	void addPlantPrototype(Plant* prototype);
+	void addPlantPrototype(Plant *prototype);
 
-	InventoryIterator* createIterator();
+	InventoryIterator *createIterator();
 
 	int getPlantCount();
 
@@ -92,7 +96,7 @@ public:
 
 	GreenHouse* getTropicalFactory();
 
-	void addPlant(Plant* plant);
+	void addPlant(Plant *plant);
 
 	void removePlant(Plant* plant);
 
@@ -163,6 +167,8 @@ public:
 	//getters and setters (only adding them as needed rn)
 
 	PlantNode* getRoot();
+
+	void tick();
 
 };
 

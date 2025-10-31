@@ -18,31 +18,8 @@
 #include <sstream>
 #include <stack>
 
-// #include "GrowthMediator.h"
-// //#include "CommMediator.h"
-// //#include "Plant.h"
-// #include "Command.h"
-// #include "CommMediator.h"
-// #include "Customer.h"
+// Forward declarations
 class GrowthMediator;
-class CommMediator;
-class Command;
-class Customer;
-class Plant;
-
-#include "CommMediator.h"
-#include "Customer.h"
-
-/**
- * @class StaffMember
- * @brief Abstract base class for all staff members in the nursery
- * The class basically represents the "Colleague" in the Mediator pattern.
- * the staff members knows about the mediator but not about other staff members directly which was the ewhole point.
- * all the communication happens through the commMediator to the staffs.
- */
-
-using namespace std;
-
 class CommMediator;
 class Command;
 class Customer;
@@ -55,11 +32,13 @@ class Inventory;
 /**
  * @class StaffMember
  * @brief Abstract base class for all staff members in the nursery
- *
+ * 
  * The class represents the "Colleague" in the Mediator pattern.
  * Staff members know about the mediator but not about other staff members directly.
  * All communication happens through the commMediator to maintain loose coupling.
  */
+
+using namespace std;
 class StaffMember
 {
 private:

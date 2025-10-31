@@ -30,6 +30,7 @@ void StaffMember::setInventory(Inventory *inv)
 string StaffMember::getName() const
 {
 	return staffName;
+	return staffName;
 }
 
 void StaffMember::setAvailability(bool available)
@@ -39,6 +40,7 @@ void StaffMember::setAvailability(bool available)
 
 bool StaffMember::getAvailability() const
 {
+	return isAvailable;
 	return isAvailable;
 }
 

@@ -35,6 +35,7 @@ using namespace std;
  * corporate-level discounts and billing.
  */
 class Company : public Customer {
+    
 public:
     vector<Customer*> customers;  ///< Child customer components in this composite
 
