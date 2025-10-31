@@ -36,10 +36,6 @@ Plant::~Plant()
 	{
 		delete healthState;
 	}
-	if (observer)
-	{
-		delete observer;
-	}
 }
 
 double Plant::getPrice()

@@ -13,18 +13,19 @@ using namespace std;
 
 #include "Customer.h"
 
-class Company : public Customer {
+class Company : public Customer
+{
 
 public:
-	Company(const string& name, CommMediator* mediator) : Customer(name, mediator) {}
-	vector<Customer*> customers;
+	Company(const string &name, CommMediator *mediator) : Customer(name, mediator) {}
+	vector<Customer *> customers;
 	~Company();
 
 	double getDiscount();
 
-	void addCustomer(Customer* c);
+	void addCustomer(Customer *c);
 
-	void removeCustomer(Customer* c);
+	void removeCustomer(Customer *c);
 };
 
 #endif

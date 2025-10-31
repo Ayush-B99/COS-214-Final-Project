@@ -52,15 +52,15 @@ using namespace std;
 #include "../include/PlantNode.h"
 #include "../include/Iterator.h"
 #include "../include/InventoryIterator.h"
-//Pattern 1 : Abstract Factory
+// Pattern 1 : Abstract Factory
 void testAbstractFactory();
-//Pattern 2 : Decorator
+// Pattern 2 : Decorator
 void testDecoratorPattern();
-//Pattern 3 : State Pattern (Plant Growth & Health State)
+// Pattern 3 : State Pattern (Plant Growth & Health State)
 void testStatePattern();
-//Patten 4 : Chain of Responsibility(Care Handlers)
+// Patten 4 : Chain of Responsibility(Care Handlers)
 void testChainOfResponsibility();
-//Pattern 5: Command Pattern(Care Commands)
+// Pattern 5: Command Pattern(Care Commands)
 void testCommandPattern();
 // Pattern 6: Observer Pattern (Growth Observer)
 void testObserverPattern();
@@ -68,11 +68,12 @@ void testObserverPattern();
 void testMediatorPattern();
 // Pattern 8: Composite & Iterator (Inventory System)
 void testIteratorPattern();
-//pattern 9: composite
+// pattern 9: composite
 void testCompositePattern();
 // Pattern 10: Integrated System Test
 void testIntegratedSystem();
-/*void testPatternsTogether();
+
+void testPatternsTogether();
 
 void testBasicPlantCreation();
 void testGrowthProgression();
@@ -80,7 +81,10 @@ void testHealthDegradation();
 void testHealthRecovery();
 void testIndividualCareActions();
 void testDeadState();
-*/
+
+void testCommMediator();
+
+void testInventory();
 
 // Helper class for testing
 class TestPlant : public Plant
@@ -253,74 +257,9 @@ void testAbstractFactoryPattern()
     {
         delete plant;
     }
-    
-    cout << "Abstract Factory Pattern Test Completed!" << endl << endl;
-}
 
-void testDecoratorPattern()
-{
-    cout << "=== DECORATOR PATTERN TESTING ===" << endl;
-    cout << endl;
-
-    // Create plants using unique_ptr
-    auto daisy = std::make_unique<Daisy>();
-    auto aloe = std::make_unique<AloeVera>();
-    auto nepenthes = std::make_unique<Nepenthes>();
-
-    cout << "--- Basic Plants with no decoration ---" << endl;
-    cout << "Daisy: " << daisy->getDescription() << " - Price: R" << daisy->getPrice() << endl;
-    cout << "Aloe Vera: " << aloe->getDescription() << " - Price: R" << aloe->getPrice() << endl;
-    cout << "Nepenthes: " << nepenthes->getDescription() << " - Price: R" << nepenthes->getPrice() << endl;
-    cout << endl;
-
-    // Test individual decorators
-    cout << "--- Individual Decorators ---" << endl;
-    auto daisyInClayPot = std::make_unique<PotDecorator>(std::move(daisy), "Clay");
-    cout << "Daisy in Clay Pot: " << daisyInClayPot->getDescription() << " - Price: R" << daisyInClayPot->getPrice() << endl;
-
-    auto aloeWithFertilizer = std::make_unique<FertilizerDecorator>(std::move(aloe), "Organic");
-    cout << "Aloe with Fertilizer: " << aloeWithFertilizer->getDescription() << " - Price: R" << aloeWithFertilizer->getPrice() << endl;
-    cout << endl;
-
-    // Test multiple decorations
-    cout << "--- Multiple Decorations ---" << endl;
-    auto premiumNepenthes = std::make_unique<FertilizerDecorator>(
-        std::make_unique<PotDecorator>(std::make_unique<Nepenthes>(), "Decorative"),
-        "Slow-Release");
-    cout << "Premium Nepenthes: " << premiumNepenthes->getDescription() << " - Price: R" << premiumNepenthes->getPrice() << endl;
-
-    // Different pot types
-    auto daisyCeramic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Ceramic");
-    auto daisyPlastic = std::make_unique<PotDecorator>(std::make_unique<Daisy>(), "Plastic");
-    cout << "Daisy Ceramic: " << daisyCeramic->getDescription() << " - Price: R" << daisyCeramic->getPrice() << endl;
-    cout << "Daisy Plastic: " << daisyPlastic->getDescription() << " - Price: R" << daisyPlastic->getPrice() << endl;
-    cout << endl;
-
-    // Different fertilizer types
-    cout << "--- Different Fertilizer Types ---" << endl;
-    auto aloeOrganic = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Organic");
-    auto aloeLiquid = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Liquid");
-    auto aloeSlowRelease = std::make_unique<FertilizerDecorator>(std::make_unique<AloeVera>(), "Slow-Release");
-
-    cout << "Aloe Organic: " << aloeOrganic->getDescription() << " - Price: R" << aloeOrganic->getPrice() << endl;
-    cout << "Aloe Liquid: " << aloeLiquid->getDescription() << " - Price: R" << aloeLiquid->getPrice() << endl;
-    cout << "Aloe Slow-Release: " << aloeSlowRelease->getDescription() << " - Price: R" << aloeSlowRelease->getPrice() << endl;
-    cout << endl;
-
-    cout << "--- Testing Construction Methods ---" << endl;
-    // Method 1: Direct construction with smart pointers
-    auto nested = std::make_unique<FertilizerDecorator>(
-        std::make_unique<PotDecorator>(std::make_unique<WhiteOak>(), "Clay"),
-        "Organic");
-    cout << "Nested (smart pointers): " << nested->getDescription() << endl;
-
-    // Method 2: Step-by-step construction
-    auto step1 = std::make_unique<WhiteOak>();
-    auto step2 = std::make_unique<PotDecorator>(std::move(step1), "Clay");
-    auto step3 = std::make_unique<FertilizerDecorator>(std::move(step2), "Organic");
-    cout << "Step-by-step: " << step3->getDescription() << endl;
-
-    cout << "Decorator Pattern Test Completed!" << endl << endl;
+    cout << "Abstract Factory Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testStatePattern()
@@ -358,10 +297,14 @@ void testStatePattern()
         vector<string> requiredCare = growthPlant.getGrowthState()->getRequiredCare();
         for (const string &care : requiredCare)
         {
-            if (care == "water") growthPlant.receiveWatering();
-            else if (care == "sunlight") growthPlant.receiveSunlight();
-            else if (care == "fertilizer") growthPlant.receiveFertilizing();
-            else if (care == "prune") growthPlant.receivePruning();
+            if (care == "water")
+                growthPlant.receiveWatering();
+            else if (care == "sunlight")
+                growthPlant.receiveSunlight();
+            else if (care == "fertilizer")
+                growthPlant.receiveFertilizing();
+            else if (care == "prune")
+                growthPlant.receivePruning();
         }
 
         growthPlant.completeCareSession();
@@ -369,8 +312,10 @@ void testStatePattern()
 
         if (growthPlant.shouldRemoveFromInventory())
         {
-            if (growthPlant.isDead()) cout << "Plant died! Remove from inventory." << endl;
-            else cout << "Plant sold! Remove from inventory." << endl;
+            if (growthPlant.isDead())
+                cout << "Plant died! Remove from inventory." << endl;
+            else
+                cout << "Plant sold! Remove from inventory." << endl;
             break;
         }
 
@@ -409,7 +354,8 @@ void testStatePattern()
     // Kill the plant with incomplete care
     for (int i = 0; i < 4; i++)
     {
-        if (i % 2 == 0) deadPlant.receiveWatering();
+        if (i % 2 == 0)
+            deadPlant.receiveWatering();
         deadPlant.completeCareSession();
         if (deadPlant.isDead())
         {
@@ -428,7 +374,8 @@ void testStatePattern()
     deadPlant.receiveSunlight();
     deadPlant.completeCareSession();
 
-    cout << "State Pattern Test Completed!" << endl << endl;
+    cout << "State Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testChainOfResponsibilityPattern()
@@ -460,11 +407,12 @@ void testChainOfResponsibilityPattern()
 
         // Process care through the chain
         venusFlytrap->handleCareRequest();
-        
+
         venusFlytrap->tick();
         venusFlytrap->completeCareSession();
-        
-        if (venusFlytrap->isDead()) break;
+
+        if (venusFlytrap->isDead())
+            break;
     }
 
     // Cleanup
@@ -474,7 +422,8 @@ void testChainOfResponsibilityPattern()
     delete pruneHandler;
     delete fertilizerHandler;
 
-    cout << "Chain of Responsibility Pattern Test Completed!" << endl << endl;
+    cout << "Chain of Responsibility Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testCommandPattern()
@@ -484,15 +433,15 @@ void testCommandPattern()
 
     // Create a test plant
     TestPlant plant("TestPlant");
-    
+
     cout << "--- Testing Individual Care Commands ---" << endl;
-    
+
     // Create commands
     Water waterCmd(&plant);
     Sun sunCmd(&plant);
     Fertilizer fertilizerCmd(&plant);
     Prune pruneCmd(&plant);
-    
+
     // Test initial state
     cout << "Initial resource levels:" << endl;
     cout << "Water: " << plant.getWaterLevel() << "%" << endl;
@@ -500,28 +449,29 @@ void testCommandPattern()
     cout << "Fertilizer: " << plant.getFertilizerLevel() << "%" << endl;
     cout << "Prune: " << plant.getPruneLevel() << "%" << endl;
     cout << endl;
-    
+
     // Execute commands
     cout << "Executing water command..." << endl;
     waterCmd.execute();
-    
+
     cout << "Executing sunlight command..." << endl;
     sunCmd.execute();
-    
+
     cout << "Executing fertilizer command..." << endl;
     fertilizerCmd.execute();
-    
+
     cout << "Executing prune command..." << endl;
     pruneCmd.execute();
-    
+
     // Test final state
     cout << "Final resource levels:" << endl;
     cout << "Water: " << plant.getWaterLevel() << "%" << endl;
     cout << "Sunlight: " << plant.getSunlightLevel() << "%" << endl;
     cout << "Fertilizer: " << plant.getFertilizerLevel() << "%" << endl;
     cout << "Prune: " << plant.getPruneLevel() << "%" << endl;
-    
-    cout << "Command Pattern Test Completed!" << endl << endl;
+
+    cout << "Command Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testObserverPattern()
@@ -532,21 +482,21 @@ void testObserverPattern()
     // Create a plant and observer
     TestPlant plant("ObservedPlant");
     ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(&plant);
-    
+
     cout << "--- Testing Observer Notifications ---" << endl;
-    
+
     // Degrade plant health to trigger observer
     cout << "Degrading plant health to trigger observer..." << endl;
     for (int i = 0; i < 5; i++)
     {
         plant.tick(); // This degrades resources
     }
-    
+
     // Manually set to needs care to trigger observer
     plant.setHealthState(new NeedsCare());
-    
-    
-    cout << "Observer Pattern Test Completed!" << endl << endl;
+
+    cout << "Observer Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testMediatorPattern()
@@ -562,7 +512,7 @@ void testMediatorPattern()
 
     Customer *customer1 = new Customer("AYUSH");
     Customer *customer2 = new Customer("FABIO");
-    Customer *customer3 = new Customer("DIDI");//didi ordered some roses :)
+    Customer *customer3 = new Customer("DIDI"); // didi ordered some roses :)
 
     mediator->addCustomer(customer1);
     mediator->addCustomer(customer2);
@@ -603,7 +553,8 @@ void testMediatorPattern()
     delete customer2;
     delete customer3;
 
-    cout << "Mediator Pattern Test Completed!" << endl << endl;
+    cout << "Mediator Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testCompositePattern()
@@ -615,13 +566,13 @@ void testCompositePattern()
     ConcreteCommMediator *mediator = new ConcreteCommMediator();
 
     cout << "--- Creating Individual Customers (Leaf Nodes) ---" << endl;
-    
+
     // Create individual customers (leaves)
     Customer *individual1 = new Customer("DIDI", mediator);
     Customer *individual2 = new Customer("AYUSH", mediator);
     Customer *individual3 = new Customer("JAITIN", mediator);
     Customer *individual4 = new Customer("SHAVIR", mediator);
-    
+
     cout << "Individual customers created:" << endl;
     cout << " - " << individual1->getName() << endl;
     cout << " - " << individual2->getName() << endl;
@@ -630,12 +581,12 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Creating Company Composites ---" << endl;
-    
+
     // Create companies (composite nodes)
     Company *techCompany = new Company("Tech Corp", mediator);
     Company *designStudio = new Company("Design Studio", mediator);
     Company *holdingCompany = new Company("Global Holdings", mediator);
-    
+
     cout << "Companies created:" << endl;
     cout << " - " << techCompany->getName() << endl;
     cout << " - " << designStudio->getName() << endl;
@@ -643,12 +594,12 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Building Customer Hierarchy ---" << endl;
-    
+
     // Add individual customers to companies
     techCompany->addCustomer(individual1);
     techCompany->addCustomer(individual2);
     designStudio->addCustomer(individual3);
-    
+
     cout << "Customers added to companies:" << endl;
     cout << " - " << individual1->getName() << " added to " << techCompany->getName() << endl;
     cout << " - " << individual2->getName() << " added to " << techCompany->getName() << endl;
@@ -656,12 +607,12 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Testing Nested Composite Structure ---" << endl;
-    
+
     // Create a hierarchical structure: holding company contains other companies
     holdingCompany->addCustomer(techCompany);
     holdingCompany->addCustomer(designStudio);
-    holdingCompany->addCustomer(individual4);  // Also add an individual directly
-    
+    holdingCompany->addCustomer(individual4); // Also add an individual directly
+
     cout << "Nested hierarchy created:" << endl;
     cout << " - " << holdingCompany->getName() << " contains:" << endl;
     cout << "   * " << techCompany->getName() << " (with 2 customers)" << endl;
@@ -670,13 +621,13 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Testing Composite Operations ---" << endl;
-    
+
     // Test discount calculation across the entire hierarchy
     cout << "Testing discount aggregation:" << endl;
     double techDiscount = techCompany->getDiscount();
     double designDiscount = designStudio->getDiscount();
     double holdingDiscount = holdingCompany->getDiscount();
-    
+
     cout << "Tech Company total discount: " << techDiscount << endl;
     cout << "Design Studio total discount: " << designDiscount << endl;
     cout << "Holding Company total discount: " << holdingDiscount << endl;
@@ -684,7 +635,7 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Testing Customer Removal ---" << endl;
-    
+
     // Remove a customer from a company
     cout << "Before removal - Tech Company discount: " << techCompany->getDiscount() << endl;
     techCompany->removeCustomer(individual1);
@@ -693,56 +644,59 @@ void testCompositePattern()
     cout << endl;
 
     cout << "--- Testing Communication Through Hierarchy ---" << endl;
-    
+
     // Test that all customers in the hierarchy can communicate
     cout << "Testing customer inquiries through mediator:" << endl;
     individual2->askQuestion("Do you offer corporate plant maintenance?", nullptr);
     cout << endl;
-    
+
     individual3->requestPurchase("Office Plants", 15);
     cout << endl;
-    
+
     individual4->askQuestion("What are your bulk purchase options?", nullptr);
     cout << endl;
 
     cout << "--- Testing Purchase History Tracking ---" << endl;
-    
+
     // Simulate purchases across the hierarchy
     individual2->requestPurchase("Snake Plant", 5);
     individual3->requestPurchase("Peace Lily", 8);
     individual4->requestPurchase("Rubber Plant", 12);
-    
+
     cout << "Purchase histories across hierarchy:" << endl;
-    
+
     vector<string> history2 = individual2->getPurchaseHistory();
     cout << individual2->getName() << " (" << techCompany->getName() << "): ";
-    for (const string& purchase : history2) {
-        cout << purchase << "; ";
-    }
-    cout << endl;
-    
-    vector<string> history3 = individual3->getPurchaseHistory();
-    cout << individual3->getName() << " (" << designStudio->getName() << "): ";
-    for (const string& purchase : history3) {
-        cout << purchase << "; ";
-    }
-    cout << endl;
-    
-    vector<string> history4 = individual4->getPurchaseHistory();
-    cout << individual4->getName() << " (" << holdingCompany->getName() << " direct): ";
-    for (const string& purchase : history4) 
+    for (const string &purchase : history2)
     {
         cout << purchase << "; ";
     }
-    cout << endl << endl;
+    cout << endl;
+
+    vector<string> history3 = individual3->getPurchaseHistory();
+    cout << individual3->getName() << " (" << designStudio->getName() << "): ";
+    for (const string &purchase : history3)
+    {
+        cout << purchase << "; ";
+    }
+    cout << endl;
+
+    vector<string> history4 = individual4->getPurchaseHistory();
+    cout << individual4->getName() << " (" << holdingCompany->getName() << " direct): ";
+    for (const string &purchase : history4)
+    {
+        cout << purchase << "; ";
+    }
+    cout << endl
+         << endl;
 
     cout << "--- Testing Uniform Treatment (Composite Pattern Benefit) ---" << endl;
-    
+
     // Demonstrate that we can treat individual customers and companies uniformly
-    vector<Customer*> allEntities = {individual2, individual3, techCompany, holdingCompany};
-    
+    vector<Customer *> allEntities = {individual2, individual3, techCompany, holdingCompany};
+
     cout << "Treating all customer entities uniformly:" << endl;
-    for (Customer* entity : allEntities) 
+    for (Customer *entity : allEntities)
     {
         cout << " - " << entity->getName() << " can communicate and has discount: " << entity->getDiscount() << endl;
     }
@@ -750,14 +704,15 @@ void testCompositePattern()
 
     // Cleanup
     cout << "--- Cleanup ---" << endl;
-    
-    delete individual1;  // Was removed from techCompany
-    delete holdingCompany;   
+
+    delete individual1; // Was removed from techCompany
+    delete holdingCompany;
     delete mediator;
-    
+
     cout << "Composite Pattern Test Completed Successfully!" << endl;
     cout << "Demonstrated: Leaf nodes (individuals), Composite nodes (companies), and nested hierarchies" << endl;
-    cout << "All customer types treated uniformly through Customer interface" << endl << endl;
+    cout << "All customer types treated uniformly through Customer interface" << endl
+         << endl;
 }
 
 void testIteratorPattern()
@@ -823,9 +778,10 @@ void testIteratorPattern()
     delete mature;
     delete healthy;
     delete dead;
-    delete inv;  // Inventory destructor should handle plant deletion
+    delete inv; // Inventory destructor should handle plant deletion
 
-    cout << "Iterator Pattern Test Completed!" << endl << endl;
+    cout << "Iterator Pattern Test Completed!" << endl
+         << endl;
 }
 
 void testIntegratedSystem()
@@ -840,10 +796,11 @@ void testIntegratedSystem()
     TemperatePlantFactory temperateFactory;
     ConcreteCommMediator *mediator = new ConcreteCommMediator();
     Inventory *inventory = new Inventory();
-    
+
     Manager *manager = new Manager("Store Manager", mediator);
     Worker *worker = new Worker("Plant Specialist", mediator);
-    cout << "System initialized with factories, inventory, staff, and mediator" << endl << endl;
+    cout << "System initialized with factories, inventory, staff, and mediator" << endl
+         << endl;
 
     // PHASE 2: PLANT CREATION & ENHANCEMENT - FIXED
     cout << "--- PHASE 2: PLANT CREATION & ENHANCEMENT ---" << endl;
@@ -851,12 +808,12 @@ void testIntegratedSystem()
     {
         auto premiumPlant = std::make_unique<FertilizerDecorator>(
             std::make_unique<PotDecorator>(
-                std::make_unique<Lilac>(),  // Create plant directly, not from factory
+                std::make_unique<Lilac>(), // Create plant directly, not from factory
                 "Ceramic"),
             "Organic");
         cout << "Created: " << premiumPlant->getDescription() << endl;
     } // premiumPlant automatically destroyed here
-    
+
     // Option 2: If you want to use factory, don't mix raw and smart pointers
     Plant *simplePlant = temperateFactory.createMediumPlant();
     cout << "Also created: " << simplePlant->getDescription() << endl;
@@ -865,65 +822,70 @@ void testIntegratedSystem()
     // PHASE 3: INVENTORY MANAGEMENT
     cout << "--- PHASE 3: INVENTORY MANAGEMENT ---" << endl;
     inventory->addMediumPlant(inventory->getTemperateFactory());
-    cout << "Inventory now contains " << inventory->getPlantCount() << " plants" << endl << endl;
+    cout << "Inventory now contains " << inventory->getPlantCount() << " plants" << endl
+         << endl;
 
     // PHASE 4: AUTOMATED PLANT CARE SYSTEM
     cout << "--- PHASE 4: AUTOMATED PLANT CARE SYSTEM ---" << endl;
     Plant *carePlant = temperateFactory.createSmallPlant();
-    
+
     // Set up Chain of Responsibility
     WaterHandler *waterHandler = new WaterHandler();
     SunHandler *sunHandler = new SunHandler();
     waterHandler->setNext(sunHandler);
     carePlant->setCareStrategy(waterHandler);
-    
+
     // Attach Observer - FIXED: Don't delete observer, plant owns it
     ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(carePlant);
-    
+
     // Simulate care cycle
     carePlant->tick();
     carePlant->tick();
     carePlant->handleCareRequest();
-    cout << "Automated care system processed plant needs" << endl << endl;
+    cout << "Automated care system processed plant needs" << endl
+         << endl;
 
     // PHASE 5: CUSTOMER INTERACTION
     cout << "--- PHASE 5: CUSTOMER INTERACTION SYSTEM ---" << endl;
     Customer *customer = new Customer("Retail Customer", mediator);
-    
+
     customer->askQuestion("Do you have mature plants available?", carePlant);
-    cout << "Customer communication handled through mediator" << endl << endl;
+    cout << "Customer communication handled through mediator" << endl
+         << endl;
 
     // PHASE 6: COMMAND SYSTEM
     cout << "--- PHASE 6: MANUAL COMMAND SYSTEM ---" << endl;
     Water waterCmd(carePlant);
     waterCmd.execute();
-    cout << " Manual care commands executed successfully" << endl << endl;
+    cout << " Manual care commands executed successfully" << endl
+         << endl;
 
     // PHASE 7: SYSTEM CLEANUP - FIXED
     cout << "--- PHASE 7: SYSTEM CLEANUP ---" << endl;
-    
+
     // Delete care plant (observer is owned by plant, so don't delete separately)
     delete carePlant;
-    
+
     // Delete the simple plant we created
     delete simplePlant;
-    
+
     // Delete handlers
     delete waterHandler;
     delete sunHandler;
-    
+
     // Delete customer
     delete customer;
-    
+
     // Delete inventory (it manages its own plants)
     delete inventory;
-    
+
     // Delete mediator and staff
     delete mediator;
     delete manager;
     delete worker;
-    
-    cout << " All resources properly cleaned up" << endl << endl;
+
+    cout << " All resources properly cleaned up" << endl
+         << endl;
 
     cout << "================================================================" << endl;
     cout << "=== ALL DESIGN PATTERNS SUCCESSFULLY INTEGRATED AND WORKING ===" << endl;
@@ -932,54 +894,6 @@ void testIntegratedSystem()
 }
 
 int main()
-{
-    try
-    {
-        cout << "PLANT STORE DESIGN PATTERNS TEST SUITE" << endl;
-        cout << "============================================" << endl;
-        cout << endl;
-
-        // Test each design pattern individually
-        cout << "INDIVIDUAL PATTERN TESTS:" << endl;
-        cout << "----------------------------" << endl;
-        testAbstractFactoryPattern();
-        testDecoratorPattern();
-        testStatePattern();
-        testChainOfResponsibilityPattern();
-        testCommandPattern();
-        testObserverPattern();
-        testMediatorPattern();
-        testCompositePattern();
-        testIteratorPattern();
-        
-        cout << endl;
-        cout << "INTEGRATED SYSTEM TEST:" << endl;
-        cout << "-------------------------" << endl;
-        testIntegratedSystem();
-
-        cout << "============================================" << endl;
-        cout << "ALL TESTS COMPLETED SUCCESSFULLY!" << endl;
-        cout << "============================================" << endl;
-        return 0;
-    }
-    catch (const char *msg)
-    {
-        cerr << "Exception caught: " << msg << endl;
-        return 1;
-    }
-    catch (const exception &e)
-    {
-        cerr << "Exception caught: " << e.what() << endl;
-        return 1;
-    }
-    catch (...)
-    {
-        cerr << "Unknown exception caught!" << endl;
-        return 1;
-    }
-}
-
-/*int testPlantGrowth()
 {
     cout << "=== PLANT GROWTH TESTING ===" << endl;
     cout << endl;
@@ -1018,45 +932,33 @@ int main()
     delete sunHandler;
     delete pruneHandler;
     delete fertilizerHandler;
-
-    return 0;
-}
-
-void testCommMediator();
-
-void testInventory();
-
-int main()
-{
     try
     {
-        cout << "PLANT STORE PATTERN TESTING" << endl;
-        cout << "============================" << endl;
+        cout << "PLANT STORE DESIGN PATTERNS TEST SUITE" << endl;
+        cout << "============================================" << endl;
         cout << endl;
 
-        // ayush testing mem fine
-        testAbstractFactory();
+        // Test each design pattern individually
+        cout << "INDIVIDUAL PATTERN TESTS:" << endl;
+        cout << "----------------------------" << endl;
+        testAbstractFactoryPattern();
         testDecoratorPattern();
-        testPatternsTogether();
+        testStatePattern();
+        testChainOfResponsibilityPattern();
+        testCommandPattern();
+        testObserverPattern();
+        testMediatorPattern();
+        testCompositePattern();
+        testIteratorPattern();
 
-        // // diya testing mem fine
-        testBasicPlantCreation();
-        testGrowthProgression();
-        testHealthDegradation();
-        testHealthRecovery();
-        testIndividualCareActions();
-        testDeadState();
+        cout << endl;
+        cout << "INTEGRATED SYSTEM TEST:" << endl;
+        cout << "-------------------------" << endl;
+        testIntegratedSystem();
 
-        // //jaitin testing mem fine
-        testPlantGrowth();
-
-        // //chimney testing mem fine
-        testCommMediator();
-
-        // //shavir testing mem leaks
-        testInventory();
-
-        cout << "All tests completed successfully!" << endl;
+        cout << "============================================" << endl;
+        cout << "ALL TESTS COMPLETED SUCCESSFULLY!" << endl;
+        cout << "============================================" << endl;
         return 0;
     }
     catch (const char *msg)
@@ -1229,7 +1131,7 @@ void testAbstractFactory()
     }
 }
 
-/*void testDecoratorPattern()
+void testDecoratorPattern()
 {
     cout << "=== TESTING DECORATOR PATTERN ===" << endl;
     cout << endl;
@@ -1298,7 +1200,6 @@ void testAbstractFactory()
     // No manual deletion needed - smart pointers handle cleanup automatically!
     cout << endl;
 }
-    
 
 void testPatternsTogether()
 {
@@ -1388,23 +1289,23 @@ void testPatternsTogether()
 }
 
 // made a concrete plant class without abstract factory for testing in isolation
-class TestPlant : public Plant
-{
+// class TestPlant : public Plant
+// {
 
-public:
-    TestPlant(string species) : Plant(species)
-    {
-        setGrowthRequirements(2, 3, 4); // seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
-        setSize("small");
-        setPrice(69.99);
-        setDescription("like a little succulant idk");
-    }
+// public:
+//     TestPlant(string species) : Plant(species)
+//     {
+//         setGrowthRequirements(2, 3, 4); // seed: 2 cycles, sprout: 3 cycles, mature: 4 cycles
+//         setSize("small");
+//         setPrice(69.99);
+//         setDescription("like a little succulant idk");
+//     }
 
-    Plant *clone() override
-    {
-        return new TestPlant(*this);
-    }
-};
+//     Plant *clone() override
+//     {
+//         return new TestPlant(*this);
+//     }
+// };
 
 // Mock observer for testing notifications
 // class TestObserver : public ConcreteGrowthObserver
@@ -1613,16 +1514,158 @@ void testDeadState()
     cout << endl;
 }
 
+void testStaffWithInventory()
+{
+    cout << "=== STAFF WITH INVENTORY TESTING ===" << endl;
+    cout << endl;
+
+    // Create system components
+    Inventory *nurseryInventory = new Inventory();
+    ConcreteCommMediator *commMediator = new ConcreteCommMediator();
+
+    // ADD SOME PLANTS TO INVENTORY FIRST
+    cout << "=== SETUP: Adding plants to inventory ===" << endl;
+    GreenHouse *carnivorous = nurseryInventory->getCarnivorousFactory();
+    GreenHouse *tropical = nurseryInventory->getTropicalFactory();
+    GreenHouse *temperate = nurseryInventory->getTemperateFactory();
+    GreenHouse *succulent = nurseryInventory->getSucculentFactory();
+
+    nurseryInventory->addMediumPlant(carnivorous);
+    nurseryInventory->addSmallPlant(tropical);
+    nurseryInventory->addLargePlant(temperate);
+    nurseryInventory->addMediumPlant(carnivorous); // Add another carnivorous
+    nurseryInventory->addSmallPlant(succulent);
+    nurseryInventory->addLargePlant(tropical);
+
+    cout << "Initial inventory state:" << endl;
+    nurseryInventory->print();
+    cout << endl;
+
+    // Create staff with inventory access
+    Worker worker1("Alice", commMediator, nurseryInventory);
+    Worker worker2("Charlie", commMediator, nurseryInventory);
+    Manager manager1("Bob", commMediator, nurseryInventory);
+
+    // Create test customers
+    Customer customer1("John");
+    Customer customer2("Sarah");
+    Customer customer3("Mike");
+
+    // Add customers to mediator
+    commMediator->addCustomer(&customer1);
+    commMediator->addCustomer(&customer2);
+    commMediator->addCustomer(&customer3);
+
+    cout << "=== TEST 1: Customer Queries with Real Inventory ===" << endl;
+
+    // USE CORRECT PLANT NAMES THAT MATCH FACTORY OUTPUT
+    commMediator->notifyStaff(&customer1, "Do you have any carnivorous plants in stock?", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer2, "I need care advice for my tropical plant", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer3, "I want to make a bulk purchase of temperate plants", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 2: Purchase Requests with Inventory Checking ===" << endl;
+    commMediator->notifyStaff(&customer1, "I want to buy 2 carnivorous plants", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer2, "Can I purchase 1 tropical plant?", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer3, "I need 10 temperate plants for my garden", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 3: Direct Staff Inventory Methods ===" << endl;
+    // Worker checking inventory directly
+    cout << "Worker checking inventory:" << endl;
+    worker1.checkInventory("CarnivorousPlant");
+    worker2.checkInventory("TropicalPlant");
+    worker1.checkInventory("SucculentPlant");
+    cout << endl;
+
+    // Manager checking overall status
+    cout << "Manager checking inventory status:" << endl;
+    manager1.checkInventoryStatus();
+    cout << endl;
+
+    cout << "=== TEST 4: Inventory After Operations ===" << endl;
+    nurseryInventory->print();
+    cout << endl;
+
+    cout << "=== TEST 5: Staff Information and Availability ===" << endl;
+    cout << "Worker 1 name: " << worker1.getName() << endl;
+    cout << "Worker 2 name: " << worker2.getName() << endl;
+    cout << "Manager name: " << manager1.getName() << endl;
+
+    cout << "Setting worker 1 as unavailable..." << endl;
+    worker1.setAvailability(false);
+    cout << "Worker 1 availability: " << (worker1.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << "Worker 2 availability: " << (worker2.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << "Manager availability: " << (manager1.getAvailability() ? "Available" : "Unavailable") << endl;
+    cout << endl;
+
+    cout << "=== TEST 6: Advanced Inventory Queries ===" << endl;
+    // Test plant availability checks
+    cout << "Carnivorous plant availability (2 plants): "
+         << (worker1.checkPlantAvailability("CarnivorousPlant", 2) ? "Available" : "Not Available") << endl;
+    cout << "Carnivorous plant stock count: " << worker1.getPlantStockCount("CarnivorousPlant") << endl;
+    cout << "Tropical plant stock count: " << worker1.getPlantStockCount("TropicalPlant") << endl;
+    cout << "Temperate plant stock count: " << worker1.getPlantStockCount("TemperatePlant") << endl;
+    cout << "Succulent plant stock count: " << worker1.getPlantStockCount("SucculentPlant") << endl;
+    cout << "Total plants in inventory: " << manager1.getTotalPlantCount() << endl;
+    cout << endl;
+
+    cout << "=== TEST 7: Edge Cases ===" << endl;
+    // Non-existent plant type
+    commMediator->notifyStaff(&customer1, "Do you have blue moonflowers?", nullptr);
+    cout << endl;
+
+    // Large quantity request
+    commMediator->notifyStaff(&customer2, "I want to buy 100 carnivorous plants", nullptr);
+    cout << endl;
+
+    // Test with plants that don't exist in inventory
+    cout << "Checking availability for non-existent plant:" << endl;
+    cout << "BlueMoonflower availability: " << (worker1.checkPlantAvailability("BlueMoonflower") ? "Available" : "Not Available") << endl;
+    cout << "BlueMoonflower stock count: " << worker1.getPlantStockCount("BlueMoonflower") << endl;
+    cout << endl;
+
+    cout << "=== TEST 8: Mixed Queries ===" << endl;
+    commMediator->notifyStaff(&customer1, "What's the price of succulent plants?", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer2, "How much sunlight do carnivorous plants need?", nullptr);
+    cout << endl;
+
+    commMediator->notifyStaff(&customer3, "I have a complaint about my recent purchase", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 9: Final Inventory State ===" << endl;
+    manager1.checkInventoryStatus();
+    cout << endl;
+
+    // Cleanup
+    delete nurseryInventory;
+    delete commMediator;
+
+    cout << "=== STAFF WITH INVENTORY TESTING COMPLETE ===" << endl;
+    cout << endl;
+}
+
 void testCommMediator()
 {
     cout << "=== COMMMEDIATOR TESTING ===" << endl
          << endl;
 
     ConcreteCommMediator *mediator = new ConcreteCommMediator();
+    Inventory *inventory = new Inventory();
 
-    Manager *manager = new Manager("SHAVIR (Manager)", mediator);
-    Worker *worker1 = new Worker("DIYA (Worker)", mediator);
-    Worker *worker2 = new Worker("CHINMAYI (Worker)", mediator);
+    Manager *manager = new Manager("SHAVIR (Manager)", mediator, inventory);
+    Worker *worker1 = new Worker("DIYA (Worker)", mediator, inventory);
+    Worker *worker2 = new Worker("CHINMAYI (Worker)", mediator, inventory);
 
     Customer *customer1 = new Customer("AYUSH");
     Customer *customer2 = new Customer("FABIO");
@@ -1644,15 +1687,25 @@ void testCommMediator()
     mediator->notifyStaff(customer3, "How much sunlight do succulents need?", nullptr);
     cout << endl;
 
-    cout << "=== TEST 2: Staff Availability ===" << endl;
+    cout << "=== TEST 2: Inventory-Based Queries ===" << endl; // NEW TEST SECTION
+    mediator->notifyStaff(customer1, "Do you have carnivorous plants in stock?", nullptr);
+    cout << endl;
+
+    mediator->notifyStaff(customer2, "I want to buy 2 tropical plants", nullptr);
+    cout << endl;
+
+    mediator->notifyStaff(customer3, "What temperate plants do you have available?", nullptr);
+    cout << endl;
+
+    cout << "=== TEST 3: Staff Availability ===" << endl;
     mediator->notifyStaff(customer1, "idk a plant ques", nullptr);
     cout << endl;
 
-    cout << "=== TEST 3: Direct Staff Assignment ===" << endl;
+    cout << "=== TEST 4: Direct Staff Assignment ===" << endl;
     mediator->assignStaffToCustomer(worker2, customer1);
     cout << endl;
 
-    cout << "=== TEST 4: Get Assigned Staff ===" << endl;
+    cout << "=== TEST 5: Get Assigned Staff ===" << endl;
     StaffMember *assigned = mediator->getAssignedStaff(customer1);
     if (assigned)
     {
@@ -1660,7 +1713,6 @@ void testCommMediator()
     }
     cout << endl;
 
-    // Cleanup
     delete mediator;
     delete manager;
     delete worker1;
@@ -1668,6 +1720,7 @@ void testCommMediator()
     delete customer1;
     delete customer2;
     delete customer3;
+    delete inventory;
 
     cout << "=== YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAY ===" << endl;
 }
@@ -1842,4 +1895,3 @@ void testInventory()
     // delete stock;
     delete inv;
 }
-    */

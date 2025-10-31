@@ -2,8 +2,9 @@
 #include <iostream>
 using namespace std;
 
-StaffMember::StaffMember(const string &name, CommMediator *mediator)
-	: mediator(nullptr), currentState(), commandHistory(), commMediator(mediator), staffName(name), isAvailable(true)
+StaffMember::StaffMember(const string &name, CommMediator *mediator, Inventory *inventory)
+	: mediator(nullptr), currentState(), commandHistory(),
+	  commMediator(mediator), staffName(name), isAvailable(true), inventory(inventory)
 {
 	if (commMediator)
 	{
@@ -19,6 +20,11 @@ void StaffMember::setCommMediator(CommMediator *commMediator)
 	{
 		commMediator->addStaff(this);
 	}
+}
+
+void StaffMember::setInventory(Inventory *inv)
+{
+	this->inventory = inv;
 }
 
 string StaffMember::getName() const
