@@ -35,6 +35,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 # Run the application
 run: clean $(TARGET)
 	$(TARGET)
+	@LC_ALL=en_US.UTF-8 ./$(TARGET)
 
 # Run without cleaning
 run_only: $(TARGET)

@@ -6,6 +6,8 @@
 #include <sstream>
 #include <stack>
 #include <fstream>
+#include <locale>
+#include <codecvt>
 
 #include "../include/Caretaker.h"
 #include "../include/Memento.h"
@@ -105,28 +107,11 @@ int testPlantGrowth()
     return 0;
 }
 
-void displayPlantNurseryArt() {
-    std::ifstream file("plant.md");
-    std::string line;
-    
-    if (file.is_open()) {
-        while (std::getline(file, line)) {
-            std::cout << line << std::endl;
-        }
-        file.close();
-    } else {
-        std::cout << "PLANT NURSERY SYSTEM" << std::endl; // Fallback
-    }
-}
-
-
 void testCommMediator();
 
 void testInventory();
 
 void testStaffWithInventory();
-
-void displayPlantNurseryArt();
 
 int main()
 {
@@ -137,29 +122,27 @@ int main()
         cout << endl;
 
         // ayush testing mem fine
-        displayPlantNurseryArt();
+        testAbstractFactory();
+        testDecoratorPattern();
+        testPatternsTogether();
 
-        // testAbstractFactory();
-        // testDecoratorPattern();
-        // testPatternsTogether();
+        // diya testing mem fine
+        testBasicPlantCreation();
+        testGrowthProgression();
+        testHealthDegradation();
+        testHealthRecovery();
+        testIndividualCareActions();
+        testDeadState();
 
-        // // // diya testing mem fine
-        // testBasicPlantCreation();
-        // testGrowthProgression();
-        // testHealthDegradation();
-        // testHealthRecovery();
-        // testIndividualCareActions();
-        // testDeadState();
+        //jaitin testing mem fine
+        testPlantGrowth();
 
-        // // //jaitin testing mem fine
-        // testPlantGrowth();
+        //chimney testing mem fine
+        testCommMediator();
+        testStaffWithInventory();
 
-        // // //chimney testing mem fine
-        // testCommMediator();
-        // testStaffWithInventory();
-
-        // //shavir testing mem leaks
-        //testInventory();
+        //shavir testing mem leaks
+        testInventory();
 
         cout << "All tests completed successfully!" << endl;
         return 0;
