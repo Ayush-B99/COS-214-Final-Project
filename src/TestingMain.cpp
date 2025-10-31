@@ -568,7 +568,7 @@ void testBasicPlantCreation()
     cout << "Price: $" << plant.getPrice() << endl;
     cout << "Size: " << plant.getsize() << endl;
     cout << "Is Dead: " << (plant.isDead() ? "Yes" : "No") << endl;
-    cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
+    //cout << "Is Mature: " << (plant.isMature() ? "Yes" : "No") << endl;
     
     plant.printFullStatus();
     cout << endl;

@@ -293,7 +293,6 @@ void Plant::printFullStatus()
 bool Plant::shouldRemoveFromInventory()
 {
 	return growthState->isSold() || healthState->isDead();
-
 }
 
 bool Plant::isReadyForStock()
