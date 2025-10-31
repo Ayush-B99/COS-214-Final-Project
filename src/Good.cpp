@@ -3,22 +3,30 @@
 #include "../include/Plant.h"
 #include "../include/Dead.h"
 
-void Good::degrade(Plant* plant) {
-	cout << plant->getSpecies() << " is starting to need care." << endl;
-	plant->setHealthState(new NeedsCare());
-	plant->notify();
+Good::~Good()
+{
 }
 
-void Good::improve(Plant* plant) {
+void Good::degrade(Plant *plant)
+{
+	cout << plant->getSpecies() << " is starting to need care." << endl;
+	plant->setHealthState(new NeedsCare());
+
+}
+
+void Good::improve(Plant *plant)
+{
 	// Already in good state; no improvement needed.
 	cout << plant->getSpecies() << " is already in good health." << endl;
 }
 
-string Good::getStatusMessage(Plant* plant) {
+string Good::getStatusMessage(Plant *plant)
+{
 	return plant->getSpecies() + " health: Good ";
 }
 
-bool Good::isDead() {
+bool Good::isDead()
+{
 	return false;
 }
 

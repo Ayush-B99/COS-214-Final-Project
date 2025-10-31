@@ -1,24 +1,51 @@
 #include "../include/StaffMember.h"
+#include <iostream>
+using namespace std;
 
-void StaffMember::setMediator(GrowthMediator* mediator) {
-	this->mediator = mediator;
+StaffMember::StaffMember(const string &name, CommMediator *mediator, Inventory* inventory)
+    : mediator(nullptr), currentState(), commandHistory(), 
+      commMediator(mediator), staffName(name), isAvailable(true), inventory(inventory)
+{
+    if (commMediator)
+    {
+        commMediator->addStaff(this);
+    }
 }
 
-void StaffMember::setCommMediator(CommMediator* commMediator) {
+void StaffMember::setCommMediator(CommMediator *commMediator)
+{
 	this->commMediator = commMediator;
+
+	if (commMediator)
+	{
+		commMediator->addStaff(this);
+	}
 }
 
-void StaffMember::setCommand(Command* cmd) {
-	// TODO - implement StaffMember::setCommand
-	throw "Not yet implemented";
+void StaffMember::setInventory(Inventory* inv)
+{
+    this->inventory = inv;
 }
 
-void StaffMember::executeCommand() {
-	// TODO - implement StaffMember::executeCommand
-	throw "Not yet implemented";
+string StaffMember::getName() const
+{
+	return staffName;
 }
 
-void StaffMember::undoLastCommand() {
-	// TODO - implement StaffMember::undoLastCommand
-	throw "Not yet implemented";
+bool StaffMember::getAvailability() const
+{
+	return isAvailable;
+}
+
+void StaffMember::setAvailability(bool available)
+{
+	isAvailable = available;
+}
+
+void StaffMember::respondToCustomer(Customer *customer, const string &response, Plant *plant)
+{
+	if (commMediator)
+	{
+		commMediator->notifyCustomer(this, customer, response, plant);
+	}
 }

@@ -2,10 +2,13 @@
 
 Condelabra::Condelabra() : LargePlant("Condelabra") {
 	// TODO - implement Condelabra::Condelabra
+	setPrice(120.0);
+    setDescription("A tall succulent with candelabra-like branches");
 }
 
 Condelabra::Condelabra(Condelabra& other) : LargePlant(other) {
 	// TODO - implement Condelabra::Condelabra
+	setPrice(other.getPrice());
 }
 
 Condelabra::~Condelabra() {

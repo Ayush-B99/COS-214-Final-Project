@@ -1,6 +1,6 @@
 # Variables
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
+CXXFLAGS = -std=c++14 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
 LDFLAGS = 
 ifneq ("$(wildcard lib)","")
     LDFLAGS += -Llib
@@ -12,28 +12,9 @@ BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 #the line below compiles everything
-# SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+SOURCES = $(wildcard $(SRCDIR)/*.cpp)
 # this line can filter out classes listed to not build/compile and run
-# SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
-
-SOURCES = $(SRCDIR)/Plant.cpp \
-		  $(SRCDIR)/HealthState.cpp \
-		  $(SRCDIR)/Good.cpp \
-		  $(SRCDIR)/NeedsCare.cpp \
-		  $(SRCDIR)/Dead.cpp \
-		  $(SRCDIR)/GrowthState.cpp \
-		  $(SRCDIR)/Seed.cpp \
-		  $(SRCDIR)/Sprout.cpp \
-		  $(SRCDIR)/Mature.cpp \
-		  $(SRCDIR)/Sold.cpp \
-		  $(SRCDIR)/GrowthObserver.cpp \
-		  $(SRCDIR)/TestingMain.cpp 
-		  
-# 		  $(SRCDIR)/Plant.cpp \	
-# 		  $(SRCDIR)/Plant.cpp \	
-# 		  $(SRCDIR)/Plant.cpp \	
-# 		  $(SRCDIR)/Plant.cpp \	
-		  
+#SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
 ZIP_DIR = submit
@@ -231,6 +212,11 @@ help:
 	@echo "  no_ctor        - Set to 1 to exclude the default constructor."
 	@echo "  no_dtor        - Set to 1 to exclude the default destructor."
 	@echo "  methods        - A space-separated list of methods to include, passed as a quoted string."
+
+val:
+	g++ -fdiagnostics-color=always -g src/*.cpp -o build/TestingMain
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
+
 
 
 

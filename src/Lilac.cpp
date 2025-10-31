@@ -2,12 +2,13 @@
 
 Lilac::Lilac() : MediumPlant("Lilac") {
 	// TODO - implement Lilac::Lilac
-	
+	setPrice(75.0);
+    setDescription("A fragrant shrub with purple blossoms");
 }
 
 Lilac::Lilac(Lilac& other) : MediumPlant(other) {
 	// TODO - implement Lilac::Lilac
-	
+	setPrice(other.getPrice());
 }
 
 Lilac::~Lilac() {

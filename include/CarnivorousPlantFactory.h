@@ -1,3 +1,11 @@
+/**
+ * @file CarnivorousPlantFactory.h
+ * @brief Concrete factory for creating carnivorous plants.
+ * 
+ * This factory creates carnivorous plants of different sizes including
+ * Pitcher, Sundew, and Nepenthes species.
+ */
+
 #ifndef CARNIVOROUSPLANTFACTORY_H
 #define CARNIVOROUSPLANTFACTORY_H
 
@@ -14,24 +22,50 @@ using namespace std;
 #include "GreenHouse.h"
 #include "Plant.h"
 
-// specific plant types inc. here
+// Specific carnivorous plant types
 #include "Pitcher.h"
 #include "Sundew.h"
 #include "Nepenthes.h"
 
+/**
+ * @class CarnivorousPlantFactory
+ * @brief Concrete factory for creating carnivorous plants of various sizes.
+ * 
+ * Implements the GreenHouse interface to create small, medium, and large
+ * carnivorous plants such as Pitcher plants, Sundews, and Nepenthes.
+ * 
+ * @note This factory uses the Prototype pattern internally by calling clone()
+ * on prototype plant objects to create new instances efficiently.
+ */
 class CarnivorousPlantFactory : public GreenHouse {
-
-
 public:
-	CarnivorousPlantFactory();
+    /**
+     * @brief Default constructor.
+     */
+    CarnivorousPlantFactory();
 
-	~CarnivorousPlantFactory();
+    /**
+     * @brief Destructor.
+     */
+    ~CarnivorousPlantFactory();
 
-	Plant* createSmallPlant();
+    /**
+     * @brief Creates a small carnivorous plant.
+     * @return Pointer to a small carnivorous Plant object.
+     */
+    Plant* createSmallPlant();
 
-	Plant* createMediumPlant();
+    /**
+     * @brief Creates a medium carnivorous plant.
+     * @return Pointer to a medium carnivorous Plant object.
+     */
+    Plant* createMediumPlant();
 
-	Plant* createLargePlant();
+    /**
+     * @brief Creates a large carnivorous plant.
+     * @return Pointer to a large carnivorous Plant object.
+     */
+    Plant* createLargePlant();
 };
 
 #endif

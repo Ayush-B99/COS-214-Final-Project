@@ -1,16 +1,15 @@
 #include "../include/MediumPlant.h"
 
-MediumPlant::MediumPlant(string species) {
+MediumPlant::MediumPlant(string species) : Plant(species) {
 	// TODO - implement MediumPlant::MediumPlant
-	throw "Not yet implemented";
+	size = "Medium";
 }
 
 MediumPlant::~MediumPlant() {
 	// TODO - implement MediumPlant::~MediumPlant
-	throw "Not yet implemented";
 }
 
 char MediumPlant::getSize() {
 	// TODO - implement MediumPlant::getSize
-	throw "Not yet implemented";
+	return 'M';
 }

@@ -1,16 +1,18 @@
 #include "../include/GrowthState.h"
+#include "../include/Plant.h"
 
-GrowthState::~GrowthState() {
+GrowthState::~GrowthState()
+{
+	// TODO - implement GrowthState::~GrowthState
+	
 }
 
-bool GrowthState::isMature() {
+bool GrowthState::isSold()
+{
 	return false;
 }
 
-bool GrowthState::isSold() {
+bool GrowthState::isMature()
+{
 	return false;
 }
-
-
-
-

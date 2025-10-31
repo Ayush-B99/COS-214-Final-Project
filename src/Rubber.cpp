@@ -1,13 +1,12 @@
 #include "../include/Rubber.h"
 
 Rubber::Rubber() : LargePlant("Rubber") {
-	// return nothing
-	
+	setPrice(110.0);
+    setDescription("A robust plant with large, glossy leaves");
 }
 
 Rubber::Rubber(Rubber& other) : LargePlant(other) {
-	// return nothing
-	
+	setPrice(other.getPrice());
 }
 
 Rubber::~Rubber() {

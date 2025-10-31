@@ -19,15 +19,15 @@ class Caretaker
 {
 
 public:
-	vector<Memento<T>> mementos;
+    vector<Memento<T>> mementos;
 
-	void addMemento(Memento<T> m);
+    void addMemento(Memento<T> m);
 
-	void undo();
+    void undo();
 
-	Memento<T> getMemento(int index);
+    Memento<T> getMemento(int index);
 
-	Memento<T> getLastMemento();
+    Memento<T> getLastMemento();
 };
 
 #endif

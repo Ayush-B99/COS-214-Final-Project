@@ -1,13 +1,12 @@
 #include "../include/BirdOfParadise.h"
 
 BirdOfParadise::BirdOfParadise() : MediumPlant("Bird Of Paradise") {
-	// leave empty
-
+	setPrice(85.0);
+    setDescription("An exotic plant with bird-like flowers");
 }
 
 BirdOfParadise::BirdOfParadise(BirdOfParadise& other) : MediumPlant(other) {
-	// leave emtpy
-	
+	setPrice(other.getPrice());
 }
 
 BirdOfParadise::~BirdOfParadise() {
