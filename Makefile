@@ -214,14 +214,11 @@ help:
 	@echo "  methods        - A space-separated list of methods to include, passed as a quoted string."
 
 val:
-	g++ -fdiagnostics-color=always -g src/*.cpp -o build/TestingMain
+	g++ -fdiagnostics-color=always -g $(filter-out src/Memento.cpp src/Caretaker.cpp, $(wildcard src/*.cpp)) -o build/TestingMain
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
 	
 val_only:
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
-
-
-
 
 # Phony targets
 .PHONY: all run run_only clean check coverage leaks summary zip_test zip prepare_zip_test prepare_zip setup h cpp class help
