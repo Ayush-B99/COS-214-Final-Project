@@ -2,73 +2,50 @@
 #include <iostream>
 using namespace std;
 
-
-
-StaffMember::StaffMember(const string& name, CommMediator* mediator)
-    : mediator(nullptr)                    
-    , currentState()
-    , commandHistory()
-    , commMediator(mediator)
-    , staffName(name)
-    , isAvailable(true)
+StaffMember::StaffMember(const string &name, CommMediator *mediator, Inventory* inventory)
+    : mediator(nullptr), currentState(), commandHistory(), 
+      commMediator(mediator), staffName(name), isAvailable(true), inventory(inventory)
 {
-    if (commMediator) {
+    if (commMediator)
+    {
         commMediator->addStaff(this);
     }
 }
 
-
-
-
-void StaffMember::setCommMediator(CommMediator* commMediator) 
+void StaffMember::setCommMediator(CommMediator *commMediator)
 {
 	this->commMediator = commMediator;
 
-	if (commMediator) 
+	if (commMediator)
 	{
-        commMediator->addStaff(this);
-    }
+		commMediator->addStaff(this);
+	}
 }
 
-string StaffMember::getName() const 
+void StaffMember::setInventory(Inventory* inv)
 {
-    return staffName;
+    this->inventory = inv;
 }
 
-bool StaffMember::getAvailability() const 
+string StaffMember::getName() const
 {
-	return isAvailable; 
+	return staffName;
 }
 
-void StaffMember::setAvailability(bool available) 
-{ 
-	isAvailable = available; 
+bool StaffMember::getAvailability() const
+{
+	return isAvailable;
 }
 
-
-
-void StaffMember::respondToCustomer(Customer* customer, const string& response, Plant* plant) {
-    if (commMediator) {
-        commMediator->notifyCustomer(this, customer, response, plant);
-    }
+void StaffMember::setAvailability(bool available)
+{
+	isAvailable = available;
 }
 
-/////////////////////////stuff below this aint mineeee - chinmayi///////////////////////////
-void StaffMember::setMediator(GrowthMediator* mediator) {
-	this->mediator = mediator;
-}
-
-void StaffMember::setCommand(Command* cmd) {
-	// TODO - implement StaffMember::setCommand
-	throw "Not yet implemented";
-}
-
-void StaffMember::executeCommand() {
-	// TODO - implement StaffMember::executeCommand
-	throw "Not yet implemented";
-}
-
-void StaffMember::undoLastCommand() {
-	// TODO - implement StaffMember::undoLastCommand
-	throw "Not yet implemented";
+void StaffMember::respondToCustomer(Customer *customer, const string &response, Plant *plant)
+{
+	if (commMediator)
+	{
+		commMediator->notifyCustomer(this, customer, response, plant);
+	}
 }

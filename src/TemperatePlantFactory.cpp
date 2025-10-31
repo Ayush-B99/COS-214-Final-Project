@@ -1,26 +1,33 @@
 #include "../include/TemperatePlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
-TemperatePlantFactory::TemperatePlantFactory() {
-	// TODO - implement TemperatePlantFactory::TemperatePlantFactory
-	throw "Not yet implemented";
+TemperatePlantFactory::TemperatePlantFactory()
+{
+	// empty constructor
 }
 
-TemperatePlantFactory::~TemperatePlantFactory() {
-	// TODO - implement TemperatePlantFactory::~TemperatePlantFactory
-	throw "Not yet implemented";
+TemperatePlantFactory::~TemperatePlantFactory()
+{
+	// no mem management needed for now
 }
 
-vector<Plant*> TemperatePlantFactory::createSmallPlant() {
-	// TODO - implement TemperatePlantFactory::createSmallPlant
-	throw "Not yet implemented";
+Plant *TemperatePlantFactory::createSmallPlant()
+{
+	Daisy *daisy = new Daisy();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(daisy);
+	return daisy;
 }
 
-vector<Plant*> TemperatePlantFactory::createMediumPlant() {
-	// TODO - implement TemperatePlantFactory::createMediumPlant
-	throw "Not yet implemented";
+Plant *TemperatePlantFactory::createMediumPlant()
+{
+	Lilac *lilac = new Lilac();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(lilac);
+	return lilac;
 }
 
-vector<Plant*> TemperatePlantFactory::createLargePlant() {
-	// TODO - implement TemperatePlantFactory::createLargePlant
-	throw "Not yet implemented";
+Plant *TemperatePlantFactory::createLargePlant()
+{
+	WhiteOak *whiteOak = new WhiteOak();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(whiteOak);
+	return whiteOak;
 }

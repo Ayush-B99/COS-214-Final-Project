@@ -19,6 +19,12 @@ class Sprout : public GrowthState {
 
 public:
 	void grow(Plant* plant);
+
+	vector<string> getRequiredCare();
+
+	string getStatusMessage(Plant* plant);
+
+	string getName();
 };
 
 #endif

@@ -9,8 +9,6 @@
 #include <sstream>
 #include <stack>
 
-#include "Command.h"
-
 using namespace std;
 
 #include "Command.h"
@@ -19,14 +17,13 @@ using namespace std;
 class Prune : public Command
 {
 
-public:
+private:
 	Plant *receiver;
 
-	void PruneCommand(Plant *plant);
+public:
+	Prune(Plant *plant);
 
 	void execute();
-
-	void undo();
 };
 
 #endif

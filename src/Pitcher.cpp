@@ -2,20 +2,21 @@
 
 Pitcher::Pitcher() : MediumPlant("Pitcher") {
 	// TODO - implement Pitcher::Pitcher
-	throw "Not yet implemented";
+	setPrice(95.0);
+    setDescription("A carnivorous plant with pitcher-shaped traps");
 }
 
 Pitcher::Pitcher(Pitcher& other) : MediumPlant(other) {
 	// TODO - implement Pitcher::Pitcher
-	throw "Not yet implemented";
+	setPrice(other.getPrice());
 }
 
 Pitcher::~Pitcher() {
 	// TODO - implement Pitcher::~Pitcher
-	throw "Not yet implemented";
+	
 }
 
 Plant* Pitcher::clone() {
 	// TODO - implement Pitcher::clone
-	throw "Not yet implemented";
+	return new Pitcher(*this);
 }

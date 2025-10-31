@@ -4,3 +4,4 @@
 *.gcno
 .vscode
 build
+bin/my_project

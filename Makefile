@@ -1,6 +1,6 @@
 # Variables
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
+CXXFLAGS = -std=c++14 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
 LDFLAGS = 
 ifneq ("$(wildcard lib)","")
     LDFLAGS += -Llib
@@ -11,10 +11,71 @@ BUILDDIR = build
 BINDIR = bin
 DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
-#the line below compiles everything
-SOURCES = $(wildcard $(SRCDIR)/*.cpp)
-# this line can filter out classes listed to not build/compile and run
-#SOURCES = $(filter-out $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
+
+SOURCES = $(SRCDIR)/SucculentPlantFactory.cpp \
+		  $(SRCDIR)/GreenHouse.cpp \
+		  $(SRCDIR)/Plant.cpp \
+          $(SRCDIR)/SmallPlant.cpp \
+          $(SRCDIR)/MediumPlant.cpp \
+          $(SRCDIR)/LargePlant.cpp \
+          $(SRCDIR)/Daisy.cpp \
+          $(SRCDIR)/AloeVera.cpp \
+          $(SRCDIR)/WhiteOak.cpp \
+          $(SRCDIR)/HenAndChicks.cpp \
+          $(SRCDIR)/Nerve.cpp \
+          $(SRCDIR)/Lilac.cpp \
+          $(SRCDIR)/BirdOfParadise.cpp \
+          $(SRCDIR)/Condelabra.cpp \
+          $(SRCDIR)/Rubber.cpp \
+          $(SRCDIR)/Sundew.cpp \
+          $(SRCDIR)/Pitcher.cpp \
+          $(SRCDIR)/Nepenthes.cpp \
+          $(SRCDIR)/PlantDecorator.cpp \
+          $(SRCDIR)/PotDecorator.cpp \
+          $(SRCDIR)/FertilizerDecorator.cpp \
+          $(SRCDIR)/TemperatePlantFactory.cpp \
+          $(SRCDIR)/TropicalPlantFactory.cpp \
+          $(SRCDIR)/CarnivorousPlantFactory.cpp \
+		  $(SRCDIR)/HealthState.cpp \
+		  $(SRCDIR)/Good.cpp \
+		  $(SRCDIR)/NeedsCare.cpp \
+		  $(SRCDIR)/Dead.cpp \
+		  $(SRCDIR)/GrowthState.cpp \
+		  $(SRCDIR)/Seed.cpp \
+		  $(SRCDIR)/Sprout.cpp \
+		  $(SRCDIR)/Mature.cpp \
+		  $(SRCDIR)/GrowthObserver.cpp \
+          $(SRCDIR)/TestingMain.cpp \
+		  $(SRCDIR)/CommMediator.cpp \
+		  $(SRCDIR)/ConcreteCommMediator.cpp \
+		  $(SRCDIR)/StaffMember.cpp \
+		  $(SRCDIR)/Worker.cpp \
+		  $(SRCDIR)/Inventory.cpp \
+		  $(SRCDIR)/InventoryIterator.cpp \
+		  $(SRCDIR)/Order.cpp \
+		  $(SRCDIR)/OrderIterator.cpp \
+		  $(SRCDIR)/PlantNode.cpp \
+		  $(SRCDIR)/Iterator.cpp \
+		  $(SRCDIR)/StockIterator.cpp \
+		  $(SRCDIR)/OrderState.cpp \
+		  $(SRCDIR)/Draft.cpp \
+		  $(SRCDIR)/Cancelled.cpp \
+		  $(SRCDIR)/Completed.cpp \
+		  $(SRCDIR)/Paid.cpp \
+		  $(SRCDIR)/ConcreteGrowthObserver.cpp \
+		  $(SRCDIR)/Customer.cpp \
+		  $(SRCDIR)/Manager.cpp \
+		  $(SRCDIR)/PlantCareHandler.cpp \
+		  $(SRCDIR)/WaterHandler.cpp \
+		  $(SRCDIR)/SunHandler.cpp \
+		  $(SRCDIR)/FertilizerHandler.cpp \
+		  $(SRCDIR)/PruneHandler.cpp \
+		  $(SRCDIR)/Water.cpp \
+		  $(SRCDIR)/Sun.cpp \
+		  $(SRCDIR)/Prune.cpp \
+		  $(SRCDIR)/Fertilizer.cpp \
+		  $(SRCDIR)/Command.cpp
+
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
 ZIP_DIR = submit

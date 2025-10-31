@@ -1,26 +1,33 @@
 #include "../include/CarnivorousPlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
-CarnivorousPlantFactory::CarnivorousPlantFactory() {
+CarnivorousPlantFactory::CarnivorousPlantFactory()
+{
 	// TODO - implement CarnivorousPlantFactory::CarnivorousPlantFactory
-	throw "Not yet implemented";
 }
 
-CarnivorousPlantFactory::~CarnivorousPlantFactory() {
+CarnivorousPlantFactory::~CarnivorousPlantFactory()
+{
 	// TODO - implement CarnivorousPlantFactory::~CarnivorousPlantFactory
-	throw "Not yet implemented";
 }
 
-vector<Plant*> CarnivorousPlantFactory::createSmallPlant() {
-	// TODO - implement CarnivorousPlantFactory::createSmallPlant
-	throw "Not yet implemented";
+Plant *CarnivorousPlantFactory::createSmallPlant()
+{
+	Sundew *sundew = new Sundew();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(sundew);
+	return sundew;
 }
 
-vector<Plant*> CarnivorousPlantFactory::createMediumPlant() {
-	// TODO - implement CarnivorousPlantFactory::createMediumPlant
-	throw "Not yet implemented";
+Plant *CarnivorousPlantFactory::createMediumPlant()
+{
+	Pitcher *pitcher = new Pitcher();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(pitcher);
+	return pitcher;
 }
 
-vector<Plant*> CarnivorousPlantFactory::createLargePlant() {
-	// TODO - implement CarnivorousPlantFactory::createLargePlant
-	throw "Not yet implemented";
+Plant *CarnivorousPlantFactory::createLargePlant()
+{
+	Nepenthes *nepenthes = new Nepenthes();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(nepenthes);
+	return nepenthes;
 }

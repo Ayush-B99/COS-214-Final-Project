@@ -1,33 +1,33 @@
-#ifndef CARETAKER_H
-#define CARETAKER_H
+// #ifndef CARETAKER_H
+// #define CARETAKER_H
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-#include <map>
-#include <sstream>
-#include <stack>
+// #include <iostream>
+// #include <string>
+// #include <vector>
+// #include <memory>
+// #include <map>
+// #include <sstream>
+// #include <stack>
 
-#include "Memento.h"
+// #include "Memento.h"
 
-using namespace std;
+// using namespace std;
 
-template <typename T>
+// template <typename T>
 
-class Caretaker
-{
+// class Caretaker
+// {
 
-public:
-	vector<Memento<T>> mementos;
+// public:
+// 	vector<Memento<T>> mementos;
 
-	void addMemento(Memento<T> m);
+// 	void addMemento(Memento<T> m);
 
-	void undo();
+// 	void undo();
 
-	Memento<T> getMemento(int index);
+// 	Memento<T> getMemento(int index);
 
-	Memento<T> getLastMemento();
-};
+// 	Memento<T> getLastMemento();
+// };
 
-#endif
+// #endif

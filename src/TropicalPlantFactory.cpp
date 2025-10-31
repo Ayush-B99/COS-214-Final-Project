@@ -1,26 +1,33 @@
 #include "../include/TropicalPlantFactory.h"
+#include "../include/ConcreteGrowthObserver.h"
 
-TropicalPlantFactory::TropicalPlantFactory() {
+TropicalPlantFactory::TropicalPlantFactory()
+{
 	// TODO - implement TropicalPlantFactory::TropicalPlantFactory
-	throw "Not yet implemented";
 }
 
-TropicalPlantFactory::~TropicalPlantFactory() {
+TropicalPlantFactory::~TropicalPlantFactory()
+{
 	// TODO - implement TropicalPlantFactory::~TropicalPlantFactory
-	throw "Not yet implemented";
 }
 
-vector<Plant*> TropicalPlantFactory::createSmallPlant() {
-	// TODO - implement TropicalPlantFactory::createSmallPlant
-	throw "Not yet implemented";
+Plant *TropicalPlantFactory::createSmallPlant()
+{
+	Nerve *nerve = new Nerve();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(nerve);
+	return nerve;
 }
 
-vector<Plant*> TropicalPlantFactory::createMediumPlant() {
-	// TODO - implement TropicalPlantFactory::createMediumPlant
-	throw "Not yet implemented";
+Plant *TropicalPlantFactory::createMediumPlant()
+{
+	BirdOfParadise *birdOfParadise = new BirdOfParadise();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(birdOfParadise);
+	return birdOfParadise;
 }
 
-vector<Plant*> TropicalPlantFactory::createLargePlant() {
-	// TODO - implement TropicalPlantFactory::createLargePlant
-	throw "Not yet implemented";
+Plant *TropicalPlantFactory::createLargePlant()
+{
+	Rubber *rubber = new Rubber();
+	ConcreteGrowthObserver *observer = new ConcreteGrowthObserver(rubber);
+	return rubber;
 }

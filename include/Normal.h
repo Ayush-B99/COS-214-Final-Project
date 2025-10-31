@@ -9,14 +9,12 @@
 #include <sstream>
 #include <stack>
 
-#include "Customer.h"
-
 using namespace std;
 
 #include "Customer.h"
 
-class Normal : public Customer
-{
+class Normal : public Customer {
+
 
 public:
 	double getDiscount();
