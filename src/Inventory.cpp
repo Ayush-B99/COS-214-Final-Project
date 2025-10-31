@@ -321,45 +321,41 @@ void Inventory::collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& match
 	collectAllPlantsRecursive(node->getRight(), matches);
 }
 
-void Inventory::moveValidPlantsToStock(Stock* stock){
+void Inventory::moveValidPlantsToStock(Stock* stock) {
     if (!stock) {
         cout << "Can't move plants to stock, invalid Storage pointer.\n";
         return;
     }
 
-	GrowthState* matureState = new Mature();
-	
-	// Get all mature plants
-	vector<Plant*> toMove = getPlants(matureState);
+    GrowthState* matureState = new Mature();
+    
+    //all mature plants by iterating through the tree
+    vector<Plant*> toMove;
+    collectByGrowthRecursive(plantCatalog, matureState, toMove);
 
-	if (toMove.empty()){
-		cout << "No mature plants found to move.\n";
-		delete matureState;
-		return;
-	}
+    if (toMove.empty()) {
+        cout << "No mature plants found to move.\n";
+        delete matureState;
+        return;
+    }
 
-	cout << "Moving " << toMove.size() << " mature plants to Stock...\n";
+    cout << "Moving " << toMove.size() << " mature plants to Stock...\n";
 
-	// Move plants from inventory to stock (transfer ownership)
-	for (Plant* p : toMove){
-		if (p != nullptr && 
-		    !stock->plantInTree(p) && 
-		    p->getHealthState()->getName() != "dead"){
-			
-			// Remove from inventory WITHOUT deleting
-			PlantNode* node = findNode(plantCatalog, p->getSpecies());
-			if (node) {
-				node->removePlant(p);
-				// Node remains in tree even if empty
-			}
-			
-			// Add to stock (stock takes ownership)
-			stock->addPlant(p);
-		} 
-	}
+    //move plants from inventory to stock (transfer ownership)
+    for (Plant* p : toMove) {
+        if (p != nullptr && 
+            !stock->plantInTree(p) && 
+            p->getHealthState()->getName() != "dead") {
+            
+            removePlant(p);
+            
+            //add to stock (stock takes ownership)
+            stock->addPlant(p);
+        } 
+    }
 
-	cout << "Plants successfully moved to Stock!\n";
-	delete matureState;
+    cout << "Plants successfully moved to Stock!\n";
+    delete matureState;
 }
 
 void Inventory::cleanUpDeadPlants(){

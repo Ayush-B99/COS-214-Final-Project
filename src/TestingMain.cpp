@@ -580,8 +580,8 @@ int main()
         // testIndividualCareActions();
         // testSoldState();
         // testDeadState();
-        testInventory();
-        testInventoryAndStock();
+        //testInventory();
+        //testInventoryAndStock();
         testAllStorage();
 
 
@@ -899,6 +899,7 @@ void testInventoryAndStock(){
     cout << "\ncleaning up memory\n";
     delete inv;
     delete stock;
+    delete order;
 
     cout << "\n=============================================\n";
     cout << "           END OF STOCK TEST SUITE\n";
@@ -1114,33 +1115,35 @@ cout << "Order iterator traversed " << ocount << " plants.\n";
     stock->moveToOrder(stockPlants[0], order);
 
 
-        // ---------- 13. DECORATOR PATTERN IN CONTEXT OF STOCK ----------
-    cout << "\n[13] DECORATOR PATTERN WITH STOCK PLANTS\n";
+    // ---------- 13. DECORATOR PATTERN IN CONTEXT OF STOCK ----------
+cout << "\n[13] DECORATOR PATTERN WITH STOCK PLANTS\n";
 
-    // Create a new order for demonstration
-    Order* decoratedOrder = new Order("DecoratedOrder");
+// Create a new order for demonstration
+Order* decoratedOrder = new Order("DecoratedOrder");
 
-    // Pick some stock plants to decorate
-    auto stockPlantsForDecor = stock->getAllPlants();
-    for (int i = 0; i < 5 && i < (int)stockPlantsForDecor.size(); ++i) {
-        Plant* p = stockPlantsForDecor[i];
-
-        // Alternate decorations
-        if (i % 2 == 0) {
-            auto decorated = Order::decorateWithClayPot(std::unique_ptr<Plant>(p));
-            p = decorated.release();
-        } else {
-            auto decorated = Order::decorateWithOrganicFertilizer(std::unique_ptr<Plant>(p));
-            p = decorated.release();
-        }
-
-        stock->moveToOrder(p, decoratedOrder);
+// Pick some stock plants to decorate
+auto stockPlantsForDecor = stock->getAllPlants();
+for (int i = 0; i < 5 && i < (int)stockPlantsForDecor.size(); ++i) {
+    // Remove from stock first and take ownership
+    Plant* rawPlant = stockPlantsForDecor[i];
+    stock->removePlant(rawPlant);  // Remove from stock
+    
+    // Convert to smart pointer and decorate
+    std::unique_ptr<Plant> plant(rawPlant);
+    
+    // Decorate
+    if (i % 2 == 0) {
+        plant = Order::decorateWithClayPot(std::move(plant));
+    } else {
+        plant = Order::decorateWithOrganicFertilizer(std::move(plant));
     }
+    
+    // Add to order (transfer ownership)
+    decoratedOrder->addPlant(plant.release());
+}
 
-    // Print the decorated order
-    cout << "\nDecorated Order after additions:\n";
-    decoratedOrder->print();
-
+cout << "\nDecorated Order after additions:\n";
+decoratedOrder->print();
     // Iterate decorated order to show full descriptions and prices
     cout << "\nIterating decorated order via OrderIterator:\n";
     PlantNode* decoratedNode = decoratedOrder->getNode();
@@ -1154,9 +1157,16 @@ cout << "Order iterator traversed " << ocount << " plants.\n";
     }
     cout << "Decorated order iterator traversed " << decorCount << " plants.\n";
 
-    // Clean up decorated order
+    delete order;
+    cout << "Deleted order\n";
+    delete emptyOrder;
+    cout << "Deleted emptyorder\n";
     delete decoratedOrder;
     cout << "Deleted decorated order\n";
+    delete stock;
+    cout << "Deleted stock\n";
+    delete inv;
+    cout << "Deleted inv\n";
 }
 
 

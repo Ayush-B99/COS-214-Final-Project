@@ -47,6 +47,10 @@ private:
 
 	int countNodesRecursive(PlantNode* node);
 
+	int countPlantsRecursive(PlantNode* node);
+	
+	double calculateValueRecursive(PlantNode* node);
+
 	
 public:
 

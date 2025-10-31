@@ -8,7 +8,7 @@ Stock::Stock() {
 }
 
 Stock::~Stock() {
-	// Stock NOW OWNS its plants, so we need to delete the tree properly
+	//Stock NOW OWNS its plants, so we need to delete the tree properly
 	if (stockCatalog) {
 		delete stockCatalog;
 		stockCatalog = nullptr;
@@ -28,18 +28,26 @@ void Stock::getLowStockItems() {
 }
 
 double Stock::getTotalStockValue() {
-	double val = 0;
-	StockIterator* it = new StockIterator(this->stockCatalog);
+	return calculateValueRecursive(stockCatalog);
+}
 
-	while (it->hasNext()){
-		Plant* current = it->currentPlant();
-		if (current){
-			val += current->getPrice();
+double Stock::calculateValueRecursive(PlantNode* node) {
+	if (!node) return 0.0;
+	
+	double value = 0.0;
+	
+	// Sum plants in this node (safe for empty nodes)
+	for (Plant* p : node->getPlants()) {
+		if (p) {
+			value += p->getPrice();
 		}
-		it->nextFine();
 	}
-	delete it;
-	return val;
+	
+	// Add values from subtrees
+	value += calculateValueRecursive(node->getLeft());
+	value += calculateValueRecursive(node->getRight());
+	
+	return value;
 }
 
 StockIterator* Stock::createIterator() {
@@ -67,10 +75,6 @@ void Stock::removePlant(Plant* plant) {
 		cout << "Plant removed from " << node->getKey() << " node\n";
 	}
 
-	// Remove empty nodes
-	if (node->getPlants().empty()){
-		stockCatalog = removeNode(stockCatalog, node->getKey());
-	}
 }
 
 PlantNode* Stock::findNode(PlantNode* root, string key) {
@@ -126,17 +130,17 @@ int Stock::countNodesRecursive(PlantNode* node) {
 }
 
 int Stock::getPlantCount(){
-	if (!stockCatalog) return 0;
-	
-	StockIterator* it = new StockIterator(this->stockCatalog);
-	int i = 0;
+	return countPlantsRecursive(stockCatalog);
+}
 
-	while (it->hasNext()){
-		i++;
-		it->nextFine();
-	}
-	delete it;
-	return i;
+int Stock::countPlantsRecursive(PlantNode* node) {
+	if (!node) return 0;
+	
+	int count = node->getPlants().size();  // Safe: empty node returns 0
+	count += countPlantsRecursive(node->getLeft());
+	count += countPlantsRecursive(node->getRight());
+	
+	return count;
 }
 
 void Stock::print() {
@@ -183,10 +187,6 @@ vector<Plant*> Stock::removePlants(string key, GrowthState* state){
 	matches = node->removeByGrowthState(state);
 	cout << matches.size() << " plants removed from " << key << ".\n";
 
-	if (node->getPlants().empty()){
-		stockCatalog = removeNode(stockCatalog, node->getKey());
-	}
-
 	return matches;
 }
 
@@ -201,10 +201,6 @@ vector<Plant*> Stock::removePlants(string key, HealthState* state){
 
 	matches = node->removeByHealthState(state);
 	cout << matches.size() << " plants removed from " << key << ".\n";
-
-	if (node->getPlants().empty()){
-		stockCatalog = removeNode(stockCatalog, node->getKey());
-	}
 
 	return matches;
 }
@@ -233,11 +229,6 @@ PlantNode* Stock::removeByGrowthRecursive(PlantNode* node, GrowthState* state, v
     if (!removed.empty())
         matches.insert(matches.end(), removed.begin(), removed.end());
 
-    if (node->getPlants().empty()) {
-        PlantNode* newSubRoot = removeNode(node, node->getKey());
-        return newSubRoot;
-    }
-
     return node;
 }
 
@@ -250,11 +241,6 @@ PlantNode* Stock::removeByHealthRecursive(PlantNode* node, HealthState* state, v
     vector<Plant*> removed = node->removeByHealthState(state);
     if (!removed.empty())
         matches.insert(matches.end(), removed.begin(), removed.end());
-
-    if (node->getPlants().empty()) {
-        PlantNode* newSubRoot = removeNode(node, node->getKey());
-        return newSubRoot;
-    }
 
     return node;	
 }

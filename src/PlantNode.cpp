@@ -77,15 +77,17 @@ void PlantNode::addPlants(vector<Plant*> newPlants) {
 }
 
 bool PlantNode::removePlant(Plant* plant) {
-	int i = 0;
-	for (Plant* p : plants){
-		if (p == plant){
+	if (!plant) return false;
+	
+	// Find and remove the plant
+	for (size_t i = 0; i < plants.size(); i++){
+		if (plants[i] == plant){
 			plants.erase(plants.begin() + i);
 			return true;
 		}
-		i++;
 	}
-	//did not find anything or plants is empty
+	
+	// Plant not found in this node
 	return false;
 }
 
