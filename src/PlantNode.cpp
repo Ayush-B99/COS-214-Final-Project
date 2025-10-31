@@ -5,6 +5,7 @@ PlantNode::PlantNode(string name) {
 	this->left = nullptr;
 	this->right = nullptr;
 	this->plants;
+	cout << "New PlantNode with key " << name << " has been created!\n";
 }
 
 PlantNode::PlantNode(PlantNode* other) {
@@ -19,6 +20,8 @@ PlantNode::PlantNode(PlantNode* other) {
 		}
 	}
 
+	cout << "A copy of PlantNode with key " << other->key << " has been created!\n";
+
 	//recursively copy left and right subtrees
 	if (other->left){
 		left = new PlantNode(other->left);
@@ -26,6 +29,8 @@ PlantNode::PlantNode(PlantNode* other) {
 	if (other->right){
 		right = new PlantNode(other->right);
 	}
+
+
 }
 
 PlantNode::~PlantNode() {
@@ -87,26 +92,63 @@ bool PlantNode::removePlant(Plant* plant) {
 
 vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
 	vector<Plant*> matches;
+	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getGrowthState() == state){
+		if (p->getGrowthState()->getName() == state->getName()){ //currently pointer comparison, so wont work
 			matches.push_back(p);
 		}
 	}
+	cout << "Found and removed " << matches.size() << " plants based on growth state\n";
 	return matches;
 }
 
 vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
 	vector<Plant*> matches;
+	int i;
 	for (Plant* p : plants){
 		///todo: when states are fleshed out, use them to compare
-		if (p->getHealthState() == state){
+		if (p->getHealthState()->getName() == state->getName()){
 			matches.push_back(p);
+			plants.erase(plants.begin() + i);
 		}
+		i++;
 	}
+	cout << "Found and removed " << matches.size() << " plants based on health state\n";
 	return matches;
 }
 
 bool PlantNode::isLeaf() {
 	return (this->left == nullptr && this->right == nullptr);
+}
+
+void PlantNode::printNode(string prefix, bool isLeft){
+	//no i did not figure out this formatting on my own, nobody else has to know that though
+    //branch line and node index
+    cout << prefix;
+    cout << (isLeft ? "├── " : "└── ");
+    cout << key << " (" << plants.size() << " plant/s)" << endl;
+
+    //print details of each plant in vector
+    for (size_t i = 0; i < plants.size(); i++) {
+        cout << prefix;
+        cout << (isLeft ? "│   " : "    "); //align with branch
+        cout << "   > " << plants[i]->getSpecies();
+
+        if (plants[i]->getGrowthState() && plants[i]->getHealthState()) {
+            cout << " | Growth: " << plants[i]->getGrowthState()->getName()
+                 << " | Health: " << plants[i]->getHealthState()->getName();
+        }
+
+        cout << " | Price: R" << plants[i]->getPrice() << endl;
+    }
+}
+
+bool PlantNode::plantInNode(Plant* plant){
+	for (Plant* p : plants){
+		if (p == plant){ //pointer comparisons for exact match
+			return true;
+		}
+	}
+	return false;
 }

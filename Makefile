@@ -1,6 +1,6 @@
 # Variables
 CXX = g++
-CXXFLAGS = -std=c++11 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
+CXXFLAGS = -std=c++14 -Wall -Wextra -fprofile-arcs -ftest-coverage -Iinclude -Isrc -I/opt/homebrew/opt/catch2
 LDFLAGS = 
 ifneq ("$(wildcard lib)","")
     LDFLAGS += -Llib

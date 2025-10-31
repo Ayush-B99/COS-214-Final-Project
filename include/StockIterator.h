@@ -13,38 +13,40 @@ using namespace std;
 
 #include "Iterator.h"
 #include "Plant.h"
-#include "PlantNode.h"
+#include "PlantNode.h"	
 
-class StockIterator : public Iterator
-{
+class StockIterator : public Iterator {
 
 private:
 	PlantNode *root;
-	map<PlantNode *, size_t> current;
+	PlantNode* currentNode;
+	size_t indexInNode;
 	stack<PlantNode *> nodeStack;
 
 public:
-	StockIterator(PlantNode *root);
+	StockIterator(PlantNode* root);
 
 	~StockIterator();
 
-	Plant *next();
+	Plant* next();
 
-	Plant *currentPlant();
+	Plant* nextFine();
+
+	PlantNode* nextCoarse();
+
+	Plant* currentPlant(); // TODO: fix uml function name
 
 	bool hasNext();
 
+	bool hasNextNode();
+
 	void reset();
 
-	map<string, int> getPosition();
-
 	void pushLeft(PlantNode *node);
-
-	Plant *nextFine();
-
-	PlantNode *nextCoarse();
-
-	void setPosition(map<PlantNode *, size_t> pos);
+	
+	map<PlantNode*, int> getPosition();
+	
+	void setPosition(map<PlantNode*, int>& pos);
 };
 
 #endif

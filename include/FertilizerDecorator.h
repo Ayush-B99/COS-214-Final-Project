@@ -21,7 +21,8 @@ private:
 	double fertilizerCost;
 
 public:
-	FertilizerDecorator(Plant* plant, string type);
+	//FertilizerDecorator(Plant* plant, string type);
+	FertilizerDecorator(std::unique_ptr<Plant> plant, std::string type);
 
 	double getPrice();
 

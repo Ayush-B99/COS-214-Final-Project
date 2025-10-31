@@ -20,7 +20,8 @@ private:
 	double potCost;
 
 public:
-	PotDecorator(Plant* plant, string type);
+	//PotDecorator(Plant* plant, string type);
+	PotDecorator(std::unique_ptr<Plant> plant, std::string type);
 
 	double getPrice();
 
