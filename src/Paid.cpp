@@ -1,29 +1,17 @@
 #include "../include/Paid.h"
 
-void Paid::submitted(Order* order) {
-	// TODO - implement Paid::submitted
+Paid::Paid(){
+	cout << "Order has been paid!\n";
 }
 
-void Paid::paid(Order* order) {
-	// TODO - implement Paid::paid
+void Paid::proceed(Order* order){
+	order->setState(new Completed());
 }
 
-void Paid::cancelled(Order* order) {
-	// TODO - implement Paid::cancelled
+void Paid::cancel(Order* order){
+	order->setState(new Cancelled());
 }
 
-void Paid::completed(Order* order) {
-	// TODO - implement Paid::completed
-}
-
-const string Paid::getName() {
-	// TODO - implement Paid::getName
-}
-
-bool Paid::canEdit() {
-	// TODO - implement Paid::canEdit
-}
-
-bool Paid::canCancel() {
-	// TODO - implement Paid::canCancel
+string const Paid::getName(){
+	return "paid";
 }

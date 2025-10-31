@@ -18,17 +18,21 @@
 #include <sstream>
 #include <stack>
 
-// Forward declarations
+// #include "GrowthMediator.h"
+// //#include "CommMediator.h"
+// //#include "Plant.h"
+// #include "Command.h"
+// #include "CommMediator.h"
+// #include "Customer.h"
 class GrowthMediator;
 class CommMediator;
 class Command;
 class Customer;
 class Plant;
-class Inventory;
 
 #include "CommMediator.h"
 #include "Customer.h"
-
+#include "Inventory.h"
 /**
  * @class StaffMember
  * @brief Abstract base class for all staff members in the nursery

@@ -140,6 +140,8 @@ void Plant::setDescription(string newDesc)
 	description = newDesc;
 }
 
+
+
 void Plant::receiveWatering()
 {
 	restoreWater();
@@ -291,6 +293,7 @@ void Plant::printFullStatus()
 bool Plant::shouldRemoveFromInventory()
 {
 	return growthState->isSold() || healthState->isDead();
+
 }
 
 bool Plant::isReadyForStock()

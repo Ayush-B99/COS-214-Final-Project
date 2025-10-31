@@ -216,6 +216,9 @@ help:
 val:
 	g++ -fdiagnostics-color=always -g src/*.cpp -o build/TestingMain
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
+	
+val_only:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
 
 
 

@@ -18,7 +18,7 @@ using namespace std;
 class OrderIterator : public Iterator {
 
 private:
-	PlantNode* order;
+	vector<Plant*> order;
 	int position;
 
 public:
@@ -26,19 +26,21 @@ public:
 
 	~OrderIterator();
 
-	// possible fix -> Plant* return type
 	Plant* next();
 
-	// possible fix -> Plant* return type
 	Plant* currentPlant();
 
 	bool hasNext();
 
 	void reset();
 
-	map<string, int> getPosition();
+	int getPosition();
 
-	void setPosition(size_t index);
+	void setPosition(int index);
+
+	bool hasPrevious();
+
+	Plant* previous();
 };
 
 #endif

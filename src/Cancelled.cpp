@@ -1,29 +1,17 @@
 #include "../include/Cancelled.h"
 
-void Cancelled::submitted(Order* order) {
-	// TODO - implement Cancelled::submitted
+Cancelled::Cancelled(){
+	cout << "Cancelling your order :(\n";
 }
 
-void Cancelled::paid(Order* order) {
-	// TODO - implement Cancelled::paid
+void Cancelled::proceed(Order* order){
+	cout << "Order has been cancelled. Cannot proceed\n";
 }
 
-void Cancelled::cancelled(Order* order) {
-	// TODO - implement Cancelled::cancelled
+void Cancelled::cancel(Order* order){
+	cout << "Order is already cancelled.\n";
 }
 
-void Cancelled::completed(Order* order) {
-	// TODO - implement Cancelled::completed
-}
-
-const string Cancelled::getName() {
-	// TODO - implement Cancelled::getName
-}
-
-bool Cancelled::canEdit() {
-	// TODO - implement Cancelled::canEdit
-}
-
-bool Cancelled::canCancel() {
-	// TODO - implement Cancelled::canCancel
+string const Cancelled::getName(){
+	return "cancelled";
 }

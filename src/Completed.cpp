@@ -1,29 +1,17 @@
 #include "../include/Completed.h"
 
-void Completed::submitted(Order* order) {
-	// TODO - implement Completed::submitted
+Completed::Completed(){
+	cout << "Order has been completed! enjoy your plants\n";
 }
 
-void Completed::paid(Order* order) {
-	// TODO - implement Completed::paid
+void Completed::proceed(Order* order){
+	cout << "Order has already concluded, cannot proceed.\n";
 }
 
-void Completed::cancelled(Order* order) {
-	// TODO - implement Completed::cancelled
+void Completed::cancel(Order* order){
+	cout << "Order has already concluded, cannot cancel\n";
 }
 
-void Completed::completed(Order* order) {
-	// TODO - implement Completed::completed
-}
-
-const string Completed::getName() {
-	// TODO - implement Completed::getName
-}
-
-bool Completed::canEdit() {
-	// TODO - implement Completed::canEdit
-}
-
-bool Completed::canCancel() {
-	// TODO - implement Completed::canCancel
+string const Completed::getName(){
+	return "completed";
 }

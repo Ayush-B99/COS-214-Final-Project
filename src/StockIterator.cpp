@@ -98,23 +98,11 @@ void StockIterator::reset() {
 	currentNode = nullptr;
 	indexInNode = 0;
 
-	//find the first valid node
-	while (!nodeStack.empty()){
-		PlantNode* top = nodeStack.top();
-		if (!top->getPlants().empty()){
-			//dont pop just yet, we need to use this node until we exhaust it
-			currentNode = top;
-			indexInNode = 0;
-			return;
-		}
-		//skipp empty nodes by popping them and prepping their right subtree
-		nodeStack.pop();
-		pushLeft(top->getRight());
-
+	//find the first node, even if its empty
+	if (!nodeStack.empty()){
+		currentNode = nodeStack.top();
+		indexInNode = 0;
 	}
-	//no valid nodes, do nothing
-	currentNode = nullptr;
-	indexInNode = 0;
 }
 
 map<PlantNode*, int> StockIterator::getPosition() {

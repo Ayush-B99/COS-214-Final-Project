@@ -1,10 +1,14 @@
 #include "../include/Order.h"
+#include "../include/Stock.h"
+#include "../include/Inventory.h"
 
-Order::Order(string& orderId) {
+Order::Order(string orderId) {
 	this-> id = orderId;
 	this->orderItems = new PlantNode(id);
 	total = 0;
 	state = new Draft();
+
+	cout << "Order " << orderId << " has been created successfully!\n";
 }
 
 Order::~Order() {
@@ -12,28 +16,39 @@ Order::~Order() {
 	if (orderItems) delete orderItems;
 
 	if (state) delete state;
+
+	orderItems = nullptr;
+	state = nullptr;
 }
 
-void Order::submitted() {
+void Order::proceed(){
+	if (state){
+		state->proceed(this);
+	}
+}
+
+void Order::cancel(Inventory* inv, Stock* stock){
+	if (state){
+		state->cancel(this);
+	}
 	
+	// Return all plants back to stock only
+	for (Plant* p : orderItems->getPlants()){
+		if (p && stock){
+			stock->addPlant(p);
+		}
+	}
+	
+	// Clear the order without deleting plants (stock owns them now)
+	orderItems->getPlants().clear();
 }
 
-void Order::paid() {
 
-}
-
-void Order::cancelled() {
-
-}
-
-void Order::completed() {
-
-}
-
-void Order::addItem(Plant* item) {
+void Order::addPlant(Plant* item) {
 	//block adding based on state
 	if (state->getName() != "draft"){
 		cout << "You cannot edit an order after it has been submitted";
+		return;
 	}
 
 	if (orderItems->plantInNode(item)){
@@ -47,26 +62,30 @@ void Order::addItem(Plant* item) {
 	calculateTotal();
 }
 
-void Order::removeItem(Plant* item, Inventory* inv) {
+void Order::removePlant(Plant* item, Inventory* inv, Stock* stock) {
 	if (state->getName() != "draft"){
-		cout << "You cannot edit an order after it has been submitted";
+		cout << "You cannot edit an order after it has been submitted.\n";
+		return;
 	}
 
 	if (!orderItems->removePlant(item)){
 		cout << item->getSpecies() << " either not found or not removed.\n";
+		return;
 	}
+	
 	cout << item->getSpecies() << " successfully removed from your order!\n";
 
-	//need to move the plant back into inventory
-	///ideally move back to stock as well but we cant maintain all those pointers
-	if (item){
-		inv->addPlant(item);
+	// Return plant to Stock only (Stock owns it)
+	if (item && stock) {
+		stock->addPlant(item);
 	}
+	
+	calculateTotal();
 }
 
-vector<Plant*>& Order::getOrderItems() {
-	vector<Plant*> ret = orderItems->getPlants();
-	return ret;
+vector<Plant*> Order::getOrderItems() {
+	vector<Plant*> items = orderItems->getPlants();
+	return items;
 }
 
 double Order::calculateTotal() {
@@ -106,8 +125,31 @@ string& Order::getId() {
 }
 
 void Order::print(){
+	if (!orderItems || orderItems->getPlants().empty()){
+		cout << "Order " << id << " is empty. Engage in consumerism!\n";
+		return;
+	}
+
 	cout << "Order " << id 
-		 << "Total: R" << total << endl;
+		 << " Total: R" << total 
+		 << " in state " << state->getName() << endl;
 
 	orderItems->printNode("", false);
+}
+
+//DO NOT USE THIS ITS JUST SO I STOP GETTING YELLED AT BY COMPILER
+void Order::removePlant(Plant* plant){
+	removePlant(plant, nullptr, nullptr);
+}
+
+PlantNode* Order::getNode(){
+	return orderItems;
+}
+
+unique_ptr<Plant> Order::decorateWithPot(unique_ptr<Plant> p, const string& potType) {
+    return make_unique<PotDecorator>(std::move(p), potType);
+}
+
+unique_ptr<Plant> Order::decorateWithFertilizer(unique_ptr<Plant> p, const string& fertilizerType) {
+    return make_unique<FertilizerDecorator>(std::move(p), fertilizerType);
 }

@@ -19,6 +19,11 @@ using namespace std;
  * 
  * 
  */
+/**
+ * @class InventoryIterator
+ * 
+ * 
+ */
 class InventoryIterator : public Iterator
 {
 
@@ -37,7 +42,7 @@ public:
 
 	Plant* nextFine();
 
-	Plant* nextCoarse();
+	PlantNode* nextCoarse();
 
 	Plant* currentPlant();
 

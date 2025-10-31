@@ -15,10 +15,7 @@ using namespace std;
 #include "Plant.h"
 #include "PlantNode.h"
 #include "GreenHouse.h"
-#include "TemperatePlantFactory.h"
-#include "TropicalPlantFactory.h"
-#include "SucculentPlantFactory.h"
-#include "CarnivorousPlantFactory.h"
+#include "InventoryIterator.h"
 #include "TemperatePlantFactory.h"
 #include "TropicalPlantFactory.h"
 #include "SucculentPlantFactory.h"
@@ -28,6 +25,9 @@ using namespace std;
 #include "HealthState.h"
 #include "Mature.h"
 #include "Dead.h"
+
+class Stock;
+class Order;
 
 /**
  * @class Inventory
@@ -64,6 +64,8 @@ private:
     void collectByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
 
     void collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& matches);
+
+	int countNodesRecursive(PlantNode* node);
 
 public:
 	Inventory();
@@ -129,7 +131,7 @@ public:
 	 * moves plants that have matured to the stock pointer passed in, using the Storage interface to prevent weird dependencies.
 	 * growth state needs to be mature to be moved
 	 */
-	void moveValidPlantsToStock(Storage* stock);
+	void moveValidPlantsToStock(Stock* stock);
 
 	/**.
 	 * @brief essentially just a simplified RemovePlants wrapper again.
@@ -169,6 +171,8 @@ public:
 	PlantNode* getRoot();
 
 	void tick();
+
+	bool plantInTree(Plant* plant);
 
 };
 

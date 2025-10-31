@@ -30,12 +30,11 @@ PlantNode::PlantNode(PlantNode* other) {
 		right = new PlantNode(other->right);
 	}
 
-
 }
 
 PlantNode::~PlantNode() {
 	for (Plant* p : plants){
-		delete p;
+		if (p) delete p;
 	}
 
 	//delete left and right subtrees recursively
@@ -78,45 +77,48 @@ void PlantNode::addPlants(vector<Plant*> newPlants) {
 }
 
 bool PlantNode::removePlant(Plant* plant) {
-	int i = 0;
-	for (Plant* p : plants){
-		if (p == plant){
+	if (!plant) return false;
+	
+	// Find and remove the plant
+	for (size_t i = 0; i < plants.size(); i++){
+		if (plants[i] == plant){
 			plants.erase(plants.begin() + i);
 			return true;
 		}
-		i++;
 	}
-	//did not find anything or plants is empty
+	
+	// Plant not found in this node
 	return false;
-}
-
-vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
-	vector<Plant*> matches;
-	int i;
-	for (Plant* p : plants){
-		///todo: when states are fleshed out, use them to compare
-		if (p->getGrowthState()->getName() == state->getName()){ //currently pointer comparison, so wont work
-			matches.push_back(p);
-		}
-	}
-	cout << "Found and removed " << matches.size() << " plants based on growth state\n";
-	return matches;
 }
 
 vector<Plant*> PlantNode::removeByHealthState(HealthState* state){
 	vector<Plant*> matches;
-	int i;
-	for (Plant* p : plants){
-		///todo: when states are fleshed out, use them to compare
-		if (p->getHealthState()->getName() == state->getName()){
-			matches.push_back(p);
+	
+	// Iterate backwards to safely erase while iterating
+	for (int i = plants.size() - 1; i >= 0; i--){
+		if (plants[i]->getHealthState()->getName() == state->getName()){
+			matches.push_back(plants[i]);
 			plants.erase(plants.begin() + i);
 		}
-		i++;
 	}
-	cout << "Found and removed " << matches.size() << " plants based on health state\n";
+	
 	return matches;
 }
+
+vector<Plant*> PlantNode::removeByGrowthState(GrowthState* state){
+	vector<Plant*> matches;
+	
+	// Iterate backwards to safely erase while iterating
+	for (int i = plants.size() - 1; i >= 0; i--){
+		if (plants[i]->getGrowthState()->getName() == state->getName()){
+			matches.push_back(plants[i]);
+			plants.erase(plants.begin() + i);
+		}
+	}
+	
+	return matches;
+}
+
 
 bool PlantNode::isLeaf() {
 	return (this->left == nullptr && this->right == nullptr);
@@ -152,3 +154,4 @@ bool PlantNode::plantInNode(Plant* plant){
 	}
 	return false;
 }
+

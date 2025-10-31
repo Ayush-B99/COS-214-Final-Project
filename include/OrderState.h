@@ -19,19 +19,11 @@ class OrderState {
 public:
 	virtual ~OrderState();
 
-	virtual void submitted(Order* order) = 0;
+	virtual void proceed(Order* order) = 0;
 
-	virtual void paid(Order* order) = 0;
-
-	virtual void cancelled(Order* order) = 0;
-
-	virtual void completed(Order* order) = 0;
+	virtual void cancel(Order* order) = 0;
 
 	virtual string const getName() = 0;
-
-	virtual bool canEdit() = 0;
-
-	virtual bool canCancel() = 0;
 };
 
 #endif

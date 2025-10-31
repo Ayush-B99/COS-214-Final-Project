@@ -18,19 +18,13 @@ class Completed : public OrderState {
 
 
 public:
-	void submitted(Order* order);
+	Completed();
+	
+	void proceed(Order* order);
 
-	void paid(Order* order);
+	void cancel(Order* order);
 
-	void cancelled(Order* order);
-
-	void completed(Order* order);
-
-	const string getName();
-
-	bool canEdit();
-
-	bool canCancel();
+	string const getName();
 };
 
 #endif
