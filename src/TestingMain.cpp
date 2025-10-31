@@ -158,7 +158,7 @@ int main()
         cout << "============================" << endl;
         cout << endl;
 
-        // // ayush testing mem fine
+        // ayush testing mem fine
         testAbstractFactory();
         testDecoratorPattern();
         testPatternsTogether();
@@ -196,7 +196,7 @@ int main()
         cout << "-------------------------" << endl;
         testIntegratedSystem();
 
-        // testall
+        //testall
         testAll();
 
         cout << "All tests completed successfully!" << endl;
@@ -978,6 +978,11 @@ cout << "=== Inventory Testing ===\n";
     delete dead;
     delete stock;
     delete inv;
+    delete torem;
+    delete uniquerem;
+    delete bird;
+    delete healthmanip;
+    delete growthmanip;
 }
 
 void testStaffWithInventory()
@@ -1137,13 +1142,13 @@ int decayPlants(Inventory *inv, Stock *stock, PlantCareHandler *handler)
     Iterator
     */
 
-    while (cycles < 10000)
+    while (cycles < 3000)
     {
         cout << "iteration " << cycles << endl;
         if (cycles % 100 == 0)
         {
-            // stock->cleanUpDeadPlants();
-            // inv->cleanUpDeadPlants();
+            stock->cleanUpDeadPlants();
+            inv->cleanUpDeadPlants();
             inv->moveValidPlantsToStock(stock);
 
             inv->addLargePlant(inv->getCarnivorousFactory(), handler);
@@ -1914,6 +1919,8 @@ void testIteratorPattern()
     delete healthy;
     delete dead;
     delete inv;  // Inventory destructor should handle plant deletion
+    delete torem;
+    delete uniquerem;
 
     cout << "Iterator Pattern Test Completed!" << endl << endl;
 }
