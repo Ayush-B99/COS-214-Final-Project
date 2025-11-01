@@ -1,4 +1,3 @@
-// File: COS-214-Final-Project/src/NCursesMain.cpp
 #include <ncurses.h>
 #include <iostream>
 #include <string>
@@ -60,35 +59,35 @@ WINDOW *contentWin = nullptr;
 WINDOW *menuWin = nullptr;
 
 /**
- * @brief Initialize ncurses and create windows
+ * @brief Initialize ncurses UI
  */
 void initUI() {
-    initscr();              // Initialize ncurses
-    cbreak();               // Disable line buffering
-    noecho();               // Don't echo input
-    curs_set(0);            // Hide cursor
-    keypad(stdscr, TRUE);   // Enable special keys
+    initscr();
+    cbreak();
+    noecho();
+    curs_set(0);
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
     
-    // Check if terminal supports colors
     if (has_colors()) {
         start_color();
-        init_pair(1, COLOR_GREEN, COLOR_BLACK);   // Header
-        init_pair(2, COLOR_CYAN, COLOR_BLACK);    // Stats
-        init_pair(3, COLOR_YELLOW, COLOR_BLACK);  // Warnings
-        init_pair(4, COLOR_RED, COLOR_BLACK);     // Errors
-        init_pair(5, COLOR_MAGENTA, COLOR_BLACK); // Menu
-        init_pair(6, COLOR_WHITE, COLOR_BLUE);    // Title bar
+        init_pair(1, COLOR_GREEN, COLOR_BLACK);
+        init_pair(2, COLOR_CYAN, COLOR_BLACK);
+        init_pair(3, COLOR_YELLOW, COLOR_BLACK);
+        init_pair(4, COLOR_RED, COLOR_BLACK);
+        init_pair(5, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(6, COLOR_WHITE, COLOR_BLACK);
     }
     
     int maxY, maxX;
     getmaxyx(stdscr, maxY, maxX);
     
-    // Create three windows: status, content, menu
-    statusWin = newwin(5, maxX, 0, 0);
-    contentWin = newwin(maxY - 9, maxX, 5, 0);
-    menuWin = newwin(4, maxX, maxY - 4, 0);
+    statusWin = newwin(6, maxX, 0, 0);
+    contentWin = newwin(maxY - 11, maxX, 6, 0);
+    menuWin = newwin(5, maxX, maxY - 5, 0);
     
     scrollok(contentWin, TRUE);
+    keypad(contentWin, TRUE);
     refresh();
 }
 
@@ -103,7 +102,7 @@ void cleanupUI() {
 }
 
 /**
- * @brief Update the status bar with live information
+ * @brief Update status bar
  */
 void updateStatusBar(Inventory *inv, Stock *stock) {
     lock_guard<mutex> lock(ncursesMutex);
@@ -111,55 +110,32 @@ void updateStatusBar(Inventory *inv, Stock *stock) {
     werase(statusWin);
     box(statusWin, 0, 0);
     
-    // Title
-    wattron(statusWin, COLOR_PAIR(6) | A_BOLD);
+    wattron(statusWin, COLOR_PAIR(2) | A_BOLD);
     mvwprintw(statusWin, 0, 2, " 🌿 PLANT STORE MANAGEMENT SYSTEM 🌿 ");
-    wattroff(statusWin, COLOR_PAIR(6) | A_BOLD);
+    wattroff(statusWin, COLOR_PAIR(2) | A_BOLD);
     
-    // Stats line 1
-    wattron(statusWin, COLOR_PAIR(2));
-    mvwprintw(statusWin, 2, 2, "Tick: ");
-    wattron(statusWin, COLOR_PAIR(3) | A_BOLD);
-    wprintw(statusWin, "%6d", tickCounter.load());
-    wattroff(statusWin, COLOR_PAIR(3) | A_BOLD);
+    wattron(statusWin, COLOR_PAIR(1));
+    mvwprintw(statusWin, 2, 2, "● LIVE");
+    wattroff(statusWin, COLOR_PAIR(1));
     
-    wattron(statusWin, COLOR_PAIR(2));
-    wprintw(statusWin, " │ Inventory: ");
-    wattron(statusWin, COLOR_PAIR(1) | A_BOLD);
-    wprintw(statusWin, "%4d", inv->getPlantCount());
-    wattroff(statusWin, COLOR_PAIR(1) | A_BOLD);
-    
-    wattron(statusWin, COLOR_PAIR(2));
-    wprintw(statusWin, " │ Stock: ");
-    wattron(statusWin, COLOR_PAIR(1) | A_BOLD);
-    wprintw(statusWin, "%4d", stock->getPlantCount());
-    wattroff(statusWin, COLOR_PAIR(1) | A_BOLD);
-    
-    wattron(statusWin, COLOR_PAIR(2));
-    wprintw(statusWin, " │ Value: $");
-    wattron(statusWin, COLOR_PAIR(3) | A_BOLD);
-    wprintw(statusWin, "%.2f", stock->getTotalStockValue());
-    wattroff(statusWin, COLOR_PAIR(3) | A_BOLD);
-    wattroff(statusWin, COLOR_PAIR(2));
-    
-    // Stats line 2
-    wattron(statusWin, COLOR_PAIR(2));
-    mvwprintw(statusWin, 3, 2, "Plants Auto-Added: ");
-    wattron(statusWin, COLOR_PAIR(1) | A_BOLD);
-    wprintw(statusWin, "%d", plantsAdded.load());
-    wattroff(statusWin, COLOR_PAIR(1) | A_BOLD);
-    
-    wprintw(statusWin, " │ Runtime: ");
     wattron(statusWin, COLOR_PAIR(3));
-    wprintw(statusWin, "%.1fs", tickCounter.load() * 0.1);
+    wprintw(statusWin, " Tick: %6d", tickCounter.load());
     wattroff(statusWin, COLOR_PAIR(3));
+    
+    wattron(statusWin, COLOR_PAIR(2));
+    wprintw(statusWin, " │ Inventory: %4d", inv->getPlantCount());
+    wprintw(statusWin, " │ Stock: %4d", stock->getPlantCount());
+    wprintw(statusWin, " │ Value: $%.2f", stock->getTotalStockValue());
     wattroff(statusWin, COLOR_PAIR(2));
+    
+    mvwprintw(statusWin, 3, 2, "Auto-Added: %d │ Runtime: %.1fs", 
+              plantsAdded.load(), tickCounter.load() * 0.1);
     
     wrefresh(statusWin);
 }
 
 /**
- * @brief Display the menu
+ * @brief Display menu
  */
 void displayMenu() {
     lock_guard<mutex> lock(ncursesMutex);
@@ -168,62 +144,137 @@ void displayMenu() {
     box(menuWin, 0, 0);
     
     wattron(menuWin, COLOR_PAIR(5));
-    mvwprintw(menuWin, 1, 2, "[1]Inventory [2]Stock [3]Add Plants [4]Ask Question [5]Stats");
-    mvwprintw(menuWin, 2, 2, "[6]Plant Types [7]Move to Stock [8]Tick Info [9]Clear [0]Exit");
+    mvwprintw(menuWin, 1, 2, "[1]Inventory [2]Stock [3]Add [4]Question [5]Stats");
+    mvwprintw(menuWin, 2, 2, "[6]Types [7]Move [8]Info [9]Clear [0]Exit");
     wattroff(menuWin, COLOR_PAIR(5));
     
+    mvwprintw(menuWin, 3, 2, "Choice: ");
     wrefresh(menuWin);
 }
 
 /**
- * @brief Display content in the content window
+ * @brief Display content with dynamic window resizing
  */
 void displayContent(const string &content) {
     lock_guard<mutex> lock(ncursesMutex);
     
-    werase(contentWin);
-    box(contentWin, 0, 0);
+    int screenMaxY, screenMaxX;
+    getmaxyx(stdscr, screenMaxY, screenMaxX);
     
-    // Parse and display content line by line
+    // Parse content into lines with wrapping
     istringstream iss(content);
     string line;
-    int y = 1;
-    int maxY, maxX;
-    getmaxyx(contentWin, maxY, maxX);
+    vector<string> lines;
     
-    while (getline(iss, line) && y < maxY - 1) {
-        // Truncate line if too long
-        if (line.length() > (size_t)(maxX - 4)) {
-            line = line.substr(0, maxX - 7) + "...";
+    while (getline(iss, line)) {
+        if (line.empty()) {
+            lines.push_back("");
+            continue;
         }
-        mvwprintw(contentWin, y++, 2, "%s", line.c_str());
+        
+        // Wrap long lines
+        if (line.length() > (size_t)(screenMaxX - 4)) {
+            size_t pos = 0;
+            while (pos < line.length()) {
+                size_t len = min((size_t)(screenMaxX - 4), line.length() - pos);
+                lines.push_back(line.substr(pos, len));
+                pos += len;
+            }
+        } else {
+            lines.push_back(line);
+        }
     }
     
-    wrefresh(contentWin);
-}
-
-/**
- * @brief Show a message in the content area
- */
-void showMessage(const string &message, int colorPair = 2) {
-    lock_guard<mutex> lock(ncursesMutex);
+    // Calculate required height
+    int contentHeight = lines.size() + 3; // +3 for border and prompt
+    int maxContentHeight = screenMaxY - 11; // Leave room for status and menu
+    
+    // Delete old content window
+    if (contentWin) {
+        delwin(contentWin);
+    }
+    
+    // Create new resized content window
+    if (contentHeight > maxContentHeight) {
+        // Content too large - use max available space with scrolling
+        contentWin = newwin(maxContentHeight, screenMaxX, 6, 0);
+        scrollok(contentWin, TRUE);
+        keypad(contentWin, TRUE);
+        
+        werase(contentWin);
+        box(contentWin, 0, 0);
+        
+        // Display what fits
+        for (int i = 0; i < maxContentHeight - 3 && i < (int)lines.size(); i++) {
+            mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
+        }
+        
+        wattron(contentWin, COLOR_PAIR(3));
+        mvwprintw(contentWin, maxContentHeight - 2, 2, 
+                  "[Content truncated: %zu lines total] Press any key...", lines.size());
+        wattroff(contentWin, COLOR_PAIR(3));
+        
+        wrefresh(contentWin);
+        
+    } else {
+        // Content fits - resize window to exact size needed
+        int newHeight = contentHeight;
+        int newY = 6;
+        
+        // Adjust menu position
+        if (menuWin) {
+            delwin(menuWin);
+        }
+        int menuY = newY + newHeight;
+        menuWin = newwin(5, screenMaxX, menuY, 0);
+        
+        // Create perfectly sized content window
+        contentWin = newwin(newHeight, screenMaxX, newY, 0);
+        keypad(contentWin, TRUE);
+        
+        werase(contentWin);
+        box(contentWin, 0, 0);
+        
+        // Display all lines
+        for (int i = 0; i < (int)lines.size(); i++) {
+            mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
+        }
+        
+        wattron(contentWin, COLOR_PAIR(3));
+        mvwprintw(contentWin, newHeight - 2, 2, "Press any key to continue...");
+        wattroff(contentWin, COLOR_PAIR(3));
+        
+        wrefresh(contentWin);
+    }
+    
+    // Wait for key
+    nodelay(stdscr, FALSE);
+    wgetch(contentWin);
+    nodelay(stdscr, TRUE);
+    
+    // Restore original layout
+    if (contentWin) {
+        delwin(contentWin);
+    }
+    if (menuWin) {
+        delwin(menuWin);
+    }
+    
+    contentWin = newwin(screenMaxY - 11, screenMaxX, 6, 0);
+    menuWin = newwin(5, screenMaxX, screenMaxY - 5, 0);
+    scrollok(contentWin, TRUE);
+    keypad(contentWin, TRUE);
     
     werase(contentWin);
     box(contentWin, 0, 0);
-    
-    wattron(contentWin, COLOR_PAIR(colorPair) | A_BOLD);
-    mvwprintw(contentWin, 1, 2, "%s", message.c_str());
-    wattroff(contentWin, COLOR_PAIR(colorPair) | A_BOLD);
-    
-    mvwprintw(contentWin, 3, 2, "Press any key to continue...");
     wrefresh(contentWin);
 }
 
 /**
- * @brief Get user input (single character)
+ * @brief Show message
  */
-int getUserChoice() {
-    return wgetch(menuWin);
+void showMessage(const string &message, int colorPair = 2) {
+    displayContent(message);
 }
 
 /**
@@ -232,138 +283,120 @@ int getUserChoice() {
 void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
     int cycles = 0;
     
-    while (running.load())
-    {
+    while (running.load()) {
         cycles++;
         tickCounter.store(cycles);
         
-        // Update UI every 5 ticks
-        if (cycles % 5 == 0)
-        {
+        if (cycles % 5 == 0) {
             updateStatusBar(inv, stock);
         }
         
-        // Add plants every 100 ticks
-        if (cycles % 100 == 0)
-        {
-            stock->cleanUpDeadPlants();
-            inv->cleanUpDeadPlants();
+        if (cycles % 100 == 0) {
             inv->moveValidPlantsToStock(stock);
-
-            inv->addLargePlant(inv->getCarnivorousFactory(), handler);
-            inv->addMediumPlant(inv->getCarnivorousFactory(), handler);
             inv->addSmallPlant(inv->getCarnivorousFactory(), handler);
-
-            inv->addLargePlant(inv->getTemperateFactory(), handler);
             inv->addMediumPlant(inv->getTemperateFactory(), handler);
-            inv->addSmallPlant(inv->getTemperateFactory(), handler);
-
             inv->addLargePlant(inv->getTropicalFactory(), handler);
-            inv->addMediumPlant(inv->getTropicalFactory(), handler);
-            inv->addSmallPlant(inv->getTropicalFactory(), handler);
-
-            inv->addLargePlant(inv->getSucculentFactory(), handler);
-            inv->addMediumPlant(inv->getSucculentFactory(), handler);
             inv->addSmallPlant(inv->getSucculentFactory(), handler);
-            
             plantsAdded.fetch_add(4);
         }
         
-        // Tick the inventory
         inv->tick();
-        
         this_thread::sleep_for(chrono::milliseconds(100));
     }
 }
 
 /**
- * @brief Capture output from a function
+ * @brief Capture output to string
  */
 string captureOutput(function<void()> func) {
-    // Redirect cout to stringstream
-    streambuf *oldCoutBuf = cout.rdbuf();
+    streambuf *old = cout.rdbuf();
     ostringstream oss;
     cout.rdbuf(oss.rdbuf());
-    
     func();
-    
-    // Restore cout
-    cout.rdbuf(oldCoutBuf);
+    cout.rdbuf(old);
     return oss.str();
 }
 
 /**
- * @brief Display inventory
+ * @brief Get input string
  */
-void showInventory(Inventory *inv)
-{
-    string output = captureOutput([inv]()
-    {
-        inv->print();
-    });
-    displayContent(output);
-    getUserChoice();
+string getInputString(const string &prompt) {
+    lock_guard<mutex> lock(ncursesMutex);
+    
+    werase(contentWin);
+    box(contentWin, 0, 0);
+    mvwprintw(contentWin, 1, 2, "%s", prompt.c_str());
+    wrefresh(contentWin);
+    
+    echo();
+    curs_set(1);
+    nodelay(stdscr, FALSE);
+    
+    char buffer[256];
+    mvwgetnstr(contentWin, 2, 2, buffer, 255);
+    
+    noecho();
+    curs_set(0);
+    nodelay(stdscr, TRUE);
+    
+    return string(buffer);
 }
 
 /**
- * @brief Display stock
+ * @brief Get input int
+ */
+int getInputInt(const string &prompt) {
+    string input = getInputString(prompt);
+    try {
+        return stoi(input);
+    } catch (...) {
+        return -1;
+    }
+}
+
+/**
+ * @brief Show inventory
+ */
+void showInventory(Inventory *inv) {
+    string output = captureOutput([inv]() { inv->print(); });
+    displayContent(output);
+}
+
+/**
+ * @brief Show stock
  */
 void showStock(Stock *stock) {
-    string output = captureOutput([stock]() {
-        stock->print();
-    });
+    string output = captureOutput([stock]() { stock->print(); });
     displayContent(output);
-    getUserChoice();
 }
 
 /**
  * @brief Add plants dialog
  */
 void addPlantsDialog(Inventory *inv, PlantCareHandler *handler) {
-    werase(contentWin);
-    box(contentWin, 0, 0);
-    echo();
-    curs_set(1);
+    string prompt = "Plant Types:\n[1] Carnivorous\n[2] Temperate\n[3] Tropical\n[4] Succulent\n\nEnter type:";
+    int type = getInputInt(prompt);
     
-    wattron(contentWin, COLOR_PAIR(1) | A_BOLD);
-    mvwprintw(contentWin, 1, 2, "ADD PLANTS TO INVENTORY");
-    wattroff(contentWin, COLOR_PAIR(1) | A_BOLD);
+    prompt = "Sizes:\n[1] Small\n[2] Medium\n[3] Large\n\nEnter size:";
+    int size = getInputInt(prompt);
     
-    mvwprintw(contentWin, 3, 2, "Plant Types: [1]Carnivorous [2]Temperate [3]Tropical [4]Succulent");
-    mvwprintw(contentWin, 4, 2, "Enter type: ");
-    wrefresh(contentWin);
-    
-    int type = wgetch(contentWin) - '0';
-    
-    mvwprintw(contentWin, 6, 2, "Sizes: [1]Small [2]Medium [3]Large");
-    mvwprintw(contentWin, 7, 2, "Enter size: ");
-    wrefresh(contentWin);
-    
-    int size = wgetch(contentWin) - '0';
-    
-    mvwprintw(contentWin, 9, 2, "Enter quantity (1-100): ");
-    wrefresh(contentWin);
-    
-    char qtyStr[10];
-    wgetnstr(contentWin, qtyStr, 9);
-    int qty = atoi(qtyStr);
-    
-    noecho();
-    curs_set(0);
+    int qty = getInputInt("Enter quantity (1-100):");
     
     if (qty <= 0 || qty > 100 || type < 1 || type > 4 || size < 1 || size > 3) {
-        showMessage("❌ Invalid input!", 4);
-        getUserChoice();
+        showMessage("❌ Invalid input!");
         return;
     }
     
     GreenHouse *factory = nullptr;
+    string typeStr;
     switch (type) {
-        case 1: factory = inv->getCarnivorousFactory(); break;
-        case 2: factory = inv->getTemperateFactory(); break;
-        case 3: factory = inv->getTropicalFactory(); break;
-        case 4: factory = inv->getSucculentFactory(); break;
+        case 1: factory = inv->getCarnivorousFactory(); typeStr = "Carnivorous"; break;
+        case 2: factory = inv->getTemperateFactory(); typeStr = "Temperate"; break;
+        case 3: factory = inv->getTropicalFactory(); typeStr = "Tropical"; break;
+        case 4: factory = inv->getSucculentFactory(); typeStr = "Succulent"; break;
     }
+    
+    string sizeStr = (size == 1) ? "Small" : (size == 2) ? "Medium" : "Large";
     
     for (int i = 0; i < qty; i++) {
         switch (size) {
@@ -373,47 +406,36 @@ void addPlantsDialog(Inventory *inv, PlantCareHandler *handler) {
         }
     }
     
-    showMessage("✓ Plants added successfully!", 1);
-    getUserChoice();
+    showMessage("✓ Successfully added " + to_string(qty) + " " + sizeStr + " " + typeStr + " plants!");
 }
 
 /**
  * @brief Customer question dialog
  */
 void customerQuestionDialog(Customer *customer) {
-    werase(contentWin);
-    box(contentWin, 0, 0);
-    
-    wattron(contentWin, COLOR_PAIR(1) | A_BOLD);
-    mvwprintw(contentWin, 1, 2, "CUSTOMER QUESTIONS");
-    wattroff(contentWin, COLOR_PAIR(1) | A_BOLD);
-    
     vector<string> questions = {
         "How often should I water my plants?",
         "How much sunlight do succulents need?",
         "Do you have carnivorous plants in stock?",
-        "I want to buy plants in bulk for my office",
+        "I want to buy plants in bulk",
         "Can I purchase tropical plants?",
-        "I need care advice for my plant"
+        "I need care advice"
     };
     
+    string prompt = "CUSTOMER QUESTIONS:\n\n";
     for (size_t i = 0; i < questions.size(); i++) {
-        mvwprintw(contentWin, 3 + i, 2, "[%zu] %s", i + 1, questions[i].c_str());
+        prompt += "[" + to_string(i + 1) + "] " + questions[i] + "\n";
     }
+    prompt += "\nEnter choice (1-6):";
     
-    mvwprintw(contentWin, 10, 2, "Enter choice (1-6): ");
-    wrefresh(contentWin);
-    
-    int choice = getUserChoice() - '0';
+    int choice = getInputInt(prompt);
     
     if (choice >= 1 && choice <= 6) {
         customer->askQuestion(questions[choice - 1]);
-        showMessage("✓ Question sent to staff!", 1);
+        showMessage("✓ Question sent to staff!");
     } else {
-        showMessage("❌ Invalid choice!", 4);
+        showMessage("❌ Invalid choice!");
     }
-    
-    getUserChoice();
 }
 
 /**
@@ -432,74 +454,61 @@ void showStatistics(Inventory *inv, Stock *stock) {
     oss << "Estimated Runtime: " << (tickCounter.load() * 0.1) << " seconds\n";
     
     displayContent(oss.str());
-    getUserChoice();
 }
 
 /**
- * @brief Show plant types information
+ * @brief Show plant types
  */
 void showPlantTypes() {
     ostringstream oss;
     oss << "╔══════════════════════════════════════════════╗\n";
     oss << "║         AVAILABLE PLANT TYPES                ║\n";
     oss << "╚══════════════════════════════════════════════╝\n\n";
-    oss << "1. 🦷 CARNIVOROUS PLANTS\n";
-    oss << "   - Pitcher Plants\n";
-    oss << "   - Sundew\n";
-    oss << "   - Nepenthes\n\n";
-    oss << "2. 🍃 TEMPERATE PLANTS\n";
-    oss << "   - Lilac\n";
-    oss << "   - Daisy\n";
-    oss << "   - White Oak\n\n";
-    oss << "3. 🌴 TROPICAL PLANTS\n";
-    oss << "   - Bird of Paradise\n";
-    oss << "   - Rubber Plant\n";
-    oss << "   - Nerve Plant\n\n";
-    oss << "4. 🌵 SUCCULENT PLANTS\n";
-    oss << "   - Aloe Vera\n";
-    oss << "   - Candelabra\n";
-    oss << "   - Hen and Chicks\n";
+    oss << "1. 🦷 CARNIVOROUS: Pitcher, Sundew, Nepenthes\n";
+    oss << "2. 🍃 TEMPERATE: Lilac, Daisy, White Oak\n";
+    oss << "3. 🌴 TROPICAL: Bird of Paradise, Rubber, Nerve\n";
+    oss << "4. 🌵 SUCCULENT: Aloe Vera, Candelabra, Hen and Chicks";
     
     displayContent(oss.str());
-    getUserChoice();
 }
 
 /**
- * @brief Show tick information
+ * @brief Show tick info
  */
 void showTickInfo() {
     ostringstream oss;
     oss << "╔══════════════════════════════════════════════╗\n";
     oss << "║           TICK SYSTEM INFO                   ║\n";
     oss << "╚══════════════════════════════════════════════╝\n\n";
-    oss << "The tick system runs asynchronously.\n";
-    oss << "It simulates plant growth and care.\n\n";
-    oss << "Current tick count: " << tickCounter.load() << "\n";
-    oss << "Tick rate: 10 ticks per second\n";
-    oss << "New plants every 100 ticks (~10s)\n";
-    oss << "UI updates every 5 ticks (0.5s)\n\n";
-    oss << "Design Patterns in Action:\n";
-    oss << "  • Observer: Plant state changes\n";
-    oss << "  • State: Health and growth states\n";
-    oss << "  • Chain of Responsibility: Care handlers\n";
-    oss << "  • Abstract Factory: Plant factories\n";
-    oss << "  • Iterator: Inventory traversal\n";
-    oss << "  • Mediator: Staff communication\n";
+    oss << "Current tick: " << tickCounter.load() << "\n";
+    oss << "Tick rate: 10 ticks/second\n";
+    oss << "New plants: every 100 ticks (~10s)\n";
+    oss << "UI updates: every 5 ticks (0.5s)\n\n";
+    oss << "Design Patterns:\n";
+    oss << "• Observer: Plant state changes\n";
+    oss << "• State: Health and growth\n";
+    oss << "• Chain of Responsibility: Care handlers\n";
+    oss << "• Abstract Factory: Plant factories\n";
+    oss << "• Iterator: Collection traversal\n";
+    oss << "• Mediator: Communication";
     
     displayContent(oss.str());
-    getUserChoice();
 }
 
 /**
  * @brief Main function
  */
 int main() {
+    // Suppress initialization output
+    streambuf *oldCoutBuf = cout.rdbuf();
+    ostringstream initOutput;
+    cout.rdbuf(initOutput.rdbuf());
+    
     try {
-        // Initialize core systems
+        // Initialize systems
         Inventory *inv = new Inventory();
         Stock *stock = new Stock();
         
-        // Create chain of responsibility
         WaterHandler *waterHandler = new WaterHandler();
         SunHandler *sunlightHandler = new SunHandler();
         FertilizerHandler *fertilizerHandler = new FertilizerHandler();
@@ -509,7 +518,6 @@ int main() {
         sunlightHandler->setNext(fertilizerHandler);
         fertilizerHandler->setNext(pruneHandler);
         
-        // Initialize mediator and staff
         CommMediator *mediator = new ConcreteCommMediator();
         vector<StaffMember *> staff;
         
@@ -528,17 +536,20 @@ int main() {
             inv->addSmallPlant(inv->getSucculentFactory(), waterHandler);
         }
         
+        // Restore cout
+        cout.rdbuf(oldCoutBuf);
+        
         // Initialize UI
         initUI();
         
-        // Start async tick system
+        // Start tick thread
         thread tickThread(asyncTickSystem, inv, stock, waterHandler);
+        this_thread::sleep_for(chrono::milliseconds(500));
         
         // Initial display
         updateStatusBar(inv, stock);
         displayMenu();
-        showMessage("Welcome to Plant Store Management System!\n\nThe system is now running.\nUse the menu below to interact.", 1);
-        getUserChoice();
+        showMessage("Welcome to Plant Store Management System!\n\nSystem running in background.\nUse menu to interact.");
         
         // Main loop
         bool exitProgram = false;
@@ -546,55 +557,39 @@ int main() {
             updateStatusBar(inv, stock);
             displayMenu();
             
-            int choice = getUserChoice();
+            nodelay(stdscr, FALSE);
+            int ch = getch();
+            nodelay(stdscr, TRUE);
             
-            switch (choice) {
-                case '0':
-                    exitProgram = true;
-                    break;
-                case '1':
-                    showInventory(inv);
-                    break;
-                case '2':
-                    showStock(stock);
-                    break;
-                case '3':
-                    addPlantsDialog(inv, waterHandler);
-                    break;
-                case '4':
-                    customerQuestionDialog(customer);
-                    break;
-                case '5':
-                    showStatistics(inv, stock);
-                    break;
-                case '6':
-                    showPlantTypes();
-                    break;
+            switch (ch) {
+                case '0': exitProgram = true; break;
+                case '1': showInventory(inv); break;
+                case '2': showStock(stock); break;
+                case '3': addPlantsDialog(inv, waterHandler); break;
+                case '4': customerQuestionDialog(customer); break;
+                case '5': showStatistics(inv, stock); break;
+                case '6': showPlantTypes(); break;
                 case '7':
                     inv->moveValidPlantsToStock(stock);
-                    showMessage("✓ Mature plants moved to stock!", 1);
-                    getUserChoice();
+                    showMessage("✓ Mature plants moved to stock!");
                     break;
-                case '8':
-                    showTickInfo();
-                    break;
+                case '8': showTickInfo(); break;
                 case '9':
                     werase(contentWin);
                     box(contentWin, 0, 0);
                     wrefresh(contentWin);
                     break;
-                default:
-                    showMessage("❌ Invalid choice! Please select 0-9.", 4);
-                    getUserChoice();
-                    break;
             }
+            
+            this_thread::sleep_for(chrono::milliseconds(50));
         }
         
         // Cleanup
         running.store(false);
         tickThread.join();
-        
         cleanupUI();
+        
+        cout << "\n✓ Thank you for using Plant Store Management System!\n" << endl;
         
         delete waterHandler;
         delete sunlightHandler;
@@ -607,17 +602,17 @@ int main() {
             delete s;
         }
         
-        cout << "\nThank you for using Plant Store Management System!\n" << endl;
-        
         return 0;
     }
     catch (const exception &e) {
+        cout.rdbuf(oldCoutBuf);
         cleanupUI();
         cerr << "Exception: " << e.what() << endl;
         running.store(false);
         return 1;
     }
     catch (...) {
+        cout.rdbuf(oldCoutBuf);
         cleanupUI();
         cerr << "Unknown exception!" << endl;
         running.store(false);

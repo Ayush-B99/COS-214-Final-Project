@@ -146,14 +146,15 @@ int Stock::countPlantsRecursive(PlantNode* node) {
 
 void Stock::print() {
 	// cout<< "\n== Stock Tree Structure ==\n";
-	// cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
-	// cout<< "== Total value of stock: R" << getTotalStockValue() << endl;
+	cout<< "\n== Stock ==\n";
+	cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
+	cout<< "== Total value of stock: R" << getTotalStockValue() << endl;
 	if (!stockCatalog){
-		// cout<< "The tree is empty.\n";
+		cout<< "Out of stock.\n";
 	} else {
 		printHelper(stockCatalog, "", false);
 	}
-	// cout<< "\n==============================\n";
+	cout<< "\n==============================\n";
 }
 
 void Stock::printHelper(PlantNode* node, string prefix, bool isLeft){

@@ -128,7 +128,7 @@ void PlantNode::printNode(string prefix, bool isLeft){
 	//no i did not figure out this formatting on my own, nobody else has to know that though
     //branch line and node index
     cout<< prefix;
-    cout<< (isLeft ? "├── " : "└── ");
+    // cout<< (isLeft ? "├── " : "└── ");
     cout<< key << " (" << plants.size() << " plant/s)" << endl;
 
     //print details of each plant in vector
