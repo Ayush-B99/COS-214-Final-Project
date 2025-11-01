@@ -477,9 +477,9 @@ int Inventory::countNodesRecursive(PlantNode* node) {
 
 void Inventory::print() {
 	// cout<< "\n== Inventory Tree Structure ==\n";
-	// cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
+	cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
 	if (!plantCatalog){
-		// cout<< "The tree is empty.\n";
+		cout<< "The tree is empty.\n";
 	} else {
 		printHelper(plantCatalog, "", false);
 	}

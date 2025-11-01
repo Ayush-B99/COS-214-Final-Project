@@ -127,22 +127,22 @@ bool PlantNode::isLeaf() {
 void PlantNode::printNode(string prefix, bool isLeft){
 	//no i did not figure out this formatting on my own, nobody else has to know that though
     //branch line and node index
-    // cout<< prefix;
-    // cout<< (isLeft ? "├── " : "└── ");
-    // cout<< key << " (" << plants.size() << " plant/s)" << endl;
+    cout<< prefix;
+    cout<< (isLeft ? "├── " : "└── ");
+    cout<< key << " (" << plants.size() << " plant/s)" << endl;
 
     //print details of each plant in vector
     for (size_t i = 0; i < plants.size(); i++) {
-        // cout<< prefix;
-        // cout<< (isLeft ? "│   " : "    "); //align with branch
-        // cout<< "   > " << plants[i]->getSpecies();
+        cout<< prefix;
+        cout<< (isLeft ? "│   " : "    "); //align with branch
+        cout<< "   > " << plants[i]->getSpecies();
 
         if (plants[i]->getGrowthState() && plants[i]->getHealthState()) {
-            // cout<< " | Growth: " << plants[i]->getGrowthState()->getName()
-                 // << " | Health: " << plants[i]->getHealthState()->getName();
+            cout<< " | Growth: " << plants[i]->getGrowthState()->getName()
+                 << " | Health: " << plants[i]->getHealthState()->getName();
         }
 
-        // cout<< " | Price: R" << plants[i]->getPrice() << endl;
+        cout<< " | Price: R" << plants[i]->getPrice() << endl;
     }
 }
 

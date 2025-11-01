@@ -295,8 +295,10 @@ string captureOutput(function<void()> func) {
 /**
  * @brief Display inventory
  */
-void showInventory(Inventory *inv) {
-    string output = captureOutput([inv]() {
+void showInventory(Inventory *inv)
+{
+    string output = captureOutput([inv]()
+    {
         inv->print();
     });
     displayContent(output);
