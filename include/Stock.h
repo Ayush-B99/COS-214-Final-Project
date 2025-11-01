@@ -107,6 +107,8 @@ public:
 	void moveToOrder(Plant* plant, Order* order);
 
 	bool plantInTree(Plant* plant);
+	
+	void tick();
 };
 
 #endif

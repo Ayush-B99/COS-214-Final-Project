@@ -149,7 +149,7 @@ void displayMenu() {
 }
 
 /**
- * @brief Display content with dynamic resizing
+ * @brief Display content with dynamic resizing and scrolling
  */
 void displayContent(const string &content) {
     lock_guard<mutex> lock(ncursesMutex);
@@ -184,41 +184,113 @@ void displayContent(const string &content) {
     
     if (contentWin) delwin(contentWin);
     
-    if (contentHeight > maxContentHeight) {
-        contentWin = newwin(maxContentHeight, screenMaxX, 6, 0);
-        werase(contentWin);
-        box(contentWin, 0, 0);
-        
-        for (int i = 0; i < maxContentHeight - 3 && i < (int)lines.size(); i++) {
-            mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
-        }
-        
-        wattron(contentWin, COLOR_PAIR(3));
-        mvwprintw(contentWin, maxContentHeight - 2, 2, 
-                  "[%zu lines total] Press any key...", lines.size());
-        wattroff(contentWin, COLOR_PAIR(3));
-    } else {
-        int newHeight = contentHeight;
+    // Determine if we need scrolling
+    bool needsScrolling = (contentHeight > maxContentHeight);
+    int displayHeight = needsScrolling ? maxContentHeight : contentHeight;
+    int visibleLines = displayHeight - 3;
+    int startLine = 0;
+    
+    // Create window
+    if (!needsScrolling && contentHeight < maxContentHeight) {
+        // Resize to fit exactly
         if (menuWin) delwin(menuWin);
-        menuWin = newwin(5, screenMaxX, 6 + newHeight, 0);
-        
-        contentWin = newwin(newHeight, screenMaxX, 6, 0);
-        werase(contentWin);
-        box(contentWin, 0, 0);
-        
-        for (int i = 0; i < (int)lines.size(); i++) {
-            mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
-        }
-        
-        wattron(contentWin, COLOR_PAIR(3));
-        mvwprintw(contentWin, newHeight - 2, 2, "Press any key to continue...");
-        wattroff(contentWin, COLOR_PAIR(3));
+        menuWin = newwin(5, screenMaxX, 6 + displayHeight, 0);
+        contentWin = newwin(displayHeight, screenMaxX, 6, 0);
+    } else {
+        // Use max available space
+        contentWin = newwin(displayHeight, screenMaxX, 6, 0);
     }
     
-    wrefresh(contentWin);
+    keypad(contentWin, TRUE);
     
+    // Initial draw
+    auto drawContent = [&]() {
+        werase(contentWin);
+        box(contentWin, 0, 0);
+        
+        for (int i = 0; i < visibleLines && (startLine + i) < (int)lines.size(); i++) {
+            mvwprintw(contentWin, i + 1, 2, "%s", lines[startLine + i].c_str());
+        }
+        
+        // Status line
+        wattron(contentWin, COLOR_PAIR(3));
+        if (needsScrolling) {
+            mvwprintw(contentWin, displayHeight - 2, 2, 
+                      "[%d-%d of %zu] ↑↓=scroll PgUp/PgDn=page ANY=exit",
+                      startLine + 1,
+                      min(startLine + visibleLines, (int)lines.size()),
+                      lines.size());
+        } else {
+            mvwprintw(contentWin, displayHeight - 2, 2, "Press any key to continue...");
+        }
+        wattroff(contentWin, COLOR_PAIR(3));
+        
+        wrefresh(contentWin);
+    };
+    
+    drawContent();
+    
+    // Handle input
     nodelay(stdscr, FALSE);
-    wgetch(contentWin);
+    
+    if (needsScrolling) {
+        // Scrolling mode
+        while (true) {
+            int ch = wgetch(contentWin);
+            
+            bool scrolled = false;
+            
+            switch (ch) {
+                case KEY_UP:
+                    if (startLine > 0) {
+                        startLine--;
+                        scrolled = true;
+                    }
+                    break;
+                    
+                case KEY_DOWN:
+                    if (startLine + visibleLines < (int)lines.size()) {
+                        startLine++;
+                        scrolled = true;
+                    }
+                    break;
+                    
+                case KEY_PPAGE: // Page Up
+                    startLine = max(0, startLine - visibleLines);
+                    scrolled = true;
+                    break;
+                    
+                case KEY_NPAGE: // Page Down
+                    startLine = min((int)lines.size() - visibleLines, startLine + visibleLines);
+                    if (startLine < 0) startLine = 0;
+                    scrolled = true;
+                    break;
+                    
+                case KEY_HOME: // Home
+                    startLine = 0;
+                    scrolled = true;
+                    break;
+                    
+                case KEY_END: // End
+                    startLine = max(0, (int)lines.size() - visibleLines);
+                    scrolled = true;
+                    break;
+                    
+                default:
+                    // Any other key exits
+                    goto exit_scroll;
+            }
+            
+            if (scrolled) {
+                drawContent();
+            }
+        }
+        exit_scroll:;
+    } else {
+        // No scrolling needed - just wait for any key
+        wgetch(contentWin);
+    }
+    
     nodelay(stdscr, TRUE);
     
     // Restore layout
@@ -591,18 +663,50 @@ void askQuestion(Customer *customer) {
 void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
     int cycles = 0;
     
-    while (running.load()) {
+    while (running.load())
+    {
         cycles++;
         tickCounter.store(cycles);
         
-        if (cycles % 50 == 0) {
+        // Tick inventory plants
+        inv->tick();
+        // Tick stock plants
+        stock->tick();
+        
+        
+        // Tick stock plants manually (Stock doesn't have tick method)
+        // vector<Plant*> stockPlants = stock->getAllPlants();
+        // for (Plant* plant : stockPlants)
+        // {
+        //     if (plant) {
+        //         plant->tick();
+        //     }
+        // }
+        
+        if (cycles % 50 == 0)
+        {
             inv->moveValidPlantsToStock(stock);
         }
         
         if (cycles % 150 == 0) {
+            stock->cleanUpDeadPlants();
+            inv->cleanUpDeadPlants();
+            inv->moveValidPlantsToStock(stock);
+
+            inv->addLargePlant(inv->getCarnivorousFactory(), handler);
+            inv->addMediumPlant(inv->getCarnivorousFactory(), handler);
             inv->addSmallPlant(inv->getCarnivorousFactory(), handler);
+
+            inv->addLargePlant(inv->getTemperateFactory(), handler);
             inv->addMediumPlant(inv->getTemperateFactory(), handler);
+            inv->addSmallPlant(inv->getTemperateFactory(), handler);
+
             inv->addLargePlant(inv->getTropicalFactory(), handler);
+            inv->addMediumPlant(inv->getTropicalFactory(), handler);
+            inv->addSmallPlant(inv->getTropicalFactory(), handler);
+
+            inv->addLargePlant(inv->getSucculentFactory(), handler);
+            inv->addMediumPlant(inv->getSucculentFactory(), handler);
             inv->addSmallPlant(inv->getSucculentFactory(), handler);
         }
         

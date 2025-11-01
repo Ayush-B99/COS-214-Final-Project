@@ -415,3 +415,19 @@ bool Stock::plantInTree(Plant* plant){
 
 	return node->plantInNode(plant);
 }
+
+void Stock::tick()
+{
+    StockIterator* it = new StockIterator(stockCatalog);
+    
+    while (it->hasNext())
+    {
+        Plant* curr = it->nextFine();
+        if (curr)
+        {
+            curr->tick();
+        }
+    }
+    
+    delete it;
+}
