@@ -259,7 +259,7 @@ We as a team of 7 distributed an even workload in which each team member all con
 
 ## 🎯 Design Patterns Overview
 
-This project demonstrates 10+ Gang of Four design patterns working in harmony:
+This project demonstrates 10+ Game of Four design patterns working in harmony:
 - **Creational**: Abstract Factory, Prototype
 - **Structural**: Decorator, Composite
 - **Behavioral**: State, Command, Chain of Responsibility, Iterator, Memento, Mediator, Observer
@@ -307,7 +307,7 @@ graph TD
     %% Plant Creation Flow
     D -->|Inventory Iterator| E[Plant Collection]
     E -->|Abstract Factory| F[Create Specific Plant]
-    F -->|Plant Types| G[AloeVera, Cactus, etc]
+    F -->|Plant Types| G[AloeVera, WhiteOak, etc...]
     
     %% Plant Lifecycle Flow
     G -->|GrowthState| H[Seed → Sprout → Mature]
@@ -364,6 +364,7 @@ graph TD
 
 ### Build Instructions
 *add it here when we are done w project fully*
+
 
 
 
