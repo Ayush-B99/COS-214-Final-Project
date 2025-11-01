@@ -56,7 +56,8 @@ int orderCounter = 1;
 /**
  * @brief Initialize ncurses UI
  */
-void initUI() {
+void initUI()
+{
     initscr();
     cbreak();
     noecho();
@@ -64,7 +65,8 @@ void initUI() {
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     
-    if (has_colors()) {
+    if (has_colors())
+    {
         start_color();
         init_pair(1, COLOR_GREEN, COLOR_BLACK);
         init_pair(2, COLOR_CYAN, COLOR_BLACK);
@@ -89,7 +91,8 @@ void initUI() {
 /**
  * @brief Clean up ncurses
  */
-void cleanupUI() {
+void cleanupUI()
+{
     if (statusWin) delwin(statusWin);
     if (contentWin) delwin(contentWin);
     if (menuWin) delwin(menuWin);
@@ -99,32 +102,36 @@ void cleanupUI() {
 /**
  * @brief Update status bar showing cart info
  */
-void updateStatusBar(Stock *stock) {
+void updateStatusBar(Stock *stock)
+{
     lock_guard<mutex> lock(ncursesMutex);
     
     werase(statusWin);
     box(statusWin, 0, 0);
     
     wattron(statusWin, COLOR_PAIR(2) | A_BOLD);
-    mvwprintw(statusWin, 0, 2, " 🌿 PLANT STORE - CUSTOMER PORTAL 🌿 ");
+    mvwprintw(statusWin, 0, 2, "Momina and Friends - customer portal");
     wattroff(statusWin, COLOR_PAIR(2) | A_BOLD);
     
     wattron(statusWin, COLOR_PAIR(2));
-    mvwprintw(statusWin, 2, 2, "Available Plants: %4d", stock->getPlantCount());
-    wprintw(statusWin, " │ Total Stock Value: $%.2f", stock->getTotalStockValue());
+    mvwprintw(statusWin, 2, 2, "Available Plants: %4d \t", stock->getPlantCount());
+    wprintw(statusWin, "Total Stock Value: R%.2f", stock->getTotalStockValue());
     wattroff(statusWin, COLOR_PAIR(2));
     
     // Show current cart
-    if (currentOrder) {
+    if (currentOrder)
+    {
         wattron(statusWin, COLOR_PAIR(3));
-        mvwprintw(statusWin, 3, 2, "🛒 Cart: %zu items │ Total: $%.2f │ Status: %s", 
+        mvwprintw(statusWin, 3, 2, "Cart: %zu items | Total: R%.2f | Status: %s", 
                   currentOrder->getOrderItems().size(),
                   currentOrder->getTotal(),
                   currentOrder->getStateName().c_str());
         wattroff(statusWin, COLOR_PAIR(3));
-    } else {
+    }
+    else
+    {
         wattron(statusWin, COLOR_PAIR(6));
-        mvwprintw(statusWin, 3, 2, "🛒 Cart: Empty");
+        mvwprintw(statusWin, 3, 2, "Cart: Empty");
         wattroff(statusWin, COLOR_PAIR(6));
     }
     
@@ -134,7 +141,8 @@ void updateStatusBar(Stock *stock) {
 /**
  * @brief Display customer menu
  */
-void displayMenu() {
+void displayMenu()
+{
     lock_guard<mutex> lock(ncursesMutex);
     
     werase(menuWin);
@@ -390,7 +398,7 @@ void viewCart() {
         oss << orderOutput;
         
         oss << "\n" << string(46, '-') << "\n";
-        oss << "TOTAL: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n";
+        oss << "TOTAL: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n";
     }
     
     displayContent(oss.str());
@@ -425,7 +433,7 @@ void addToCart(Stock *stock, Inventory *inv) {
     oss << "Available Plants:\n\n";
     for (size_t i = 0; i < availablePlants.size(); i++) {
         oss << "[" << (i + 1) << "] " << availablePlants[i]->getSpecies() 
-            << " - $" << fixed << setprecision(2) << availablePlants[i]->getPrice() << "\n";
+            << " - R" << fixed << setprecision(2) << availablePlants[i]->getPrice() << "\n";
     }
     oss << "\nEnter plant number to add (0 to cancel):";
     
@@ -441,7 +449,7 @@ void addToCart(Stock *stock, Inventory *inv) {
     // Ask for confirmation
     ostringstream confirm;
     confirm << "Add " << selectedPlant->getSpecies() 
-            << " ($" << fixed << setprecision(2) << selectedPlant->getPrice() 
+            << " (R" << fixed << setprecision(2) << selectedPlant->getPrice() 
             << ") to cart?\n\n[Y/N]";
     
     string response = getInputString(confirm.str());
@@ -458,7 +466,7 @@ void addToCart(Stock *stock, Inventory *inv) {
     ostringstream success;
     success << "✓ Plant added to cart!\n\n";
     success << selectedPlant->getDescription() << "\n";
-    success << "Price: $" << fixed << setprecision(2) << selectedPlant->getPrice();
+    success << "Price: R" << fixed << setprecision(2) << selectedPlant->getPrice();
     
     displayContent(success.str());
 }
@@ -483,7 +491,7 @@ void removeFromCart(Stock *stock, Inventory *inv) {
     oss << "Items in your cart:\n\n";
     for (size_t i = 0; i < orderItems.size(); i++) {
         oss << "[" << (i + 1) << "] " << orderItems[i]->getDescription() 
-            << " - $" << fixed << setprecision(2) << orderItems[i]->getPrice() << "\n";
+            << " - R" << fixed << setprecision(2) << orderItems[i]->getPrice() << "\n";
     }
     oss << "\nEnter item number to remove (0 to cancel):";
     
@@ -525,7 +533,7 @@ void checkoutOrder() {
     oss << "╚══════════════════════════════════════════════╝\n\n";
     oss << "Order ID: " << currentOrder->getId() << "\n";
     oss << "Items: " << currentOrder->getOrderItems().size() << "\n";
-    oss << "Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    oss << "Total: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
     oss << "Confirm checkout? [Y/N]";
     
     string confirm = getInputString(oss.str());
@@ -564,7 +572,7 @@ void payOrder() {
     oss << "║                 PAYMENT                      ║\n";
     oss << "╚══════════════════════════════════════════════╝\n\n";
     oss << "Order ID: " << currentOrder->getId() << "\n";
-    oss << "Amount Due: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    oss << "Amount Due: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
     oss << "Payment Methods:\n";
     oss << "[1] Credit Card\n";
     oss << "[2] Debit Card\n";
@@ -587,7 +595,7 @@ void payOrder() {
     success << "║           ✓ PAYMENT SUCCESSFUL!              ║\n";
     success << "╚══════════════════════════════════════════════╝\n\n";
     success << "Order ID: " << currentOrder->getId() << "\n";
-    success << "Paid: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    success << "Paid: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
     success << "Thank you for your purchase!\n";
     success << "Your plants will be prepared for pickup.";
     
@@ -615,7 +623,7 @@ void viewOrders()
         oss << "  ID: " << currentOrder->getId() << "\n";
         oss << "  Status: " << currentOrder->getStateName() << "\n";
         oss << "  Items: " << currentOrder->getOrderItems().size() << "\n";
-        oss << "  Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+        oss << "  Total: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
         oss << string(46, '-') << "\n\n";
     }
     
@@ -633,7 +641,7 @@ void viewOrders()
             oss << (k + 1) << ". Order ID: " << order->getId() << "\n";
             oss << "   Status: " << order->getStateName() << "\n";
             oss << "   Items: " << order->getOrderItems().size() << "\n";
-            oss << "   Total: $" << fixed << setprecision(2) << order->getTotal() << "\n";
+            oss << "   Total: R" << fixed << setprecision(2) << order->getTotal() << "\n";
             
             if (k < orderHistory.size() - 1)
             {
@@ -643,7 +651,7 @@ void viewOrders()
         
         oss << "\n" << string(46, '-') << "\n";
         oss << "Total Orders: " << orderHistory.size() << "\n";
-        oss << "Total Spent: $" << fixed << setprecision(2);
+        oss << "Total Spent: R" << fixed << setprecision(2);
         
         double totalSpent = 0.0;
         for (Order* order : orderHistory)
@@ -796,9 +804,8 @@ int main() {
         }
         
         // Tick plants to mature them
-        for (int i = 0; i < 20; i++) {
+        for (int k = 0; k < 20; k++)
             inv->tick();
-        }
         inv->moveValidPlantsToStock(stock);
         
         // Restore cout
@@ -816,9 +823,9 @@ int main() {
         displayMenu();
         
         ostringstream welcome;
-        welcome << "╔══════════════════════════════════════════════╗\n";
-        welcome << "║     Welcome to the Plant Store Portal!      ║\n";
-        welcome << "╚══════════════════════════════════════════════╝\n\n";
+        welcome << "=====================================================\n";
+        welcome << "|     Welcome to the Momina and Friends Portal!      |\n";
+        welcome << "=====================================================\n\n";
         welcome << "Browse our selection of beautiful plants!\n\n";
         welcome << "Features:\n";
         welcome << "• Browse available plants\n";
