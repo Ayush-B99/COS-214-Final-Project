@@ -7,8 +7,8 @@ PruneHandler::~PruneHandler()
 
 void PruneHandler::handleCareRequest(Plant *plant)
 {
-    cout << "PruneHandler checking if plant is mature..." << endl;
-    cout << plant->needsPrune() << endl;
+    // cout<< "PruneHandler checking if plant is mature..." << endl;
+    // cout<< plant->needsPrune() << endl;
 
     if (plant->needsPrune())
     {
@@ -31,5 +31,5 @@ void PruneHandler::handleCareRequest(Plant *plant)
 
 void PruneHandler::message()
 {
-    cout << "CHAIN: Pruning has been provided to the plant.";
+    // // cout<< "CHAIN: Pruning has been provided to the plant.";
 }

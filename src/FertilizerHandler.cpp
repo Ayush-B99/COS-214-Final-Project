@@ -7,8 +7,8 @@ FertilizerHandler::~FertilizerHandler()
 
 void FertilizerHandler::handleCareRequest(Plant *plant)
 {
-    cout << "FertilizerHandler checking if plant needs fertilizer..." << endl;
-    cout << plant->needsFertilizer() << endl;
+    // cout<< "FertilizerHandler checking if plant needs fertilizer..." << endl;
+    // cout<< plant->needsFertilizer() << endl;
 
     if (plant->needsFertilizer())
     {
@@ -31,5 +31,5 @@ void FertilizerHandler::handleCareRequest(Plant *plant)
 
 void FertilizerHandler::message()
 {
-    cout << "CHAIN: Fertilizer has been provided to the plant." << endl;
+    // // cout<< "CHAIN: Fertilizer has been provided to the plant." << endl;
 }

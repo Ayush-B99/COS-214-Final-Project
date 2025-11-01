@@ -7,7 +7,7 @@ Water::Water(Plant *plant)
 
 void Water::execute()
 {
-	cout << "Execute water command" << endl;
+	// cout << "Execute water command" << endl;
 
 	receiver->receiveWatering();
 }

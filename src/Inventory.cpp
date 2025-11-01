@@ -10,7 +10,7 @@ Inventory::Inventory() {
 	greenHouses.push_back(new SucculentPlantFactory());
 	greenHouses.push_back(new CarnivorousPlantFactory()); //[3]
 
-	cout << "A new instance of Inventory has been created!\n";
+	// // cout<< "A new instance of Inventory has been created!\n";
 }
 
 Inventory::~Inventory() {
@@ -31,12 +31,12 @@ Inventory::~Inventory() {
 
 void Inventory::setClimate(GreenHouse* factory) {
 	greenHouses.push_back(factory);
-	cout << "A new greenhouse has been added to inventory\n";
+	// // cout<< "A new greenhouse has been added to inventory\n";
 }
 
 Plant* Inventory::addSmallPlant(GreenHouse* house, PlantCareHandler* handler) {
 	if (!house){
-		cout << "Can't add small plant, invalid greenhouse.\n";
+		// // cout<< "Can't add small plant, invalid greenhouse.\n";
 		return nullptr;
 	}
 
@@ -47,13 +47,13 @@ Plant* Inventory::addSmallPlant(GreenHouse* house, PlantCareHandler* handler) {
 	}
 	addPlant(toAdd);
 
-	cout << "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
+	// // cout<< "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
 	return toAdd;
 }
 
 Plant* Inventory::addMediumPlant(GreenHouse* house, PlantCareHandler* handler) {
 	if (!house){
-		cout << "Can't add medium plant, invalid greenhouse.\n";
+		// // cout<< "Can't add medium plant, invalid greenhouse.\n";
 		return nullptr;
 	}
 
@@ -64,13 +64,13 @@ Plant* Inventory::addMediumPlant(GreenHouse* house, PlantCareHandler* handler) {
 	}
 	addPlant(toAdd);
 
-	cout << "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
+	// // cout<< "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
 	return toAdd;
 }
 
 Plant* Inventory::addLargePlant(GreenHouse* house, PlantCareHandler* handler) {
 	if (!house){
-		cout << "Can't add large plant, invalid greenhouse.\n";
+		// // cout<< "Can't add large plant, invalid greenhouse.\n";
 		return nullptr;
 	}
 
@@ -81,20 +81,20 @@ Plant* Inventory::addLargePlant(GreenHouse* house, PlantCareHandler* handler) {
 	}
 	addPlant(toAdd);
 
-	cout << "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
+	// // cout<< "A new " << toAdd->getSpecies() << " has been added to Inventory!\n";
 	return toAdd;
 }
 
 void Inventory::addPlantPrototype(Plant* prototype) {
 	if (!prototype){
-		cout << "Can't clone and add plant, invalid input\n";
+		// cout<< "Can't clone and add plant, invalid input\n";
 		return;
 	}
 
 	Plant* cloned = prototype->clone();
 	addPlant(cloned);
 
-	cout << "A " << prototype->getSpecies() << " has been cloned and added to Inventory!\n";
+	// cout<< "A " << prototype->getSpecies() << " has been cloned and added to Inventory!\n";
 }
 
 InventoryIterator* Inventory::createIterator() {
@@ -131,7 +131,7 @@ GreenHouse* Inventory::getTropicalFactory() {
 
 void Inventory::addPlant(Plant* plant) {
 	if (!plant){
-		cout << "Cannot add the plant, invalid or null.\n";
+		// cout<< "Cannot add the plant, invalid or null.\n";
 		return;
 	}
 	
@@ -143,22 +143,22 @@ void Inventory::addPlant(Plant* plant) {
 
 void Inventory::removePlant(Plant* plant) {
 	if (!plant){
-		cout << "Cannot remove plant, invalid or null.\n";
+		// cout<< "Cannot remove plant, invalid or null.\n";
 		return;
 	}
 
 	//first findNode, if not found plant cannot be in the tree
 	PlantNode* node = findNode(plantCatalog, plant->getSpecies());
 	if (node == nullptr){
-		cout << "An appropriate node cannot be located for the plant. Not removed.\n";
+		// cout<< "An appropriate node cannot be located for the plant. Not removed.\n";
 		return;
 	}
 
 	//now try to remove from this node's vector
 	if(node->removePlant(plant)){
-		cout << "Plant removed from " << node->getKey() << " node\n";
+		// cout<< "Plant removed from " << node->getKey() << " node\n";
 	} else {
-		cout << "Plant not found in node.\n";
+		// cout<< "Plant not found in node.\n";
 	}
 
 	// Allow empty nodes - don't remove them
@@ -170,13 +170,13 @@ vector<Plant*> Inventory::removePlants(string key, GrowthState* state) {
 	PlantNode* node = findNode(plantCatalog, key);
 
 	if (node == nullptr){
-		cout << "No plants matching those parameters could be found.\n";
+		// cout<< "No plants matching those parameters could be found.\n";
 		return matches;
 	}
 
 	//otherwise, search the node for matches
 	matches = node->removeByGrowthState(state);
-	cout << matches.size() << " plants removed from " << key << ".\n";
+	// cout<< matches.size() << " plants removed from " << key << ".\n";
 
 	// Allow empty nodes - don't remove them
 	return matches;
@@ -188,13 +188,13 @@ vector<Plant*> Inventory::removePlants(string key, HealthState* state){
 	PlantNode* node = findNode(plantCatalog, key);
 
 	if (node == nullptr){
-		cout << "No plants matching those parameters could be found.\n";
+		// cout<< "No plants matching those parameters could be found.\n";
 		return matches;
 	}
 
 	//otherwise, search the node for matches
 	matches = node->removeByHealthState(state);
-	cout << matches.size() << " plants removed from " << key << ".\n";
+	// cout<< matches.size() << " plants removed from " << key << ".\n";
 
 	// Allow empty nodes - don't remove them
 	return matches;
@@ -203,14 +203,14 @@ vector<Plant*> Inventory::removePlants(string key, HealthState* state){
 vector<Plant*> Inventory::removePlants(GrowthState* state){
 	vector<Plant*> matches;
 	plantCatalog = removeByGrowthRecursive(plantCatalog, state, matches);
-	cout << matches.size() << " plants removed from the entire tree.\n";
+	// cout<< matches.size() << " plants removed from the entire tree.\n";
 	return matches;
 }
 
 vector<Plant*> Inventory::removePlants(HealthState* state) {
     vector<Plant*> matches;
     plantCatalog = removeByHealthRecursive(plantCatalog, state, matches);
-    cout << matches.size() << " plants removed from the entire tree.\n";
+    // cout<< matches.size() << " plants removed from the entire tree.\n";
     return matches;
 }
 
@@ -251,12 +251,12 @@ PlantNode* Inventory::removeByHealthRecursive(PlantNode* node, HealthState* stat
 vector<Plant*> Inventory::getPlants(string key){
 	PlantNode* node = findNode(plantCatalog, key);
 	if (!node || node->getPlants().empty()){
-		cout << "No plants matching the given key.\n";
+		// cout<< "No plants matching the given key.\n";
 		return vector<Plant*>();
 	}
 
 	vector<Plant*> plants = node->getPlants();
-	cout << plants.size() << " plants found matching the key " << key << endl;
+	// cout<< plants.size() << " plants found matching the key " << key << endl;
 	return plants;
 }
 
@@ -335,7 +335,7 @@ void Inventory::collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& match
 
 void Inventory::moveValidPlantsToStock(Stock* stock) {
     if (!stock) {
-        cout << "Can't move plants to stock, invalid Storage pointer.\n";
+        // cout<< "Can't move plants to stock, invalid Storage pointer.\n";
         return;
     }
 
@@ -346,12 +346,12 @@ void Inventory::moveValidPlantsToStock(Stock* stock) {
     collectByGrowthRecursive(plantCatalog, matureState, toMove);
 
     if (toMove.empty()) {
-        cout << "No mature plants found to move.\n";
+        // cout<< "No mature plants found to move.\n";
         delete matureState;
         return;
     }
 
-    cout << "Moving " << toMove.size() << " mature plants to Stock...\n";
+    // cout<< "Moving " << toMove.size() << " mature plants to Stock...\n";
 
     //move plants from inventory to stock (transfer ownership)
     for (Plant* p : toMove) {
@@ -366,7 +366,7 @@ void Inventory::moveValidPlantsToStock(Stock* stock) {
         } 
     }
 
-    cout << "Plants successfully moved to Stock!\n";
+    // cout<< "Plants successfully moved to Stock!\n";
     delete matureState;
 }
 
@@ -375,18 +375,18 @@ void Inventory::cleanUpDeadPlants(){
 
     vector<Plant*> deadPlants = removePlants(deadState);
     if (deadPlants.empty()) {
-        cout << "No dead plants found for cleanup.\n";
+        // // cout<< "No dead plants found for cleanup.\n";
         delete deadState;
         return;
     }
 
-    cout << "Cleaning up " << deadPlants.size() << " dead plants...\n";
+    // // cout<< "Cleaning up " << deadPlants.size() << " dead plants...\n";
 	//cleans up memory since we genuinely delete them
     for (Plant* p : deadPlants) {
         if (p) delete p;
     }
 
-    cout << "All dead plants removed and memory freed.\n";
+    // // cout<< "All dead plants removed and memory freed.\n";
 	delete deadState;
 }
 
@@ -476,14 +476,14 @@ int Inventory::countNodesRecursive(PlantNode* node) {
 }
 
 void Inventory::print() {
-	cout << "\n== Inventory Tree Structure ==\n";
-	cout << "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
+	// cout<< "\n== Inventory Tree Structure ==\n";
+	// cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
 	if (!plantCatalog){
-		cout << "The tree is empty.\n";
+		// cout<< "The tree is empty.\n";
 	} else {
 		printHelper(plantCatalog, "", false);
 	}
-	cout << "\n==============================\n";
+	// cout<< "\n==============================\n";
 }
 
 void Inventory::printHelper(PlantNode* node, string prefix, bool isLeft){

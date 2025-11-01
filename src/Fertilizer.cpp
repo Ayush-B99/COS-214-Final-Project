@@ -7,6 +7,6 @@ Fertilizer::Fertilizer(Plant *plant)
 
 void Fertilizer::execute()
 {
-	cout << "Execute fertilizer command" << endl;
+	// cout<< "Execute fertilizer command" << endl;
 	receiver->receiveFertilizing();
 }

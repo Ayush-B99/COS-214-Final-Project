@@ -12,7 +12,7 @@ void Sprout::grow(Plant *plant)
             plant->setGrowthState(new Mature());
             plant->resetCycleCount();
             // plant->notify();
-            cout << plant->getSpecies() << " has matured!" << endl;
+            // cout << plant->getSpecies() << " has matured!" << endl;
         }
     }
 }

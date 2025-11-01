@@ -11,7 +11,7 @@ void Seed::grow(Plant *plant)
 			plant->setGrowthState(new Sprout());
 			plant->resetCycleCount();
 			// plant->notify();
-			cout << plant->getSpecies() << " has sprouted!" << endl;
+			// cout << plant->getSpecies() << " has sprouted!" << endl;
 		}
 	}
 }

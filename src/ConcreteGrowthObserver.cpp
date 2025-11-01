@@ -17,11 +17,11 @@ void ConcreteGrowthObserver::onGrowthChange()
 
 	this->state = subject->getHealthState(); // update observer state
 
-	cout << "Observer received message from plant" << subject->getSpecies() << " about growth change." << endl;
+	// cout<< "Observer received message from plant" << subject->getSpecies() << " about growth change." << endl;
 
 	if (dynamic_cast<NeedsCare *>(state)) // test if plant needs care
 	{
-		cout << "BEGIN CHAIN" << endl;
+		// cout<< "BEGIN CHAIN" << endl;
 		subject->handleCareRequest(); // start chain of responsibility to handle care
 	}
 }

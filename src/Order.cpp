@@ -8,7 +8,7 @@ Order::Order(string orderId) {
 	total = 0;
 	state = new Draft();
 
-	cout << "Order " << orderId << " has been created successfully!\n";
+	// cout<< "Order " << orderId << " has been created successfully!\n";
 }
 
 Order::~Order() {
@@ -47,33 +47,33 @@ void Order::cancel(Inventory* inv, Stock* stock){
 void Order::addPlant(Plant* item) {
 	//block adding based on state
 	if (state->getName() != "draft"){
-		cout << "You cannot edit an order after it has been submitted";
+		// cout<< "You cannot edit an order after it has been submitted";
 		return;
 	}
 
 	if (orderItems->plantInNode(item)){
-		cout << "This plant is already in your order.\n";
+		// cout<< "This plant is already in your order.\n";
 		return;
 	}
 
 	orderItems->addPlant(item);
-	cout << item->getSpecies() << " successfully added to your order!\n";
+	// cout<< item->getSpecies() << " successfully added to your order!\n";
 
 	calculateTotal();
 }
 
 void Order::removePlant(Plant* item, Inventory* inv, Stock* stock) {
 	if (state->getName() != "draft"){
-		cout << "You cannot edit an order after it has been submitted.\n";
+		// cout<< "You cannot edit an order after it has been submitted.\n";
 		return;
 	}
 
 	if (!orderItems->removePlant(item)){
-		cout << item->getSpecies() << " either not found or not removed.\n";
+		// cout<< item->getSpecies() << " either not found or not removed.\n";
 		return;
 	}
 	
-	cout << item->getSpecies() << " successfully removed from your order!\n";
+	// cout<< item->getSpecies() << " successfully removed from your order!\n";
 
 	// Return plant to Stock only (Stock owns it)
 	if (item && stock) {
@@ -126,13 +126,13 @@ string& Order::getId() {
 
 void Order::print(){
 	if (!orderItems || orderItems->getPlants().empty()){
-		cout << "Order " << id << " is empty. Engage in consumerism!\n";
+		// cout<< "Order " << id << " is empty. Engage in consumerism!\n";
 		return;
 	}
 
-	cout << "Order " << id 
-		 << " Total: R" << total 
-		 << " in state " << state->getName() << endl;
+	// cout<< "Order " << id 
+		 // << " Total: R" << total 
+		 // << " in state " << state->getName() << endl;
 
 	orderItems->printNode("", false);
 }

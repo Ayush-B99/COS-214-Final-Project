@@ -72,7 +72,7 @@ void Plant::setGrowthState(GrowthState *state)
 		delete this->growthState;
 	}
 	this->growthState = state;
-	cout << species << " has advanced to a new growth stage." << endl;
+	// cout<< species << " has advanced to a new growth stage." << endl;
 }
 
 void Plant::grow()
@@ -169,11 +169,11 @@ void Plant::completeCareSession()
 		return;
 	}
 
-	cout << "\nCare session completed for " << species << ". Resource levels:" << endl;
-	cout << "  Water: " << waterLevel << "%" << endl;
-	cout << "  Sun: " << sunlightLevel << "%" << endl;
-	cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
-	cout << "  Prune: " << pruneLevel << "%" << endl;
+	// cout<< "\nCare session completed for " << species << ". Resource levels:" << endl;
+	// cout<< "  Water: " << waterLevel << "%" << endl;
+	// cout<< "  Sun: " << sunlightLevel << "%" << endl;
+	// cout<< "  Fertilizer: " << fertilizerLevel << "%" << endl;
+	// cout<< "  Prune: " << pruneLevel << "%" << endl;
 
 	vector<string> requiredCare = growthState->getRequiredCare();
 	bool successfulCycles = true;
@@ -192,18 +192,18 @@ void Plant::completeCareSession()
 
 	if (successfulCycles)
 	{
-		cout << species << " care cycle completed successfully!" << endl;
+		// cout<< species << " care cycle completed successfully!" << endl;
 		currentCycleCount++;
 		growthState->grow(this); // Check for growth advancement
 		updateHealth();			 // Improve health if care was successful
 	}
 	else
 	{
-		cout << species << " care cycle incomplete!" << endl;
+		// cout<< species << " care cycle incomplete!" << endl;
 		// Health degradation is handled by updateHealthBasedOnResources()
 	}
 
-	cout << endl;
+	// cout<< endl;
 }
 
 string Plant::getsize() const
@@ -238,55 +238,55 @@ void Plant::resetCycleCount()
 
 void Plant::printCurrentNeeds()
 {
-	cout << "\n"
-		 << species << " Current Resource Levels: " << endl;
-	cout << "  Water: " << waterLevel << "%" << endl;
-	cout << "  Sun: " << sunlightLevel << "%" << endl;
-	cout << "  Fertilizer: " << fertilizerLevel << "%" << endl;
-	cout << "  Prune: " << pruneLevel << "%" << endl;
+	// cout<< "\n"
+		 // << species << " Current Resource Levels: " << endl;
+	// cout<< "  Water: " << waterLevel << "%" << endl;
+	// cout<< "  Sun: " << sunlightLevel << "%" << endl;
+	// cout<< "  Fertilizer: " << fertilizerLevel << "%" << endl;
+	// cout<< "  Prune: " << pruneLevel << "%" << endl;
 
 	vector<string> required = growthState->getRequiredCare();
 	if (!required.empty())
 	{
-		cout << "Required care actions: ";
+		// cout<< "Required care actions: ";
 		for (const string &care : required)
 		{
-			cout << care << " ";
+			// cout<< care << " ";
 		}
-		cout << endl;
+		// cout<< endl;
 	}
 
-	cout << "Ready for stock: " << (readyForStock ? "Yes" : "No") << endl;
-	cout << endl;
+	// cout<< "Ready for stock: " << (readyForStock ? "Yes" : "No") << endl;
+	// cout<< endl;
 }
 
 void Plant::printGrowthStatus()
 {
-	cout << "\n"
-		 << species << " Growth Status: " << endl;
-	cout << "  " << growthState->getStatusMessage(this) << endl
-		 << endl;
+	// cout<< "\n"
+		 // << species << " Growth Status: " << endl;
+	// cout<< "  " << growthState->getStatusMessage(this) << endl
+		 // << endl;
 }
 
 void Plant::printHealthStatus()
 {
-	cout << "\n"
-		 << species << " Health Status: " << endl;
-	cout << " " << healthState->getStatusMessage(this) << endl
-		 << endl;
+	// cout<< "\n"
+		 // << species << " Health Status: " << endl;
+	// cout<< " " << healthState->getStatusMessage(this) << endl
+		 // << endl;
 }
 
 void Plant::printFullStatus()
 {
-	cout << "\n========================================" << endl;
-	cout << "Plant: " << species << " (" << size << ", " << climate << ")" << endl;
-	cout << "----------------------------------------" << endl;
-	cout << growthState->getStatusMessage(this) << endl;
-	cout << healthState->getStatusMessage(this) << endl;
-	cout << "----------------------------------------" << endl;
+	// cout<< "\n========================================" << endl;
+	// cout<< "Plant: " << species << " (" << size << ", " << climate << ")" << endl;
+	// cout<< "----------------------------------------" << endl;
+	// cout<< growthState->getStatusMessage(this) << endl;
+	// cout<< healthState->getStatusMessage(this) << endl;
+	// cout<< "----------------------------------------" << endl;
 	printCurrentNeeds();
-	cout << "========================================\n"
-		 << endl;
+	// cout<< "========================================\n"
+		 // << endl;
 }
 
 // inventory helpers (IDK IF SHAV HAS THESE YET)
@@ -303,7 +303,7 @@ bool Plant::isReadyForStock()
 void Plant::markReadyForStock()
 {
 	readyForStock = true;
-	cout << species << " is ready to be moved to stock" << endl;
+	// cout<< species << " is ready to be moved to stock" << endl;
 }
 
 bool Plant::isDead()
@@ -380,7 +380,7 @@ void Plant::tick()
 			sunlightLevel = 0;
 			fertilizerLevel = 0;
 			pruneLevel = 0;
-			cout << species << " has died of old age." << endl;
+			// cout<< species << " has died of old age." << endl;
 		}
 	}
 }
@@ -429,25 +429,25 @@ void Plant::updateHealth()
 void Plant::restoreWater()
 {
 	waterLevel = 100;
-	cout << species << " Water has been restored to 100%" << endl;
+	// cout<< species << " Water has been restored to 100%" << endl;
 }
 
 void Plant::restoreSunlight()
 {
 	sunlightLevel = 100;
-	cout << species << " Sunlight has been restored to 100%" << endl;
+	// cout<< species << " Sunlight has been restored to 100%" << endl;
 }
 
 void Plant::restoreFertilizer()
 {
 	fertilizerLevel = 100;
-	cout << species << " Fertilizer has been restored to 100%" << endl;
+	// cout<< species << " Fertilizer has been restored to 100%" << endl;
 }
 
 void Plant::restorePrune()
 {
 	pruneLevel = 100;
-	cout << species << " Prune has been restored to 100%" << endl;
+	// cout<< species << " Prune has been restored to 100%" << endl;
 }
 
 void Plant::handleCareRequest()
@@ -458,7 +458,7 @@ void Plant::handleCareRequest()
 	}
 	else
 	{
-		cout << "No care strategy set for " << species << endl;
+		// cout<< "No care strategy set for " << species << endl;
 	}
 }
 

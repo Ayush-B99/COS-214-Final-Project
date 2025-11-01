@@ -7,6 +7,6 @@ Sun::Sun(Plant *plant)
 
 void Sun::execute()
 {
-	cout << "Execute sun command" << endl;
+	// cout<< "Execute sun command" << endl;
 	receiver->receiveSunlight();
 }

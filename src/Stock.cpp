@@ -5,7 +5,7 @@
 Stock::Stock() {
 	stockCatalog = nullptr;
 
-	cout << "A new instance of Stock has been created!\n";
+	// cout<< "A new instance of Stock has been created!\n";
 }
 
 Stock::~Stock() {
@@ -22,7 +22,7 @@ void Stock::getLowStockItems() {
 	while (it->hasNextNode()){
 		PlantNode* curr = it->nextCoarse();
 		if (curr && curr->getPlants().size() <= 1){
-			cout << "Low stock for " << curr->getKey() << " " << curr->getPlants().size() << " plants remaining.\n";
+			// cout<< "Low stock for " << curr->getKey() << " " << curr->getPlants().size() << " plants remaining.\n";
 		}
 	}
 	delete it;
@@ -57,7 +57,7 @@ StockIterator* Stock::createIterator() {
 
 void Stock::addPlant(Plant* plant) {
 	if (!plant){
-		cout << "Cannot add the plant, invalid or null,\n";
+		// cout<< "Cannot add the plant, invalid or null,\n";
 		return;
 	}
 	
@@ -68,12 +68,12 @@ void Stock::addPlant(Plant* plant) {
 void Stock::removePlant(Plant* plant) {
 	PlantNode* node = findNode(stockCatalog, plant->getSpecies());
 	if (plant == nullptr || node == nullptr){
-		cout << "An appropriate node cannot be located for the plant. not removed\n";
+		// cout<< "An appropriate node cannot be located for the plant. not removed\n";
 		return;
 	}
 
 	if(node->removePlant(plant)){
-		cout << "Plant removed from " << node->getKey() << " node\n";
+		// cout<< "Plant removed from " << node->getKey() << " node\n";
 	}
 
 }
@@ -145,15 +145,15 @@ int Stock::countPlantsRecursive(PlantNode* node) {
 }
 
 void Stock::print() {
-	cout << "\n== Stock Tree Structure ==\n";
-	cout << "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
-	cout << "== Total value of stock: R" << getTotalStockValue() << endl;
+	// cout<< "\n== Stock Tree Structure ==\n";
+	// cout<< "== Contains " << getPlantCount() << " plants and " << getNodeCount() << " different species.\n";
+	// cout<< "== Total value of stock: R" << getTotalStockValue() << endl;
 	if (!stockCatalog){
-		cout << "The tree is empty.\n";
+		// cout<< "The tree is empty.\n";
 	} else {
 		printHelper(stockCatalog, "", false);
 	}
-	cout << "\n==============================\n";
+	// cout<< "\n==============================\n";
 }
 
 void Stock::printHelper(PlantNode* node, string prefix, bool isLeft){
@@ -181,12 +181,12 @@ vector<Plant*> Stock::removePlants(string key, GrowthState* state){
 	PlantNode* node = findNode(stockCatalog, key);
 
 	if (node == nullptr){
-		cout << "No plants matching those parameters could be found.\n";
+		// cout<< "No plants matching those parameters could be found.\n";
 		return matches;
 	}
 
 	matches = node->removeByGrowthState(state);
-	cout << matches.size() << " plants removed from " << key << ".\n";
+	// cout<< matches.size() << " plants removed from " << key << ".\n";
 
 	return matches;
 }
@@ -196,12 +196,12 @@ vector<Plant*> Stock::removePlants(string key, HealthState* state){
 	PlantNode* node = findNode(stockCatalog, key);
 
 	if (node == nullptr){
-		cout << "No plants matching those parameters could be found.\n";
+		// cout<< "No plants matching those parameters could be found.\n";
 		return matches;
 	}
 
 	matches = node->removeByHealthState(state);
-	cout << matches.size() << " plants removed from " << key << ".\n";
+	// cout<< matches.size() << " plants removed from " << key << ".\n";
 
 	return matches;
 }
@@ -209,14 +209,14 @@ vector<Plant*> Stock::removePlants(string key, HealthState* state){
 vector<Plant*> Stock::removePlants(GrowthState* state){
 	vector<Plant*> matches;
 	stockCatalog = removeByGrowthRecursive(stockCatalog, state, matches);
-	cout << matches.size() << " plants removed from the entire tree.\n";
+	// cout<< matches.size() << " plants removed from the entire tree.\n";
 	return matches;
 }
 
 vector<Plant*> Stock::removePlants(HealthState* state){
 	vector<Plant*> matches;
     stockCatalog = removeByHealthRecursive(stockCatalog, state, matches);
-    cout << matches.size() << " plants removed from the entire tree.\n";
+    // cout<< matches.size() << " plants removed from the entire tree.\n";
     return matches;
 }
 
@@ -280,12 +280,12 @@ PlantNode* Stock::removeNode(PlantNode* root, string key){
 vector<Plant*> Stock::getPlants(string key){
 	PlantNode* node = findNode(stockCatalog, key);
 	if (!node || node->getPlants().empty()){
-		cout << "No plants matching the given key.\n";
+		// cout<< "No plants matching the given key.\n";
 		return vector<Plant*>();
 	}
 
 	vector<Plant*> plants = node->getPlants();
-	cout << plants.size() << " plants found matching the key " << key << endl;
+	// cout<< plants.size() << " plants found matching the key " << key << endl;
 	return plants;
 }
 
@@ -367,12 +367,12 @@ void Stock::cleanUpDeadPlants(){
 
     vector<Plant*> deadPlants = removePlants(deadState);
     if (deadPlants.empty()) {
-        cout << "No dead plants found for cleanup.\n";
+        // // cout<< "No dead plants found for cleanup.\n";
         delete deadState;
         return;
     }
 
-    cout << "Cleaning up " << deadPlants.size() << " dead plants...\n";
+    // // cout<< "Cleaning up " << deadPlants.size() << " dead plants...\n";
 	
 	// Stock now owns plants, so we need to delete them
 	for (Plant* p : deadPlants) {
@@ -384,13 +384,13 @@ void Stock::cleanUpDeadPlants(){
 
 void Stock::moveToOrder(Plant* plant, Order* order){
 	if (!plant || !order) {
-		cout << "Invalid plant or order pointer.\n";
+		// cout<< "Invalid plant or order pointer.\n";
 		return;
 	}
 
 	// Check order state
 	if (order->getState()->getName() != "draft"){
-		cout << "You cannot edit an order after it has been submitted.\n";
+		// cout<< "You cannot edit an order after it has been submitted.\n";
 		return;
 	}
 
@@ -398,13 +398,13 @@ void Stock::moveToOrder(Plant* plant, Order* order){
 	if (plantInTree(plant)){
 		removePlant(plant);
 	} else {
-		cout << "Plant not found in stock.\n";
+		// cout<< "Plant not found in stock.\n";
 		return;
 	}
 
 	// Add to order (order now owns the plant)
 	order->addPlant(plant);
-	cout << "A " << plant->getSpecies() << " has been added to order " << order->getId() << endl;
+	// cout<< "A " << plant->getSpecies() << " has been added to order " << order->getId() << endl;
 }
 
 bool Stock::plantInTree(Plant* plant){

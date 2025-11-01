@@ -7,8 +7,8 @@ SunHandler::~SunHandler()
 
 void SunHandler::handleCareRequest(Plant *plant)
 {
-    cout << "SunHandler checking if plant needs sunlight..." << endl;
-    cout << plant->needsSun() << endl;
+    // cout<< "SunHandler checking if plant needs sunlight..." << endl;
+    // cout<< plant->needsSun() << endl;
 
     if (plant->needsSun())
     {
@@ -31,5 +31,5 @@ void SunHandler::handleCareRequest(Plant *plant)
 
 void SunHandler::message()
 {
-    cout << "CHAIN: Sunlight has been provided to the plant.";
+    // // cout<< "CHAIN: Sunlight has been provided to the plant.";
 }
