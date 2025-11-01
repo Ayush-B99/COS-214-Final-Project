@@ -264,9 +264,101 @@ Each pattern addresses specific domain problems in plant nursery management whil
 
 ---
 
+## 📊 System Performance
+
+| Metric | Value | Impact |
+|--------|-------|--------|
+| **Plant Creation** | O(1) via Abstract Factory | Rapid inventory expansion |
+| **State Transitions** | O(1) constant time | Real-time responsiveness |
+| **Collection Traversal** | O(n) via Iterators | Efficient inventory management |
+| **Care Command Execution** | O(1) with Chain of Responsibility | Scalable plant care system |
+
+## 🎓 Academic & Professional Growth
+
+### 💡 **Key Insights Gained**
+- **Pattern Interplay**: How multiple patterns collaborate in real systems
+- **C++ Mastery**: Advanced memory management and polymorphism
+- **System Design**: Scalable architecture for complex domains
+- **Team Coordination**: Large-scale collaborative development
+
+### 🛠️ **Technical Skills Enhanced**
+- UML Diagram Mastery (6 diagram types)
+- C++ Design Pattern Implementation
+- Version Control with Git
+- Agile Development Practices
+- Code Architecture & Documentation
+
+---
+
+## 🔄 System Workflow
+- This shows just a snippet of what goes on in our system visualised through a workflow diagram
+
+```mermaid
+graph TD
+    %% Customer & Order Flow
+    A[Customer - Composite] -->|Makes Order| B[Order System]
+    B -->|OrderState: Draft| C[Order Iterator]
+    C -->|Process Order| D[Inventory System]
+    
+    %% Plant Creation Flow
+    D -->|Inventory Iterator| E[Plant Collection]
+    E -->|Abstract Factory| F[Create Specific Plant]
+    F -->|Plant Types| G[AloeVera, Cactus, etc]
+    
+    %% Plant Lifecycle Flow
+    G -->|GrowthState| H[Seed → Sprout → Mature]
+    G -->|Health State| I[Good → NeedsCare → Dead]
+    
+    %% Care System Flow
+    I -->|Needs Care| J[Care Commands]
+    J -->|Water/Fertilize/Prune/Sun| K[Chain of Responsibility]
+    K -->|Care Handlers| L[Execute Care]
+    
+    %% Monitoring & Communication
+    L -->|Observer Pattern| M[Growth Updates]
+    H -->|Observer Pattern| M
+    M -->|Notifies| N[Mediator System]
+    
+    %% Communication Flow
+    N -->|StaffMember| O[Worker/Manager]
+    O -->|Communicates via Mediator| A
+    
+    %% State Management
+    H -->|Memento Pattern| P[Growth State Backup]
+    I -->|Memento Pattern| Q[Health State Backup]
+    B -->|Memento Pattern| R[Order State Backup]
+    
+    %% State Recovery
+    P -->|Caretaker| S[Restore States]
+    Q -->|Caretaker| S
+    R -->|Caretaker| S
+    
+    %% Order Completion
+    L -->|Care Successful| T[Update OrderState]
+    T -->|Completed/Paid| U[Order Fulfilled]
+    
+    %% Styling
+    classDef customer fill:#e1f5fe
+    classDef order fill:#f3e5f5
+    classDef plant fill:#e8f5e8
+    classDef state fill:#fff3e0
+    classDef command fill:#fce4ec
+    classDef communication fill:#f1f8e9
+    classDef persistence fill:#fafafa
+    
+    class A customer
+    class B,O order
+    class G,H,I plant
+    class C,D,E state
+    class J,K,L command
+    class M,N communication
+    class P,Q,R,S persistence
+```
+
 ### Prerequisites⠀
 - C++ Compiler (GCC, Clang, or MSVC) in version C++ 14
 
 ### Build Instructions
 *add it here when we are done w project fully*
+
 
