@@ -3,6 +3,10 @@
 ![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=c%2B%2B&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 ![University](https://img.shields.io/badge/COS_214-Project-blue)
+![Design Patterns](https://img.shields.io/badge/Design%20Patterns-10+-blueviolet)
+![UML Diagrams](https://img.shields.io/badge/UML%20Diagrams-6%20Types-orange)
+![Team Size](https://img.shields.io/badge/Team-7%20Members-success)
+![Code Quality](https://img.shields.io/badge/C%2B%2B-14%2B-brightgreen)
 
 ## 🌱 Branch Structure
 
@@ -360,5 +364,6 @@ graph TD
 
 ### Build Instructions
 *add it here when we are done w project fully*
+
 
 
