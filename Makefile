@@ -73,4 +73,20 @@ help:
 	@echo "  leaks     - Check for memory leaks"
 	@echo "  check     - Run static analysis"
 
-.PHONY: all run run_only clean check leaks setup help
+# Detect memory leaks using valgrind (Linux)
+val: $(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --suppressions=ncurses.supp $(TARGET)
+
+# Quick valgrind check
+valgrind: $(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=definite --suppressions=ncurses.supp $(TARGET)
+
+# Detailed valgrind with log
+val_log: $(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log --suppressions=ncurses.supp $(TARGET)
+
+# Full valgrind (including reachable)
+val_full: $(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $(TARGET)
+
+.PHONY: all run run_only clean check leaks setup help val valgrind val_log val_full

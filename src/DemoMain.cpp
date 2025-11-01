@@ -50,6 +50,7 @@ WINDOW *menuWin = nullptr;
 
 // Global order tracking
 Order *currentOrder = nullptr;
+vector<Order*> orderHistory;
 int orderCounter = 1;
 
 /**
@@ -578,8 +579,8 @@ void payOrder() {
     }
     
     // Process payment
-    currentOrder->proceed();
-    currentOrder->proceed();
+    currentOrder->proceed(); // Submitted -> Checkout
+    currentOrder->proceed(); // Completed -> Paid
     
     ostringstream success;
     success << "╔══════════════════════════════════════════════╗\n";
@@ -592,26 +593,62 @@ void payOrder() {
     
     displayContent(success.str());
     
+    
+    // Save to order history
+    orderHistory.push_back(currentOrder);
     currentOrder = nullptr;
 }
 
 /**
  * @brief View order history
  */
-void viewOrders() {
+void viewOrders()
+{
     ostringstream oss;
     oss << "╔══════════════════════════════════════════════╗\n";
     oss << "║              ORDER HISTORY                   ║\n";
     oss << "╚══════════════════════════════════════════════╝\n\n";
     
-    if (currentOrder) {
-        oss << "Current Order:\n";
+    if (currentOrder)
+    {
+        oss << "CURRENT ORDER (Active):\n";
         oss << "  ID: " << currentOrder->getId() << "\n";
         oss << "  Status: " << currentOrder->getStateName() << "\n";
         oss << "  Items: " << currentOrder->getOrderItems().size() << "\n";
-        oss << "  Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n";
-    } else {
-        oss << "No active orders.\n";
+        oss << "  Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+        oss << string(46, '-') << "\n\n";
+    }
+    
+    if (orderHistory.empty() && !currentOrder)
+    {
+        oss << "No orders yet.\n";
+    }
+    else if (!orderHistory.empty())
+    {
+        oss << "COMPLETED ORDERS:\n\n";
+        
+        for (size_t k = 0; k < orderHistory.size(); k++)
+        {
+            Order* order = orderHistory[k];
+            oss << (k + 1) << ". Order ID: " << order->getId() << "\n";
+            oss << "   Status: " << order->getStateName() << "\n";
+            oss << "   Items: " << order->getOrderItems().size() << "\n";
+            oss << "   Total: $" << fixed << setprecision(2) << order->getTotal() << "\n";
+            
+            if (k < orderHistory.size() - 1)
+            {
+                oss << "\n";
+            }
+        }
+        
+        oss << "\n" << string(46, '-') << "\n";
+        oss << "Total Orders: " << orderHistory.size() << "\n";
+        oss << "Total Spent: $" << fixed << setprecision(2);
+        
+        double totalSpent = 0.0;
+        for (Order* order : orderHistory)
+            totalSpent += order->getTotal();
+        oss << totalSpent << "\n";
     }
     
     displayContent(oss.str());
@@ -620,7 +657,8 @@ void viewOrders() {
 /**
  * @brief Ask question to staff
  */
-void askQuestion(Customer *customer) {
+void askQuestion(Customer *customer)
+{
     vector<string> questions = {
         "How do I care for my new plants?",
         "What is your return policy?",
@@ -635,20 +673,24 @@ void askQuestion(Customer *customer) {
     oss << "║          CUSTOMER SERVICE QUESTIONS          ║\n";
     oss << "╚══════════════════════════════════════════════╝\n\n";
     
-    for (size_t i = 0; i < questions.size(); i++) {
-        oss << "[" << (i + 1) << "] " << questions[i] << "\n";
-    }
+    for (size_t k = 0; k < questions.size(); k++)
+        oss << "[" << (k + 1) << "] " << questions[k] << "\n";
     oss << "[7] Custom question\n\n";
     oss << "Select question:";
     
     int choice = getInputInt(oss.str());
     
     string question;
-    if (choice >= 1 && choice <= 6) {
+    if (choice >= 1 && choice <= 6)
+    {
         question = questions[choice - 1];
-    } else if (choice == 7) {
+    }
+    else if (choice == 7)
+    {
         question = getInputString("Enter your question:");
-    } else {
+    }
+    else
+    {
         displayContent("❌ Invalid choice!");
         return;
     }
@@ -836,9 +878,20 @@ int main() {
         tickThread.join();
         cleanupUI();
         
-        cout << "\n✓ Thank you for shopping at Plant Store!\n" << endl;
+        cout << "\n✓ Thank you for shopping at Momina and Friends!\n" << endl;
         
-        // if (currentOrder) delete currentOrder;
+        // Clean up current order
+        if (currentOrder)
+        {
+            delete currentOrder;
+            currentOrder = nullptr;
+        }
+        
+        // Clean up order history
+        for (Order* order : orderHistory)
+            delete order;
+        orderHistory.clear();
+        
         delete waterHandler;
         delete sunlightHandler;
         delete fertilizerHandler;
@@ -846,24 +899,39 @@ int main() {
         delete mediator;
         delete customer;
         
-        for (StaffMember *s : staff) {
+        for (StaffMember *s : staff)
             delete s;
-        }
+        staff.clear();
+        
+        delete inv;
+        delete stock;
         
         return 0;
     }
-    catch (const exception &e) {
+    catch (const exception &e)
+    {
         cout.rdbuf(oldCoutBuf);
-        cleanupUI();
-        cerr << "Exception: " << e.what() << endl;
         running.store(false);
+        cleanupUI();
+        
+        // Cleanup on exception
+        if (currentOrder) delete currentOrder;
+        for (Order* order : orderHistory) delete order;
+        
+        cerr << "Exception: " << e.what() << endl;
         return 1;
     }
-    catch (...) {
+    catch (...)
+    {
         cout.rdbuf(oldCoutBuf);
-        cleanupUI();
-        cerr << "Unknown exception!" << endl;
         running.store(false);
+        cleanupUI();
+        
+        // Cleanup on exception
+        if (currentOrder) delete currentOrder;
+        for (Order* order : orderHistory) delete order;
+        
+        cerr << "Unknown exception!" << endl;
         return 1;
     }
 }
