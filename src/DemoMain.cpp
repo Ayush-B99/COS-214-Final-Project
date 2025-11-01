@@ -4,12 +4,12 @@
 #include <vector>
 #include <memory>
 #include <thread>
-#include <future>
 #include <atomic>
 #include <chrono>
 #include <iomanip>
 #include <sstream>
 #include <mutex>
+#include <functional>
 
 using namespace std;
 
@@ -17,20 +17,14 @@ using namespace std;
 #include "../include/Plant.h"
 #include "../include/GrowthState.h"
 #include "../include/HealthState.h"
-#include "../include/Seed.h"
-#include "../include/Sprout.h"
 #include "../include/Mature.h"
 #include "../include/Good.h"
-#include "../include/NeedsCare.h"
-#include "../include/Dead.h"
-#include "../include/GrowthObserver.h"
 #include "../include/TemperatePlantFactory.h"
 #include "../include/TropicalPlantFactory.h"
 #include "../include/CarnivorousPlantFactory.h"
 #include "../include/SucculentPlantFactory.h"
 #include "../include/PotDecorator.h"
 #include "../include/FertilizerDecorator.h"
-#include "../include/PlantDecorator.h"
 #include "../include/ConcreteCommMediator.h"
 #include "../include/Manager.h"
 #include "../include/Worker.h"
@@ -39,24 +33,24 @@ using namespace std;
 #include "../include/SunHandler.h"
 #include "../include/FertilizerHandler.h"
 #include "../include/PruneHandler.h"
-#include "../include/Company.h"
-#include "../include/Storage.h"
 #include "../include/Inventory.h"
 #include "../include/Stock.h"
-#include "../include/PlantNode.h"
-#include "../include/Iterator.h"
-#include "../include/InventoryIterator.h"
+#include "../include/Order.h"
+#include "../include/StockIterator.h"
 
 // Global state
 atomic<bool> running(true);
 atomic<int> tickCounter(0);
-atomic<int> plantsAdded(0);
 mutex ncursesMutex;
 
 // Window pointers
 WINDOW *statusWin = nullptr;
 WINDOW *contentWin = nullptr;
 WINDOW *menuWin = nullptr;
+
+// Global order tracking
+Order *currentOrder = nullptr;
+int orderCounter = 1;
 
 /**
  * @brief Initialize ncurses UI
@@ -102,40 +96,42 @@ void cleanupUI() {
 }
 
 /**
- * @brief Update status bar
+ * @brief Update status bar showing cart info
  */
-void updateStatusBar(Inventory *inv, Stock *stock) {
+void updateStatusBar(Stock *stock) {
     lock_guard<mutex> lock(ncursesMutex);
     
     werase(statusWin);
     box(statusWin, 0, 0);
     
     wattron(statusWin, COLOR_PAIR(2) | A_BOLD);
-    mvwprintw(statusWin, 0, 2, " 🌿 PLANT STORE MANAGEMENT SYSTEM 🌿 ");
+    mvwprintw(statusWin, 0, 2, " 🌿 PLANT STORE - CUSTOMER PORTAL 🌿 ");
     wattroff(statusWin, COLOR_PAIR(2) | A_BOLD);
     
-    wattron(statusWin, COLOR_PAIR(1));
-    mvwprintw(statusWin, 2, 2, "● LIVE");
-    wattroff(statusWin, COLOR_PAIR(1));
-    
-    wattron(statusWin, COLOR_PAIR(3));
-    wprintw(statusWin, " Tick: %6d", tickCounter.load());
-    wattroff(statusWin, COLOR_PAIR(3));
-    
     wattron(statusWin, COLOR_PAIR(2));
-    wprintw(statusWin, " │ Inventory: %4d", inv->getPlantCount());
-    wprintw(statusWin, " │ Stock: %4d", stock->getPlantCount());
-    wprintw(statusWin, " │ Value: $%.2f", stock->getTotalStockValue());
+    mvwprintw(statusWin, 2, 2, "Available Plants: %4d", stock->getPlantCount());
+    wprintw(statusWin, " │ Total Stock Value: $%.2f", stock->getTotalStockValue());
     wattroff(statusWin, COLOR_PAIR(2));
     
-    mvwprintw(statusWin, 3, 2, "Auto-Added: %d │ Runtime: %.1fs", 
-              plantsAdded.load(), tickCounter.load() * 0.1);
+    // Show current cart
+    if (currentOrder) {
+        wattron(statusWin, COLOR_PAIR(3));
+        mvwprintw(statusWin, 3, 2, "🛒 Cart: %zu items │ Total: $%.2f │ Status: %s", 
+                  currentOrder->getOrderItems().size(),
+                  currentOrder->getTotal(),
+                  currentOrder->getStateName().c_str());
+        wattroff(statusWin, COLOR_PAIR(3));
+    } else {
+        wattron(statusWin, COLOR_PAIR(6));
+        mvwprintw(statusWin, 3, 2, "🛒 Cart: Empty");
+        wattroff(statusWin, COLOR_PAIR(6));
+    }
     
     wrefresh(statusWin);
 }
 
 /**
- * @brief Display menu
+ * @brief Display customer menu
  */
 void displayMenu() {
     lock_guard<mutex> lock(ncursesMutex);
@@ -144,8 +140,8 @@ void displayMenu() {
     box(menuWin, 0, 0);
     
     wattron(menuWin, COLOR_PAIR(5));
-    mvwprintw(menuWin, 1, 2, "[1]Inventory [2]Stock [3]Add [4]Question [5]Stats");
-    mvwprintw(menuWin, 2, 2, "[6]Types [7]Move [8]Info [9]Clear [0]Exit");
+    mvwprintw(menuWin, 1, 2, "[1]Browse Plants [2]View Cart [3]Add to Cart [4]Remove from Cart");
+    mvwprintw(menuWin, 2, 2, "[5]Checkout [6]Pay Order [7]View Orders [8]Ask Question [0]Exit");
     wattroff(menuWin, COLOR_PAIR(5));
     
     mvwprintw(menuWin, 3, 2, "Choice: ");
@@ -153,7 +149,7 @@ void displayMenu() {
 }
 
 /**
- * @brief Display content with dynamic window resizing
+ * @brief Display content with dynamic resizing
  */
 void displayContent(const string &content) {
     lock_guard<mutex> lock(ncursesMutex);
@@ -161,7 +157,6 @@ void displayContent(const string &content) {
     int screenMaxY, screenMaxX;
     getmaxyx(stdscr, screenMaxY, screenMaxX);
     
-    // Parse content into lines with wrapping
     istringstream iss(content);
     string line;
     vector<string> lines;
@@ -172,7 +167,6 @@ void displayContent(const string &content) {
             continue;
         }
         
-        // Wrap long lines
         if (line.length() > (size_t)(screenMaxX - 4)) {
             size_t pos = 0;
             while (pos < line.length()) {
@@ -185,57 +179,33 @@ void displayContent(const string &content) {
         }
     }
     
-    // Calculate required height
-    int contentHeight = lines.size() + 3; // +3 for border and prompt
-    int maxContentHeight = screenMaxY - 11; // Leave room for status and menu
+    int contentHeight = lines.size() + 3;
+    int maxContentHeight = screenMaxY - 11;
     
-    // Delete old content window
-    if (contentWin) {
-        delwin(contentWin);
-    }
+    if (contentWin) delwin(contentWin);
     
-    // Create new resized content window
     if (contentHeight > maxContentHeight) {
-        // Content too large - use max available space with scrolling
         contentWin = newwin(maxContentHeight, screenMaxX, 6, 0);
-        scrollok(contentWin, TRUE);
-        keypad(contentWin, TRUE);
-        
         werase(contentWin);
         box(contentWin, 0, 0);
         
-        // Display what fits
         for (int i = 0; i < maxContentHeight - 3 && i < (int)lines.size(); i++) {
             mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
         }
         
         wattron(contentWin, COLOR_PAIR(3));
         mvwprintw(contentWin, maxContentHeight - 2, 2, 
-                  "[Content truncated: %zu lines total] Press any key...", lines.size());
+                  "[%zu lines total] Press any key...", lines.size());
         wattroff(contentWin, COLOR_PAIR(3));
-        
-        wrefresh(contentWin);
-        
     } else {
-        // Content fits - resize window to exact size needed
         int newHeight = contentHeight;
-        int newY = 6;
+        if (menuWin) delwin(menuWin);
+        menuWin = newwin(5, screenMaxX, 6 + newHeight, 0);
         
-        // Adjust menu position
-        if (menuWin) {
-            delwin(menuWin);
-        }
-        int menuY = newY + newHeight;
-        menuWin = newwin(5, screenMaxX, menuY, 0);
-        
-        // Create perfectly sized content window
-        contentWin = newwin(newHeight, screenMaxX, newY, 0);
-        keypad(contentWin, TRUE);
-        
+        contentWin = newwin(newHeight, screenMaxX, 6, 0);
         werase(contentWin);
         box(contentWin, 0, 0);
         
-        // Display all lines
         for (int i = 0; i < (int)lines.size(); i++) {
             mvwprintw(contentWin, i + 1, 2, "%s", lines[i].c_str());
         }
@@ -243,70 +213,28 @@ void displayContent(const string &content) {
         wattron(contentWin, COLOR_PAIR(3));
         mvwprintw(contentWin, newHeight - 2, 2, "Press any key to continue...");
         wattroff(contentWin, COLOR_PAIR(3));
-        
-        wrefresh(contentWin);
     }
     
-    // Wait for key
+    wrefresh(contentWin);
+    
     nodelay(stdscr, FALSE);
     wgetch(contentWin);
     nodelay(stdscr, TRUE);
     
-    // Restore original layout
-    if (contentWin) {
-        delwin(contentWin);
-    }
-    if (menuWin) {
-        delwin(menuWin);
-    }
-    
+    // Restore layout
+    if (contentWin) delwin(contentWin);
+    if (menuWin) delwin(menuWin);
     contentWin = newwin(screenMaxY - 11, screenMaxX, 6, 0);
     menuWin = newwin(5, screenMaxX, screenMaxY - 5, 0);
     scrollok(contentWin, TRUE);
     keypad(contentWin, TRUE);
-    
     werase(contentWin);
     box(contentWin, 0, 0);
     wrefresh(contentWin);
 }
 
 /**
- * @brief Show message
- */
-void showMessage(const string &message, int colorPair = 2) {
-    displayContent(message);
-}
-
-/**
- * @brief Async tick system
- */
-void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
-    int cycles = 0;
-    
-    while (running.load()) {
-        cycles++;
-        tickCounter.store(cycles);
-        
-        if (cycles % 5 == 0) {
-            updateStatusBar(inv, stock);
-        }
-        
-        if (cycles % 100 == 0) {
-            inv->moveValidPlantsToStock(stock);
-            inv->addSmallPlant(inv->getCarnivorousFactory(), handler);
-            inv->addMediumPlant(inv->getTemperateFactory(), handler);
-            inv->addLargePlant(inv->getTropicalFactory(), handler);
-            inv->addSmallPlant(inv->getSucculentFactory(), handler);
-            plantsAdded.fetch_add(4);
-        }
-        
-        inv->tick();
-        this_thread::sleep_for(chrono::milliseconds(100));
-    }
-}
-
-/**
- * @brief Capture output to string
+ * @brief Capture output
  */
 string captureOutput(function<void()> func) {
     streambuf *old = cout.rdbuf();
@@ -333,7 +261,7 @@ string getInputString(const string &prompt) {
     nodelay(stdscr, FALSE);
     
     char buffer[256];
-    mvwgetnstr(contentWin, 2, 2, buffer, 255);
+    mvwgetnstr(contentWin, 3, 2, buffer, 255);
     
     noecho();
     curs_set(0);
@@ -355,157 +283,343 @@ int getInputInt(const string &prompt) {
 }
 
 /**
- * @brief Show inventory
+ * @brief Browse available plants in stock
  */
-void showInventory(Inventory *inv) {
-    string output = captureOutput([inv]() { inv->print(); });
-    displayContent(output);
-}
-
-/**
- * @brief Show stock
- */
-void showStock(Stock *stock) {
+void browsePlants(Stock *stock) {
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║         AVAILABLE PLANTS FOR SALE            ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
+    
     string output = captureOutput([stock]() { stock->print(); });
-    displayContent(output);
+    oss << output;
+    
+    displayContent(oss.str());
 }
 
 /**
- * @brief Add plants dialog
+ * @brief View current cart
  */
-void addPlantsDialog(Inventory *inv, PlantCareHandler *handler) {
-    string prompt = "Plant Types:\n[1] Carnivorous\n[2] Temperate\n[3] Tropical\n[4] Succulent\n\nEnter type:";
-    int type = getInputInt(prompt);
+void viewCart() {
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║              YOUR SHOPPING CART              ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
     
-    prompt = "Sizes:\n[1] Small\n[2] Medium\n[3] Large\n\nEnter size:";
-    int size = getInputInt(prompt);
+    if (!currentOrder) {
+        oss << "Your cart is empty.\n";
+        oss << "\nStart shopping by selecting 'Add to Cart'!";
+    } else {
+        oss << "Order ID: " << currentOrder->getId() << "\n";
+        oss << "Status: " << currentOrder->getStateName() << "\n\n";
+        
+        string orderOutput = captureOutput([&]() { currentOrder->print(); });
+        oss << orderOutput;
+        
+        oss << "\n" << string(46, '-') << "\n";
+        oss << "TOTAL: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n";
+    }
     
-    int qty = getInputInt("Enter quantity (1-100):");
+    displayContent(oss.str());
+}
+
+/**
+ * @brief Add plant to cart
+ */
+void addToCart(Stock *stock, Inventory *inv) {
+    (void)inv; // Unused for now
     
-    if (qty <= 0 || qty > 100 || type < 1 || type > 4 || size < 1 || size > 3) {
-        showMessage("❌ Invalid input!");
+    // Create order if doesn't exist
+    if (!currentOrder) {
+        currentOrder = new Order("ORD" + to_string(orderCounter++));
+    }
+    
+    if (currentOrder->getStateName() != "draft") {
+        displayContent("❌ Cannot modify order after checkout!\nCreate a new order by completing payment.");
         return;
     }
     
-    GreenHouse *factory = nullptr;
-    string typeStr;
-    switch (type) {
-        case 1: factory = inv->getCarnivorousFactory(); typeStr = "Carnivorous"; break;
-        case 2: factory = inv->getTemperateFactory(); typeStr = "Temperate"; break;
-        case 3: factory = inv->getTropicalFactory(); typeStr = "Tropical"; break;
-        case 4: factory = inv->getSucculentFactory(); typeStr = "Succulent"; break;
+    // Get list of available plants
+    vector<Plant*> availablePlants = stock->getAllPlants();
+    
+    if (availablePlants.empty()) {
+        displayContent("❌ No plants available in stock!");
+        return;
     }
     
-    string sizeStr = (size == 1) ? "Small" : (size == 2) ? "Medium" : "Large";
+    // Display plants with numbers
+    ostringstream oss;
+    oss << "Available Plants:\n\n";
+    for (size_t i = 0; i < availablePlants.size(); i++) {
+        oss << "[" << (i + 1) << "] " << availablePlants[i]->getSpecies() 
+            << " - $" << fixed << setprecision(2) << availablePlants[i]->getPrice() << "\n";
+    }
+    oss << "\nEnter plant number to add (0 to cancel):";
     
-    for (int i = 0; i < qty; i++) {
-        switch (size) {
-            case 1: inv->addSmallPlant(factory, handler); break;
-            case 2: inv->addMediumPlant(factory, handler); break;
-            case 3: inv->addLargePlant(factory, handler); break;
-        }
+    int choice = getInputInt(oss.str());
+    
+    if (choice <= 0 || choice > (int)availablePlants.size()) {
+        displayContent("Cancelled.");
+        return;
     }
     
-    showMessage("✓ Successfully added " + to_string(qty) + " " + sizeStr + " " + typeStr + " plants!");
+    Plant *selectedPlant = availablePlants[choice - 1];
+    
+    // Ask for confirmation
+    ostringstream confirm;
+    confirm << "Add " << selectedPlant->getSpecies() 
+            << " ($" << fixed << setprecision(2) << selectedPlant->getPrice() 
+            << ") to cart?\n\n[Y/N]";
+    
+    string response = getInputString(confirm.str());
+    
+    if (response != "Y" && response != "y") {
+        displayContent("Cancelled.");
+        return;
+    }
+    
+    // Remove from stock and add to order
+    stock->removePlant(selectedPlant);
+    currentOrder->addPlant(selectedPlant);
+    
+    ostringstream success;
+    success << "✓ Plant added to cart!\n\n";
+    success << selectedPlant->getDescription() << "\n";
+    success << "Price: $" << fixed << setprecision(2) << selectedPlant->getPrice();
+    
+    displayContent(success.str());
 }
 
 /**
- * @brief Customer question dialog
+ * @brief Remove plant from cart
  */
-void customerQuestionDialog(Customer *customer) {
+void removeFromCart(Stock *stock, Inventory *inv) {
+    if (!currentOrder || currentOrder->getOrderItems().empty()) {
+        displayContent("❌ Your cart is empty!");
+        return;
+    }
+    
+    if (currentOrder->getStateName() != "draft") {
+        displayContent("❌ Cannot modify order after checkout!");
+        return;
+    }
+    
+    vector<Plant*> orderItems = currentOrder->getOrderItems();
+    
+    ostringstream oss;
+    oss << "Items in your cart:\n\n";
+    for (size_t i = 0; i < orderItems.size(); i++) {
+        oss << "[" << (i + 1) << "] " << orderItems[i]->getDescription() 
+            << " - $" << fixed << setprecision(2) << orderItems[i]->getPrice() << "\n";
+    }
+    oss << "\nEnter item number to remove (0 to cancel):";
+    
+    int choice = getInputInt(oss.str());
+    
+    if (choice <= 0 || choice > (int)orderItems.size()) {
+        displayContent("Cancelled.");
+        return;
+    }
+    
+    Plant *toRemove = orderItems[choice - 1];
+    currentOrder->removePlant(toRemove, inv, stock);
+    
+    displayContent("✓ Item removed from cart!");
+}
+
+/**
+ * @brief Checkout - proceed order to submitted state
+ */
+void checkoutOrder() {
+    if (!currentOrder) {
+        displayContent("❌ Your cart is empty!\nAdd items before checking out.");
+        return;
+    }
+    
+    if (currentOrder->getOrderItems().empty()) {
+        displayContent("❌ Your cart is empty!\nAdd items before checking out.");
+        return;
+    }
+    
+    if (currentOrder->getStateName() != "draft") {
+        displayContent("❌ Order already checked out!");
+        return;
+    }
+    
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║              CHECKOUT SUMMARY                ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "Order ID: " << currentOrder->getId() << "\n";
+    oss << "Items: " << currentOrder->getOrderItems().size() << "\n";
+    oss << "Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    oss << "Confirm checkout? [Y/N]";
+    
+    string confirm = getInputString(oss.str());
+    
+    if (confirm == "Y" || confirm == "y") {
+        currentOrder->proceed();
+        displayContent("✓ Order submitted!\nProceed to payment (option 6).");
+    } else {
+        displayContent("Checkout cancelled.");
+    }
+}
+
+/**
+ * @brief Pay for order
+ */
+void payOrder() {
+    if (!currentOrder) {
+        displayContent("❌ No order to pay!");
+        return;
+    }
+    
+    string state = currentOrder->getStateName();
+    
+    if (state == "draft") {
+        displayContent("❌ Please checkout first (option 5)!");
+        return;
+    }
+    
+    if (state == "paid" || state == "completed") {
+        displayContent("✓ Order already paid!");
+        return;
+    }
+    
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║                 PAYMENT                      ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "Order ID: " << currentOrder->getId() << "\n";
+    oss << "Amount Due: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    oss << "Payment Methods:\n";
+    oss << "[1] Credit Card\n";
+    oss << "[2] Debit Card\n";
+    oss << "[3] Cash\n\n";
+    oss << "Select payment method:";
+    
+    int payment = getInputInt(oss.str());
+    
+    if (payment < 1 || payment > 3) {
+        displayContent("❌ Invalid payment method!");
+        return;
+    }
+    
+    // Process payment
+    currentOrder->proceed();
+    currentOrder->proceed();
+    
+    ostringstream success;
+    success << "╔══════════════════════════════════════════════╗\n";
+    success << "║           ✓ PAYMENT SUCCESSFUL!              ║\n";
+    success << "╚══════════════════════════════════════════════╝\n\n";
+    success << "Order ID: " << currentOrder->getId() << "\n";
+    success << "Paid: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+    success << "Thank you for your purchase!\n";
+    success << "Your plants will be prepared for pickup.";
+    
+    displayContent(success.str());
+    
+    currentOrder = nullptr;
+}
+
+/**
+ * @brief View order history
+ */
+void viewOrders() {
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║              ORDER HISTORY                   ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
+    
+    if (currentOrder) {
+        oss << "Current Order:\n";
+        oss << "  ID: " << currentOrder->getId() << "\n";
+        oss << "  Status: " << currentOrder->getStateName() << "\n";
+        oss << "  Items: " << currentOrder->getOrderItems().size() << "\n";
+        oss << "  Total: $" << fixed << setprecision(2) << currentOrder->getTotal() << "\n";
+    } else {
+        oss << "No active orders.\n";
+    }
+    
+    displayContent(oss.str());
+}
+
+/**
+ * @brief Ask question to staff
+ */
+void askQuestion(Customer *customer) {
     vector<string> questions = {
-        "How often should I water my plants?",
-        "How much sunlight do succulents need?",
-        "Do you have carnivorous plants in stock?",
-        "I want to buy plants in bulk",
-        "Can I purchase tropical plants?",
-        "I need care advice"
+        "How do I care for my new plants?",
+        "What is your return policy?",
+        "Do you offer delivery services?",
+        "Can I get a bulk discount?",
+        "What are your store hours?",
+        "Do you have gift cards?"
     };
     
-    string prompt = "CUSTOMER QUESTIONS:\n\n";
+    ostringstream oss;
+    oss << "╔══════════════════════════════════════════════╗\n";
+    oss << "║          CUSTOMER SERVICE QUESTIONS          ║\n";
+    oss << "╚══════════════════════════════════════════════╝\n\n";
+    
     for (size_t i = 0; i < questions.size(); i++) {
-        prompt += "[" + to_string(i + 1) + "] " + questions[i] + "\n";
+        oss << "[" << (i + 1) << "] " << questions[i] << "\n";
     }
-    prompt += "\nEnter choice (1-6):";
+    oss << "[7] Custom question\n\n";
+    oss << "Select question:";
     
-    int choice = getInputInt(prompt);
+    int choice = getInputInt(oss.str());
     
+    string question;
     if (choice >= 1 && choice <= 6) {
-        customer->askQuestion(questions[choice - 1]);
-        showMessage("✓ Question sent to staff!");
+        question = questions[choice - 1];
+    } else if (choice == 7) {
+        question = getInputString("Enter your question:");
     } else {
-        showMessage("❌ Invalid choice!");
+        displayContent("❌ Invalid choice!");
+        return;
     }
+    
+    customer->askQuestion(question);
+    displayContent("✓ Question sent to staff!\nA representative will respond shortly.");
 }
 
 /**
- * @brief Show statistics
+ * @brief Async tick system for plant growth
  */
-void showStatistics(Inventory *inv, Stock *stock) {
-    ostringstream oss;
-    oss << "╔══════════════════════════════════════╗\n";
-    oss << "║       SYSTEM STATISTICS              ║\n";
-    oss << "╚══════════════════════════════════════╝\n\n";
-    oss << "Total Plants in Inventory: " << inv->getPlantCount() << "\n";
-    oss << "Total Plants in Stock: " << stock->getPlantCount() << "\n";
-    oss << "Total Stock Value: $" << fixed << setprecision(2) << stock->getTotalStockValue() << "\n";
-    oss << "System Ticks Elapsed: " << tickCounter.load() << "\n";
-    oss << "Plants Auto-Added: " << plantsAdded.load() << "\n";
-    oss << "Estimated Runtime: " << (tickCounter.load() * 0.1) << " seconds\n";
+void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
+    int cycles = 0;
     
-    displayContent(oss.str());
-}
-
-/**
- * @brief Show plant types
- */
-void showPlantTypes() {
-    ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║         AVAILABLE PLANT TYPES                ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
-    oss << "1. 🦷 CARNIVOROUS: Pitcher, Sundew, Nepenthes\n";
-    oss << "2. 🍃 TEMPERATE: Lilac, Daisy, White Oak\n";
-    oss << "3. 🌴 TROPICAL: Bird of Paradise, Rubber, Nerve\n";
-    oss << "4. 🌵 SUCCULENT: Aloe Vera, Candelabra, Hen and Chicks";
-    
-    displayContent(oss.str());
-}
-
-/**
- * @brief Show tick info
- */
-void showTickInfo() {
-    ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║           TICK SYSTEM INFO                   ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
-    oss << "Current tick: " << tickCounter.load() << "\n";
-    oss << "Tick rate: 10 ticks/second\n";
-    oss << "New plants: every 100 ticks (~10s)\n";
-    oss << "UI updates: every 5 ticks (0.5s)\n\n";
-    oss << "Design Patterns:\n";
-    oss << "• Observer: Plant state changes\n";
-    oss << "• State: Health and growth\n";
-    oss << "• Chain of Responsibility: Care handlers\n";
-    oss << "• Abstract Factory: Plant factories\n";
-    oss << "• Iterator: Collection traversal\n";
-    oss << "• Mediator: Communication";
-    
-    displayContent(oss.str());
+    while (running.load()) {
+        cycles++;
+        tickCounter.store(cycles);
+        
+        if (cycles % 50 == 0) {
+            inv->moveValidPlantsToStock(stock);
+        }
+        
+        if (cycles % 150 == 0) {
+            inv->addSmallPlant(inv->getCarnivorousFactory(), handler);
+            inv->addMediumPlant(inv->getTemperateFactory(), handler);
+            inv->addLargePlant(inv->getTropicalFactory(), handler);
+            inv->addSmallPlant(inv->getSucculentFactory(), handler);
+        }
+        
+        inv->tick();
+        this_thread::sleep_for(chrono::milliseconds(100));
+    }
 }
 
 /**
  * @brief Main function
  */
 int main() {
-    // Suppress initialization output
     streambuf *oldCoutBuf = cout.rdbuf();
     ostringstream initOutput;
     cout.rdbuf(initOutput.rdbuf());
     
     try {
-        // Initialize systems
         Inventory *inv = new Inventory();
         Stock *stock = new Stock();
         
@@ -526,15 +640,20 @@ int main() {
             staff.push_back(worker);
         }
         
-        Customer *customer = new Customer("Interactive Customer", mediator);
+        Customer *customer = new Customer("Valued Customer", mediator);
         
-        // Add initial plants
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             inv->addSmallPlant(inv->getCarnivorousFactory(), waterHandler);
             inv->addMediumPlant(inv->getTemperateFactory(), waterHandler);
             inv->addLargePlant(inv->getTropicalFactory(), waterHandler);
             inv->addSmallPlant(inv->getSucculentFactory(), waterHandler);
         }
+        
+        // Tick plants to mature them
+        for (int i = 0; i < 20; i++) {
+            inv->tick();
+        }
+        inv->moveValidPlantsToStock(stock);
         
         // Restore cout
         cout.rdbuf(oldCoutBuf);
@@ -547,14 +666,28 @@ int main() {
         this_thread::sleep_for(chrono::milliseconds(500));
         
         // Initial display
-        updateStatusBar(inv, stock);
+        updateStatusBar(stock);
         displayMenu();
-        showMessage("Welcome to Plant Store Management System!\n\nSystem running in background.\nUse menu to interact.");
+        
+        ostringstream welcome;
+        welcome << "╔══════════════════════════════════════════════╗\n";
+        welcome << "║     Welcome to the Plant Store Portal!      ║\n";
+        welcome << "╚══════════════════════════════════════════════╝\n\n";
+        welcome << "Browse our selection of beautiful plants!\n\n";
+        welcome << "Features:\n";
+        welcome << "• Browse available plants\n";
+        welcome << "• Add plants to your cart\n";
+        welcome << "• Decorate with pots & fertilizer\n";
+        welcome << "• Secure checkout & payment\n";
+        welcome << "• Customer service support\n\n";
+        welcome << "Happy shopping! 🌿";
+        
+        displayContent(welcome.str());
         
         // Main loop
         bool exitProgram = false;
         while (!exitProgram) {
-            updateStatusBar(inv, stock);
+            updateStatusBar(stock);
             displayMenu();
             
             nodelay(stdscr, FALSE);
@@ -562,22 +695,32 @@ int main() {
             nodelay(stdscr, TRUE);
             
             switch (ch) {
-                case '0': exitProgram = true; break;
-                case '1': showInventory(inv); break;
-                case '2': showStock(stock); break;
-                case '3': addPlantsDialog(inv, waterHandler); break;
-                case '4': customerQuestionDialog(customer); break;
-                case '5': showStatistics(inv, stock); break;
-                case '6': showPlantTypes(); break;
-                case '7':
-                    inv->moveValidPlantsToStock(stock);
-                    showMessage("✓ Mature plants moved to stock!");
+                case '0':
+                    exitProgram = true;
                     break;
-                case '8': showTickInfo(); break;
-                case '9':
-                    werase(contentWin);
-                    box(contentWin, 0, 0);
-                    wrefresh(contentWin);
+                case '1':
+                    browsePlants(stock);
+                    break;
+                case '2':
+                    viewCart();
+                    break;
+                case '3':
+                    addToCart(stock, inv);
+                    break;
+                case '4':
+                    removeFromCart(stock, inv);
+                    break;
+                case '5':
+                    checkoutOrder();
+                    break;
+                case '6':
+                    payOrder();
+                    break;
+                case '7':
+                    viewOrders();
+                    break;
+                case '8':
+                    askQuestion(customer);
                     break;
             }
             
@@ -589,8 +732,9 @@ int main() {
         tickThread.join();
         cleanupUI();
         
-        cout << "\n✓ Thank you for using Plant Store Management System!\n" << endl;
+        cout << "\n✓ Thank you for shopping at Plant Store!\n" << endl;
         
+        // if (currentOrder) delete currentOrder;
         delete waterHandler;
         delete sunlightHandler;
         delete fertilizerHandler;
