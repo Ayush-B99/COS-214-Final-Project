@@ -4,5 +4,6 @@
 *.gcno
 .vscode
 build
+docs
 bin/my_project
 *.txt
