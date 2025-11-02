@@ -18,131 +18,377 @@ using namespace std;
 class ConcreteGrowthObserver;
 class HealthState;
 
+/**
+ * @class Plant
+ * @brief Represents a plant entity in the system with lifecycle, care, and inventory management.
+ * 
+ * The Plant class is the core class in the system and participates in multiple design patterns:
+ * 
+ * **Design Patterns:**
+ * - **Observer Pattern:** Notifies `ConcreteGrowthObserver` when growth state changes.
+ * - **State Pattern:** `GrowthState` and `HealthState` dynamically control plant behavior.
+ * - **Command / Chain of Responsibility Pattern:** `PlantCareHandler` handles care actions.
+ * - **Prototype Pattern:** `clone()` allows deep copying of plants.
+ * - **Decorator Pattern:** `getPrice()`, `getDescription()`, and `getSpecies()` can be decorated.
+ * 
+ * **Responsibilities:**
+ * - Track plant growth, health, and care levels (water, sunlight, fertilizer, pruning).
+ * - Execute care actions using strategy objects.
+ * - Notify observers of state changes.
+ * - Manage lifecycle: seed, sprout, mature, dead, ready-for-stock.
+ * - Integrate with inventory and stock systems.
+ */
 class Plant
 {
-
 protected:
-	string species;
-	int waterLevel;		 // starts at 100
-	int sunlightLevel;	 // starts at 100
-	int fertilizerLevel; // starts at 100
-	int pruneLevel;		 // starts at 100
-	int growthStage;
+    string species;           /**< Species name of the plant */
+    int waterLevel;           /**< Water level (0-100) */
+    int sunlightLevel;        /**< Sunlight level (0-100) */
+    int fertilizerLevel;      /**< Fertilizer level (0-100) */
+    int pruneLevel;           /**< Pruning level (0-100) */
+    int growthStage;          /**< Current growth stage */
 
 private:
-	PlantCareHandler *careStrategy;
-	GrowthState *growthState;
-	HealthState *healthState;
-	string climate;
-	string description;
-	double price;
-	string size; // added this "small", "medium", "large"
+    PlantCareHandler *careStrategy; /**< Strategy for care actions (Command / Chain of Responsibility) */
+    GrowthState *growthState;       /**< Current growth state (State pattern) */
+    HealthState *healthState;       /**< Current health state (State pattern) */
+    string climate;                 /**< Suitable climate */
+    string description;             /**< Description (can be decorated) */
+    double price;                   /**< Price (can be decorated) */
+    string size;                    /**< Size category: small, medium, large */
+    int currentCycleCount;          /**< Tracks growth cycles */
 
-	int currentCycleCount;
+    // Growth cycle requirements
+    int seedCyclesNeeded;           /**< Cycles required for seed stage */
+    int sproutCyclesNeeded;         /**< Cycles required for sprout stage */
+    int matureCyclesNeeded;         /**< Cycles required for mature stage */
 
-	// growth cycle requirements
-	int seedCyclesNeeded;
-	int sproutCyclesNeeded;
-	int matureCyclesNeeded;
+    ConcreteGrowthObserver *observer; /**< Growth observer (Observer pattern) */
 
-	ConcreteGrowthObserver *observer;
-
-	bool readyForStock; // MIGHT NEED TO GET RID OF IDK HOW WE GONNA HANDLE THIS
+    bool readyForStock;             /**< Flag if plant is ready for stock */
 
 public:
-	Plant();
+    /**
+     * @brief Default constructor.
+     */
+    Plant();
 
-	Plant(string species);
+    /**
+     * @brief Constructs a plant with a given species.
+     * @param species Species name
+     */
+    Plant(string species);
 
-	Plant(const Plant& other);
+    /**
+     * @brief Copy constructor for deep copy of a plant.
+     * @param other Plant to copy from
+     */
+    Plant(const Plant& other);
 
-	virtual ~Plant();
+    /**
+     * @brief Destructor.
+     */
+    virtual ~Plant();
 
-	virtual double getPrice();
+    /**
+     * @brief Returns the price of the plant.
+     * @return double Current price
+     */
+    virtual double getPrice();
 
-	virtual string getDescription();
+    /**
+     * @brief Returns the description of the plant.
+     * @return string Description
+     */
+    virtual string getDescription();
 
-	virtual string getClimate();
+    /**
+     * @brief Returns the suitable climate for the plant.
+     * @return string Climate
+     */
+    virtual string getClimate();
 
-	virtual Plant *clone() = 0;
+    /**
+     * @brief Creates a deep copy of the plant (Prototype pattern).
+     * @return Plant* Pointer to cloned plant
+     */
+    virtual Plant *clone() = 0;
 
-	void setCareStrategy(PlantCareHandler *strategy);
+    /**
+     * @brief Sets the care strategy (Command pattern).
+     * @param strategy Pointer to PlantCareHandler
+     */
+    void setCareStrategy(PlantCareHandler *strategy);
 
-	void setGrowthState(GrowthState *state);
+    /**
+     * @brief Sets the growth state (State pattern).
+     * @param state Pointer to GrowthState
+     */
+    void setGrowthState(GrowthState *state);
 
-	void grow();
+    /**
+     * @brief Advances growth according to current GrowthState.
+     */
+    void grow();
 
-	void setHealthState(HealthState *state);
+    /**
+     * @brief Sets the health state (State pattern).
+     * @param state Pointer to HealthState
+     */
+    void setHealthState(HealthState *state);
 
-	void attach(ConcreteGrowthObserver *observer);
+    /**
+     * @brief Attaches a growth observer (Observer pattern).
+     * @param observer Pointer to ConcreteGrowthObserver
+     */
+    void attach(ConcreteGrowthObserver *observer);
 
-	void detach();
+    /**
+     * @brief Detaches observer.
+     */
+    void detach();
 
-	void notify();
+    /**
+     * @brief Notifies observer of growth changes.
+     */
+    void notify();
 
-	// for decorator, since it can alter the prices and desc.
-	virtual string getSpecies();
-	virtual void setPrice(double newPrice);
-	virtual void setDescription(string newDesc);
+    /**
+     * @brief Returns the species name.
+     * @return string Species
+     */
+    virtual string getSpecies();
 
-	GrowthState *getGrowthState();
+    /**
+     * @brief Sets a new price (Decorator pattern support).
+     * @param newPrice New price
+     */
+    virtual void setPrice(double newPrice);
 
-	HealthState *getHealthState();
+    /**
+     * @brief Sets a new description (Decorator pattern support).
+     * @param newDesc New description
+     */
+    virtual void setDescription(string newDesc);
 
-	void tick(); // called every second for decay resources
-	bool isReadyForStock();
-	void markReadyForStock();
+    /**
+     * @brief Returns the current growth state.
+     * @return GrowthState* Current growth state
+     */
+    GrowthState *getGrowthState();
 
-	// getters for getting the attribute levels
-	int getWaterLevel() const;
-	int getSunlightLevel() const;
-	int getFertilizerLevel() const;
-	int getPruneLevel() const;
+    /**
+     * @brief Returns the current health state.
+     * @return HealthState* Current health state
+     */
+    HealthState *getHealthState();
 
-	// restore methods (to reset)
-	void restoreWater();
-	void restoreSunlight();
-	void restoreFertilizer();
-	void restorePrune();
+    /**
+     * @brief Updates resource decay each tick.
+     */
+    void tick();
 
-	// care action methods (command)
-	void receiveWatering();
-	void receiveSunlight();
-	void receiveFertilizing();
-	void receivePruning();
+    /**
+     * @brief Checks if plant is ready for stock.
+     * @return true if ready, false otherwise
+     */
+    bool isReadyForStock();
 
-	void completeCareSession(); // called by the staff after all actions for the cycle are done
+    /**
+     * @brief Marks plant as ready for stock.
+     */
+    void markReadyForStock();
 
-	string getsize() const;
-	int getCurrentCycleCount() const;
-	int getSeedCyclesNeeded() const;
-	int getSproutCyclesNeeded() const;
-	int getMatureCyclesNeeded() const;
-	void resetCycleCount();
+    /**
+     * @brief Returns water level.
+     * @return int Water level
+     */
+    int getWaterLevel() const;
 
-	void printCurrentNeeds();
-	void printGrowthStatus();
-	void printHealthStatus();
-	void printFullStatus();
+    /**
+     * @brief Returns sunlight level.
+     * @return int Sunlight level
+     */
+    int getSunlightLevel() const;
 
-	// inventory helpers
-	bool shouldRemoveFromInventory();
-	bool isDead();
-	bool isMature();
+    /**
+     * @brief Returns fertilizer level.
+     * @return int Fertilizer level
+     */
+    int getFertilizerLevel() const;
 
-	// chain of responsibility
-	void handleCareRequest();
-	bool needsWater();
-	bool needsSun();
-	bool needsFertilizer();
-	bool needsPrune();
+    /**
+     * @brief Returns prune level.
+     * @return int Prune level
+     */
+    int getPruneLevel() const;
+
+    /**
+     * @brief Restores water to maximum.
+     */
+    void restoreWater();
+
+    /**
+     * @brief Restores sunlight to maximum.
+     */
+    void restoreSunlight();
+
+    /**
+     * @brief Restores fertilizer to maximum.
+     */
+    void restoreFertilizer();
+
+    /**
+     * @brief Restores pruning to maximum.
+     */
+    void restorePrune();
+
+    /**
+     * @brief Receives watering action (Command pattern).
+     */
+    void receiveWatering();
+
+    /**
+     * @brief Receives sunlight action (Command pattern).
+     */
+    void receiveSunlight();
+
+    /**
+     * @brief Receives fertilizing action (Command pattern).
+     */
+    void receiveFertilizing();
+
+    /**
+     * @brief Receives pruning action (Command pattern).
+     */
+    void receivePruning();
+
+    /**
+     * @brief Completes care session after all actions.
+     */
+    void completeCareSession();
+
+    /**
+     * @brief Returns size of plant.
+     * @return string Size
+     */
+    string getsize() const;
+
+    /**
+     * @brief Returns current growth cycle count.
+     * @return int Current cycle count
+     */
+    int getCurrentCycleCount() const;
+
+    /**
+     * @brief Returns cycles needed for seed stage.
+     * @return int Seed cycles
+     */
+    int getSeedCyclesNeeded() const;
+
+    /**
+     * @brief Returns cycles needed for sprout stage.
+     * @return int Sprout cycles
+     */
+    int getSproutCyclesNeeded() const;
+
+    /**
+     * @brief Returns cycles needed for mature stage.
+     * @return int Mature cycles
+     */
+    int getMatureCyclesNeeded() const;
+
+    /**
+     * @brief Resets growth cycle count.
+     */
+    void resetCycleCount();
+
+    /**
+     * @brief Prints current needs for debugging.
+     */
+    void printCurrentNeeds();
+
+    /**
+     * @brief Prints growth status.
+     */
+    void printGrowthStatus();
+
+    /**
+     * @brief Prints health status.
+     */
+    void printHealthStatus();
+
+    /**
+     * @brief Prints full plant status.
+     */
+    void printFullStatus();
+
+    /**
+     * @brief Determines if plant should be removed from inventory.
+     * @return true if it should be removed
+     */
+    bool shouldRemoveFromInventory();
+
+    /**
+     * @brief Checks if plant is dead.
+     * @return true if dead
+     */
+    bool isDead();
+
+    /**
+     * @brief Checks if plant is mature.
+     * @return true if mature
+     */
+    bool isMature();
+
+    /**
+     * @brief Handles care request via chain of responsibility.
+     */
+    void handleCareRequest();
+
+    /**
+     * @brief Checks if plant needs watering.
+     * @return true if water is needed
+     */
+    bool needsWater();
+
+    /**
+     * @brief Checks if plant needs sunlight.
+     * @return true if sunlight is needed
+     */
+    bool needsSun();
+
+    /**
+     * @brief Checks if plant needs fertilizer.
+     * @return true if fertilizer is needed
+     */
+    bool needsFertilizer();
+
+    /**
+     * @brief Checks if plant needs pruning.
+     * @return true if pruning is needed
+     */
+    bool needsPrune();
 
 protected:
-	// subclasses set their growth requirements
-	void setGrowthRequirements(int seed, int sprout, int mature);
-	void setSize(string s);
+    /**
+     * @brief Sets growth requirements.
+     * @param seed Cycles for seed stage
+     * @param sprout Cycles for sprout stage
+     * @param mature Cycles for mature stage
+     */
+    void setGrowthRequirements(int seed, int sprout, int mature);
 
-	void updateHealth();
+    /**
+     * @brief Sets plant size.
+     * @param s Size ("small", "medium", "large")
+     */
+    void setSize(string s);
+
+    /**
+     * @brief Updates health state based on resource levels.
+     */
+    void updateHealth();
 };
 
 #endif
