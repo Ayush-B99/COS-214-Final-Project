@@ -82,8 +82,11 @@ valgrind: $(TARGET)
 	valgrind --leak-check=full --show-leak-kinds=definite --suppressions=ncurses.supp $(TARGET)
 
 # Detailed valgrind with log and txt
-val_full: $(TARGET)
+val_full_txt: $(TARGET)
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $(TARGET) > valgrind_out.txt 2>&1
 
+# Full valgrind (including reachable)
+val_full: $(TARGET)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $(TARGET)
 
 .PHONY: all run run_only clean check leaks setup help val valgrind val_log val_full
