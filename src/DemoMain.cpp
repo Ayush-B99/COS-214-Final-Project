@@ -10,6 +10,8 @@
 #include <sstream>
 #include <mutex>
 #include <functional>
+#include <locale>
+#include <clocale>
 
 using namespace std;
 
@@ -430,7 +432,7 @@ void addToCart(Stock *stock, Inventory *inv) {
     
     // Display plants with numbers
     ostringstream oss;
-    oss << "Available Plants:\n\n";
+    oss << "Available Plants:\n\n\n\n\n";
     for (size_t i = 0; i < availablePlants.size(); i++) {
         oss << "[" << (i + 1) << "] " << availablePlants[i]->getSpecies() 
             << " - R" << fixed << setprecision(2) << availablePlants[i]->getPrice() << "\n";
@@ -769,6 +771,9 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
  * @brief Main function
  */
 int main() {
+    // std::setlocale(LC_ALL, "");
+    // std::locale::global(std::locale(""));
+
     streambuf *oldCoutBuf = cout.rdbuf();
     ostringstream initOutput;
     cout.rdbuf(initOutput.rdbuf());
@@ -804,8 +809,9 @@ int main() {
         }
         
         // Tick plants to mature them
-        for (int k = 0; k < 20; k++)
+        for (int k = 0; k < 100; k++)
             inv->tick();
+            
         inv->moveValidPlantsToStock(stock);
         
         // Restore cout
@@ -913,6 +919,7 @@ int main() {
         delete inv;
         delete stock;
         
+        endwin();
         return 0;
     }
     catch (const exception &e)

@@ -1184,6 +1184,7 @@ int decayPlants(Inventory *inv, Stock *stock, PlantCareHandler *handler)
         }
 
         inv->tick();
+        stock->tick();
 
         cycles++;
 
@@ -1249,6 +1250,7 @@ void testAll() // cant check memory until inventory leaks are fixed
     result.wait();
 
     inv->print();
+    stock->print();
 
     delete inv;
     delete stock;

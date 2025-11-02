@@ -122,16 +122,8 @@ help:
 	@echo "  check        - Run static analysis"
 
 # Valgrind variants
-val: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --suppressions=ncurses.supp $(TARGET)
 
-valgrind: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=definite --suppressions=ncurses.supp $(TARGET)
-
-val_log: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --log-file=valgrind.log --suppressions=ncurses.supp $(TARGET)
-
-val_full: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $(TARGET)
+val: $(TEST_TARGET)
+	valgrind --leak-check=full --track-origins=yes ./$(TEST_TARGET)
 
 .PHONY: all run run_only clean check leaks setup help val valgrind val_log val_full demo demo_only test test_only
