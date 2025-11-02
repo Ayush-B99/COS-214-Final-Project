@@ -1249,6 +1249,9 @@ void testAll() // cant check memory until inventory leaks are fixed
 
     result.wait();
 
+    inv->cleanUpDeadPlants();
+    stock->cleanUpDeadPlants();
+
     inv->print();
     stock->print();
 

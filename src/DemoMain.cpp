@@ -60,6 +60,7 @@ int orderCounter = 1;
  */
 void initUI()
 {
+    setlocale(LC_ALL, ""); ///shav added this might fix character encoding
     initscr();
     cbreak();
     noecho();
@@ -821,7 +822,7 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
  * @brief Main function
  */
 int main() {
-    // std::setlocale(LC_ALL, "");
+    setlocale(LC_ALL, "");
     // std::locale::global(std::locale(""));
 
     streambuf *oldCoutBuf = cout.rdbuf();

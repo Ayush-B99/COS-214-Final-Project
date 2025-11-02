@@ -1,7 +1,7 @@
 # Variables
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -Wextra -Iinclude -Isrc
-LDFLAGS = -lncurses -lpthread
+LDFLAGS = -lncursesw -lpthread
 
 ifneq ("$(wildcard lib)","")
     LDFLAGS += -Llib
