@@ -160,7 +160,8 @@ void displayMenu()
 /**
  * @brief Display content with dynamic resizing and scrolling
  */
-void displayContent(const string &content) {
+void displayContent(const string &content)
+{
     lock_guard<mutex> lock(ncursesMutex);
     
     int screenMaxY, screenMaxX;
@@ -170,20 +171,26 @@ void displayContent(const string &content) {
     string line;
     vector<string> lines;
     
-    while (getline(iss, line)) {
-        if (line.empty()) {
+    while (getline(iss, line))
+    {
+        if (line.empty())
+        {
             lines.push_back("");
             continue;
         }
         
-        if (line.length() > (size_t)(screenMaxX - 4)) {
+        if (line.length() > (size_t)(screenMaxX - 4))
+        {
             size_t pos = 0;
-            while (pos < line.length()) {
+            while (pos < line.length())
+            {
                 size_t len = min((size_t)(screenMaxX - 4), line.length() - pos);
                 lines.push_back(line.substr(pos, len));
                 pos += len;
             }
-        } else {
+        }
+        else
+        {
             lines.push_back(line);
         }
     }
@@ -200,12 +207,15 @@ void displayContent(const string &content) {
     int startLine = 0;
     
     // Create window
-    if (!needsScrolling && contentHeight < maxContentHeight) {
+    if (!needsScrolling && contentHeight < maxContentHeight)
+    {
         // Resize to fit exactly
         if (menuWin) delwin(menuWin);
         menuWin = newwin(5, screenMaxX, 6 + displayHeight, 0);
         contentWin = newwin(displayHeight, screenMaxX, 6, 0);
-    } else {
+    }
+    else
+    {
         // Use max available space
         contentWin = newwin(displayHeight, screenMaxX, 6, 0);
     }
@@ -213,23 +223,26 @@ void displayContent(const string &content) {
     keypad(contentWin, TRUE);
     
     // Initial draw
-    auto drawContent = [&]() {
+    auto drawContent = [&]()
+    {
         werase(contentWin);
         box(contentWin, 0, 0);
         
-        for (int i = 0; i < visibleLines && (startLine + i) < (int)lines.size(); i++) {
-            mvwprintw(contentWin, i + 1, 2, "%s", lines[startLine + i].c_str());
-        }
+        for (int k = 0; k < visibleLines && (startLine + k) < (int)lines.size(); k++)
+            mvwprintw(contentWin, k + 1, 2, "%s", lines[startLine + k].c_str());
         
         // Status line
         wattron(contentWin, COLOR_PAIR(3));
-        if (needsScrolling) {
+        if (needsScrolling)
+        {
             mvwprintw(contentWin, displayHeight - 2, 2, 
                       "[%d-%d of %zu] ↑↓=scroll PgUp/PgDn=page ANY=exit",
                       startLine + 1,
                       min(startLine + visibleLines, (int)lines.size()),
                       lines.size());
-        } else {
+        }
+        else
+        {
             mvwprintw(contentWin, displayHeight - 2, 2, "Press any key to continue...");
         }
         wattroff(contentWin, COLOR_PAIR(3));
@@ -242,23 +255,28 @@ void displayContent(const string &content) {
     // Handle input
     nodelay(stdscr, FALSE);
     
-    if (needsScrolling) {
+    if (needsScrolling)
+    {
         // Scrolling mode
-        while (true) {
+        while (true)
+        {
             int ch = wgetch(contentWin);
             
             bool scrolled = false;
             
-            switch (ch) {
+            switch (ch)
+            {
                 case KEY_UP:
-                    if (startLine > 0) {
+                    if (startLine > 0)
+                    {
                         startLine--;
                         scrolled = true;
                     }
                     break;
                     
                 case KEY_DOWN:
-                    if (startLine + visibleLines < (int)lines.size()) {
+                    if (startLine + visibleLines < (int)lines.size())
+                    {
                         startLine++;
                         scrolled = true;
                     }
@@ -290,12 +308,15 @@ void displayContent(const string &content) {
                     goto exit_scroll;
             }
             
-            if (scrolled) {
+            if (scrolled)
+            {
                 drawContent();
             }
         }
         exit_scroll:;
-    } else {
+    }
+    else
+    {
         // No scrolling needed - just wait for any key
         wgetch(contentWin);
     }
@@ -317,7 +338,8 @@ void displayContent(const string &content) {
 /**
  * @brief Capture output
  */
-string captureOutput(function<void()> func) {
+string captureOutput(function<void()> func)
+{
     streambuf *old = cout.rdbuf();
     ostringstream oss;
     cout.rdbuf(oss.rdbuf());
@@ -329,7 +351,8 @@ string captureOutput(function<void()> func) {
 /**
  * @brief Get input string
  */
-string getInputString(const string &prompt) {
+string getInputString(const string &prompt)
+{
     lock_guard<mutex> lock(ncursesMutex);
     
     werase(contentWin);
@@ -354,11 +377,15 @@ string getInputString(const string &prompt) {
 /**
  * @brief Get input int
  */
-int getInputInt(const string &prompt) {
+int getInputInt(const string &prompt)
+{
     string input = getInputString(prompt);
-    try {
+    try
+    {
         return stoi(input);
-    } catch (...) {
+    }
+    catch (...)
+    {
         return -1;
     }
 }
@@ -366,11 +393,12 @@ int getInputInt(const string &prompt) {
 /**
  * @brief Browse available plants in stock
  */
-void browsePlants(Stock *stock) {
+void browsePlants(Stock *stock)
+{
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║         AVAILABLE PLANTS FOR SALE            ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|         AVAILABLE PLANTS FOR SALE            |\n";
+    oss << "================================================\n\n";
     
     string output = captureOutput([stock]() { stock->print(); });
     oss << output;
@@ -381,16 +409,20 @@ void browsePlants(Stock *stock) {
 /**
  * @brief View current cart
  */
-void viewCart() {
+void viewCart()
+{
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║              YOUR SHOPPING CART              ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|              YOUR SHOPPING CART              |\n";
+    oss << "================================================\n\n";
     
-    if (!currentOrder) {
+    if (!currentOrder)
+    {
         oss << "Your cart is empty.\n";
         oss << "\nStart shopping by selecting 'Add to Cart'!";
-    } else {
+    }
+    else
+    {
         oss << "Order ID: " << currentOrder->getId() << "\n";
         oss << "Status: " << currentOrder->getStateName() << "\n\n";
         
@@ -407,24 +439,26 @@ void viewCart() {
 /**
  * @brief Add plant to cart
  */
-void addToCart(Stock *stock, Inventory *inv) {
-    (void)inv; // Unused for now
-    
+void addToCart(Stock *stock, Inventory *inv)
+{    
     // Create order if doesn't exist
-    if (!currentOrder) {
+    if (!currentOrder)
+    {
         currentOrder = new Order("ORD" + to_string(orderCounter++));
     }
     
-    if (currentOrder->getStateName() != "draft") {
-        displayContent("❌ Cannot modify order after checkout!\nCreate a new order by completing payment.");
+    if (currentOrder->getStateName() != "draft")
+    {
+        displayContent("Cannot modify order after checkout!\nCreate a new order by completing payment.");
         return;
     }
     
     // Get list of available plants
     vector<Plant*> availablePlants = stock->getAllPlants();
     
-    if (availablePlants.empty()) {
-        displayContent("❌ No plants available in stock!");
+    if (availablePlants.empty())
+    {
+        displayContent("No plants available in stock!");
         return;
     }
     
@@ -439,7 +473,8 @@ void addToCart(Stock *stock, Inventory *inv) {
     
     int choice = getInputInt(oss.str());
     
-    if (choice <= 0 || choice > (int)availablePlants.size()) {
+    if (choice <= 0 || choice > (int)availablePlants.size())
+    {
         displayContent("Cancelled.");
         return;
     }
@@ -454,7 +489,8 @@ void addToCart(Stock *stock, Inventory *inv) {
     
     string response = getInputString(confirm.str());
     
-    if (response != "Y" && response != "y") {
+    if (response != "Y" && response != "y")
+    {
         displayContent("Cancelled.");
         return;
     }
@@ -464,7 +500,7 @@ void addToCart(Stock *stock, Inventory *inv) {
     currentOrder->addPlant(selectedPlant);
     
     ostringstream success;
-    success << "✓ Plant added to cart!\n\n";
+    success << "Plant added to cart!\n\n";
     success << selectedPlant->getDescription() << "\n";
     success << "Price: R" << fixed << setprecision(2) << selectedPlant->getPrice();
     
@@ -475,13 +511,15 @@ void addToCart(Stock *stock, Inventory *inv) {
  * @brief Remove plant from cart
  */
 void removeFromCart(Stock *stock, Inventory *inv) {
-    if (!currentOrder || currentOrder->getOrderItems().empty()) {
-        displayContent("❌ Your cart is empty!");
+    if (!currentOrder || currentOrder->getOrderItems().empty())
+    {
+        displayContent("Your cart is empty!");
         return;
     }
     
-    if (currentOrder->getStateName() != "draft") {
-        displayContent("❌ Cannot modify order after checkout!");
+    if (currentOrder->getStateName() != "draft")
+    {
+        displayContent("Cannot modify order after checkout!");
         return;
     }
     
@@ -489,15 +527,17 @@ void removeFromCart(Stock *stock, Inventory *inv) {
     
     ostringstream oss;
     oss << "Items in your cart:\n\n";
-    for (size_t i = 0; i < orderItems.size(); i++) {
-        oss << "[" << (i + 1) << "] " << orderItems[i]->getDescription() 
-            << " - R" << fixed << setprecision(2) << orderItems[i]->getPrice() << "\n";
+    for (size_t k = 0; k < orderItems.size(); k++)
+    {
+        oss << "[" << (k + 1) << "] " << orderItems[k]->getDescription() 
+            << " - R" << fixed << setprecision(2) << orderItems[k]->getPrice() << "\n";
     }
     oss << "\nEnter item number to remove (0 to cancel):";
     
     int choice = getInputInt(oss.str());
     
-    if (choice <= 0 || choice > (int)orderItems.size()) {
+    if (choice <= 0 || choice > (int)orderItems.size())
+    {
         displayContent("Cancelled.");
         return;
     }
@@ -505,32 +545,36 @@ void removeFromCart(Stock *stock, Inventory *inv) {
     Plant *toRemove = orderItems[choice - 1];
     currentOrder->removePlant(toRemove, inv, stock);
     
-    displayContent("✓ Item removed from cart!");
+    displayContent("Item removed from cart!");
 }
 
 /**
  * @brief Checkout - proceed order to submitted state
  */
-void checkoutOrder() {
-    if (!currentOrder) {
-        displayContent("❌ Your cart is empty!\nAdd items before checking out.");
+void checkoutOrder()
+{
+    if (!currentOrder)
+    {
+        displayContent("Your cart is empty!\nAdd items before checking out.");
         return;
     }
     
-    if (currentOrder->getOrderItems().empty()) {
-        displayContent("❌ Your cart is empty!\nAdd items before checking out.");
+    if (currentOrder->getOrderItems().empty())
+    {
+        displayContent("Your cart is empty!\nAdd items before checking out.");
         return;
     }
     
-    if (currentOrder->getStateName() != "draft") {
-        displayContent("❌ Order already checked out!");
+    if (currentOrder->getStateName() != "draft")
+    {
+        displayContent("Order already checked out!");
         return;
     }
     
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║              CHECKOUT SUMMARY                ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|              CHECKOUT SUMMARY                |\n";
+    oss << "================================================\n\n";
     oss << "Order ID: " << currentOrder->getId() << "\n";
     oss << "Items: " << currentOrder->getOrderItems().size() << "\n";
     oss << "Total: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
@@ -538,10 +582,13 @@ void checkoutOrder() {
     
     string confirm = getInputString(oss.str());
     
-    if (confirm == "Y" || confirm == "y") {
+    if (confirm == "Y" || confirm == "y")
+    {
         currentOrder->proceed();
-        displayContent("✓ Order submitted!\nProceed to payment (option 6).");
-    } else {
+        displayContent("Order submitted!\nProceed to payment (option 6).");
+    }
+    else
+    {
         displayContent("Checkout cancelled.");
     }
 }
@@ -550,27 +597,30 @@ void checkoutOrder() {
  * @brief Pay for order
  */
 void payOrder() {
-    if (!currentOrder) {
-        displayContent("❌ No order to pay!");
+    if (!currentOrder)
+    {
+        displayContent("No order to pay!");
         return;
     }
     
     string state = currentOrder->getStateName();
     
-    if (state == "draft") {
-        displayContent("❌ Please checkout first (option 5)!");
+    if (state == "draft")
+    {
+        displayContent("Please checkout first (option 5)!");
         return;
     }
     
-    if (state == "paid" || state == "completed") {
-        displayContent("✓ Order already paid!");
+    if (state == "paid" || state == "completed")
+    {
+        displayContent("Order already paid!");
         return;
     }
     
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║                 PAYMENT                      ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|                 PAYMENT                      |\n";
+    oss << "================================================\n\n";
     oss << "Order ID: " << currentOrder->getId() << "\n";
     oss << "Amount Due: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
     oss << "Payment Methods:\n";
@@ -582,7 +632,7 @@ void payOrder() {
     int payment = getInputInt(oss.str());
     
     if (payment < 1 || payment > 3) {
-        displayContent("❌ Invalid payment method!");
+        displayContent("Invalid payment method!");
         return;
     }
     
@@ -591,9 +641,9 @@ void payOrder() {
     currentOrder->proceed(); // Completed -> Paid
     
     ostringstream success;
-    success << "╔══════════════════════════════════════════════╗\n";
-    success << "║           ✓ PAYMENT SUCCESSFUL!              ║\n";
-    success << "╚══════════════════════════════════════════════╝\n\n";
+    success << "================================================\n";
+    success << "|           ✓ PAYMENT SUCCESSFUL!              |\n";
+    success << "================================================\n\n";
     success << "Order ID: " << currentOrder->getId() << "\n";
     success << "Paid: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
     success << "Thank you for your purchase!\n";
@@ -613,9 +663,9 @@ void payOrder() {
 void viewOrders()
 {
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║              ORDER HISTORY                   ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|              ORDER HISTORY                   |\n";
+    oss << "================================================\n\n";
     
     if (currentOrder)
     {
@@ -677,9 +727,9 @@ void askQuestion(Customer *customer)
     };
     
     ostringstream oss;
-    oss << "╔══════════════════════════════════════════════╗\n";
-    oss << "║          CUSTOMER SERVICE QUESTIONS          ║\n";
-    oss << "╚══════════════════════════════════════════════╝\n\n";
+    oss << "================================================\n";
+    oss << "|          CUSTOMER SERVICE QUESTIONS          |\n";
+    oss << "================================================\n\n";
     
     for (size_t k = 0; k < questions.size(); k++)
         oss << "[" << (k + 1) << "] " << questions[k] << "\n";
@@ -699,12 +749,12 @@ void askQuestion(Customer *customer)
     }
     else
     {
-        displayContent("❌ Invalid choice!");
+        displayContent("Invalid choice!");
         return;
     }
     
     customer->askQuestion(question);
-    displayContent("✓ Question sent to staff!\nA representative will respond shortly.");
+    displayContent("Question sent to staff!\nA representative will respond shortly.");
 }
 
 /**
@@ -768,12 +818,14 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
 /**
  * @brief Main function
  */
-int main() {
+int main()
+{
     streambuf *oldCoutBuf = cout.rdbuf();
     ostringstream initOutput;
     cout.rdbuf(initOutput.rdbuf());
     
-    try {
+    try
+    {
         Inventory *inv = new Inventory();
         Stock *stock = new Stock();
         
@@ -789,14 +841,16 @@ int main() {
         CommMediator *mediator = new ConcreteCommMediator();
         vector<StaffMember *> staff;
         
-        for (int k = 0; k < 3; k++) {
+        for (int k = 0; k < 3; k++)
+        {
             Worker *worker = new Worker("Worker" + to_string(k + 1), mediator, inv);
             staff.push_back(worker);
         }
         
         Customer *customer = new Customer("Valued Customer", mediator);
         
-        for (int i = 0; i < 5; i++) {
+        for (int k = 0; k < 5; k++)
+        {
             inv->addSmallPlant(inv->getCarnivorousFactory(), waterHandler);
             inv->addMediumPlant(inv->getTemperateFactory(), waterHandler);
             inv->addLargePlant(inv->getTropicalFactory(), waterHandler);
@@ -912,6 +966,8 @@ int main() {
         
         delete inv;
         delete stock;
+        endwin();
+
         
         return 0;
     }
