@@ -38,10 +38,6 @@ class Stock;
 class Order : public Storage {
 
 private:
-	OrderState* state;
-	PlantNode* orderItems;
-	string id;
-	double total;
 	Caretaker<OrderState*>* stateCaretaker;
     /**
      * @brief Current state of the order (Draft, Submitted, etc.).
