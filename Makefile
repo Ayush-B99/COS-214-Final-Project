@@ -15,7 +15,7 @@ DOCSDIR = docs
 TARGET = $(BINDIR)/my_project
 
 # Filter out files
-SOURCES = $(filter-out $(SRCDIR)/Memento.cpp $(SRCDIR)/Caretaker.cpp $(SRCDIR)/TestingMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
+SOURCES = $(filter-out $(SRCDIR)/Memento.cpp $(SRCDIR)/Caretaker.cpp $(SRCDIR)/TestingMain.cpp $(SRCDIR)/DemoMain.cpp, $(wildcard $(SRCDIR)/*.cpp))
 OBJECTS = $(patsubst $(SRCDIR)/%.cpp, $(BUILDDIR)/%.o, $(SOURCES))
 TEMP_DIR = temp
 ZIP_DIR = submit
@@ -33,6 +33,50 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	@mkdir -p $(BUILDDIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# === RUN VARIANTS ===
+# Demo main build/run
+DEMO_TARGET = $(BINDIR)/demo
+DEMO_SRC = $(SRCDIR)/DemoMain.cpp
+DEMO_OBJ = $(BUILDDIR)/DemoMain.o
+
+# Testing main build/run
+TEST_TARGET = $(BINDIR)/test
+TEST_SRC = $(SRCDIR)/TestingMain.cpp
+TEST_OBJ = $(BUILDDIR)/TestingMain.o
+
+# Compile and run demo (clean build)
+demo: clean $(DEMO_TARGET)
+	$(DEMO_TARGET)
+
+# Compile and run test (clean build)
+test: clean $(TEST_TARGET)
+	$(TEST_TARGET)
+
+# Recompile only changed files then run
+demo_only: $(DEMO_TARGET)
+	$(DEMO_TARGET)
+
+test_only: $(TEST_TARGET)
+	$(TEST_TARGET)
+
+# Build the demo and test binaries
+$(DEMO_TARGET): $(OBJECTS) $(DEMO_OBJ)
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) $(DEMO_OBJ) -o $@ $(LDFLAGS)
+
+$(TEST_TARGET): $(OBJECTS) $(TEST_OBJ)
+	@mkdir -p $(BINDIR)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) $(TEST_OBJ) -o $@ $(LDFLAGS)
+
+# Compile DemoMain and TestingMain separately
+$(DEMO_OBJ): $(DEMO_SRC)
+	@mkdir -p $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(TEST_OBJ): $(TEST_SRC)
+	@mkdir -p $(BUILDDIR)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 # Run the application
 run: clean $(TARGET)
 	$(TARGET)
@@ -47,7 +91,7 @@ setup:
 	@chmod +x setup_ncurses.sh
 	@./setup_ncurses.sh
 
-# Detect memory leaks using valgrind
+# Detect memory leaks using valgrind (macOS)
 leaks: $(TARGET)
 	export MallocStackLogging=1; leaks -atExit --list -- $(TARGET) | awk 'BEGIN { print "Memory Leak Summary:\n" } /^Process/ { print } /^Leak/ { print }'
 
@@ -65,21 +109,22 @@ help:
 	@echo "Makefile Help:"
 	@echo ""
 	@echo "Targets:"
-	@echo "  all       - Build the target executable"
-	@echo "  run       - Clean and run the application"
-	@echo "  run_only  - Run without cleaning"
-	@echo "  setup     - Install ncurses library"
-	@echo "  clean     - Clean build artifacts"
-	@echo "  leaks     - Check for memory leaks"
-	@echo "  check     - Run static analysis"
+	@echo "  all          - Build the main target executable"
+	@echo "  run          - Clean and run main"
+	@echo "  run_only     - Run main without cleaning"
+	@echo "  demo         - Clean, build, and run demo main"
+	@echo "  demo_only    - Build (if needed) and run demo main"
+	@echo "  test         - Clean, build, and run testing main"
+	@echo "  test_only    - Build (if needed) and run testing main"
+	@echo "  setup        - Install ncurses"
+	@echo "  clean        - Clean build artifacts"
+	@echo "  leaks        - Check for memory leaks"
+	@echo "  check        - Run static analysis"
 
-# Detect memory leaks using valgrind (Linux)
-val: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=definite,possible --track-origins=yes --suppressions=ncurses.supp $(TARGET)
+# Valgrind variants
 
-# Quick valgrind check
-valgrind: $(TARGET)
-	valgrind --leak-check=full --show-leak-kinds=definite $(TARGET)
+val: $(TEST_TARGET)
+	valgrind --leak-check=full --track-origins=yes ./$(TEST_TARGET)
 
 # Detailed valgrind with log and txt
 val_full_txt: $(TARGET)
