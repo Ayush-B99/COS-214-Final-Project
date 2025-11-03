@@ -177,9 +177,15 @@ graph TD
 
 ### Prerequisites⠀
 - C++ Compiler (GCC, Clang, or MSVC) in version C++ 14
+- The Ncurses library for demo TUI
 
 ### Build Instructions
-*add it here when we are done w project fully*
+- A comprehensive makefile with commands for installing prerequisites, setting up a folder structure, and compiling is provided.
+- Simply execute "make help" for a more detailed overview
+- To install prerequisites, execute "make setup" to install the ncurses library. The script will automatically pick up your OS and execute the appropriate installation command.
+- After prerequisites are installed, "make test" to compile and run testing code, or "make demo" to run the interactive interface.
+
+
 
 
 
