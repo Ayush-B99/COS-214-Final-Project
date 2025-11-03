@@ -1,3 +1,11 @@
+/**
+ * @file TemperatePlantFactory.h
+ * @brief Concrete factory for creating temperate climate plants.
+ * 
+ * This factory creates temperate plants of different sizes including
+ * Lilac, Daisy, and White Oak species.
+ */
+
 #ifndef TEMPERATEPLANTFACTORY_H
 #define TEMPERATEPLANTFACTORY_H
 
@@ -13,19 +21,50 @@ using namespace std;
 
 #include "GreenHouse.h"
 
+// Temperate climate plant types
+#include "Lilac.h"
+#include "Daisy.h"
+#include "WhiteOak.h"
+
+/**
+ * @class TemperatePlantFactory
+ * @brief Concrete factory for creating temperate climate plants of various sizes.
+ * 
+ * Implements the GreenHouse interface to create small, medium, and large
+ * temperate plants such as Lilacs, Daisies, and White Oaks.
+ * 
+ * @note This factory leverages the Prototype pattern through the clone() method
+ * to efficiently create new plant instances by copying existing prototypes.
+ */
 class TemperatePlantFactory : public GreenHouse {
-
-
 public:
-	TemperatePlantFactory();
+    /**
+     * @brief Default constructor.
+     */
+    TemperatePlantFactory();
 
-	~TemperatePlantFactory();
+    /**
+     * @brief Destructor.
+     */
+    ~TemperatePlantFactory();
 
-	vector<Plant*> createSmallPlant();
+    /**
+     * @brief Creates a small temperate plant.
+     * @return Pointer to a small temperate Plant object.
+     */
+    Plant* createSmallPlant();
 
-	vector<Plant*> createMediumPlant();
+    /**
+     * @brief Creates a medium temperate plant.
+     * @return Pointer to a medium temperate Plant object.
+     */
+    Plant* createMediumPlant();
 
-	vector<Plant*> createLargePlant();
+    /**
+     * @brief Creates a large temperate plant.
+     * @return Pointer to a large temperate Plant object.
+     */
+    Plant* createLargePlant();
 };
 
 #endif
