@@ -22,202 +22,16 @@ We as a team of 7 distributed an even workload in which each team member all con
 
 ## 🗂️ Project Structure (Main Branch)
 
+- note the header and cpp files are not expilicty listed as we have over 140, this just gives the general structure of everything
+
 ```
-⚙️ Plant-Nursery-Management-System/
+Plant-Nursery-Management-System/
 ├── 📁 documentation/
-│   ├── 📄 COS214_Project_Report.pdf
+│   ├── 📄 Project_Report.pdf
 │   ├── 📄 Presentation_Slides.pptx
-│   ├── 📁 Diagrams/
-│   │   ├── Class Diagram.jpg
-│   │   ├── Object Diagram.jpg
-│   │   ├── Communication Diagram.jpg
-│   │   ├── Sequence Diagram.jpg
-│   │   ├── State Machine Diagram.pdf
-│   │   └── Activity Diagram.jpg
-│   └── README_Documentation.txt
+│   └── 📁 Diagrams/
 ├── 📁 include/
-│   ├── 📁 Patterns/
-│   │   ├── 📁 AbstractFactory/
-│   │   │   ├── 📁 PlantTypes/
-│   │   │   │   ├── AloeVera.h
-│   │   │   │   ├── BirdOfParadise.h
-│   │   │   │   ├── Condelabra.h
-│   │   │   │   ├── Daisy.h
-│   │   │   │   ├── HenAndChicks.h
-│   │   │   │   ├── LargePlant.h
-│   │   │   │   ├── Lilac.h
-│   │   │   │   ├── MediumPlant.h
-│   │   │   │   ├── Nepenthes.h
-│   │   │   │   ├── Nerve.h
-│   │   │   │   ├── Pitcher.h
-│   │   │   │   ├── Rubber.h
-│   │   │   │   ├── SmallPlant.h
-│   │   │   │   ├── Sundew.h
-│   │   │   │   └── WhiteOak.h
-│   │   │   └── 📁 Factories/
-│   │   │       ├── CarnivorousPlantFactory.h
-│   │   │       ├── GreenHouse.h
-│   │   │       ├── SucculentPlantFactory.h
-│   │   │       ├── TemperatePlantFactory.h
-│   │   │       └── TropicalPlantFactory.h
-│   │   ├── 📁 State/
-│   │   │   ├── 📁 OrderState/
-│   │   │   │   ├── Cancelled.h
-│   │   │   │   ├── Completed.h
-│   │   │   │   ├── Draft.h
-│   │   │   │   ├── OrderState.h
-│   │   │   │   └── Paid.h
-│   │   │   ├── 📁 HealthState/
-│   │   │   │   ├── Dead.h
-│   │   │   │   ├── Good.h
-│   │   │   │   ├── HealthState.h
-│   │   │   │   └── NeedsCare.h
-│   │   │   └── 📁 GrowthState/
-│   │   │       ├── GrowthState.h
-│   │   │       ├── Mature.h
-│   │   │       ├── Seed.h
-│   │   │       └── Sprout.h
-│   │   ├── 📁 Command/
-│   │   │   ├── Command.h
-│   │   │   ├── Fertilizer.h
-│   │   │   ├── Prune.h
-│   │   │   ├── Sun.h
-│   │   │   └── Water.h
-│   │   ├── 📁 ChainOfResponsibility/
-│   │   │   ├── FertilizerHandler.h
-│   │   │   ├── PlantCareHandler.h
-│   │   │   ├── PruneHandler.h
-│   │   │   ├── SunHandler.h
-│   │   │   └── WaterHandler.h
-│   │   ├── 📁 Decorator/
-│   │   │   ├── FertilizerDecorator.h
-│   │   │   ├── PlantDecorator.h
-│   │   │   └── PotDecorator.h
-│   │   ├── 📁 Iterator/
-│   │   │   ├── 📁 Inventory/
-│   │   │   │   ├── Inventory.h
-│   │   │   │   └── InventoryIterator.h
-│   │   │   ├── 📁 Order/
-│   │   │   │   ├── Order.h
-│   │   │   │   └── OrderIterator.h
-│   │   │   ├── 📁 Stock/
-│   │   │   │   ├── Stock.h
-│   │   │   │   └── StockIterator.h
-│   │   │   ├── Iterator.h
-│   │   │   ├── PlantNode.h
-│   │   │   └── Storage.h
-│   │   ├── 📁 Mediator/
-│   │   │   ├── CommMediator.h
-│   │   │   ├── ConcreteCommMediator.h
-│   │   │   ├── Manager.h
-│   │   │   ├── StaffMember.h
-│   │   │   └── Worker.h
-│   │   ├── 📁 Composite/
-│   │   │   ├── Company.h
-│   │   │   ├── Customer.h
-│   │   │   ├── Normal.h
-│   │   │   └── Premium.h
-│   │   ├── 📁 Observer/
-│   │   │   ├── ConcreteGrowthObserver.h
-│   │   │   └── Plant.h
-│   │   └── 📁 Memento/
-│   │       ├── Caretaker.h
-│   │       └── Memento.h
-│   ├── 📁 Core/
-│   │   └── Plant.h
-│   └── 📄 DemoMain.h
 ├── 📁 src/
-│   ├── 📁 Patterns/
-│   │   ├── 📁 AbstractFactory/
-│   │   │   ├── 📁 PlantTypes/
-│   │   │   │   ├── AloeVera.cpp
-│   │   │   │   ├── BirdOfParadise.cpp
-│   │   │   │   ├── Condelabra.cpp
-│   │   │   │   ├── Daisy.cpp
-│   │   │   │   ├── HenAndChicks.cpp
-│   │   │   │   ├── LargePlant.cpp
-│   │   │   │   ├── Lilac.cpp
-│   │   │   │   ├── MediumPlant.cpp
-│   │   │   │   ├── Nepenthes.cpp
-│   │   │   │   ├── Nerve.cpp
-│   │   │   │   ├── Pitcher.cpp
-│   │   │   │   ├── Rubber.cpp
-│   │   │   │   ├── SmallPlant.cpp
-│   │   │   │   ├── Sundew.cpp
-│   │   │   │   └── WhiteOak.cpp
-│   │   │   └── 📁 Factories/
-│   │   │       ├── CarnivorousPlantFactory.cpp
-│   │   │       ├── GreenHouse.cpp
-│   │   │       ├── SucculentPlantFactory.cpp
-│   │   │       ├── TemperatePlantFactory.cpp
-│   │   │       └── TropicalPlantFactory.cpp
-│   │   ├── 📁 State/
-│   │   │   ├── 📁 OrderState/
-│   │   │   │   ├── Cancelled.cpp
-│   │   │   │   ├── Completed.cpp
-│   │   │   │   ├── Draft.cpp
-│   │   │   │   ├── OrderState.cpp
-│   │   │   │   └── Paid.cpp
-│   │   │   ├── 📁 HealthState/
-│   │   │   │   ├── Dead.cpp
-│   │   │   │   ├── Good.cpp
-│   │   │   │   ├── HealthState.cpp
-│   │   │   │   └── NeedsCare.cpp
-│   │   │   └── 📁 GrowthState/
-│   │   │       ├── GrowthState.cpp
-│   │   │       ├── Mature.cpp
-│   │   │       ├── Seed.cpp
-│   │   │       └── Sprout.cpp
-│   │   ├── 📁 Command/
-│   │   │   ├── Command.cpp
-│   │   │   ├── Fertilizer.cpp
-│   │   │   ├── Prune.cpp
-│   │   │   ├── Sun.cpp
-│   │   │   └── Water.cpp
-│   │   ├── 📁 ChainOfResponsibility/
-│   │   │   ├── FertilizerHandler.cpp
-│   │   │   ├── PlantCareHandler.cpp
-│   │   │   ├── PruneHandler.cpp
-│   │   │   ├── SunHandler.cpp
-│   │   │   └── WaterHandler.cpp
-│   │   ├── 📁 Decorator/
-│   │   │   ├── FertilizerDecorator.cpp
-│   │   │   ├── PlantDecorator.cpp
-│   │   │   └── PotDecorator.cpp
-│   │   ├── 📁 Iterator/
-│   │   │   ├── 📁 Inventory/
-│   │   │   │   ├── Inventory.cpp
-│   │   │   │   └── InventoryIterator.cpp
-│   │   │   ├── 📁 Order/
-│   │   │   │   ├── Order.cpp
-│   │   │   │   └── OrderIterator.cpp
-│   │   │   ├── 📁 Stock/
-│   │   │   │   ├── Stock.cpp
-│   │   │   │   └── StockIterator.cpp
-│   │   │   ├── Iterator.cpp
-│   │   │   ├── PlantNode.cpp
-│   │   │   └── Storage.cpp
-│   │   ├── 📁 Mediator/
-│   │   │   ├── CommMediator.cpp
-│   │   │   ├── ConcreteCommMediator.cpp
-│   │   │   ├── Manager.cpp
-│   │   │   ├── StaffMember.cpp
-│   │   │   └── Worker.cpp
-│   │   ├── 📁 Composite/
-│   │   │   ├── Company.cpp
-│   │   │   ├── Customer.cpp
-│   │   │   ├── Normal.cpp
-│   │   │   └── Premium.cpp
-│   │   ├── 📁 Observer/
-│   │   │   ├── ConcreteGrowthObserver.cpp
-│   │   │   └── Plant.cpp
-│   │   └── 📁 Memento/
-│   │       ├── Caretaker.cpp
-│   │       └── Memento.cpp
-│   ├── 📁 Core/
-│   │   └── Plant.cpp
-│   └── 📄 DemoMain.cpp
-|   └── 📄 TestingMain.cpp
 ├── 📄 Makefile
 ├── 📄 .gitignore
 └── 📄 README.md
@@ -242,6 +56,8 @@ We as a team of 7 distributed an even workload in which each team member all con
 ### Functional Requirements
 
 ### Doxygen 
+
+- the command make doxygen will need to be run as there are over 1000 files and would be too much to add onto here
 
 ## 👥 Team Members & Contributions
 
@@ -364,6 +180,7 @@ graph TD
 
 ### Build Instructions
 *add it here when we are done w project fully*
+
 
 
 
