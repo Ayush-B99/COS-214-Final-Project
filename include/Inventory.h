@@ -31,149 +31,155 @@ class Order;
 
 /**
  * @class Inventory
- * @brief Implements bst based storage for all plants that cannot be sold yet.
- * 
- * Also provides the user an interface for plant creation through its factories.
- * Automatically sorts and indexes plants that are added, and automatically moves them to the correct alternate structure when their conditions are met.
+ * @brief Implements binary search tree (BST)-based storage for all plants that are not yet ready for sale.
+ *
+ * The Inventory class serves as the central data structure for managing plants before they are mature.
+ * It owns a tree of @ref PlantNode objects, where each node groups plants by a logical key (such as
+ * type, category, or other grouping strategy).
+ *
+ * The class also provides a high-level interface for plant creation and management through its
+ * greenhouse factories. These factories abstract away the creation logic for plants of different climates
+ * (Temperate, Tropical, Succulent, Carnivorous).
+ *
+ * ### Design Notes
+ * - **Primary Pattern:** This class embodies aspects of both the **Composite** and **Iterator** patterns.
+ *   While `PlantNode` can act as a recursive structure similar to a composite, the design here uses a 
+ *   lightweight single-level tree node rather than full polymorphic composites to minimize overhead.
+ * - **Reasoning:** Using a `PlantNode` tree instead of a formal Composite hierarchy keeps memory ownership
+ *   predictable and simplifies traversal logic while still maintaining hierarchical structure.
+ * - **Factories:** Each `GreenHouse` subclass acts as a **Factory Method** provider for plant creation,
+ *   encapsulating environment-specific creation logic.
+ * - **Ownership:** The Inventory owns its `PlantNode` objects and is responsible for cleanup, making it 
+ *   the authoritative structure for memory management of pre-sale plants.
+ * - **Automation:** Automatically promotes mature plants to the Stock and removes dead plants from storage,
+ *   reinforcing real-time consistency.
  */
 class Inventory : public Storage {
 
 private:
 
-/**
- * @brief the root of the plantCatalog tree
- */
-	PlantNode* plantCatalog;
-/**
- * @brief stores all the greenhouses in a predetermined order, allows for easy access to them
- */
-	vector<GreenHouse*> greenHouses;
+    /** @brief Root of the plant catalog BST. */
+    PlantNode* plantCatalog;
 
-	//helper functions for recursive operations
-/**
- * @brief helper function for the printInventory method
- */
-	void printHelper(PlantNode* node, string prefix, bool isLeft);
+    /** 
+     * @brief Collection of all greenhouse factories.
+     * 
+     * These are stored in a fixed order to simplify lookup and iteration.
+     * Each greenhouse is responsible for producing plants suited to its climate.
+     */
+    vector<GreenHouse*> greenHouses;
 
-	PlantNode* removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
+    // ===== Recursive helper functions =====
 
-	PlantNode* removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
+    /** @brief Helper for pretty-printing the inventory tree. */
+    void printHelper(PlantNode* node, string prefix, bool isLeft);
 
-	void collectByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
+    /** @brief Helper for recursively removing plants by growth state. */
+    PlantNode* removeByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
 
+    /** @brief Helper for recursively removing plants by health state. */
+    PlantNode* removeByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
+
+    /** @brief Recursively collects plants matching a growth state. */
+    void collectByGrowthRecursive(PlantNode* node, GrowthState* state, vector<Plant*>& matches);
+
+    /** @brief Recursively collects plants matching a health state. */
     void collectByHealthRecursive(PlantNode* node, HealthState* state, vector<Plant*>& matches);
 
+    /** @brief Collects all plants in the tree recursively. */
     void collectAllPlantsRecursive(PlantNode* node, vector<Plant*>& matches);
 
-	int countNodesRecursive(PlantNode* node);
+    /** @brief Counts all nodes in the tree recursively. */
+    int countNodesRecursive(PlantNode* node);
 
 public:
-	Inventory();
+    Inventory();
+    ~Inventory();
 
-	~Inventory();
+    /**
+     * @brief Adds a greenhouse factory to the internal list.
+     * @note Primarily used for extensibility or testing; factories are usually fixed.
+     */
+    void setClimate(GreenHouse* factory);
 
-	/**
-	 * @brief simply adds a factory to the greenHouses vector
-	 * @note i dont actually know why we have this, but i'm keeping it and calling it extensibility
-	 */
-	void setClimate(GreenHouse* factory);
+    /** @brief Creates and adds a small plant using the specified greenhouse. */
+    Plant* addSmallPlant(GreenHouse* house, PlantCareHandler* handler);
 
-	Plant* addSmallPlant(GreenHouse* house,PlantCareHandler* handler);
+    /** @brief Creates and adds a medium plant using the specified greenhouse. */
+    Plant* addMediumPlant(GreenHouse* house, PlantCareHandler* handler);
 
-	Plant* addMediumPlant(GreenHouse* house,PlantCareHandler* handler);
+    /** @brief Creates and adds a large plant using the specified greenhouse. */
+    Plant* addLargePlant(GreenHouse* house, PlantCareHandler* handler);
 
-	Plant* addLargePlant(GreenHouse* house,PlantCareHandler* handler);
+    /** @brief Adds a prototype plant to the inventory (used for cloning). */
+    void addPlantPrototype(Plant *prototype);
 
-	void addPlantPrototype(Plant *prototype);
+    /** @brief Creates an iterator for traversing the inventory. */
+    InventoryIterator *createIterator();
 
-	InventoryIterator *createIterator();
+    /** @brief Returns the total count of plants in the inventory. */
+    int getPlantCount();
 
-	int getPlantCount();
+    // ===== Factory Accessors =====
+    GreenHouse* getTemperateFactory();
+    GreenHouse* getCarnivorousFactory();
+    GreenHouse* getSucculentFactory();
+    GreenHouse* getTropicalFactory();
 
-	GreenHouse* getTemperateFactory();
+    // ===== Storage Interface Implementations =====
+    void addPlant(Plant *plant) override;
+    void removePlant(Plant* plant) override;
 
-	GreenHouse* getCarnivorousFactory();
+    // ===== Plant Management =====
+    vector<Plant*> removePlants(string key, GrowthState* state);
+    vector<Plant*> removePlants(string key, HealthState* state);
+    vector<Plant*> removePlants(GrowthState* state);
+    vector<Plant*> removePlants(HealthState* state);
 
-	GreenHouse* getSucculentFactory();
-
-	GreenHouse* getTropicalFactory();
-
-	void addPlant(Plant *plant);
-
-	void removePlant(Plant* plant);
-
-	vector<Plant*> removePlants(string key, GrowthState* state);
-
-	vector<Plant*> removePlants(string key, HealthState* state);
-
-	vector<Plant*> removePlants(GrowthState* state);
-
-	vector<Plant*> removePlants(HealthState* state);
-
-	/**
-	 * @brief basically the same as getNode but returns the plants vector to make things easier
-	 * @return a vector containing all of the plants under a given 
-	 */
-	vector<Plant*> getPlants(string key);
+    /**
+     * @brief Retrieves plants grouped under a specific key.
+     * @return Vector of Plant pointers belonging to the specified node.
+     */
+    vector<Plant*> getPlants(string key);
 
     vector<Plant*> getPlants(string key, GrowthState* state);
-
     vector<Plant*> getPlants(string key, HealthState* state);
-
     vector<Plant*> getPlants(GrowthState* state);
-
     vector<Plant*> getPlants(HealthState* state);
-
     vector<Plant*> getAllPlants();
 
-	/**
-	 * @brief essentially just a simplified removePlants wrapper. 
-	 * moves plants that have matured to the stock pointer passed in, using the Storage interface to prevent weird dependencies.
-	 * growth state needs to be mature to be moved
-	 */
-	void moveValidPlantsToStock(Stock* stock);
+    /**
+     * @brief Moves mature plants (GrowthState = Mature) to Stock.
+     * 
+     * This uses the @ref Storage interface rather than a direct dependency on Stock
+     * to promote loose coupling.
+     */
+    void moveValidPlantsToStock(Stock* stock);
 
-	/**.
-	 * @brief essentially just a simplified RemovePlants wrapper again.
-	 * removes plants from the tree entirely, if their health state is dead.
-	 */
-	void cleanUpDeadPlants();
+    /**
+     * @brief Removes all plants that are dead (HealthState = Dead) from the tree.
+     */
+    void cleanUpDeadPlants();
 
-	/**
-	 * @brief removes a node from the tree according to its key and returns it
-	 * @return the node to be removed if found, otherwise a nullptr
-	 */
-	PlantNode* removeNode(PlantNode* root, string key);
+    // ===== BST Structure Management =====
+    PlantNode* removeNode(PlantNode* root, string key);
+    PlantNode* findNode(PlantNode* root, string key);
+    PlantNode* addNode(PlantNode* root, string key);
 
-	/**
-	 * @brief will attempt to search for a node recursively, returning null if the node cannot be found
-	 * @return a pointer to the node with the associated key, or null if not found
-	 */
-	PlantNode* findNode(PlantNode* root, string key);
+    /** @brief Returns the number of nodes in the BST. */
+    int getNodeCount();
 
-	/**
-	 * @brief adds a node with the specified key to the tree
-	 */
-	PlantNode* addNode(PlantNode* root, string key);
+    /** @brief Prints a structured visualization of the inventory tree. */
+    void print() override;
 
-	/**
-	 * @brief simple count of the number of nodes in the tree
-	 */
-	int getNodeCount();
+    /** @brief Returns the root node of the inventory tree. */
+    PlantNode* getRoot();
 
-	/**
-	 * @brief prints a fancy looking representation of the tree structure, along with the contents of each node
-	 */
-	void print();
+    /** @brief Updates plant states or transitions as time passes. */
+    void tick();
 
-	//getters and setters (only adding them as needed rn)
-
-	PlantNode* getRoot();
-
-	void tick();
-
-	bool plantInTree(Plant* plant);
-
+    /** @brief Checks whether a specific plant exists in the tree. */
+    bool plantInTree(Plant* plant);
 };
 
 #endif

@@ -1,7 +1,7 @@
 # Variables
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -Wextra -Iinclude -Isrc
-LDFLAGS = -lncurses -lpthread
+LDFLAGS = -lncursesw -lpthread
 
 ifneq ("$(wildcard lib)","")
     LDFLAGS += -Llib
@@ -90,3 +90,23 @@ val_full: $(TARGET)
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes $(TARGET)
 
 .PHONY: all run run_only clean check leaks setup help val valgrind val_log val_full
+
+doxygen:
+	@echo "Generating documentation with Doxygen..."
+	@if ! command -v doxygen >/dev/null 2>&1; then \
+		echo "Error: doxygen not found. Please install it first (e.g. 'sudo apt install doxygen graphviz')."; \
+		exit 1; \
+	fi
+	@mkdir -p $(DOCSDIR)
+	@if [ ! -f Doxyfile ]; then \
+		echo "No Doxyfile found. Creating a default one..."; \
+		doxygen -g Doxyfile; \
+		sed -i 's|OUTPUT_DIRECTORY       =|OUTPUT_DIRECTORY       = $(DOCSDIR)|' Doxyfile; \
+		sed -i 's|RECURSIVE              = NO|RECURSIVE              = YES|' Doxyfile; \
+		sed -i 's|EXTRACT_PRIVATE        = NO|EXTRACT_PRIVATE        = YES|' Doxyfile; \
+		sed -i 's|EXTRACT_STATIC         = NO|EXTRACT_STATIC         = YES|' Doxyfile; \
+		sed -i 's|GENERATE_LATEX         = YES|GENERATE_LATEX         = NO|' Doxyfile; \
+		echo "Default Doxyfile created and configured."; \
+	fi
+	@doxygen Doxyfile
+	@echo "Documentation generated in $(DOCSDIR)/html"
