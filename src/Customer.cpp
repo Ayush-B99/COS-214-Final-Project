@@ -21,16 +21,19 @@ void Customer::setCommMediator(CommMediator* mediator) {
 }
 
 void Customer::askQuestion(const string& question, Plant* plant) {
-    cout << customerName << " asking: " << question << endl;
-    if (commMediator) {
+    // cout << customerName << " asking: " << question << endl;
+    if (commMediator)
+    {
         commMediator->notifyStaff(this, question, plant);
-    } else {
-        cout << customerName << " cannot ask question - no mediator set!" << endl;
     }
+    // else
+    // {
+        // cout << customerName << " cannot ask question - no mediator set!" << endl;
+    // }
 }
 
 void Customer::requestAssistance() {
-    cout << customerName << " requesting assistance" << endl;
+    // cout << customerName << " requesting assistance" << endl;
     if (commMediator) {
         commMediator->notifyStaff(this, "I need assistance please");
     }
@@ -38,7 +41,7 @@ void Customer::requestAssistance() {
 
 void Customer::requestPurchase(const string& plantType, int quantity) {
     string request = "I want to purchase " + to_string(quantity) + " " + plantType + "(s)";
-    cout << customerName << ": " << request << endl;
+    // cout << customerName << ": " << request << endl;
     purchaseHistory.push_back("Purchased " + to_string(quantity) + " " + plantType);
     if (commMediator) {
         commMediator->notifyStaff(this, request);
@@ -46,11 +49,15 @@ void Customer::requestPurchase(const string& plantType, int quantity) {
 }
 
 void Customer::receiveResponse(const string& response, Plant* plant) {
-    cout << customerName << " receives: \"" << response << "\"";
+    this->response = customerName + " receives: \"" + response + "\"";
     if (plant) {
-        cout << " [About a plant]";
+         this->response += " [About a plant]";
     }
-    cout << endl;
+    this->response += "\n";
+}
+
+string Customer::getResponse() const {
+    return response;
 }
 
 vector<string> Customer::getPurchaseHistory() const {

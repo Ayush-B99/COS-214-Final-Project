@@ -512,7 +512,8 @@ void addToCart(Stock *stock, Inventory *inv)
 /**
  * @brief Remove plant from cart
  */
-void removeFromCart(Stock *stock, Inventory *inv) {
+void removeFromCart(Stock *stock, Inventory *inv)
+{
     if (!currentOrder || currentOrder->getOrderItems().empty())
     {
         displayContent("Your cart is empty!");
@@ -598,7 +599,8 @@ void checkoutOrder()
 /**
  * @brief Pay for order
  */
-void payOrder() {
+void payOrder()
+{
     if (!currentOrder)
     {
         displayContent("No order to pay!");
@@ -721,11 +723,12 @@ void askQuestion(Customer *customer)
 {
     vector<string> questions = {
         "How do I care for my new plants?",
-        "What is your return policy?",
-        "Do you offer delivery services?",
-        "Can I get a bulk discount?",
-        "What are your store hours?",
-        "Do you have gift cards?"
+        "How much sunlight do plants need?",
+        // "Do you offer delivery services?",
+        // "Can I get a bulk discount?",
+        // "What are your store hours?",
+        "What types of plants do you have in stock?",
+        "What is your price range for plants?"
     };
     
     ostringstream oss;
@@ -735,17 +738,17 @@ void askQuestion(Customer *customer)
     
     for (size_t k = 0; k < questions.size(); k++)
         oss << "[" << (k + 1) << "] " << questions[k] << "\n";
-    oss << "[7] Custom question\n\n";
+    oss << "[5] Custom question\n\n";
     oss << "Select question:";
     
     int choice = getInputInt(oss.str());
     
     string question;
-    if (choice >= 1 && choice <= 6)
+    if (choice >= 1 && choice <= 4)
     {
         question = questions[choice - 1];
     }
-    else if (choice == 7)
+    else if (choice == 5)
     {
         question = getInputString("Enter your question:");
     }
@@ -756,13 +759,15 @@ void askQuestion(Customer *customer)
     }
     
     customer->askQuestion(question);
-    displayContent("Question sent to staff!\nA representative will respond shortly.");
+    // displayContent("Question sent to staff!\nA representative will respond shortly.");
+    displayContent("Response:\n" + customer->getResponse());
 }
 
 /**
  * @brief Async tick system for plant growth
  */
-void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
+void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler)
+{
     int cycles = 0;
     
     while (running.load())
@@ -790,7 +795,8 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
             inv->moveValidPlantsToStock(stock);
         }
         
-        if (cycles % 150 == 0) {
+        if (cycles % 150 == 0)
+        {
             stock->cleanUpDeadPlants();
             inv->cleanUpDeadPlants();
             inv->moveValidPlantsToStock(stock);
@@ -820,8 +826,9 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler) {
 /**
  * @brief Main function
  */
-int main() {
-    // std::setlocale(LC_ALL, "");
+int main()
+{
+    std::setlocale(LC_ALL, "");
     // std::locale::global(std::locale(""));
 
     streambuf *oldCoutBuf = cout.rdbuf();
@@ -882,17 +889,43 @@ int main() {
         displayMenu();
         
         ostringstream welcome;
-        welcome << "=====================================================\n";
-        welcome << "|     Welcome to the Momina and Friends Portal!      |\n";
-        welcome << "=====================================================\n\n";
-        welcome << "Browse our selection of beautiful plants!\n\n";
-        welcome << "Features:\n";
-        welcome << "• Browse available plants\n";
-        welcome << "• Add plants to your cart\n";
-        welcome << "• Decorate with pots & fertilizer\n";
-        welcome << "• Secure checkout & payment\n";
-        welcome << "• Customer service support\n\n";
-        welcome << "Happy shopping! 🌿";
+            welcome << "         ========================================================================================================================================================================\n";
+            welcome <<  "                 ⁺                    ⊹               ⢀                 ⁺          ⢀							⢀															⁺  \n";
+            welcome << "                    ⢠⠒⠉⠉⠉⢢⠤⠤⡀⢀⣀⣀⠀⡠⠖⠋⠉⠉⠒⢄                               ⠀⠀⠀⠀⠀⠀⠀⠀⠀⁺        					     ⁺			   ⊹\n";
+            welcome << "          ⠀⢀⠀⠀⠀⠀⠀⠀⠀⢀ ⣄⠀⠀⠀⠀⠀⠀⢀⠎⠀⠀⠀⠙⠄⠀⠀ ⠀⠈⡇⣀⡀⠀⠀⠀⠀         ⊹                            ⢀                                   ⣠⡀⡠⠚⡦⠊⡆⡠⢶⠀⠀ ⢀\n";
+            welcome << "       ⠀⠀⠀⠀⠀⠀⠀⠀⢀⠤⠐⠠⠄⡀⠀⠀⠀⢀⠄⠈⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⁺⠀⠁⠀  ⠈⡇⠀⠀ ⠀⠀⠀⁺                   P L A N T     N U R S E R Y                     ⡤⣠⠃⣧⠃⣰⠁⢠⠏⢀⠎⢀⣀⣀⠀          ⊹\n";
+            welcome << "     ⠀⠀⠀⁺⠀⠀⠀⠀ ⡄⠀⠀⠀⠀⠀⠹⠔⠒⠢⠇⠀⠀⠀⠀⠀⠀⠠⠤⡖⠁⠘⡄⠀⠀⠀   ⣠⣃⠀⠀⢀⠀⠀⠀        ⁺      ⢀                ⁺               ⁺                ⠀⡖⠒⣧⣹⢀⣸⣄⣇⣦⠂⣠⠗⠊⢁⣠⣊⡀\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⢀⡠⠤⠄⠀⠀⠀⠀⠀⠀⠀⠀⊹⠀⠀⠀⠀⠀⠀⠃⠀⠀⠀⠀⠰⡄⠀⠀  ⠈⠁⠀⠙⣄⠀⠀⠀              ⠀⢀⢾⠢⠴⠤⢄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀                    ⢀             ⢺⣉⠙⢂⡾⠏⠁⠀⠀⠀⠈⠹⣗⡓⠉⠁⠀⣀⠼	⁺\n";
+            welcome << "     ⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠰⠁⠀⠀⠀⠀⠀⠀⡜⠂⠲⠀⠀⠀              ⢠⠋⠀⢠⠀⠀⠀⠙⣆⣀⡤⠤⠤⣄⡀⠀⠀  ⁺                              ⣤⠖⠋⠉⣓⡟⠀⠀⠀⠀⠀⠀⡀⠀⡷⢶⣖⠋⠉⠉⣢\n";
+            welcome << "     ⠀⠀⠀⠀⠸⠀⠀⢀⠀⠀⠀⁺⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠉⠀⠉⢢⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣞⠀⠀⠘⠒⠂⡀    ⊹         ⡇⠀⠀⠨⡄⠀⠀⢀⠜⠃⠀⠀⠀⠈⠉⣱⡆⠀⠀⠀                     ⢀        ⡝⠓⢒⣚⣷⡇⠀⠀⠠⠀⠀⣄⣤⠾⠖⠠⣈⠑⠲⢌⠀\n";
+            welcome << "     ⠀⢀⡠⠐⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠁⠘⠂⠈⠆⠀⠀⠀⠀⠀⠀⠈⡆⠀⠀⠀⠀⡝              ⢳⡀⠀⠀⣰⣤⣄⡌⣄⢀⢀⠠⠒⠁⠀⠀⡇⠀⊹⠀⠀⠀    ⢠⢄ ⡠⡄	                 ⢉⠝⢉⡴⢞⡿⢶⢿⢴⡔⣿⠙⠝⡏⠢⣄⠈⠙⣕⠚        ⊹\n";
+            welcome << "    ⢠⠋⠀⠀⠀⡠⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⁺⠀⠀⠀⠐⢄⣀⣀⡠⡂⠀⠀⠀⠠⡄⠀⠀⢀⡀⠀⢀⡰⠃⠀⠀⠀⠺⣅            ⢀⡔⠋⠉⠓⢺ ⢽⡝⣦⣺⢁⣴⡊⠀⣀⠀⣰⠛⠀        ⢰⠃⠀  ⠈⡆⠀ ⁺          ⊹    ⠧⡴⠋⣠⠏⢠⠉⡜⢈⡇⢹⠱⡀⠘⡄⠈⢋⠐⠊      ⢀\n";
+            welcome << "    ⡇⠀⠀⠀⠀⠣⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⡄⠀⠰⣀⡠⣀⠀⢀⣠⠎⠉⣹⣀⠀⠀⠀⠀⠀⣸          ⢠⠯⠀⠀⠀ ⢈⡯ ⢮⣏⣸⣗⠛⠏⠉⠀⠉⠙⢦⡀    ⡤⠔⠒⠢ ⢼⡀⢀⡀⢀ ⡧⠔⠒⠢⢤              ⢰⡁⠔⡏⡠⡇⢠⠃⢸⠇⢸⢠⠓⠤⠏⠒⠚⠀\n";
+            welcome << "    ⡇⠀⠀⠀⠀⢰⡁⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠠⣤⢷⣗⠂⠐⡎⠀⠀⠀⠀⠀⠀⠉⠁⠀⠀⠀⠁⠀⠉⢢⠀⢰⠊⠁      ⊹  ⠠⣞⠒⠀⠈⠉⠉⠀⠷⡜⢱⠙⡴⣧⡒⠠⢀⠀⠀ ⠀⣧⠀   ⡂     ⠑⣘⣁⠊⣀⠀   ⠘⡄         ⢀⡷⡒⠒⠲⢤⡀⠉⣄⡎⡦⠢⢈⣸⠋⠀⠀    ⡞⠉⠊⢱⠀⣀⣀⠀⠀\n";
+            welcome << "    ⠘⢤⡤⠀⠀⠀⠑⠂⠐⢆⠀⣄⣀⣀⠀⠀⡈⢧⡴⠀⡇⡧⣀⢼⠑⠂⢺⢳⠁⠀⠀⠀⠀⠀⢀⠀⠀⠀⣀⡜⠐⠃⠀⠀           ⠑⣅⡄⠀⠀⣀⡴⠁⠌⠛⠹⣀⠀⠀⠀⠀⠀⠀⣸⠀   ⠀⠑⠤⣀⣀⡠ ⠭⡧⡼⠩⠅ ⣀⣀⠤⠊     ⢀   ⢀⡜⠀⠀⡄⠀⠀⢙⡞⠁⠀⢀ ⠈⢦⠕⠁⠀ ⣰⠏⠑⢷ ⠀⡸⠋⠀ ⠸⣄\n";
+            welcome << "    ⡎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⢎⠀⠡⠘⡆⢱⡀⣠⡏⠀⡏⠈⢱⢲⠂⠀⠀⠀⠀⠀⠀⠀⠀  ⠱⠀⠀⠀⠀             ⠉⡏⠀⠀⣘⠀⠀⠀⠙⣦⢄⣠⣀⡴⠋⠁        ⡔⠁⢀⠞⢀⡇⠓⢀⠈⠳⡀           ⠈⣇⠀⠰⡀⠀⢸⠀⢠⢀⠔⠁⠀⠈⣶⡎⠀  ⠘⢅⡀⠀ ⡷⠒⢧⣀⣀⡤⠊⠀\n";
+            welcome << "    ⠀⠱⣄⡀⣠⠃⠀⠀⠀⠀⠀⠀⠀⠉⢫⣁⢫⡳⣄⢧⢸⠀⢩⣧⠞⢱⠇⢀⠇⢾⡻⠖⢖⠁⠀⡀⡀⠀⢀⡼⠀⠀⊹⠀⠀⠀⠀      ⢠⢄⡠⡄   ⠳⡠⡀⠃⠀⠀⢀⡜ ⡞⠀      ⁺   ⢰⡁⠀⠀ ⡸⢣⠀⠀ ⠀⠀⡇        ⢀⡴⠼⠦⠄⡀⠡⣰⣼⠻⣾⠟⣀⠀ ⢀⡼⣫ ⢀ ⣠⠞⠛⠉ ⢇⣀⣸⠁⠀⠉⠳⡄ ⁺\n";
+            welcome << "     ⠀⠀⠀⠀⠸⡀⠀⠀⠀⠐⣄⣀⣀⡠⠎⠓⢯⡀⠹⣼⠇⠀⠟⠁⠀⣸⢁⠎⡴⡋⠀⠀⠀⡉⠉⠀⠈⡏⠁            ⢰⠃⠀⠀⠈⡆⠀ ⁺⠀⠈⢦⠦⠔⠒⠉ ⡟⠀         ⠀⠀⠉⠧⠔⠊⠀⡸⠙⠲⠴⠉⠁ ⊹      ⢰⡇⠀⠀⠀⠀⠀⠱⡯⡖⠛⡤⣺⡟⠋⠉⠙⠢⡀   ⠓⡄⠀ ⣠⡎⠀⠈⢧⣄⣠⠎⠀\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠉⠒⠒⠒⠋⠀⠀⠀⁺⠀⠀⠀⠹⡄⠀⠍⠀⠀⠀⠀⣿⢏⡾⠝⠓⠢⠤⠊⠈⠑⠒⠊⠀⠀⠀       ⡤⠔⠒⠢⢼⡀⢀⡀⢀⡧⠔⠒⠢⢤    ⢠⠞⠁                 ⡼  ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢘⠁⠀⠉⠁⠀⣨⠽⠛⢿⢿⣽ ⠓⠟ ⢄⡀⠀ ⢳⡀   ⠑⠊⠁⣇⣀⡀⡸⠀\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣧⠀⠀⠀⠀⠀⣀⣿⡎⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⡂     ⠑⣘⣁⠊⣀⠀⠀⠀⠘⡄  ⣖    ⡞⠉⠊⢱ ⣀⣀⠀⠀ ⣀⣀⣀  ⡞  ⠀⠀⢀⠀⠀⠀  ⢀⣀⣤⣴⡶⠿⠛⠳⢤⣀⠀⡰⠁⠀⠀⠆ ⠀⠙⡆⠀⠈ ⢀⣘⡤       ⠘⡆\n";
+            welcome << "     ⠀⠀⠀⊹⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠀⠀⡆⠀⢈⢿⢿⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⠀⠑⠤⣀⣀⡠⠭⡧⡼⠩⠅⣀⣀⠤⠊   ⢸⠃⣰⠏⠑⢷⠀⠀ ⡸⠋⠀⠸⣄  ⢩⠛⢤⡑ ⡞   ⠠⣠⢠⣶⡾⠽⠽⣫⠭⠤⢤⡀⠀⠀⠀  ⠈⠉⢳⠀⠀⠸⠀⠀⠀⣸⠦⠤⠤⠔⠊⠀⠀   ⣀⣀⣀⠀⡇  ⢀\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⁺⠀⠀⠀⠀⠀⠀⠀⠀⡿⠀⠀⣇⠀⠈⡸⢸⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀     ⡔⠁⢀⠞⢀⡇⠓⢀⠈⠳⡀   ⣖⠋⠘⢅⡀⠀⠀⡷⠒⢧⣀⣀⡤⠊⠀   ⠑⠤⠬⠏                ⠙ ⢶⠀⠀⠀  ⠈⢢⡄⠀⠀⡜⠀⠀ ⡼       ⢩⠛⢤⡑⣧\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠀⢀⢇⠀⣷⠀⠀⡎⠀⡎⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀   ⁺ ⢰⡁⠀⠀ ⡸⢣⠀⠀ ⠀⡇  ⢸⠃  ⣠⠞⠛⠉⢇⣀⣸⠁⠀⠉⠳⡄⠀   ⣰⠃       ⢀            ⠸⡄⠀⠀⠀⠀ ⢧⠟     ⣾⠈    ⁺  ⠑⠤⠬⢿⡀⠀\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣼⣾⠌⠀⣷⡀⠈⠄⠀⠣⣸⣄⠀⠀⠀⠀⠀⠀⠀⠀⁺⠀⠀⠀⠀⠀⠀     ⠉⠧⠔⠊⠀⡸⠙⠲⠴⠉⠁ ⊹⠞⠁   ⠓⡄⠀ ⣠⡎⠀⠈⢧⣄⣠⠎⠀ ⢀⠞⠁  ⁺                    ⠙ ⢶⡀⣠⣀⢿⠀   ⣰⠃            ⡇  ⁺\n";
+            welcome << "     ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣖⣋⣁⣀⣋⣀⣀⠏⠓⠒⠄⠀⠀⠈⠈⠓⠦⢤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀         ⡧    ⣴⣫       ⠑⠊⠁ ⣇⣀⡀⡸⠀⠀⠀⠀⣰⣫⠀⠀⠀⠀⠀⠀⠀⠀                       ⣇   ⣰⣫      ⢀      ⢸⡀\n";
+            welcome << "           ==========================================================================================================================================================================\n";
+
+        // welcome << "=====================================================\n";
+        // welcome << "|     Welcome to the Momina and Friends Portal!      |\n";
+        // welcome << "=====================================================\n\n";
+        // welcome << "Browse our selection of beautiful plants!\n\n";
+        // welcome << "Features:\n";
+        // welcome << "• Browse available plants\n";
+        // welcome << "• Add plants to your cart\n";
+        // welcome << "• Decorate with pots & fertilizer\n";
+        // welcome << "• Secure checkout & payment\n";
+        // welcome << "• Customer service support\n\n";
+        // welcome << "Happy shopping!";
         
         displayContent(welcome.str());
         
@@ -971,10 +1004,10 @@ int main() {
         
         delete inv;
         delete stock;
-        endwin();
+        // endwin();
 
         
-        endwin();
+        // endwin();
         return 0;
     }
     catch (const exception &e)

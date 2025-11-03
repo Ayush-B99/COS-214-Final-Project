@@ -47,6 +47,7 @@ private:
     string customerName;                ///< Customer's name
     CommMediator* commMediator;         ///< Communication mediator for staff interactions
     vector<string> purchaseHistory;     ///< History of purchases made by the customer
+    string response = "";               ///< Customer's response from a question
 
 public:
     /**
@@ -113,6 +114,12 @@ public:
      * @brief Virtual destructor for proper cleanup in derived components.
      */
     virtual ~Customer();
+    
+    /**
+     * @brief Get the customer's response.
+     * @return The customer's response message.
+     */
+    string getResponse() const;
 };
 
 #endif

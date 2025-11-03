@@ -1,6 +1,7 @@
 #ifndef ORDER_H
 #define ORDER_H
 
+#include "Caretaker.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,6 +21,7 @@ using namespace std;
 #include "Draft.h"
 #include "PotDecorator.h"
 #include "FertilizerDecorator.h"
+#include "Memento.h"
 
 class Inventory;
 class Stock;
@@ -31,6 +33,7 @@ private:
 	PlantNode* orderItems;
 	string id;
 	double total;
+	Caretaker<OrderState*>* stateCaretaker;
 
 public:
 	Order(string orderId);
@@ -90,6 +93,12 @@ public:
     static unique_ptr<Plant> decorateWithSlowReleaseFertilizer(unique_ptr<Plant> p) {
         return decorateWithFertilizer(std::move(p), "Slow-Release");
     }
+    
+    void restoreState();
+    
+    void saveState();
+
+    void restoreToPreviousState();
 };
 
 #endif

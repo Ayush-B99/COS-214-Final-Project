@@ -7,6 +7,8 @@ Order::Order(string orderId) {
 	this->orderItems = new PlantNode(id);
 	total = 0;
 	state = new Draft();
+	// shared_ptr<OrderState> state;
+	// stateCaretaker = new Caretaker<OrderState*>();
 
 	// cout<< "Order " << orderId << " has been created successfully!\n";
 }
@@ -22,8 +24,11 @@ Order::~Order() {
 }
 
 void Order::proceed(){
-	if (state){
-		state->proceed(this);
+	if (state)
+	{
+    	// Memento<OrderState> memento(shared_ptr<OrderState>(state));
+        // stateCaretaker->addMemento(memento);
+        state->proceed(this);
 	}
 }
 
@@ -153,3 +158,12 @@ unique_ptr<Plant> Order::decorateWithPot(unique_ptr<Plant> p, const string& potT
 unique_ptr<Plant> Order::decorateWithFertilizer(unique_ptr<Plant> p, const string& fertilizerType) {
     return make_unique<FertilizerDecorator>(std::move(p), fertilizerType);
 }
+
+void Order::restoreToPreviousState() {
+	// state->restore(this);
+}
+
+void Order::saveState() {
+	// Memento<>(this);
+}
+

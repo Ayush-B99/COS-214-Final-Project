@@ -10,8 +10,8 @@ Worker::Worker(const string &name, CommMediator *mediator, Inventory *inventory)
 
 void Worker::handleCustomerQuery(Customer *customer, const string &query, Plant *plant)
 {
-    cout << getName() << " handling query from " << customer->getName()
-         << ": \"" << query << "\"" << endl;
+    // cout << getName() << " handling query from " << customer->getName()
+         // << ": \"" << query << "\"" << endl;
 
 
     string response;
@@ -85,7 +85,8 @@ void Worker::handleCustomerQuery(Customer *customer, const string &query, Plant 
     }
     else
     {
-        response = "I'll be happy to help you with that!";
+        // response = "I'll be happy to help you with that!";
+        response = "I'm afraid I cannot help you with that.";
     }
 
 
