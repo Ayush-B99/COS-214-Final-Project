@@ -1,3 +1,12 @@
+/**
+ * @file StaffMember.h
+ * @brief Abstract base class for all staff members in the nursery.
+ * 
+ * StaffMember represents the "Colleague" in the Mediator pattern.
+ * Staff members know about the mediator but not about other staff members directly.
+ * All communication happens through the commMediator to maintain loose coupling.
+ */
+
 #ifndef STAFFMEMBER_H
 #define STAFFMEMBER_H
 
@@ -9,41 +18,136 @@
 #include <sstream>
 #include <stack>
 
-#include "GrowthMediator.h"
-//#include "CommMediator.h"
-//#include "Plant.h"
-#include "Command.h"
+// #include "GrowthMediator.h"
+// //#include "CommMediator.h"
+// //#include "Plant.h"
+// #include "Command.h"
+// #include "CommMediator.h"
+// #include "Customer.h"
+class GrowthMediator;
+class CommMediator;
+class Command;
+class Customer;
+class Plant;
+
+#include "CommMediator.h"
+#include "Customer.h"
+#include "Inventory.h"
+/**
+ * @class StaffMember
+ * @brief Abstract base class for all staff members in the nursery
+ * 
+ * The class represents the "Colleague" in the Mediator pattern.
+ * Staff members know about the mediator but not about other staff members directly.
+ * All communication happens through the commMediator to maintain loose coupling.
+ */
 
 using namespace std;
-
-class CommMediator;
-
-class StaffMember {
-
+class StaffMember
+{
 private:
-	GrowthMediator* mediator;
-	CommMediator* commMediator;
-	vector<Plant*> currentState;
-	vector<Command*> commandHistory;
+	GrowthMediator *mediator;
+	vector<Plant *> currentState;
+	vector<Command *> commandHistory;
+	CommMediator *commMediator;
+	string staffName;
+	bool isAvailable;
+	Inventory *inventory;
+
+protected:
+	/**
+	 * @brief Get the staff member's name
+	 * @return Constant reference to the staff name string
+	 */
+	const string &getStaffName() const { return staffName; }
+
+	/**
+	 * @brief Set the staff member's name
+	 * @param name New name for the staff member
+	 */
+	void setStaffName(const string &name)
+	{
+		if (!name.empty())
+			staffName = name;
+	}
+
+	/**
+	 * @brief Get the inventory system pointer
+	 * @return Pointer to the inventory system
+	 */
+	Inventory *getInventory() const { return inventory; }
 
 public:
-	void setMediator(GrowthMediator* mediator);
+	/**
+	 * @brief Virtual destructor for proper cleanup
+	 */
+	virtual ~StaffMember() = default;
 
-	void setCommMediator(CommMediator* commMediator);
+	/**
+	 * @brief Construct a new Staff Member with automatic mediator registration
+	 * @param name The staff member's name
+	 * @param mediator Pointer to the communication mediator (optional)
+	 * @param inventory Pointer to the inventory system (optional)
+	 *
+	 * If a mediator is provided during construction, the staff member
+	 * automatically registers itself with that mediator. This ensures
+	 * they can immediately participate in the communication system.
+	 */
+	StaffMember(const string &name, CommMediator *mediator = nullptr, Inventory *inventory = nullptr);
 
-	void setCommand(Command* cmd);
+	/**
+	 * @brief Set the communication mediator
+	 * @param mediator Pointer to the communication mediator
+	 */
+	void setCommMediator(CommMediator *mediator);
 
-	void executeCommand();
+	/**
+	 * @brief Set the inventory system
+	 * @param inv Pointer to the inventory system
+	 */
+	void setInventory(Inventory *inv);
 
-	void undoLastCommand();
+	/**
+	 * @brief Get the staff member's name
+	 * @return String containing the staff member's name
+	 */
+	virtual string getName() const;
 
-	virtual void getComm() = 0;
+	/**
+	 * @brief Check if staff is available for customer assistance
+	 * @return true if available, false otherwise
+	 */
+	bool getAvailability() const;
 
-	virtual void setComm() = 0;
+	/**
+	 * @brief Set staff availability for customer assistance
+	 * @param available New availability status
+	 */
+	void setAvailability(bool available);
 
-	virtual void getGrowth() = 0;
+	/**
+	 * @brief Handle customer query (pure virtual - must be implemented by derived classes)
+	 * @param customer The customer asking the question
+	 * @param query The customer's question
+	 * @param plant Optional plant related to the query
+	 */
+	virtual void handleCustomerQuery(Customer *customer, const string &query, Plant *plant = nullptr) = 0;
 
-	virtual void setGrowth() = 0;
+	/**
+	 * @brief Handle customer purchase request (pure virtual - must be implemented by derived classes)
+	 * @param customer The customer making the purchase request
+	 * @param plantType The type of plant requested
+	 * @param quantity Number of plants requested
+	 */
+	virtual void handlePurchaseRequest(Customer *customer, const string &plantType, int quantity) = 0;
+
+	/**
+	 * @brief Send a response to a customer via the mediator
+	 * @param customer The customer to respond to
+	 * @param response The response message
+	 * @param plant Optional plant related to the response
+	 */
+	void respondToCustomer(Customer *customer, const string &response, Plant *plant = nullptr);
 };
 
 #endif

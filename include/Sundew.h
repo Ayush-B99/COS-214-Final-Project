@@ -1,3 +1,15 @@
+/**
+ * @file Sundew.h
+ * @brief Concrete product representing a Sundew carnivorous plant (small size).
+ * 
+ * Sundew is a small carnivorous plant that traps insects with sticky tentacles.
+ * Part of the carnivorous plant family in the Abstract Factory pattern.
+ * 
+ * @note This class serves as both a Concrete Product in the Abstract Factory pattern
+ * and a Prototype in the Prototype pattern, enabling efficient object creation
+ * through cloning in the factory classes.
+ */
+
 #ifndef SUNDEW_H
 #define SUNDEW_H
 
@@ -13,17 +25,37 @@ using namespace std;
 
 #include "SmallPlant.h"
 
+/**
+ * @class Sundew
+ * @brief Concrete small carnivorous plant class representing a Sundew.
+ * 
+ * Inherits from SmallPlant and implements the Prototype pattern through clone method.
+ * Sundews are known for their glistening, sticky tentacles that trap insects.
+ */
 class Sundew : public SmallPlant {
-
-
 public:
-	Sundew();
+    /**
+     * @brief Default constructor.
+     * Initializes a Sundew plant with species name and small size.
+     */
+    Sundew();
 
-	Sundew(Sundew& other);
+    /**
+     * @brief Copy constructor.
+     * @param other Reference to another Sundew object to copy from.
+     */
+    Sundew(Sundew& other);
 
-	~Sundew();
+    /**
+     * @brief Destructor.
+     */
+    ~Sundew();
 
-	Plant* clone();
+    /**
+     * @brief Creates a clone of the current Sundew object.
+     * @return Pointer to a new Plant object that is a copy of this Sundew.
+     */
+    Plant* clone();
 };
 
 #endif

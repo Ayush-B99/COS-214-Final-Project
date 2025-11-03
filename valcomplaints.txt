@@ -1,0 +1,910 @@
+valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes -s ./build/TestingMain
+PLANT STORE PATTERN TESTING
+============================
+
+=== TESTING DECORATOR PATTERN ===
+
+--- Basic Plants with no decoration ---
+Daisy: A cheerful Daisy with white petals - Price: R25
+Aloe Vera: A healing succulent with gel-filled leaves - Price: R65
+Nepenthes: A tropical pitcher plant with large traps - Price: R150
+
+--- Individual Decorators ---
+Daisy in Clay Pot: A cheerful Daisy with white petals in a Clay pot - Price: R85
+Aloe with Fertilizer: A healing succulent with gel-filled leaves with Organic fertilizer - Price: R115
+
+--- Multiple Decorations ---
+Premium Nepenthes: A tropical pitcher plant with large traps in a Decorative pot with Slow-Release fertilizer - Price: R470
+Daisy Ceramic: A cheerful Daisy with white petals in a Ceramic pot - Price: R95
+Daisy Plastic: A cheerful Daisy with white petals in a Plastic pot - Price: R65
+
+--- Different Fertilizer Types ---
+Aloe Organic: A healing succulent with gel-filled leaves with Organic fertilizer - Price: R115
+Aloe Liquid: A healing succulent with gel-filled leaves with Liquid fertilizer - Price: R165
+Aloe Slow-Release: A healing succulent with gel-filled leaves with Slow-Release fertilizer - Price: R265
+
+--- Testing Construction Methods ---
+Nested (smart pointers): A majestic tree with strong, spreading branches in a Clay pot with Organic fertilizer
+Step-by-step: A majestic tree with strong, spreading branches in a Clay pot with Organic fertilizer
+
+=== TESTING PATTERNS TOGETHER ===
+
+--- Creating Premium Plant Packages ---
+Premium Temperate Package: A fragrant shrub with purple blossoms in a Ceramic pot with Slow-Release fertilizer - Price: R345
+Premium Tropical Package: A tropical plant with intricate vein patterns in a Decorative pot with Liquid fertilizer - Price: R265
+Premium Carnivorous Package: A tropical pitcher plant with large traps in a Clay pot with Organic fertilizer - Price: R260
+Premium Succulent Package: A tall succulent with candelabra-like branches in a Decorative pot with Slow-Release fertilizer - Price: R440
+
+--- Creating Multiple Decorated Plants from Factory ---
+Plant 1: A cheerful Daisy with white petals in a Plastic pot - Price: R65
+Plant 2: A cheerful Daisy with white petals with Organic fertilizer - Price: R75
+Plant 3: A majestic tree with strong, spreading branches in a Decorative pot with Slow-Release fertilizer - Price: R500
+
+=== Inventory Testing ===
+A new instance of Inventory has been created!
+
+-- Adding plants --
+New PlantNode with key Nepenthas has been created!
+A new Nepenthas has been added to Inventory!
+New PlantNode with key Rubber has been created!
+A new Rubber has been added to Inventory!
+New PlantNode with key Lilac has been created!
+A new Lilac has been added to Inventory!
+
+== Inventory Tree Structure ==
+== Contains 3 plants and 3 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+
+==============================
+
+-- Adding duplicates --
+A new Nepenthas has been added to Inventory!
+A new Nepenthas has been added to Inventory!
+A new Lilac has been added to Inventory!
+New PlantNode with key Bird Of Paradise has been created!
+A new Bird Of Paradise has been added to Inventory!
+New PlantNode with key Sundew has been created!
+A new Sundew has been added to Inventory!
+
+== Inventory Tree Structure ==
+== Contains 8 plants and 5 different species.
+└── Nepenthas (3 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (2 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (1 plant/s)
+               > Sundew | Growth: seed | Health: good | Price: R55
+
+==============================
+
+-- Direct removals --
+Plant removed from Nepenthas node
+
+== Inventory Tree Structure ==
+== Contains 7 plants and 5 different species.
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (2 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (1 plant/s)
+               > Sundew | Growth: seed | Health: good | Price: R55
+
+==============================
+Plant removed from Sundew node
+
+== Inventory Tree Structure ==
+== Contains 6 plants and 5 different species.
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (2 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Testing getPlants variants --
+Plants in seedling state: 6
+Plants in mature state: 0
+Healthy plants: 6
+Dead plants: 0
+
+-- Manually manipulating states --
+setting states
+Lilac has advanced to a new growth stage.
+
+== Inventory Tree Structure ==
+== Contains 6 plants and 5 different species.
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: dead | Price: R150
+    ├── Lilac (2 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │      > Lilac | Growth: mature | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Removing by GrowthState (Mature) --
+1 plants removed from the entire tree.
+Removed 1 mature plants.
+
+== Inventory Tree Structure ==
+== Contains 5 plants and 5 different species.
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+       > Nepenthas | Growth: seed | Health: dead | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Removing by HealthState (Dead) --
+1 plants removed from the entire tree.
+Removed 1 dead plants.
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Re-adding plants for further tests --
+A new Rubber has been added to Inventory!
+A new Sundew has been added to Inventory!
+A new Lilac has been added to Inventory!
+Rubber has advanced to a new growth stage.
+Lilac has advanced to a new growth stage.
+
+== Inventory Tree Structure ==
+== Contains 7 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (2 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │      > Lilac | Growth: mature | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (2 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+           > Rubber | Growth: mature | Health: good | Price: R110
+        └── Sundew (1 plant/s)
+               > Sundew | Growth: seed | Health: dead | Price: R55
+
+==============================
+
+-- Testing moveValidPlantsToStock --
+A new instance of Stock has been created!
+Moving 2 mature plants to Stock...
+New PlantNode with key Lilac has been created!
+New PlantNode with key Rubber has been created!
+Plants successfully moved to Stock!
+Stock contents after move:
+
+== Stock Tree Structure ==
+== Contains 2 plants and 2 different species.
+== Total value of stock: R185
+└── Lilac (1 plant/s)
+       > Lilac | Growth: mature | Health: good | Price: R75
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+-- Testing cleanUpDeadPlants --
+1 plants removed from the entire tree.
+Cleaning up 1 dead plants...
+All dead plants removed and memory freed.
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Testing removePlants(string key, GrowthState*) --
+No plants matching those parameters could be found.
+Removed 0 by key+growth.
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Testing removePlants(string key, HealthState*) --
+No plants matching those parameters could be found.
+Removed 0 by key+health.
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+
+-- Node count: 5 types of plants in inventory
+
+-- Plant count: 4 plants in inventory
+
+-- Testing iterator traversal --
+Iterated: Bird Of Paradise (seed)
+Iterated: Lilac (seed)
+Iterated: Nepenthas (seed)
+Iterated: Rubber (seed)
+trying to find a bird of paradise (medium tropical) since thats not found by the iterator
+1 plants found matching the key Bird Of Paradise
+   > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+now try to delete the bird of paradise, print out the tree again, and run the stats again
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (1 plant/s)
+    │   │      > Bird Of Paradise | Growth: seed | Health: good | Price: R85
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+Iterated: Bird Of Paradise (seed)
+Iterated: Lilac (seed)
+Iterated: Nepenthas (seed)
+Iterated: Rubber (seed)
+
+-- Node count: 5 types of plants in inventory
+
+-- Plant count: 4 plants in inventory
+Plant removed from Bird Of Paradise node
+
+== Inventory Tree Structure ==
+== Contains 3 plants and 5 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: seed | Health: good | Price: R150
+    ├── Lilac (1 plant/s)
+    │      > Lilac | Growth: seed | Health: good | Price: R75
+    │   ├── Bird Of Paradise (0 plant/s)
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: seed | Health: good | Price: R110
+        └── Sundew (0 plant/s)
+
+==============================
+Iterated: Lilac (seed)
+Iterated: Nepenthas (seed)
+Iterated: Rubber (seed)
+
+-- Node count: 5 types of plants in inventory
+
+-- Plant count: 3 plants in inventory
+
+looks like coarse isnt working properly, print out the trace
+iterated: Lilac node.
+iterated: Nepenthas node.
+iterated: Rubber node.
+
+=============================================
+           STOCK / STOCKITERATOR TEST
+=============================================
+A new instance of Inventory has been created!
+A new instance of Stock has been created!
+
+[1] Populating inventory with test plants...
+New PlantNode with key Nepenthas has been created!
+A new Nepenthas has been added to Inventory!
+New PlantNode with key Bird Of Paradise has been created!
+A new Bird Of Paradise has been added to Inventory!
+New PlantNode with key Lilac has been created!
+A new Lilac has been added to Inventory!
+New PlantNode with key Nerve has been created!
+A new Nerve has been added to Inventory!
+Nepenthas has advanced to a new growth stage.
+Bird Of Paradise has advanced to a new growth stage.
+Nerve has advanced to a new growth stage.
+
+== Inventory Tree Structure ==
+== Contains 4 plants and 4 different species.
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (1 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │   └── Lilac (1 plant/s)
+    │          > Lilac | Growth: seed | Health: dead | Price: R75
+    └── Nerve (1 plant/s)
+           > Nerve | Growth: seed | Health: good | Price: R45
+
+==============================
+
+[2] Moving valid plants to stock...
+Moving 2 mature plants to Stock...
+New PlantNode with key Nepenthas has been created!
+New PlantNode with key Bird Of Paradise has been created!
+Plants successfully moved to Stock!
+
+== Stock Tree Structure ==
+== Contains 2 plants and 2 different species.
+== Total value of stock: R235
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (1 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+
+==============================
+
+[3] Verifying stock content integrity...
+Stock contains: Nepenthas | Health: good | Growth: mature
+Stock contains: Bird Of Paradise | Health: good | Growth: mature
+ Stock only contains healthy, mature plants.
+
+[4] Testing fine-grained iterator traversal...
+Iterated (fine): Bird Of Paradise
+Iterated (fine): Nepenthas
+Total fine traversal count: 2
+
+[5] Testing coarse-grained node traversal...
+Visited node: Bird Of Paradise (1 plants)
+Visited node: Nepenthas (1 plants)
+Total node count visited: 2
+Bird Of Paradiseaaaaa we found the bird
+Plant removed from Bird Of Paradise node
+
+== Stock Tree Structure ==
+== Contains 1 plants and 1 different species.
+== Total value of stock: R150
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+
+==============================
+
+== Inventory Tree Structure ==
+== Contains 2 plants and 4 different species.
+└── Nepenthas (0 plant/s)
+    ├── Bird Of Paradise (0 plant/s)
+    │   └── Lilac (1 plant/s)
+    │          > Lilac | Growth: seed | Health: dead | Price: R75
+    └── Nerve (1 plant/s)
+           > Nerve | Growth: seed | Health: good | Price: R45
+
+==============================
+
+[7] Re-testing coarse traversal with empty nodes...
+ Empty nodes are retained in Stock traversal.
+
+[8] Adding new valid plants (restock)...
+New PlantNode with key Rubber has been created!
+A new Rubber has been added to Inventory!
+Rubber has advanced to a new growth stage.
+Moving 1 mature plants to Stock...
+New PlantNode with key Rubber has been created!
+Plants successfully moved to Stock!
+
+== Stock Tree Structure ==
+== Contains 2 plants and 2 different species.
+== Total value of stock: R260
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+[9] Final verification: total plants and nodes
+Stock node count: 2
+Stock plant count: 2
+
+[10] Order testing
+New PlantNode with key shav has been created!
+Order has been initialised as a draft!
+Order shav has been created successfully!
+adding some items to the order
+Plant not found in stock.
+bird of paradise should no longer be in stock or inventory
+Order shav is empty. Engage in consumerism!
+
+== Stock Tree Structure ==
+== Contains 2 plants and 2 different species.
+== Total value of stock: R260
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+== Inventory Tree Structure ==
+== Contains 2 plants and 5 different species.
+└── Nepenthas (0 plant/s)
+    ├── Bird Of Paradise (0 plant/s)
+    │   └── Lilac (1 plant/s)
+    │          > Lilac | Growth: seed | Health: dead | Price: R75
+    └── Nerve (1 plant/s)
+           > Nerve | Growth: seed | Health: good | Price: R45
+        └── Rubber (0 plant/s)
+
+==============================
+now removing that plant
+Bird Of Paradise either not found or not removed.
+Order shav is empty. Engage in consumerism!
+
+== Stock Tree Structure ==
+== Contains 2 plants and 2 different species.
+== Total value of stock: R260
+└── Nepenthas (1 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    └── Rubber (1 plant/s)
+           > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+== Inventory Tree Structure ==
+== Contains 2 plants and 5 different species.
+└── Nepenthas (0 plant/s)
+    ├── Bird Of Paradise (0 plant/s)
+    │   └── Lilac (1 plant/s)
+    │          > Lilac | Growth: seed | Health: dead | Price: R75
+    └── Nerve (1 plant/s)
+           > Nerve | Growth: seed | Health: good | Price: R45
+        └── Rubber (0 plant/s)
+
+==============================
+adding a bunch of things to the order
+
+cleaning up memory
+
+=============================================
+           END OF STOCK TEST SUITE
+=============================================
+
+=============================================
+           STOCK / STOCKITERATOR TEST
+=============================================
+A new instance of Inventory has been created!
+A new instance of Stock has been created!
+
+[1] Populating inventory with test plants...
+New PlantNode with key Nepenthas has been created!
+A new Nepenthas has been added to Inventory!
+Nepenthas has advanced to a new growth stage.
+New PlantNode with key Bird Of Paradise has been created!
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+New PlantNode with key Daisy has been created!
+A new Daisy has been added to Inventory!
+Daisy has advanced to a new growth stage.
+New PlantNode with key Condelabra has been created!
+A new Condelabra has been added to Inventory!
+Condelabra has advanced to a new growth stage.
+New PlantNode with key Pitcher has been created!
+A new Pitcher has been added to Inventory!
+Pitcher has advanced to a new growth stage.
+New PlantNode with key Nerve has been created!
+A new Nerve has been added to Inventory!
+Nerve has advanced to a new growth stage.
+New PlantNode with key White Oak has been created!
+A new White Oak has been added to Inventory!
+White Oak has advanced to a new growth stage.
+New PlantNode with key Aloe Vera has been created!
+A new Aloe Vera has been added to Inventory!
+Aloe Vera has advanced to a new growth stage.
+New PlantNode with key Sundew has been created!
+A new Sundew has been added to Inventory!
+Sundew has advanced to a new growth stage.
+New PlantNode with key Rubber has been created!
+A new Rubber has been added to Inventory!
+Rubber has advanced to a new growth stage.
+New PlantNode with key Lilac has been created!
+A new Lilac has been added to Inventory!
+Lilac has advanced to a new growth stage.
+New PlantNode with key Hen & Chicks has been created!
+A new Hen & Chicks has been added to Inventory!
+Hen & Chicks has advanced to a new growth stage.
+A new Nepenthas has been added to Inventory!
+Nepenthas has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Daisy has been added to Inventory!
+Daisy has advanced to a new growth stage.
+A new Condelabra has been added to Inventory!
+Condelabra has advanced to a new growth stage.
+A new Pitcher has been added to Inventory!
+Pitcher has advanced to a new growth stage.
+A new Nerve has been added to Inventory!
+Nerve has advanced to a new growth stage.
+A new White Oak has been added to Inventory!
+White Oak has advanced to a new growth stage.
+A new Aloe Vera has been added to Inventory!
+Aloe Vera has advanced to a new growth stage.
+A new Sundew has been added to Inventory!
+Sundew has advanced to a new growth stage.
+A new Rubber has been added to Inventory!
+Rubber has advanced to a new growth stage.
+A new Lilac has been added to Inventory!
+Lilac has advanced to a new growth stage.
+A new Hen & Chicks has been added to Inventory!
+Hen & Chicks has advanced to a new growth stage.
+A new Nepenthas has been added to Inventory!
+Nepenthas has advanced to a new growth stage.
+
+== Inventory Tree Structure ==
+== Contains 25 plants and 12 different species.
+└── Nepenthas (3 plant/s)
+       > Nepenthas | Growth: seed | Health: dead | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (2 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │   ├── Aloe Vera (2 plant/s)
+    │   │      > Aloe Vera | Growth: seed | Health: good | Price: R65
+    │   │      > Aloe Vera | Growth: mature | Health: good | Price: R65
+    │   └── Daisy (2 plant/s)
+    │          > Daisy | Growth: mature | Health: good | Price: R25
+    │          > Daisy | Growth: seed | Health: good | Price: R25
+    │       ├── Condelabra (2 plant/s)
+    │       │      > Condelabra | Growth: mature | Health: good | Price: R120
+    │       │      > Condelabra | Growth: mature | Health: dead | Price: R120
+    │       └── Lilac (2 plant/s)
+    │              > Lilac | Growth: mature | Health: dead | Price: R75
+    │              > Lilac | Growth: mature | Health: good | Price: R75
+    │           ├── Hen & Chicks (2 plant/s)
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    └── Pitcher (2 plant/s)
+           > Pitcher | Growth: mature | Health: good | Price: R95
+           > Pitcher | Growth: mature | Health: good | Price: R95
+        ├── Nerve (2 plant/s)
+        │      > Nerve | Growth: mature | Health: dead | Price: R45
+        │      > Nerve | Growth: mature | Health: good | Price: R45
+        └── White Oak (2 plant/s)
+               > White Oak | Growth: mature | Health: good | Price: R180
+               > White Oak | Growth: mature | Health: good | Price: R180
+            ├── Sundew (2 plant/s)
+            │      > Sundew | Growth: mature | Health: good | Price: R55
+            │      > Sundew | Growth: mature | Health: dead | Price: R55
+            │   ├── Rubber (2 plant/s)
+            │   │      > Rubber | Growth: mature | Health: good | Price: R110
+            │   │      > Rubber | Growth: seed | Health: good | Price: R110
+
+==============================
+
+[2] Moving valid plants to stock...
+Moving 21 mature plants to Stock...
+New PlantNode with key Nepenthas has been created!
+New PlantNode with key Bird Of Paradise has been created!
+New PlantNode with key Aloe Vera has been created!
+New PlantNode with key Daisy has been created!
+New PlantNode with key Condelabra has been created!
+New PlantNode with key Lilac has been created!
+New PlantNode with key Hen & Chicks has been created!
+New PlantNode with key Pitcher has been created!
+New PlantNode with key Nerve has been created!
+New PlantNode with key White Oak has been created!
+New PlantNode with key Sundew has been created!
+New PlantNode with key Rubber has been created!
+Plants successfully moved to Stock!
+
+== Stock Tree Structure ==
+== Contains 17 plants and 12 different species.
+== Total value of stock: R1585
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (2 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │   ├── Aloe Vera (1 plant/s)
+    │   │      > Aloe Vera | Growth: mature | Health: good | Price: R65
+    │   └── Daisy (1 plant/s)
+    │          > Daisy | Growth: mature | Health: good | Price: R25
+    │       ├── Condelabra (1 plant/s)
+    │       │      > Condelabra | Growth: mature | Health: good | Price: R120
+    │       └── Lilac (1 plant/s)
+    │              > Lilac | Growth: mature | Health: good | Price: R75
+    │           ├── Hen & Chicks (2 plant/s)
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    └── Pitcher (2 plant/s)
+           > Pitcher | Growth: mature | Health: good | Price: R95
+           > Pitcher | Growth: mature | Health: good | Price: R95
+        ├── Nerve (1 plant/s)
+        │      > Nerve | Growth: mature | Health: good | Price: R45
+        └── White Oak (2 plant/s)
+               > White Oak | Growth: mature | Health: good | Price: R180
+               > White Oak | Growth: mature | Health: good | Price: R180
+            ├── Sundew (1 plant/s)
+            │      > Sundew | Growth: mature | Health: good | Price: R55
+            │   ├── Rubber (1 plant/s)
+            │   │      > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+[3] Verifying stock content integrity...
+ Stock only contains healthy, mature plants.
+
+[4] Testing fine-grained iterator traversal...
+Iterated (fine): Aloe Vera
+Iterated (fine): Bird Of Paradise
+Iterated (fine): Bird Of Paradise
+Iterated (fine): Condelabra
+Iterated (fine): Daisy
+Iterated (fine): Hen & Chicks
+Iterated (fine): Hen & Chicks
+Iterated (fine): Lilac
+Iterated (fine): Nepenthas
+Iterated (fine): Nepenthas
+Iterated (fine): Nerve
+Iterated (fine): Pitcher
+Iterated (fine): Pitcher
+Iterated (fine): Rubber
+Iterated (fine): Sundew
+Iterated (fine): White Oak
+Iterated (fine): White Oak
+Total fine traversal count: 17
+
+[5] Testing coarse-grained node traversal...
+Visited node: Aloe Vera (1 plants)
+Visited node: Bird Of Paradise (2 plants)
+Visited node: Condelabra (1 plants)
+Visited node: Daisy (1 plants)
+Visited node: Hen & Chicks (2 plants)
+Visited node: Lilac (1 plants)
+Visited node: Hen & Chicks (2 plants)
+Visited node: Lilac (1 plants)
+Visited node: Condelabra (1 plants)
+Visited node: Daisy (1 plants)
+Visited node: Hen & Chicks (2 plants)
+Visited node: Lilac (1 plants)
+Visited node: Hen & Chicks (2 plants)
+Visited node: Lilac (1 plants)
+Visited node: Nepenthas (2 plants)
+Visited node: Nerve (1 plants)
+Visited node: Pitcher (2 plants)
+Visited node: Rubber (1 plants)
+Visited node: Sundew (1 plants)
+Visited node: White Oak (2 plants)
+Visited node: Rubber (1 plants)
+Visited node: Sundew (1 plants)
+Visited node: White Oak (2 plants)
+Visited node: Nerve (1 plants)
+Visited node: Pitcher (2 plants)
+Visited node: Rubber (1 plants)
+Visited node: Sundew (1 plants)
+Visited node: White Oak (2 plants)
+Visited node: Rubber (1 plants)
+Visited node: Sundew (1 plants)
+Visited node: White Oak (2 plants)
+Total node count visited: 31
+
+[6] Forcing an empty node...
+Plant removed from Bird Of Paradise node
+Removed Bird Of Paradise -> node should now be empty.
+
+== Stock Tree Structure ==
+== Contains 16 plants and 12 different species.
+== Total value of stock: R1500
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (1 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │   ├── Aloe Vera (1 plant/s)
+    │   │      > Aloe Vera | Growth: mature | Health: good | Price: R65
+    │   └── Daisy (1 plant/s)
+    │          > Daisy | Growth: mature | Health: good | Price: R25
+    │       ├── Condelabra (1 plant/s)
+    │       │      > Condelabra | Growth: mature | Health: good | Price: R120
+    │       └── Lilac (1 plant/s)
+    │              > Lilac | Growth: mature | Health: good | Price: R75
+    │           ├── Hen & Chicks (2 plant/s)
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    └── Pitcher (2 plant/s)
+           > Pitcher | Growth: mature | Health: good | Price: R95
+           > Pitcher | Growth: mature | Health: good | Price: R95
+        ├── Nerve (1 plant/s)
+        │      > Nerve | Growth: mature | Health: good | Price: R45
+        └── White Oak (2 plant/s)
+               > White Oak | Growth: mature | Health: good | Price: R180
+               > White Oak | Growth: mature | Health: good | Price: R180
+            ├── Sundew (1 plant/s)
+            │      > Sundew | Growth: mature | Health: good | Price: R55
+            │   ├── Rubber (1 plant/s)
+            │   │      > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+[7] Re-testing coarse traversal with empty nodes...
+Node: Aloe Vera | plants: 1
+Node: Bird Of Paradise | plants: 1
+Node: Condelabra | plants: 1
+Node: Daisy | plants: 1
+Node: Hen & Chicks | plants: 2
+Node: Lilac | plants: 1
+Node: Hen & Chicks | plants: 2
+Node: Lilac | plants: 1
+Node: Condelabra | plants: 1
+Node: Daisy | plants: 1
+Node: Hen & Chicks | plants: 2
+Node: Lilac | plants: 1
+Node: Hen & Chicks | plants: 2
+Node: Lilac | plants: 1
+Node: Nepenthas | plants: 2
+Node: Nerve | plants: 1
+Node: Pitcher | plants: 2
+Node: Rubber | plants: 1
+Node: Sundew | plants: 1
+Node: White Oak | plants: 2
+Node: Rubber | plants: 1
+Node: Sundew | plants: 1
+Node: White Oak | plants: 2
+Node: Nerve | plants: 1
+Node: Pitcher | plants: 2
+Node: Rubber | plants: 1
+Node: Sundew | plants: 1
+Node: White Oak | plants: 2
+Node: Rubber | plants: 1
+Node: Sundew | plants: 1
+Node: White Oak | plants: 2
+
+[8] Adding 10 new valid plants for restock...
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+A new Bird Of Paradise has been added to Inventory!
+Bird Of Paradise has advanced to a new growth stage.
+Moving 14 mature plants to Stock...
+Plants successfully moved to Stock!
+
+== Stock Tree Structure ==
+== Contains 26 plants and 12 different species.
+== Total value of stock: R2350
+└── Nepenthas (2 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+    ├── Bird Of Paradise (11 plant/s)
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │      > Bird Of Paradise | Growth: mature | Health: good | Price: R85
+    │   ├── Aloe Vera (1 plant/s)
+    │   │      > Aloe Vera | Growth: mature | Health: good | Price: R65
+    │   └── Daisy (1 plant/s)
+    │          > Daisy | Growth: mature | Health: good | Price: R25
+    │       ├── Condelabra (1 plant/s)
+    │       │      > Condelabra | Growth: mature | Health: good | Price: R120
+    │       └── Lilac (1 plant/s)
+    │              > Lilac | Growth: mature | Health: good | Price: R75
+    │           ├── Hen & Chicks (2 plant/s)
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    │           │      > Hen & Chicks | Growth: mature | Health: good | Price: R35
+    └── Pitcher (2 plant/s)
+           > Pitcher | Growth: mature | Health: good | Price: R95
+           > Pitcher | Growth: mature | Health: good | Price: R95
+        ├── Nerve (1 plant/s)
+        │      > Nerve | Growth: mature | Health: good | Price: R45
+        └── White Oak (2 plant/s)
+               > White Oak | Growth: mature | Health: good | Price: R180
+               > White Oak | Growth: mature | Health: good | Price: R180
+            ├── Sundew (1 plant/s)
+            │      > Sundew | Growth: mature | Health: good | Price: R55
+            │   ├── Rubber (1 plant/s)
+            │   │      > Rubber | Growth: mature | Health: good | Price: R110
+
+==============================
+
+[9] Final verification: total plants and nodes
+Stock node count: 12
+Stock plant count: 26
+New PlantNode with key Shavir has been created!
+Order has been initialised as a draft!
+Order Shavir has been created successfully!
+Adding items to order from stock...
+Plant removed from Nepenthas node
+Nepenthas successfully added to your order!
+A Nepenthas has been added to order Shavir
+Plant removed from Nepenthas node
+Nepenthas successfully added to your order!
+A Nepenthas has been added to order Shavir
+Plant not found in stock.
+Plant not found in stock.
+Plant not found in stock.
+
+Order after additions:
+Order Shavir Total: R300 in state draft
+└── Shavir (2 plant/s)
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+       > Nepenthas | Growth: mature | Health: good | Price: R150
+
+Stock after removals:
+
+== Stock Tree Structure ==
+== Contains 24 plants and 11 different species.
+== Total value of stock: R2050
+└── Nepenthas (1 plant/s)
