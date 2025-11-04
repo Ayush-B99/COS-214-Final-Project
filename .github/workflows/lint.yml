@@ -1,0 +1,31 @@
+name: Lint Code
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install clang-format
+      run: |
+        sudo apt update
+        sudo apt install -y clang-format
+        clang-format --version
+        
+    - name: Check code formatting
+      run: |
+        # Check C++ files for formatting issues
+        find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs clang-format -n -Werror
+        
+    - name: Count files checked
+      run: |
+        echo "Files that will be linted:"
+        find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | wc -l
