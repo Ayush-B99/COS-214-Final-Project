@@ -1,14 +1,15 @@
 #include "../include/Order.h"
 #include "../include/Stock.h"
 #include "../include/Inventory.h"
+#include <memory>
 
 Order::Order(string orderId) {
 	this-> id = orderId;
 	this->orderItems = new PlantNode(id);
 	total = 0;
-	state = new Draft();
-	// shared_ptr<OrderState> state;
-	// stateCaretaker = new Caretaker<OrderState*>();
+	state = make_shared<Draft>();
+	// shared_ptr<OrderState> state = make_shared<Draft>();
+	stateCaretaker = new Caretaker<OrderState>();
 
 	// cout<< "Order " << orderId << " has been created successfully!\n";
 }
@@ -17,7 +18,10 @@ Order::~Order() {
 	//ownership of plants is transferred to order
 	if (orderItems) delete orderItems;
 
-	if (state) delete state;
+	// if (state) delete state;
+	
+	delete stateCaretaker;
+	stateCaretaker = nullptr;
 
 	orderItems = nullptr;
 	state = nullptr;
@@ -26,8 +30,8 @@ Order::~Order() {
 void Order::proceed(){
 	if (state)
 	{
-    	// Memento<OrderState> memento(shared_ptr<OrderState>(state));
-        // stateCaretaker->addMemento(memento);
+    	Memento<OrderState> memento(state);
+        stateCaretaker->addMemento(memento);
         state->proceed(this);
 	}
 }
@@ -118,11 +122,11 @@ string Order::getStateName() {
 }
 
 OrderState* Order::getState() {
-	return this->state;
+	return this->state.get();
 }
 
 void Order::setState(OrderState* state) {
-	this->state = state;
+    this->state = shared_ptr<OrderState>(state);
 }
 
 string& Order::getId() {
@@ -160,10 +164,9 @@ unique_ptr<Plant> Order::decorateWithFertilizer(unique_ptr<Plant> p, const strin
 }
 
 void Order::restoreToPreviousState() {
-	// state->restore(this);
-}
+    Memento<OrderState> res = stateCaretaker->getMemento(1);
 
-void Order::saveState() {
-	// Memento<>(this);
-}
+    this->state = res.getState();
 
+    state = make_shared<Draft>();
+}

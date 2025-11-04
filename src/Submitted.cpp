@@ -1,7 +1,7 @@
 #include "../include/Submitted.h"
 
 Submitted::Submitted(){
-	cout << "Order has been finalized and submitted!\n";
+	// cout << "Order has been finalized and submitted!\n";
 }
 
 void Submitted::proceed(Order* order){

@@ -1,7 +1,7 @@
 #include "../include/Paid.h"
 
 Paid::Paid(){
-	cout << "Order has been paid!\n";
+	// cout << "Order has been paid!\n";
 }
 
 void Paid::proceed(Order* order){

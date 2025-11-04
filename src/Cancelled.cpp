@@ -1,7 +1,7 @@
 #include "../include/Cancelled.h"
 
 Cancelled::Cancelled(){
-	cout << "Cancelling your order :(\n";
+	// cout << "Cancelling your order :(\n";
 }
 
 void Cancelled::proceed(Order* order){
@@ -9,7 +9,7 @@ void Cancelled::proceed(Order* order){
 }
 
 void Cancelled::cancel(Order* order){
-	cout << "Order is already cancelled.\n";
+	// cout << "Order is already cancelled.\n";
 }
 
 string const Cancelled::getName(){

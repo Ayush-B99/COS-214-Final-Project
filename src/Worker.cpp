@@ -178,5 +178,5 @@ vector<string> Worker::getAvailablePlantTypes()
 
 void Worker::providePlantCareAdvice(Customer *customer, const string &plantType)
 {
-    cout << "    [" << getName() << " providing " << plantType << " care advice to " << customer->getName() << "]" << endl;
+    // cout << "    [" << getName() << " providing " << plantType << " care advice to " << customer->getName() << "]" << endl;
 }

@@ -38,12 +38,12 @@ class Stock;
 class Order : public Storage {
 
 private:
-	Caretaker<OrderState*>* stateCaretaker;
+	Caretaker<OrderState>* stateCaretaker;
     /**
      * @brief Current state of the order (Draft, Submitted, etc.).
      * @note Managed via the State pattern.
      */
-    OrderState* state;
+    shared_ptr<OrderState> state;
 
     /**
      * @brief Root node of the binary tree containing ordered plants.
@@ -225,11 +225,10 @@ public:
     static unique_ptr<Plant> decorateWithSlowReleaseFertilizer(unique_ptr<Plant> p) {
         return decorateWithFertilizer(std::move(p), "Slow-Release");
     }
-    
-    void restoreState();
-    
-    void saveState();
 
+    /**
+     * @brief Restores the plant to its previous state.
+     */
     void restoreToPreviousState();
 };
 

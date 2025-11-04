@@ -154,6 +154,7 @@ void displayMenu()
     wattron(menuWin, COLOR_PAIR(5));
     mvwprintw(menuWin, 1, 2, "[1]Browse Plants [2]View Cart [3]Add to Cart [4]Remove from Cart");
     mvwprintw(menuWin, 2, 2, "[5]Checkout [6]Pay Order [7]View Orders [8]Ask Question [0]Exit");
+    // mvwprintw(menuWin, 2, 2, "[5]Checkout [6]Pay Order [7]View Orders [8]Ask Question [9]Add more to Cart [0]Exit");
     wattroff(menuWin, COLOR_PAIR(5));
     
     mvwprintw(menuWin, 3, 2, "Choice: ");
@@ -354,7 +355,7 @@ string captureOutput(function<void()> func)
 /**
  * @brief Get input string
  */
-string getInputString(const string &prompt)
+string getInputString(const string &prompt, int inLine = 12)
 {
     lock_guard<mutex> lock(ncursesMutex);
     
@@ -368,7 +369,7 @@ string getInputString(const string &prompt)
     nodelay(stdscr, FALSE);
     
     char buffer[256];
-    mvwgetnstr(contentWin, 3, 2, buffer, 255);
+    mvwgetnstr(contentWin, inLine, 2, buffer, 255);
     
     noecho();
     curs_set(0);
@@ -380,9 +381,9 @@ string getInputString(const string &prompt)
 /**
  * @brief Get input int
  */
-int getInputInt(const string &prompt)
+int getInputInt(const string &prompt, int inLine = 12)
 {
-    string input = getInputString(prompt);
+    string input = getInputString(prompt, inLine);
     try
     {
         return stoi(input);
@@ -439,6 +440,91 @@ void viewCart()
     displayContent(oss.str());
 }
 
+int getMenuChoiceInt(const string& prompt)
+{
+    lock_guard<mutex> lock(ncursesMutex);
+
+    // Display the options
+    werase(contentWin);
+    box(contentWin, 0, 0);
+    mvwprintw(contentWin, 1, 1, "%s", prompt.c_str());
+    wrefresh(contentWin);
+    
+    echo();
+    curs_set(1);
+
+    // Draw the menu
+    werase(menuWin);
+    box(menuWin, 0, 0);
+
+    wattron(menuWin, COLOR_PAIR(5));
+    // mvwprintw(menuWin, 1, 2, "[1]Browse Plants [2]View Cart [3]Add to Cart [4]Remove from Cart");
+    // mvwprintw(menuWin, 2, 2, "[5]Checkout [6]Pay Order [7]View Orders [8]Ask Question [0]Exit");
+    wattroff(menuWin, COLOR_PAIR(5));
+
+    // Prompt
+    mvwprintw(menuWin, 3, 2, "Choice: ");
+    wmove(menuWin, 3, 10); // place cursor after "Choice: "
+    wrefresh(menuWin);
+
+    // Input
+    echo();
+    curs_set(1);
+    nodelay(stdscr, FALSE);
+
+    char buffer[8];
+    wgetnstr(menuWin, buffer, sizeof(buffer) - 1);
+
+    noecho();
+    curs_set(0);
+    nodelay(stdscr, TRUE);
+
+    return atoi(buffer);
+}
+
+string getMenuChoiceString(const string& prompt)
+{
+    lock_guard<mutex> lock(ncursesMutex);
+
+    // Display the options
+    werase(contentWin);
+    box(contentWin, 0, 0);
+    mvwprintw(contentWin, 0, 0, "%s", prompt.c_str());
+    wrefresh(contentWin);
+    
+    echo();
+    curs_set(1);
+
+    // Draw the menu
+    werase(menuWin);
+    box(menuWin, 0, 0);
+
+    wattron(menuWin, COLOR_PAIR(5));
+    // mvwprintw(menuWin, 1, 2, "[1]Browse Plants [2]View Cart [3]Add to Cart [4]Remove from Cart");
+    // mvwprintw(menuWin, 2, 2, "[5]Checkout [6]Pay Order [7]View Orders [8]Ask Question [0]Exit");
+    mvwprintw(menuWin, 1, 2, "Confirm checkout? [Y/N]");
+    wattroff(menuWin, COLOR_PAIR(5));
+
+    // Prompt
+    mvwprintw(menuWin, 3, 2, "Choice: ");
+    wmove(menuWin, 3, 10); // place cursor after "Choice: "
+    wrefresh(menuWin);
+
+    // Input
+    echo();
+    curs_set(1);
+    nodelay(stdscr, FALSE);
+
+    char buffer[8];
+    wgetnstr(menuWin, buffer, sizeof(buffer) - 1);
+
+    noecho();
+    curs_set(0);
+    nodelay(stdscr, TRUE);
+
+    return buffer;
+}
+
 /**
  * @brief Add plant to cart
  */
@@ -474,8 +560,9 @@ void addToCart(Stock *stock, Inventory *inv)
     }
     oss << "\nEnter plant number to add (0 to cancel):";
     
-    int choice = getInputInt(oss.str());
-    
+    // int choice = getInputInt(oss.str());
+    int choice = getMenuChoiceInt(oss.str());
+
     if (choice <= 0 || choice > (int)availablePlants.size())
     {
         displayContent("Cancelled.");
@@ -490,7 +577,7 @@ void addToCart(Stock *stock, Inventory *inv)
             << " (R" << fixed << setprecision(2) << selectedPlant->getPrice() 
             << ") to cart?\n\n[Y/N]";
     
-    string response = getInputString(confirm.str());
+    string response = getInputString(confirm.str(), 4);
     
     if (response != "Y" && response != "y")
     {
@@ -538,7 +625,7 @@ void removeFromCart(Stock *stock, Inventory *inv)
     }
     oss << "\nEnter item number to remove (0 to cancel):";
     
-    int choice = getInputInt(oss.str());
+    int choice = getMenuChoiceInt(oss.str());
     
     if (choice <= 0 || choice > (int)orderItems.size())
     {
@@ -551,6 +638,53 @@ void removeFromCart(Stock *stock, Inventory *inv)
     
     displayContent("Item removed from cart!");
 }
+
+/**
+//  * @brief Checkout - return to draft state
+//  */
+// void getMore()
+// {
+//     if (!currentOrder)
+//     {
+//         displayContent("Your cart is empty!");
+//         return;
+//     }
+    
+//     if (currentOrder->getOrderItems().empty())
+//     {
+//         displayContent("Your cart is empty!");
+//         return;
+//     }
+    
+//     if (currentOrder->getStateName() == "paid")
+//     {
+//         displayContent("Your cart is empty!");
+//         return;
+//     }
+    
+//     if (currentOrder->getStateName() != "draft")
+//     {
+//         ostringstream oss;
+//         oss << "================================================\n";
+//         oss << "|                ADD MORE ITEMS                 |\n";
+//         oss << "================================================\n\n";
+//         oss << "Order ID: " << currentOrder->getId() << "\n";
+//         oss << "Items: " << currentOrder->getOrderItems().size() << "\n";
+//         oss << "Total: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
+        
+//         string confirm = getMenuChoiceString(oss.str());
+        
+//         if (confirm == "Y" || confirm == "y")
+//         {
+//             currentOrder->restoreToPreviousState();
+//             displayContent("Uncheckout successful.");
+//         }
+//         else
+//         {
+//             displayContent("Uncheckout cancelled.");
+//         }
+//     }
+// }
 
 /**
  * @brief Checkout - proceed order to submitted state
@@ -582,9 +716,8 @@ void checkoutOrder()
     oss << "Order ID: " << currentOrder->getId() << "\n";
     oss << "Items: " << currentOrder->getOrderItems().size() << "\n";
     oss << "Total: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
-    oss << "Confirm checkout? [Y/N]";
     
-    string confirm = getInputString(oss.str());
+    string confirm = getMenuChoiceString(oss.str());
     
     if (confirm == "Y" || confirm == "y")
     {
@@ -634,7 +767,7 @@ void payOrder()
     oss << "[3] Cash\n\n";
     oss << "Select payment method:";
     
-    int payment = getInputInt(oss.str());
+    int payment = getInputInt(oss.str(), 14);
     
     if (payment < 1 || payment > 3) {
         displayContent("Invalid payment method!");
@@ -647,7 +780,7 @@ void payOrder()
     
     ostringstream success;
     success << "================================================\n";
-    success << "|           ✓ PAYMENT SUCCESSFUL!              |\n";
+    success << "|             PAYMENT SUCCESSFUL!              |\n";
     success << "================================================\n\n";
     success << "Order ID: " << currentOrder->getId() << "\n";
     success << "Paid: R" << fixed << setprecision(2) << currentOrder->getTotal() << "\n\n";
@@ -751,7 +884,7 @@ void askQuestion(Customer *customer)
     }
     else if (choice == 5)
     {
-        question = getInputString("Enter your question:");
+        question = getInputString("Enter your question:", 3);
     }
     else
     {
@@ -824,7 +957,8 @@ void asyncTickSystem(Inventory *inv, Stock *stock, PlantCareHandler *handler)
     }
 }
 
-void thankYou() {
+void thankYou()
+{
     std::string display = "========================================================================================================================================================================\n";
     display += "\t\t\t                 ⁺                    ⊹               ⢀                 ⁺          ⢀							⢀															⁺  \n";
     display += "\t\t\t                    ⢠⠒⠉⠉⠉⢢⠤⠤⡀⢀⣀⣀⠀⡠⠖⠋⠉⠉⠒⢄                               ⠀⠀⠀⠀⠀⠀⠀⠀⠀⁺        					     ⁺			   ⊹\n";
@@ -999,6 +1133,9 @@ int main()
                 case '8':
                     askQuestion(customer);
                     break;
+                // case '9':
+                //     getMore();
+                //     break;
             }
             
             this_thread::sleep_for(chrono::milliseconds(50));
