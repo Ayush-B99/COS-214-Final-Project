@@ -51,7 +51,7 @@ Plant-Nursery-Management-System/
 
 ## 📋 Documentation
 
-[**Powerpoint**](./Documents/Momina%20\&friends.pdf) 
+[**Powerpoint**](./Documents/Momina%20\&%20friends%20final.pdf) 
 
 [**Functional and Non-functional requirements**](./Documents/Functional%20requirements.pdf)
 
@@ -210,6 +210,7 @@ graph TD
 
 _"The use of design patterns in such a complex project is impressive. It’s clear that a lot of thought went into making the system both extensible and maintainable. This project should definitely earn a 110%"_  
 — **Momina**, from Momina & Friends
+
 
 
 
