@@ -40,20 +40,22 @@ Plant-Nursery-Management-System/
 ## 📋 UML Diagrams
 
 ### Structural Diagrams
-- [**Class Diagram**](./Documentation/Diagrams/class_Diagram_final.jpg) - System class structure and relationships
-- [**Object Diagram**](./Documentation/Diagrams/Object%20Diagram.jpg) - Runtime object instances and links
-- [**Communication Diagram**](./Documentation/Diagrams/Communication%20Diagram.jpg) - Object interactions and messaging
+- [**Class Diagram**](./Documents/Diagrams/class_diagram_final.jpg) - System class structure and relationships
+- [**Object Diagram**](./Documents/Diagrams/Object%20Diagram.jpg) - Runtime object instances and links
+- [**Communication Diagram**](./Documents/Diagrams/Communication-Diagram.jpg) - Object interactions and messaging
 
 ### Behavioral Diagrams
-- [**Sequence Diagrams**](./Documentation/Diagrams/Sequence%20Diagram.jpg) - Time-ordered object interactions
-- [**State Machine Diagram**](./Documentation/Diagrams/State%20Machine%20Diagram.pdf) - Object state transitions
-- [**Activity Diagram**](./Documentation/Diagrams/Activity%2diagram%2final.jpg) - Business process workflows
+- [**Sequence Diagrams**](./Documents/Diagrams/Sequence%20Diagram.jpg) - Time-ordered object interactions
+- [**State Machine Diagram**](./Documents/Diagrams/State%20Machine%20Diagram.pdf) - Object state transitions
+- [**Activity Diagram**](./Documents/Diagrams/Activity%20diagram%20final.jpg) - Business process workflows
 
 ## 📋 Documentation
 
-### Powerpoint 
+[**Powerpoint**](./Documents/Momina%20\&friends.pdf) 
 
-### Functional Requirements
+[**Functional and Non-functional requirements**](./Documents/Functional%20requirements.pdf)
+
+[**Report**](./Documents/Report.pdf)
 
 ### Doxygen 
 
@@ -201,13 +203,14 @@ graph TD
 - Clone the repository: `https://github.com/Ayush-B99/COS-214-Final-Project/`
 - A comprehensive makefile with commands for installing prerequisites, setting up a folder structure, and compiling is provided.
 - Simply execute `make help` for a more detailed overview
-- To install prerequisites, execute `make demo` to install the ncurses library. The script will automatically pick up your OS and execute the appropriate installation command.
+- To install prerequisites, execute `make setup` to install the ncurses library. The script will automatically pick up your OS and execute the appropriate installation command.
 - After prerequisites are installed, `make test` to compile and run the testing suite, or `make demo` to run the interactive interface.
 
 ## 🌟 Feedback & Testimonials
 
-_"The use of design patterns in such a complex project is impressive. It’s clear that a lot of thought went into making the system both extensible and maintainable. This project should definitley earn a 110%"_  
+_"The use of design patterns in such a complex project is impressive. It’s clear that a lot of thought went into making the system both extensible and maintainable. This project should definitely earn a 110%"_  
 — **Momina**, from Momina & Friends
+
 
 
 
