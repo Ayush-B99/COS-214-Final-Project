@@ -27,8 +27,8 @@ We as a team of 7 distributed an even workload in which each team member all con
 ```
 Plant-Nursery-Management-System/
 ├── 📁 Documents/
-│   ├── 📄 Project_Report.pdf
-│   ├── 📄 Presentation_Slides.pptx
+│   ├── 📄 Report.pdf
+│   ├── 📄 Momina & friends final.pptx
 │   └── 📁 Diagrams/
 ├── 📁 include/
 ├── 📁 src/
@@ -210,6 +210,7 @@ graph TD
 
 _"The use of design patterns in such a complex project is impressive. It’s clear that a lot of thought went into making the system both extensible and maintainable. This project should definitely earn a 110%"_  
 — **Momina**, from Momina & Friends
+
 
 
 
