@@ -40,14 +40,14 @@ Plant-Nursery-Management-System/
 ## 📋 UML Diagrams
 
 ### Structural Diagrams
-- [**Class Diagram**](./Documentation/Diagrams/Class%20Diagram.jpg) - System class structure and relationships
+- [**Class Diagram**](./Documentation/Diagrams/class_Diagram_final.jpg) - System class structure and relationships
 - [**Object Diagram**](./Documentation/Diagrams/Object%20Diagram.jpg) - Runtime object instances and links
 - [**Communication Diagram**](./Documentation/Diagrams/Communication%20Diagram.jpg) - Object interactions and messaging
 
 ### Behavioral Diagrams
 - [**Sequence Diagrams**](./Documentation/Diagrams/Sequence%20Diagram.jpg) - Time-ordered object interactions
 - [**State Machine Diagram**](./Documentation/Diagrams/State%20Machine%20Diagram.pdf) - Object state transitions
-- [**Activity Diagram**](./Documentation/Diagrams/Activity%20Diagram.jpg) - Business process workflows
+- [**Activity Diagram**](./Documentation/Diagrams/Activity%2diagram%2final.jpg) - Business process workflows
 
 ## 📋 Documentation
 
@@ -208,6 +208,7 @@ graph TD
 
 _"The use of design patterns in such a complex project is impressive. It’s clear that a lot of thought went into making the system both extensible and maintainable. This project should definitley earn a 110%"_  
 — **Momina**, from Momina & Friends
+
 
 
 
