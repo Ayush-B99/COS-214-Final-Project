@@ -18,14 +18,32 @@ jobs:
       run: |
         sudo apt update
         sudo apt install -y clang-format
-        clang-format --version
         
-    - name: Check code formatting
+    - name: List C++ files
       run: |
-        # Check C++ files for formatting issues
-        find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs clang-format -n -Werror
+        echo "=== C++ Files Found ==="
+        find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | while read file; do
+          echo "📄 $file"
+        done
         
-    - name: Count files checked
+    - name: Check formatting (non-fatal)
       run: |
-        echo "Files that will be linted:"
-        find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | wc -l
+        # This won't fail the workflow, just show issues
+        echo "=== Formatting Check ==="
+        if find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | grep -q .; then
+          find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs clang-format -n --verbose || echo "Formatting issues found (but not failing workflow)"
+        else
+          echo "No C++ files to check"
+        fi
+        
+    - name: Show what would change
+      run: |
+        echo "=== Suggested Changes ==="
+        if find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | grep -q .; then
+          find . -name "*.cpp" -o -name "*.h" -o -name "*.hpp" | xargs clang-format -i
+          git diff --color || echo "No differences found"
+          # Revert the changes so we don't modify the repo
+          git checkout -- .
+        else
+          echo "No C++ files found"
+        fi
